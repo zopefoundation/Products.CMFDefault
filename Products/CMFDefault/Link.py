@@ -49,7 +49,7 @@ def addLink( self
     """Add a Link instance to 'self'.
     """
     o=Link( id, title, remote_url, description )
-    self._setObject(id,o)
+    self._setObject(id, o, suppress_events=True)
 
 
 class Link(PortalContent, DefaultDublinCoreImpl):

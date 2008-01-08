@@ -40,7 +40,7 @@ def addFavorite(self, id, title='', remote_url='', description=''):
     """Add a Favorite.
     """
     o = Favorite(id, title, remote_url, description)
-    self._setObject(id, o)
+    self._setObject(id, o, suppress_events=True)
 
 
 class Favorite(Link):

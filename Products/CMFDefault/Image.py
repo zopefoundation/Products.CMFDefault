@@ -68,7 +68,7 @@ def addImage( self
                 )
 
     # Add the Image instance to self
-    self._setObject(id, iobj)
+    self._setObject(id, iobj, suppress_events=True)
 
     # 'Upload' the image.  This is done now rather than in the
     # constructor because it's faster (see File.py.)

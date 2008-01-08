@@ -60,7 +60,7 @@ def addDocument(self, id, title='', description='', text_format='', text=''):
     """Add a Document.
     """
     o = Document(id, title, description, text_format, text)
-    self._setObject(id,o)
+    self._setObject(id, o, suppress_events=True)
 
 
 class Document(PortalContent, DefaultDublinCoreImpl):

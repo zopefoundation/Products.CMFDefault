@@ -69,7 +69,7 @@ def addFile( self
                )
 
     # Add the File instance to self
-    self._setObject(id, fobj)
+    self._setObject(id, fobj, suppress_events=True)
 
     # 'Upload' the file.  This is done now rather than in the
     # constructor because the object is now in the ZODB and

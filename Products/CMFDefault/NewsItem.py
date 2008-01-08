@@ -41,7 +41,7 @@ def addNewsItem( self
               , text=text
               , text_format=text_format
               )
-    self._setObject(id, o)
+    self._setObject(id, o, suppress_events=True)
 
 
 class NewsItem(Document):

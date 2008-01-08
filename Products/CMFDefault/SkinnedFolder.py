@@ -82,7 +82,7 @@ def addSkinnedFolder( self, id, title='', description='', REQUEST=None ):
     """
     sf = SkinnedFolder( id, title )
     sf.description = description
-    self._setObject( id, sf )
+    self._setObject(id, sf, suppress_events=True)
     sf = self._getOb( id )
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )

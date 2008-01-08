@@ -1,0 +1,20 @@
+Products.CMFDefault Changelog
+
+  Products.CMFDefault 2.2.0 (unreleased)
+
+    - content: Factories no longer sends add events.
+
+    - profiles: Removed obsolete local import and export step registrations.
+
+    - setup handler: Improved 'various' import step.
+      Added flag file check and global registration.
+
+    - Document and NewsItem: It is now possible to register a utility
+      (ILinebreakNormalizer) that can normalize line breaks upon editing or
+      rendering out to FTP.
+      (http://www.zope.org/Collectors/CMF/174)
+
+    - Document and NewsItem: Added a format choice for ReStructuredText.
+      (http://www.zope.org/Collectors/CMF/485)
+
+    - interfaces: Removed deprecated oldstyle interfaces.
