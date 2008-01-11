@@ -35,34 +35,6 @@ from permissions import AccessContentsInformation
 from permissions import ManagePortal
 from permissions import ReplyToItem
 from permissions import View
-from utils import scrubHTML
-
-
-def addDiscussionItem(self, id, title, description, text_format, text,
-                      reply_to, RESPONSE=None):
-    """ Add a discussion item
-
-    'title' is also used as the subject header
-    if 'description' is blank, it is filled with the contents of 'title'
-    'reply_to' is the object (or path to the object) which this is a reply to
-
-    Otherwise, same as addDocument
-    """
-
-    if not description: description = title
-    text = scrubHTML(text)
-    item = DiscussionItem( id )
-    item.title = title
-    item.description = description
-    item.text_format = text_format
-    item.text = text
-    item.setReplyTo(reply_to)
-
-    item._parse()
-    self._setObject(id, item)
-
-    if RESPONSE is not None:
-        RESPONSE.redirect(self.absolute_url())
 
 
 class DiscussionItem(Document):

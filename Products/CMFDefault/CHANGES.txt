@@ -2,6 +2,9 @@ Products.CMFDefault Changelog
 
   Products.CMFDefault 2.2.0 (unreleased)
 
+    - DiscussionItem: Removed 'addDiscussionItem' function.
+      This was dead code. 'createReply' is used for adding DiscussionItems.
+
     - content: Factories no longer sends add events.
 
     - profiles: Removed obsolete local import and export step registrations.
