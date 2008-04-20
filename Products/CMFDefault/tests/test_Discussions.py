@@ -18,6 +18,7 @@ $Id$
 import unittest
 import Testing
 
+from AccessControl.SecurityManagement import newSecurityManager
 from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 
@@ -26,7 +27,7 @@ from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.testing import EventZCMLLayer
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
-from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFCore.tests.base.dummy import DummyUser
 from Products.CMFCore.tests.base.testcase import SecurityTest
 from Products.CMFCore.tests.base.tidata import FTIDATA_DUMMY
 from Products.CMFCore.tests.base.utils import has_path
@@ -77,11 +78,11 @@ class DiscussionTests(SecurityTest):
 
     def setUp(self):
         SecurityTest.setUp(self)
+        newSecurityManager(None, DummyUser().__of__(self.app.acl_users))
         self.site = DummySite('site').__of__(self.root)
         sm = getSiteManager()
         self.site._setObject( 'portal_discussion', DiscussionTool() )
         sm.registerUtility(self.site.portal_discussion, IDiscussionTool)
-        self.site._setObject( 'portal_membership', DummyTool() )
         self.site._setObject( 'portal_types', TypesTool() )
 
     def _makeDummyContent(self, id, *args, **kw):

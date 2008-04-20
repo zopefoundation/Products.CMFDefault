@@ -16,6 +16,7 @@ $Id$
 """
 
 from AccessControl import ClassSecurityInfo
+from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from DateTime.DateTime import DateTime
 from Globals import DTMLFile
@@ -98,8 +99,8 @@ class DefaultDublinCoreImpl( PropertyManager ):
         """ Add creator to Dublin Core creators.
         """
         if creator is None:
-            mtool = getToolByName(self, 'portal_membership', None)
-            creator = mtool and mtool.getAuthenticatedMember().getId()
+            user = getSecurityManager().getUser()
+            creator = user and user.getId()
 
         # call self.listCreators() to make sure self.creators exists
         if creator and not creator in self.listCreators():

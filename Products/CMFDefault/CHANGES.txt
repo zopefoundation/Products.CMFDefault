@@ -2,6 +2,9 @@ Products.CMFDefault Changelog
 
   Products.CMFDefault 2.2.0 (unreleased)
 
+    - DublinCore: Modified the 'addCreator' implementation.
+      It no longer depends on the membership tool.
+
     - DiscussionItem: Removed 'addDiscussionItem' function.
       This was dead code. 'createReply' is used for adding DiscussionItems.
 
