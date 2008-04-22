@@ -55,7 +55,7 @@ class ProxyFieldProperty(object):
         self._get_name = get_name
         self._set_name = set_name
 
-    def __get__(self, inst, klass):
+    def __get__(self, inst, cls=None):
         if inst is None:
             return self
 

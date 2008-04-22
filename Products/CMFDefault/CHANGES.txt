@@ -2,6 +2,10 @@ Products.CMFDefault Changelog
 
   Products.CMFDefault 2.2.0 (unreleased)
 
+    - views: Added ContentEditFormBase and FileAddView.
+      This shows how form-driven content creation works. The content is created
+      without using the constructor methods provided by the types tool.
+
     - DublinCore: Modified the 'addCreator' implementation.
       It no longer depends on the membership tool.
 

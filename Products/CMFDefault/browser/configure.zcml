@@ -106,6 +106,14 @@
   <adapter factory=".file.FileSchemaAdapter"/>
 
   <browser:page
+      for="Products.CMFCore.interfaces.IFolderish"
+      layer="..interfaces.ICMFDefaultSkin"
+      name="addFile.html"
+      class=".file.FileAddView"
+      permission="cmf.AddPortalContent"
+      />
+
+  <browser:page
       for="..interfaces.IMutableFile"
       layer="..interfaces.ICMFDefaultSkin"
       name="edit.html"

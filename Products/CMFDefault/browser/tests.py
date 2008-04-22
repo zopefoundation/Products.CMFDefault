@@ -32,6 +32,9 @@ def test_suite():
     s = ZopeTestCase.FunctionalDocFileSuite('document.txt')
     s.layer = FunctionalLayer
     suite.addTest(s)
+    s = ZopeTestCase.FunctionalDocFileSuite('file.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
     return suite
 
 if __name__ == '__main__':

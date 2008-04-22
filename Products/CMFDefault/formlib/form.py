@@ -19,8 +19,12 @@ from datetime import datetime
 from sets import Set
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.Five.formlib.formbase import PageAddForm
 from Products.Five.formlib.formbase import PageDisplayForm
 from Products.Five.formlib.formbase import PageForm
+from zope.app.container.interfaces import INameChooser
+from zope.component import getUtility
+from zope.component.interfaces import IFactory
 from zope.datetime import parseDatetimetz
 from zope.formlib import form
 from zope.i18n.interfaces import IUserPreferredLanguages
@@ -53,7 +57,7 @@ def getLocale(request):
         return locales.getLocale(None, None, None)
 
 
-class EditFormBase(PageForm, ViewBase):
+class _EditFormMixin(ViewBase):
 
     template = ViewPageTemplateFile('editform.pt')
 
@@ -92,7 +96,103 @@ class EditFormBase(PageForm, ViewBase):
             self.request.other['portal_status_message'] = message
 
 
-class ContentEditFormBase(EditFormBase):
+class EditFormBase(_EditFormMixin, PageForm):
+
+    pass
+
+
+class ContentAddFormBase(_EditFormMixin, PageAddForm):
+
+    actions = form.Actions(
+        form.Action(
+            name='add',
+            label=form._('Add'),
+            condition=form.haveInputWidgets,
+            success='handle_add',
+            failure='handle_failure'),
+        form.Action(
+            name='cancel',
+            label=_(u'Cancel'),
+            success='handle_cancel_success',
+            failure='handle_cancel_failure'))
+
+    description = u''
+
+    @property
+    def label(self):
+        obj_type = self.widgets['portal_type']._getFormValue()
+        obj_type = translate(obj_type, self.context)
+        return _(u'Add ${obj_type}', mapping={'obj_type': obj_type})
+
+    def handle_add(self, action, data):
+        obj = self.createAndAdd(data)
+        if obj is None:
+            if self.status:
+                message = translate(self.status, self.context)
+                self.request.other['portal_status_message'] = message
+            return
+        obj_type = translate(obj.Type(), self.context)
+        message = translate(_(u'${obj_type} added.',
+                              mapping={'obj_type': obj_type}), self.context)
+        if isinstance(message, unicode):
+            message = message.encode(self._getBrowserCharset())
+        fti = obj.getTypeInfo()
+        self._nextURL = '%s/%s?%s' % (obj.absolute_url(), fti.immediate_view,
+                                    make_query(portal_status_message=message))
+
+    def handle_cancel_success(self, action, data):
+        return self._setRedirect('portal_types', 'object/folderContents')
+
+    def handle_cancel_failure(self, action, data, errors):
+        self.status = None
+        return self._setRedirect('portal_types', 'object/folderContents')
+
+    def create(self, data):
+        portal_type = self.request.form['%s.portal_type' % self.prefix]
+
+        #check type exists
+        ttool = self._getTool('portal_types')
+        fti = ttool.getTypeInfo(portal_type)
+        if fti is None:
+            raise ValueError(u'No such content type: %s' % portal_type)
+
+        factory = getUtility(IFactory, fti.factory)
+        obj = factory('temp_id')
+        if hasattr(obj, '_setPortalTypeName'):
+            obj._setPortalTypeName(portal_type)
+
+        return self.finishCreate(obj, data)
+
+    def add(self, obj):
+        container = self.context
+        upload = self.request.form.get('%s.upload' % self.prefix)
+        if upload:
+            filename = upload.filename.split('\\')[-1] # for IE
+            filename = filename.strip().replace(' ','_')
+        else:
+            filename = u''
+        name = INameChooser(container).chooseName(filename, obj)
+
+        #check container constraints
+        ttool = self._getTool('portal_types')
+        container_ti = ttool.getTypeInfo(container)
+        portal_type = obj.getPortalTypeName()
+        if container_ti is not None and \
+                not container_ti.allowType(portal_type):
+            self.status = u'Disallowed subobject type: %s' % portal_type
+            return None
+
+        obj.id = name
+        container._setObject(name, obj)
+
+        self._finished_add = True
+        return container._getOb(name)
+
+    def nextURL(self):
+        return self._nextURL
+
+
+class ContentEditFormBase(_EditFormMixin, PageForm):
 
     actions = form.Actions(
         form.Action(
