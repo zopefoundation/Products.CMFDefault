@@ -16,6 +16,8 @@ $Id$
 """
 
 from zope.component import adapts
+from zope.component import getUtility
+from zope.component.interfaces import IFactory
 from zope.formlib import form
 from zope.interface import implements
 from zope.interface import Interface
@@ -102,7 +104,13 @@ class FileAddView(ContentAddFormBase):
         self.widgets['portal_type'].hide = True
         self.widgets['upload'].displayWidth = 60
 
-    def finishCreate(self, obj, data):
+    def create(self, data):
+        ttool = self._getTool('portal_types')
+        fti = ttool.getTypeInfo(data['portal_type'])
+        factory = getUtility(IFactory, fti.factory)
+        obj = factory('temp_id')
+        obj._setPortalTypeName(data['portal_type'])
+
         adapted = FileSchemaAdapter(obj)
         adapted.language = u''
         adapted.upload = self.request.form['%s.upload' % self.prefix]

@@ -23,8 +23,6 @@ from Products.Five.formlib.formbase import PageAddForm
 from Products.Five.formlib.formbase import PageDisplayForm
 from Products.Five.formlib.formbase import PageForm
 from zope.app.container.interfaces import INameChooser
-from zope.component import getUtility
-from zope.component.interfaces import IFactory
 from zope.datetime import parseDatetimetz
 from zope.formlib import form
 from zope.i18n.interfaces import IUserPreferredLanguages
@@ -146,22 +144,6 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
     def handle_cancel_failure(self, action, data, errors):
         self.status = None
         return self._setRedirect('portal_types', 'object/folderContents')
-
-    def create(self, data):
-        portal_type = self.request.form['%s.portal_type' % self.prefix]
-
-        #check type exists
-        ttool = self._getTool('portal_types')
-        fti = ttool.getTypeInfo(portal_type)
-        if fti is None:
-            raise ValueError(u'No such content type: %s' % portal_type)
-
-        factory = getUtility(IFactory, fti.factory)
-        obj = factory('temp_id')
-        if hasattr(obj, '_setPortalTypeName'):
-            obj._setPortalTypeName(portal_type)
-
-        return self.finishCreate(obj, data)
 
     def add(self, obj):
         container = self.context
