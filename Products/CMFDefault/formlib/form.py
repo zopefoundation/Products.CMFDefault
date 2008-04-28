@@ -118,8 +118,11 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
 
     @property
     def label(self):
-        obj_type = self.widgets['portal_type']._getFormValue()
-        obj_type = translate(obj_type, self.context)
+        obj_type_id = self.widgets['portal_type']._getFormValue()
+        # look it up to get an i18n message object with correct i18n domain
+        ttool = self._getTool('portal_types')
+        fti = ttool.getTypeInfo(obj_type_id)
+        obj_type = translate(fti.Title(), self.context)
         return _(u'Add ${obj_type}', mapping={'obj_type': obj_type})
 
     def handle_add(self, action, data):
@@ -139,11 +142,13 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
                                     make_query(portal_status_message=message))
 
     def handle_cancel_success(self, action, data):
-        return self._setRedirect('portal_types', 'object/folderContents')
+        return self._setRedirect('portal_types',
+                                 ('object/folderContents', 'object/view'))
 
     def handle_cancel_failure(self, action, data, errors):
         self.status = None
-        return self._setRedirect('portal_types', 'object/folderContents')
+        return self._setRedirect('portal_types',
+                                 ('object/folderContents', 'object/view'))
 
     def add(self, obj):
         container = self.context
