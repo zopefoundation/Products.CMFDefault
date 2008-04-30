@@ -36,7 +36,7 @@ from Products.CMFDefault.browser.utils import ViewBase
 
 
 # from zope.publisher.http.HTTPRequest
-def getLocale(request):
+def _getLocale(request):
     envadapter = IUserPreferredLanguages(request, None)
     if envadapter is None:
         return None
@@ -62,7 +62,9 @@ class _EditFormMixin(ViewBase):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.request.locale = getLocale(request)
+        # BBB: for Zope 2.10
+        if getattr(self.request, 'locale', None) is None:
+            self.request.locale = _getLocale(request)
 
     def _setRedirect(self, provider_id, action_path, keys=''):
         provider = self._getTool(provider_id)
@@ -248,7 +250,9 @@ class DisplayFormBase(PageDisplayForm, ViewBase):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.request.locale = getLocale(request)
+        # BBB: for Zope 2.10
+        if getattr(self.request, 'locale', None) is None:
+            self.request.locale = _getLocale(request)
 
     @property
     def label(self):
