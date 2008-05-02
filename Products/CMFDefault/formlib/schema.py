@@ -28,7 +28,9 @@ from zope.component import getUtility
 from zope.datetime import parseDatetimetz
 from zope.interface import implements
 from zope.schema import BytesLine
+from zope.schema import Field
 from zope.schema.interfaces import IBytesLine
+from zope.schema.interfaces import IField
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.utils import checkEmailAddress
@@ -74,7 +76,7 @@ class ProxyFieldProperty(object):
         elif callable(attribute):
             attribute = attribute()
 
-        if self._field._type == str:
+        if self._field._type in (str, None):
             return attribute
         if isinstance(attribute, str) and inst.encoding:
             return attribute.decode(inst.encoding)
@@ -139,3 +141,17 @@ class EmailLine(BytesLine):
         super(EmailLine, self)._validate(value)
         checkEmailAddress(value)
         return True
+
+
+class IFileUpload(IField):
+
+    """A field for file uploads.
+    """
+
+
+class FileUpload(Field):
+
+    """File upload form field.
+    """
+
+    implements(IFileUpload)

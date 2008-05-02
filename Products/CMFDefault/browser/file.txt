@@ -32,7 +32,7 @@ Use the add form with valid input.
     True
     >>> browser.getControl(name='form.title').value = 'FILE TITLE'
     >>> browser.getControl(name='form.description').value = 'FILE DESCRIPTION.'
-    >>> ctrl = browser.getControl(name='form.upload')
+    >>> ctrl = browser.getControl(name='form.file')
     >>> ctrl.add_file(StringIO('FILE DATA'), 'text/plain', 'myFile')
     >>> browser.getControl('[[zope][Add]]').click()
     >>> '[[cmf_default][[[cmf_default][File]] added.]]' in browser.contents
@@ -52,8 +52,8 @@ Use the edit form with valid input.
     >>> browser.open('http://localhost/site/myFile/@@edit.html')
     >>> '[[cmf_default][Edit [[cmf_default][File]]]]' in browser.contents
     True
-    >>> ctrl = browser.getControl(name='form.upload')
-    >>> ctrl.add_file(StringIO('FILE DATA'), 'text/plain', 'test.txt')
+    >>> ctrl = browser.getControl(name='form.file')
+    >>> ctrl.add_file(StringIO('FILE DATA 2'), 'text/plain', 'test.txt')
     >>> browser.getControl('[[cmf_default][Change]]').click()
     >>> '[[cmf_default][[[cmf_default][File]] changed.]]' in browser.contents
     True

@@ -17,6 +17,7 @@ $Id$
 
 from zope.app.form import InputWidget
 from zope.app.form.browser import BrowserWidget
+from zope.app.form.browser import FileWidget
 from zope.app.form.browser import MultiSelectSetWidget
 from zope.app.form.browser import RadioWidget
 from zope.app.form.browser import TextWidget
@@ -26,6 +27,7 @@ from zope.app.form.interfaces import IInputWidget
 from zope.app.form.interfaces import WidgetInputError
 from zope.component import adapts
 from zope.component import getUtility
+from zope.i18nmessageid import MessageFactory
 from zope.interface import implementsOnly
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.schema import Set
@@ -38,7 +40,10 @@ from Products.CMFDefault.exceptions import IllegalHTML
 from Products.CMFDefault.utils import scrubHTML
 from Products.CMFDefault.utils import Message as _
 from schema import IEmailLine
+from schema import IFileUpload
 from vocabulary import SimpleVocabulary
+
+zope_ = MessageFactory("zope")
 
 
 # generic widgets
@@ -103,6 +108,26 @@ class TupleTextAreaWidget(TextAreaWidget):
 
 def TupleInputWidget(field, request):
     return TupleTextAreaWidget(field, field.value_type, request)
+
+
+class FileUploadWidget(FileWidget):
+
+    implementsOnly(IInputWidget)
+    adapts(IFileUpload, IBrowserRequest)
+
+    def _toFieldValue(self, input):
+        if not input:
+            return self.context.missing_value
+        try:
+            filename = input.filename.split('\\')[-1] # for IE
+            input.filename = filename.strip().replace(' ','_')
+        except AttributeError, e:
+            raise ConversionError(zope_('Form input is not a file object'), e)
+        return input
+
+    def hasInput(self):
+        return ((self.required and self.name+".used" in self.request.form) or
+                self.request.form.get(self.name))
 
 
 # special widgets

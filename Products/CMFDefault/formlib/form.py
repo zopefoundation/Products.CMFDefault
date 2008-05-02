@@ -23,6 +23,8 @@ from Products.Five.formlib.formbase import PageAddForm
 from Products.Five.formlib.formbase import PageDisplayForm
 from Products.Five.formlib.formbase import PageForm
 from zope.app.container.interfaces import INameChooser
+from zope.component import getUtility
+from zope.component.interfaces import IFactory
 from zope.datetime import parseDatetimetz
 from zope.formlib import form
 from zope.i18n.interfaces import IUserPreferredLanguages
@@ -152,15 +154,18 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
         return self._setRedirect('portal_types',
                                  ('object/folderContents', 'object/view'))
 
+    def create(self, data):
+        id =  data.pop('id', '')
+        portal_type = data.pop('portal_type')
+        ttool = self._getTool('portal_types')
+        fti = ttool.getTypeInfo(portal_type)
+        factory = getUtility(IFactory, fti.factory)
+        obj = factory(id=id, **data)
+        obj._setPortalTypeName(portal_type)
+        return obj
+
     def add(self, obj):
         container = self.context
-        upload = self.request.form.get('%s.upload' % self.prefix)
-        if upload:
-            filename = upload.filename.split('\\')[-1] # for IE
-            filename = filename.strip().replace(' ','_')
-        else:
-            filename = u''
-        name = INameChooser(container).chooseName(filename, obj)
 
         #check container constraints
         ttool = self._getTool('portal_types')
@@ -171,6 +176,7 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
             self.status = u'Disallowed subobject type: %s' % portal_type
             return None
 
+        name = INameChooser(container).chooseName(obj.getId(), obj)
         obj.id = name
         container._setObject(name, obj)
 

@@ -16,18 +16,16 @@ $Id$
 """
 
 from zope.component import adapts
-from zope.component import getUtility
-from zope.component.interfaces import IFactory
 from zope.formlib import form
 from zope.interface import implements
 from zope.interface import Interface
 from zope.schema import ASCIILine
-from zope.schema import Bytes
 from zope.schema import Text
 from zope.schema import TextLine
 
 from Products.CMFDefault.formlib.form import ContentAddFormBase
 from Products.CMFDefault.formlib.form import ContentEditFormBase
+from Products.CMFDefault.formlib.schema import FileUpload
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.interfaces import IMutableFile
@@ -59,7 +57,7 @@ class IFileSchema(Interface):
         title=_(u'Content type'),
         readonly=True)
 
-    upload = Bytes(
+    file = FileUpload(
         title=_(u'Upload'),
         required=False)
 
@@ -72,9 +70,10 @@ class FileSchemaAdapter(SchemaAdapterBase):
     adapts(IMutableFile)
     implements(IFileSchema)
 
-    _upload = ProxyFieldProperty(IFileSchema['upload'], 'data')
+    def _getFile(self):
+        return ''
 
-    def _setUpload(self, value):
+    def _setFile(self, value):
         self.context.manage_upload(value)
 
     title = ProxyFieldProperty(IFileSchema['title'], 'Title', 'setTitle')
@@ -83,7 +82,7 @@ class FileSchemaAdapter(SchemaAdapterBase):
     description = ProxyFieldProperty(IFileSchema['description'],
                                      'Description', 'setDescription')
     format = ProxyFieldProperty(IFileSchema['format'], 'Format')
-    upload = property(_upload.__get__, _setUpload)
+    file = property(_getFile, _setFile)
 
 
 class FileAddView(ContentAddFormBase):
@@ -93,7 +92,7 @@ class FileAddView(ContentAddFormBase):
 
     form_fields = (
         form.FormFields(IFileSchema).select('title', 'description') +
-        form.FormFields(Bytes(__name__='upload', title=_(u'Upload')),
+        form.FormFields(FileUpload(__name__='file', title=_(u'Upload')),
                         TextLine(__name__='portal_type', default=u'File'))
         )
 
@@ -102,22 +101,17 @@ class FileAddView(ContentAddFormBase):
               self).setUpWidgets(ignore_request=ignore_request)
         self.widgets['description'].height = 3
         self.widgets['portal_type'].hide = True
-        self.widgets['upload'].displayWidth = 60
+        self.widgets['file'].displayWidth = 60
 
     def create(self, data):
-        ttool = self._getTool('portal_types')
-        fti = ttool.getTypeInfo(data['portal_type'])
-        factory = getUtility(IFactory, fti.factory)
-        obj = factory('temp_id')
-        obj._setPortalTypeName(data['portal_type'])
-
+        obj = super(FileAddView,
+                    self).create(dict(id=data['file'].filename,
+                                      portal_type=data['portal_type']))
         adapted = FileSchemaAdapter(obj)
+        adapted.title = data['title']
         adapted.language = u''
-        adapted.upload = self.request.form['%s.upload' % self.prefix]
-        if data['title']:
-            adapted.title = data['title']
-        if data['description']:
-            adapted.description = data['description']
+        adapted.description = data['description']
+        adapted.file = data['file']
         return obj
 
 
@@ -132,11 +126,4 @@ class FileEditView(ContentEditFormBase):
         super(FileEditView,
               self).setUpWidgets(ignore_request=ignore_request)
         self.widgets['description'].height = 3
-        self.widgets['upload'].displayWidth = 60
-
-    def _handle_success(self, action, data):
-        if data.get('upload'):
-            data['upload'] = self.request.form['%s.upload' % self.prefix]
-        else:
-            del data['upload']
-        return super(FileEditView, self)._handle_success(action, data)
+        self.widgets['file'].displayWidth = 60

@@ -6,4 +6,9 @@
       permission="zope.Public"
       />
 
+  <adapter
+      factory=".widgets.FileUploadWidget"
+      permission="zope.Public"
+      />
+
 </configure>
