@@ -107,7 +107,7 @@ class FileAddView(ContentAddFormBase):
         obj = super(FileAddView,
                     self).create(dict(id=data['file'].filename,
                                       portal_type=data['portal_type']))
-        adapted = FileSchemaAdapter(obj)
+        adapted = IFileSchema(obj)
         adapted.title = data['title']
         adapted.language = u''
         adapted.description = data['description']

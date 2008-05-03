@@ -129,21 +129,9 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
         obj_type = translate(fti.Title(), self.context)
         return _(u'Add ${obj_type}', mapping={'obj_type': obj_type})
 
+    #same as in form.AddFormBase but without action decorator
     def handle_add(self, action, data):
-        obj = self.createAndAdd(data)
-        if obj is None:
-            if self.status:
-                message = translate(self.status, self.context)
-                self.request.other['portal_status_message'] = message
-            return
-        obj_type = translate(obj.Type(), self.context)
-        message = translate(_(u'${obj_type} added.',
-                              mapping={'obj_type': obj_type}), self.context)
-        if isinstance(message, unicode):
-            message = message.encode(self._getBrowserCharset())
-        fti = obj.getTypeInfo()
-        self._nextURL = '%s/%s?%s' % (obj.absolute_url(), fti.immediate_view,
-                                    make_query(portal_status_message=message))
+        self.createAndAdd(data)
 
     def handle_cancel_success(self, action, data):
         return self._setRedirect('portal_types',
@@ -173,18 +161,28 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
         portal_type = obj.getPortalTypeName()
         if container_ti is not None and \
                 not container_ti.allowType(portal_type):
-            self.status = u'Disallowed subobject type: %s' % portal_type
-            return None
+            raise ValueError('Disallowed subobject type: %s' % portal_type)
 
         name = INameChooser(container).chooseName(obj.getId(), obj)
         obj.id = name
         container._setObject(name, obj)
+        obj = container._getOb(name)
 
+        obj_type = translate(obj.Type(), self.context)
+        self.status = _(u'${obj_type} added.', mapping={'obj_type': obj_type})
         self._finished_add = True
-        return container._getOb(name)
+        self._added_obj = obj
+        return obj
 
     def nextURL(self):
-        return self._nextURL
+        obj = self._added_obj
+        fti = obj.getTypeInfo()
+
+        message = translate(self.status, self.context)
+        if isinstance(message, unicode):
+            message = message.encode(self._getBrowserCharset())
+        return '%s/%s?%s' % (obj.absolute_url(), fti.immediate_view,
+                             make_query(portal_status_message=message))
 
 
 class ContentEditFormBase(_EditFormMixin, PageForm):
