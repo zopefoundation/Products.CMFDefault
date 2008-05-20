@@ -490,7 +490,7 @@ def makeEmail(mtext, context, headers={}):
     ptool = getUtility(IPropertiesTool)
     email_charset = ptool.getProperty('email_charset', None) or 'utf-8'
     try:
-        msg = MIMEText(mtext.encode(), 'plain')
+        msg = MIMEText(mtext.encode('ascii'), 'plain')
     except UnicodeEncodeError:
         msg = MIMEText(mtext.encode(email_charset), 'plain', email_charset)
     for k, val in headers.items():
