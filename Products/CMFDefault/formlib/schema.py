@@ -76,7 +76,9 @@ class ProxyFieldProperty(object):
         elif callable(attribute):
             attribute = attribute()
 
-        if self._field._type in (str, None):
+        if self._field._type == str:
+            return attribute
+        if isinstance(self._field, FileUpload):
             return attribute
         if isinstance(attribute, str) and inst.encoding:
             return attribute.decode(inst.encoding)
