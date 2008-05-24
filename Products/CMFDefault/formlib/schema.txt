@@ -20,12 +20,15 @@ Utilities
 
       >>> from zope.interface import Interface
       >>> from zope import schema
+      >>> from zope.schema.vocabulary import SimpleVocabulary
       >>> from Products.CMFDefault.formlib.schema import FileUpload
+      >>> foo_vocabulary = SimpleVocabulary.fromItems((('a', u'f\xf6\xf6'),
+      ...                                              ('b', u'bar')))
       >>> class IFooContentView(Interface):
       ...     foo_text = schema.Text()
       ...     foo_bytes = schema.Bytes()
       ...     foo_upload = FileUpload()
-      ...     foo_choice = schema.Choice(values=(u'f\xf6\xf6', u'bar'))
+      ...     foo_choice = schema.Choice(vocabulary=foo_vocabulary)
       ...     foo_datetime = schema.Datetime()
       ...     foo_set = schema.Set()
       ...     foo_list = schema.List()
