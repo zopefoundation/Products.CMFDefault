@@ -2,6 +2,8 @@ Products.CMFDefault Changelog
 
   Products.CMFDefault 2.2.0 (unreleased)
 
+    - Image, File:  make ZMI "edit" view work.
+
     - views: Added ContentEditFormBase and FileAddView.
       This shows how form-driven content creation works. The content is created
       without using the constructor methods provided by the types tool.
