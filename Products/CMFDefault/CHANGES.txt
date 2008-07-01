@@ -1,6 +1,9 @@
 Products.CMFDefault Changelog
 
   Products.CMFDefault 2.2.0 (unreleased)
+  
+    - Document: Fixed Zope 2.12 compatibility.
+      zope.structuredtext is now used instead of StructuredText.
 
     - Image, File:  make ZMI "edit" view work.
 

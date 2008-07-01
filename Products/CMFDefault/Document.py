@@ -28,11 +28,11 @@ try:
     REST_AVAILABLE = True
 except ImportError:
     REST_AVAILABLE = False
-from StructuredText.StructuredText import HTML
    
 from zope.component import queryUtility
 from zope.component.factory import Factory
 from zope.interface import implements
+from zope.structuredtext import stx2html
 
 from Products.CMFCore.interfaces import ILinebreakNormalizer
 from Products.CMFCore.PortalContent import PortalContent
@@ -132,7 +132,7 @@ class Document(PortalContent, DefaultDublinCoreImpl):
         elif text_format == 'restructured-text':
             self.cooked_text = ReST(text, initial_header_level=self._rest_level)
         else:
-            self.cooked_text = HTML(text, level=self._stx_level, header=0)
+            self.cooked_text = stx2html(text, level=self._stx_level, header=0)
 
     #
     #   IMutableDocument method
@@ -320,7 +320,7 @@ class Document(PortalContent, DefaultDublinCoreImpl):
                 self.cooked_text = cooked
             return cooked
         else:
-            cooked = HTML(self.text, level=stx_level, header=0)
+            cooked = stx2html(self.text, level=stx_level, header=0)
             if setlevel:
                 self._stx_level = stx_level
                 self.cooked_text = cooked
