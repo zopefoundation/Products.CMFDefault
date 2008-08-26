@@ -48,7 +48,7 @@ setup(name='Products.%s' % NAME,
           'Products.CMFCore',
           'Products.CMFTopic',
           'Products.DCWorkflow',
-          'Products.GenericSetup',
+          'Products.GenericSetup==1.3.3',
           ],
       entry_points="""
       [zope2.initialize]
