@@ -3,6 +3,10 @@ Products.CMFDefault Changelog
 
 2.2.0 (unreleased)
 ------------------
+
+- SyndicationTool: Removed obsolete documentation link from the
+  Overview ZMI tab.
+  (https://bugs.launchpad.net/zope-cmf/+bug/185090)
   
 - Document: Fixed Zope 2.12 compatibility.
   zope.structuredtext is now used instead of StructuredText.
