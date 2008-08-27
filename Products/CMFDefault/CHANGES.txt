@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.1.2 (unreleased)
 ------------------
 
+- SyndicationTool: Removed obsolete documentation link from the
+  Overview ZMI tab.
+  (https://bugs.launchpad.net/zope-cmf/+bug/185090)
+
 
 2.1.2-beta (2008-08-26)
 -----------------------
