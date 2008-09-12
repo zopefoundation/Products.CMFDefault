@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- ZMI: Removed the ability to create content from the ZMI. It was never
+  fully supported and carried the risk of creating half-formed content.
+
 - SyndicationTool: Removed obsolete documentation link from the
   Overview ZMI tab.
   (https://bugs.launchpad.net/zope-cmf/+bug/185090)
