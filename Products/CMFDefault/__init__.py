@@ -16,6 +16,7 @@ $Id$
 """
 
 from Products.CMFCore.utils import ToolInit
+from Products.CMFCore.utils import ContentInit
 from Products.CMFCore.utils import registerIcon
 
 import DefaultWorkflow
@@ -73,6 +74,14 @@ def initialize(context):
             , tools=tools
             , icon='tool.gif'
             ).initialize( context )
+
+    # BBB: register oldstyle constructors
+    ContentInit( 'CMF Default Content'
+               , content_types=()
+               , permission=AddPortalContent
+               , extra_constructors=contentConstructors
+               , visibility=None
+               ).initialize( context )
 
     context.registerClass( Portal.CMFSite
                          , constructors=(factory.addConfiguredSiteForm,
