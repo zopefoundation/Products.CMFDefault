@@ -1,7 +1,7 @@
 Products.CMFDefault Changelog
 =============================
 
-2.1.2 (unreleased)
+2.1.2 (2008-09-13)
 ------------------
 
 - SyndicationTool: Removed obsolete documentation link from the
