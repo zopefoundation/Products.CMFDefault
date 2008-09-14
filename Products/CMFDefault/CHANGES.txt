@@ -4,6 +4,11 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Discussions: Replaced the old (and no longer working) way to force 
+  Discussion Items into published state by default with a real 
+  single-state workflow so they are put into published state correctly.
+  (https://bugs.launchpad.net/zope-cmf/+bug/161720)
+
 - ZMI: Prevent users from creating content through the ZMI by hiding the
   entry for "CMFDefault Content".
 

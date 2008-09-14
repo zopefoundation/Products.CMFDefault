@@ -48,8 +48,6 @@ class DiscussionItem(Document):
     portal_type         = 'Discussion Item'
     allow_discussion    = 1
     in_reply_to         = None
-    # XXX this is wrong, it precludes the use of a normal workflow.
-    review_state        ='published'
 
     security = ClassSecurityInfo()
 

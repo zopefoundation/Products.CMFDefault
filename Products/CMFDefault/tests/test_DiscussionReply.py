@@ -19,6 +19,7 @@ import unittest
 from Testing import ZopeTestCase
 
 from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import getSecurityManager
 from zope.app.component.hooks import setSite
 
 from Products.CMFDefault.testing import FunctionalLayer
@@ -50,10 +51,20 @@ class DiscussionReplyTest(ZopeTestCase.FunctionalTestCase):
 
     def testDiscussionReply(self):
         self.discussion.getDiscussionFor(self.portal.doc)
-        self.portal.doc.talkback.createReply('Title', 'Text')
-        reply = self.portal.doc.talkback.objectValues()[0]
+        reply_id = self.portal.doc.talkback.createReply('Title', 'Text')
+        talkback = self.discussion.getDiscussionFor(self.portal.doc)
+        reply = talkback.getReply(reply_id)
         self.assertEqual(reply.Title(), 'Title')
         self.assertEqual(reply.EditableBody(), 'Text')
+
+        # Make sure the user who created the reply can actually see it
+        # https://bugs.launchpad.net/zope-cmf/+bug/161720
+        state = self.portal.portal_workflow.getInfoFor(reply, 'review_state')
+        self.assertEqual(state, 'published')
+        member = self.portal.portal_membership.getAuthenticatedMember()
+        self.failUnless(member.has_permission('View', reply))
+        self.failUnless(member.has_permission('Access contents information',
+                         reply))
 
 
 class DiscussionReplyTestMember(DiscussionReplyTest):
