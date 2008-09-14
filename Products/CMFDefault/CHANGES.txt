@@ -4,6 +4,11 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- File and Image: Move the call to the underlying OFS rendering to the
+  end of their own index_html methods to ensure the caching policy
+  manager can set headers in all situations.
+  (https://bugs.launchpad.net/zope-cmf/+bug/161723)
+
 - Discussions: Replaced the old (and no longer working) way to force 
   Discussion Items into published state by default with a real 
   single-state workflow so they are put into published state correctly.

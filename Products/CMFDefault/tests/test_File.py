@@ -156,9 +156,14 @@ class CachingTests(RequestTest):
                         , rfc1123_date( mod_time ) )
 
     def test_caching( self ):
+        large_file_data = '0' * 100000
+        def fake_response_write(data):
+            return
+        response_write = self.RESPONSE.write
+        self.RESPONSE.write = fake_response_write
         self._setupCachingPolicyManager(DummyCachingManager())
         original_len = len(self.RESPONSE.headers)
-        file = self._makeOne('test_file', 'test_file.swf')
+        file = self._makeOne('test_file', 'test_file.swf', file=large_file_data)
         file = file.__of__(self.root)
         file.index_html(self.REQUEST, self.RESPONSE)
         headers = self.RESPONSE.headers
@@ -166,6 +171,7 @@ class CachingTests(RequestTest):
         self.failUnless('foo' in headers.keys())
         self.failUnless('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_file')
+        self.RESPONSE.write = response_write
 
 
 def test_suite():
