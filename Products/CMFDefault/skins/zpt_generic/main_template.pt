@@ -21,6 +21,7 @@
                   folder_actions actions/folder;
                   global_actions actions/global;
                   wf_state globals/wf_state;
+                  show_actionicons globals/show_actionicons;
                  "
 >
 
@@ -116,7 +117,13 @@
    <td class="ActionTitle" tal:content="uname">Guest</td>
    <td class="ActionLink" align="right">
     <tal:span tal:repeat="action user_actions"
-    ><a href="" tal:attributes="href action/url"
+    ><img src="" alt="" title=""
+            tal:define="icon_url action/icon|nothing"
+            tal:condition="python: show_actionicons and icon_url"
+            tal:attributes="src icon_url;
+                            alt action/title;
+                            title action/title"/>   
+    <a href="" tal:attributes="href action/url"
                 tal:content="action/title" i18n:translate="">Login</a
     ><tal:span tal:condition="not: repeat/action/end"> |</tal:span></tal:span>
     <tal:span tal:condition="nothing"
@@ -173,6 +180,12 @@
     <td class="ActionLink">
 
      <span tal:repeat="action object_actions">
+       <img src="" alt="" title=""
+            tal:define="icon_url action/icon|nothing"
+            tal:condition="python: show_actionicons and icon_url"
+            tal:attributes="src icon_url;
+                            alt action/title;
+                            title action/title"/>
       <a href=""
          tal:attributes="href action/url"
          tal:content="action/title"
@@ -205,6 +218,12 @@
       </span>
 
       <span tal:repeat="action workflow_actions">
+       <img src="" alt="" title=""
+            tal:define="icon_url action/icon|nothing"
+            tal:condition="python: show_actionicons and icon_url"
+            tal:attributes="src icon_url;
+                            alt action/title;
+                            title action/title"/>
        <a href="content_submit_form"
           tal:attributes="href action/url"
           tal:content="action/title"
@@ -219,6 +238,12 @@
    >
     <td class="ActionLink">
       <span tal:repeat="action folder_actions">
+       <img src="" alt="" title=""
+            tal:define="icon_url action/icon|nothing"
+            tal:condition="python: show_actionicons and icon_url"
+            tal:attributes="src icon_url;
+                            alt action/title;
+                            title action/title"/>
        <a href="../folder_contents"
           tal:attributes="href action/url"
           tal:content="action/title"
@@ -233,6 +258,12 @@
    >
     <td class="ActionLink">
      <span tal:repeat="action global_actions">
+       <img src="" alt="" title=""
+            tal:define="icon_url action/icon|nothing"
+            tal:condition="python: show_actionicons and icon_url"
+            tal:attributes="src icon_url;
+                            alt action/title;
+                            title action/title"/>
       <a href="undo_form"
          tal:attributes="href action/url"
          tal:content="action/title"

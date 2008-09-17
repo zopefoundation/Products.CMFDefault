@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- main_template: Display action icons, thereby replacing the separate
+  CMFActionIcons product.
+
 - Portal: Add a flag to toggle the display of action icons.
 
 - Workflow GenericSetup definition: Add icon URL expressions to the 

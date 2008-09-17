@@ -40,6 +40,7 @@ globals = {'utool': utool,
            'membersfolder': mtool.getMembersFolder(),
            'isAnon': mtool.isAnonymousUser(),
            'wf_state': wtool.getInfoFor(context, 'review_state', ''),
+           'show_actionicons': ptool.getProperty('enable_actionicons'),
            'status_message': message}
 
 return decode(globals, context)
