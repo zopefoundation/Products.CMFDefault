@@ -17,21 +17,23 @@
  <alias from="index.html" to="index_html"/>
  <alias from="view" to="index_html"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}" visible="True">
+    url_expr="string:${object_url}" 
+    icon_expr="string:${portal_url}/preview_icon.png" visible="True">
   <permission value="View"/>
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/folder_edit_form" visible="True">
+    url_expr="string:${object_url}/folder_edit_form" 
+    icon_expr="string:${portal_url}/edit_icon.png" visible="True">
   <permission value="Manage properties"/>
  </action>
  <action title="Local Roles" action_id="localroles" category="object"
     condition_expr="" url_expr="string:${object_url}/folder_localrole_form"
-    visible="True">
+    icon_expr="string:${portal_url}/localroles_icon.png" visible="True">
   <permission value="Change local roles"/>
  </action>
  <action title="Folder contents" action_id="folderContents" category="object"
     condition_expr="" url_expr="string:${object_url}/folder_contents"
-    visible="True">
+    icon_expr="string:${portal_url}/folder_icon.png" visible="True">
   <permission value="List folder contents"/>
  </action>
  <action title="New..." action_id="new" category="object" condition_expr=""

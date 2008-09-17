@@ -16,16 +16,18 @@
  <alias from="(Default)" to="favorite_view"/>
  <alias from="view" to="favorite_view"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/favorite_view" visible="True">
+    url_expr="string:${object_url}/favorite_view" 
+    icon_expr="string:${portal_url}/preview_icon.png" visible="True">
   <permission value="View"/>
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/link_edit_form" visible="True">
+    url_expr="string:${object_url}/link_edit_form" 
+    icon_expr="string:${portal_url}/edit_icon.png" visible="True">
   <permission value="Modify portal content"/>
  </action>
  <action title="Metadata" action_id="metadata" category="object"
     condition_expr="" url_expr="string:${object_url}/metadata_edit_form"
-    visible="True">
+    icon_expr="string:${portal_url}/metadata_icon.png" visible="True">
   <permission value="Modify portal content"/>
  </action>
 </object>
