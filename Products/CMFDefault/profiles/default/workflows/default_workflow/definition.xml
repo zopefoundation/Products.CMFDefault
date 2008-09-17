@@ -74,6 +74,7 @@
              new_state="published" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_publish_form"
+          icon="%(portal_url)s/approve_icon.png"
           category="workflow">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
@@ -85,6 +86,7 @@
              new_state="private" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_reject_form"
+          icon="%(portal_url)s/reject_icon.png"
           category="workflow">Reject</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
@@ -96,6 +98,7 @@
              new_state="private" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_retract_form"
+          icon="%(portal_url)s/retract_icon.png"
           category="workflow">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
@@ -107,6 +110,7 @@
              new_state="pending" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_submit_form"
+          icon="%(portal_url)s/submit_icon.png"
           category="workflow">Submit</action>
   <guard>
    <guard-permission>Request review</guard-permission>
@@ -116,6 +120,7 @@
  <worklist worklist_id="reviewer_queue" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending"
+          icon="%(portal_url)s/worklist_icon.png"
           category="global">Pending (%(count)d)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>

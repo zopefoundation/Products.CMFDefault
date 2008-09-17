@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Workflow GenericSetup definition: Add icon URL expressions to the 
+  worklist and transition action definitions.
+
 - Content type and action GenericSetup profiles: Add an icon URL expression 
   to the content type and actions definitions.
 
