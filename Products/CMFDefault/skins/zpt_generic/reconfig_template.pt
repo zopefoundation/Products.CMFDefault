@@ -105,6 +105,19 @@
   </td>
  </tr>
  <tr>
+  <th i18n:translate="">Action icons</th>
+  <td>
+   <input type="checkbox" name="enable_actionicons:boolean" value="True"
+      tal:attributes="checked form/enable_actionicons" />
+   <tal:span i18n:translate="">Show action icons</tal:span>
+    <dl class="FieldHelp">
+     <dd i18n:translate="">Actions available to the user are shown as 
+       textual links. With this option enabled, they are also shown as
+       icons if the action definition specifies one.</dd>
+    </dl>
+  </td>
+ </tr>
+ <tr>
   <td>&nbsp;</td>
   <td>
    <metal:macro metal:use-macro="context/form_widgets/macros/buttons" />

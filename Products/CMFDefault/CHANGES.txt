@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Portal: Add a flag to toggle the display of action icons.
+
 - Workflow GenericSetup definition: Add icon URL expressions to the 
   worklist and transition action definitions.
 
