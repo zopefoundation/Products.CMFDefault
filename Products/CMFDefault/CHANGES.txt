@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Content type and action GenericSetup profiles: Add an icon URL expression 
+  to the content type and actions definitions.
+
 - File and Image: Move the call to the underlying OFS rendering to the
   end of their own index_html methods to ensure the caching policy
   manager can set headers in all situations.
