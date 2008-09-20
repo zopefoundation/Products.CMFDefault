@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- formlib widgets: Added special input widget for object IDs.
+
 - main_template: Display action icons, thereby replacing the separate
   CMFActionIcons product.
 

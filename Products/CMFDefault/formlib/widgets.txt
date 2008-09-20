@@ -63,6 +63,79 @@ Widgets
       None
 
 
+  Testing IDInputWidget:
+
+    Set one up::
+
+      >>> class DummyFolder:
+      ...     def checkIdAvailable(self, value):
+      ...         if value == 'INVALID': return False
+      ...         return True
+      >>> class DummyView: pass
+      >>> view = DummyView()
+      >>> view.context = DummyFolder()
+
+      >>> request = DummyRequest()
+      >>> request.form['PREFIX.NAME'] = u'FOO'
+
+      >>> from Products.CMFDefault.formlib.widgets import IDInputWidget
+      >>> from zope.schema import ASCIILine
+      >>> ascii_field = ASCIILine(__name__='NAME',
+      ...                         title=u'FIELD TITLE').bind(view)
+
+      >>> widget = IDInputWidget(ascii_field, request)
+
+    IWidget::
+
+      >>> widget.name
+      'field.NAME'
+      >>> widget.label
+      u'FIELD TITLE'
+      >>> widget.hint
+      u''
+      >>> widget.visible
+      True
+      >>> widget.setRenderedValue(('BAZ',))
+      >>> widget.setRenderedValue(widget._data_marker)
+      >>> widget.setPrefix('PREFIX')
+      >>> widget.name
+      'PREFIX.NAME'
+
+    IInputWidget::
+
+      >>> widget.required
+      True
+      >>> widget.getInputValue()
+      'FOO'
+      >>> #widget.applyChanges(content)
+      >>> widget.hasInput()
+      True
+      >>> widget.hasValidInput()
+      True
+
+    IBrowserWidget::
+
+      >>> print widget()
+      <input class="textType" id="PREFIX.NAME" name="PREFIX.NAME" size="20"
+      type="text" value="FOO" />
+
+    Missing input::
+
+      >>> request.form['PREFIX.NAME'] = u''
+      >>> print widget.getInputValue()
+      Traceback (most recent call last):
+      ...
+      WidgetInputError: ('NAME', u'FIELD TITLE', )
+
+    Invalid input::
+
+      >>> request.form['PREFIX.NAME'] = u'INVALID'
+      >>> print widget.getInputValue()
+      Traceback (most recent call last):
+      ...
+      WidgetInputError: ('NAME', u'FIELD TITLE', u'Please choose another ID.')
+
+
   Testing SubjectInputWidget:
 
     Set one up::
@@ -71,7 +144,6 @@ Widgets
       >>> from Products.CMFCore.interfaces import IMetadataTool
       >>> class DummyTool:
       ...     def listAllowedSubjects(self, context): return ('SPAM', 'EGGS')
-      >>> class DummyView: pass
       >>> view = DummyView()
       >>> view.portal_metadata = DummyTool()
       >>> getSiteManager().registerUtility(view.portal_metadata, IMetadataTool)

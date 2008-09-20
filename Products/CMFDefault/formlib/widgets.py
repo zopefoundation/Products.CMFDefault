@@ -16,6 +16,7 @@ $Id$
 """
 
 from zope.app.form import InputWidget
+from zope.app.form.browser import ASCIIWidget
 from zope.app.form.browser import BrowserWidget
 from zope.app.form.browser import FileWidget
 from zope.app.form.browser import MultiSelectSetWidget
@@ -131,6 +132,21 @@ class FileUploadWidget(FileWidget):
 
 
 # special widgets
+
+class IDInputWidget(ASCIIWidget):
+
+    def getInputValue(self):
+        value = super(IDInputWidget, self).getInputValue()
+        if value:
+            context = getattr(self.context.context, 'context',
+                              self.context.context)
+            if not context.checkIdAvailable(value):
+                err_msg = _(u'Please choose another ID.')
+                self._error = WidgetInputError(self.context.__name__,
+                                               self.label, err_msg)
+                raise self._error
+        return value
+
 
 class SubjectInputWidget(InputWidget, BrowserWidget):
 
