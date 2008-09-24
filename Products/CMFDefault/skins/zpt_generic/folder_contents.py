@@ -1,4 +1,4 @@
-##parameters=b_start=0, key='', reverse=0, ids=(), delta=1, items_copy='', items_cut='', items_delete='', items_new='', items_paste='', items_rename='', items_up='', items_down='', items_top='', items_bottom='', items_sort=''
+##parameters=b_start=0, key='', reverse=0, ids=(), delta=1, items_copy='', items_cut='', items_delete='', items_paste='', items_rename='', items_up='', items_down='', items_top='', items_bottom='', items_sort=''
 ##
 from ZTUtils import Batch
 from ZTUtils import make_query
@@ -34,9 +34,6 @@ elif items_delete and \
         context.validateItemIds(**form) and \
         context.folder_delete_control(**form) and \
         context.setRedirect(context, default_target, **default_kw):
-    return
-elif items_new and \
-        context.setRedirect(context, 'object/new'):
     return
 elif items_paste and \
         context.validateClipboardData(**form) and \
@@ -168,11 +165,8 @@ for name, value in html_marshal(**default_kw):
     hidden_vars.append( {'name': name, 'value': value} )
 buttons = []
 if items_manage_allowed:
-    if items_add_allowed and context.allowedContentTypes():
-        buttons.append( {'name': 'items_new', 'value': _(u'New...')} )
-        if items:
-            buttons.append( {'name': 'items_rename',
-                             'value': _(u'Rename...')} )
+    if items and items_add_allowed and context.allowedContentTypes():
+        buttons.append( {'name': 'items_rename', 'value': _(u'Rename...')} )
     if items:
         buttons.append( {'name': 'items_cut', 'value': _(u'Cut')} )
         buttons.append( {'name': 'items_copy', 'value': _(u'Copy')} )

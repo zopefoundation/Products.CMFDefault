@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- skins: Display add actions in the main_template.
+  Using folder_factories is now deprecated.
+
 - views: Added FallbackAddView.
   This add form works with any portal type. It just asks for the ID.
 

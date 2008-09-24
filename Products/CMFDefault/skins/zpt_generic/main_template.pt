@@ -19,6 +19,7 @@
                   object_actions actions/object;
                   workflow_actions actions/workflow;
                   folder_actions actions/folder;
+                  add_actions python: actions.get('folder/add', {});
                   global_actions actions/global;
                   wf_state globals/wf_state;
                   show_actionicons globals/show_actionicons;
@@ -248,6 +249,31 @@
           tal:attributes="href action/url"
           tal:content="action/title"
           i18n:translate="">Folder contents</a><br />
+      </span>
+    </td>
+   </tr>
+
+   <!-- add actions -->
+   <tr class="ContextActionsRow"
+       tal:condition="add_actions"
+   >
+    <td class="ActionLink">
+      <span class="ObjectStatus">
+       <span tal:omit-tag=""
+             i18n:translate="">Add...</span><br />
+      </span>
+
+      <span tal:repeat="action add_actions">
+       <img src="" alt="" title=""
+            tal:define="icon_url action/icon|nothing"
+            tal:condition="python: show_actionicons and icon_url"
+            tal:attributes="src icon_url;
+                            alt action/title;
+                            title action/title"/>
+       <a href="+Document"
+          tal:attributes="href action/url"
+          tal:content="action/title"
+          i18n:translate="">Document</a><br />
       </span>
     </td>
    </tr>

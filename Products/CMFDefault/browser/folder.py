@@ -299,12 +299,7 @@ class FolderContentsView(BatchViewBase, FormViewBase):
     """Contents view for IFolderish.
     """
 
-    _BUTTONS = ({'id': 'items_new',
-                 'title': _(u'New...'),
-                 'permissions': (ViewManagementScreens, AddPortalContent),
-                 'conditions': ('checkAllowedContentTypes',),
-                 'redirect': ('portal_types', 'object/new')},
-                {'id': 'items_rename',
+    _BUTTONS = ({'id': 'items_rename',
                  'title': _(u'Rename...'),
                  'permissions': (ViewManagementScreens, AddPortalContent),
                  'conditions': ('checkItems', 'checkAllowedContentTypes'),
