@@ -15,6 +15,8 @@
 $Id$
 """
 
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
 from zope.component import adapts
 from zope.formlib import form
 from zope.interface import implements
@@ -29,6 +31,7 @@ from Products.CMFDefault.formlib.schema import FileUpload
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.interfaces import IMutableFile
+from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 
 
@@ -90,29 +93,31 @@ class FileAddView(ContentAddFormBase):
     """Add view for IMutableFile.
     """
 
+    security = ClassSecurityInfo()
+    security.declareObjectProtected(AddPortalContent)
+
     form_fields = (
         form.FormFields(IFileSchema).select('title', 'description') +
-        form.FormFields(FileUpload(__name__='file', title=_(u'Upload')),
-                        TextLine(__name__='portal_type', default=u'File'))
+        form.FormFields(FileUpload(__name__='file', title=_(u'Upload')))
         )
 
     def setUpWidgets(self, ignore_request=False):
         super(FileAddView,
               self).setUpWidgets(ignore_request=ignore_request)
         self.widgets['description'].height = 3
-        self.widgets['portal_type'].hide = True
         self.widgets['file'].displayWidth = 60
 
     def create(self, data):
         obj = super(FileAddView,
-                    self).create(dict(id=data['file'].filename,
-                                      portal_type=data['portal_type']))
+                    self).create(dict(id=data['file'].filename))
         adapted = IFileSchema(obj)
         adapted.title = data['title']
         adapted.language = u''
         adapted.description = data['description']
         adapted.file = data['file']
         return obj
+
+InitializeClass(FileAddView)
 
 
 class FileEditView(ContentEditFormBase):

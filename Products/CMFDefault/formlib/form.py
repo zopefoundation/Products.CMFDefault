@@ -23,6 +23,7 @@ from Products.Five.formlib.formbase import PageAddForm
 from Products.Five.formlib.formbase import PageDisplayForm
 from Products.Five.formlib.formbase import PageForm
 from zope.app.container.interfaces import INameChooser
+from zope.component import adapts
 from zope.component import getUtility
 from zope.component.interfaces import IFactory
 from zope.datetime import parseDatetimetz
@@ -30,11 +31,17 @@ from zope.formlib import form
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
+from zope.interface import implementsOnly
+from zope.publisher.interfaces.browser import IBrowserView
 from ZTUtils import make_query
 
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.interfaces import ITypeInformation
+from Products.CMFDefault.browser.utils import ViewBase
+from Products.CMFDefault.exceptions import AccessControl_Unauthorized
+from Products.CMFDefault.interfaces import ICMFDefaultSkin
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import translate
-from Products.CMFDefault.browser.utils import ViewBase
 
 
 # from zope.publisher.http.HTTPRequest
@@ -105,6 +112,9 @@ class EditFormBase(_EditFormMixin, PageForm):
 
 class ContentAddFormBase(_EditFormMixin, PageAddForm):
 
+    adapts(IFolderish, ICMFDefaultSkin, ITypeInformation)
+    implementsOnly(IBrowserView)
+
     actions = form.Actions(
         form.Action(
             name='add',
@@ -118,16 +128,22 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
             success='handle_cancel_success',
             failure='handle_cancel_failure'))
 
-    description = u''
+    def __init__(self, context, request, ti):
+        self.context = context
+        self.request = request
+        self.ti = ti
+        # BBB: for Zope 2.10
+        if getattr(self.request, 'locale', None) is None:
+            self.request.locale = _getLocale(request)
 
     @property
     def label(self):
-        obj_type_id = self.widgets['portal_type']._getFormValue()
-        # look it up to get an i18n message object with correct i18n domain
-        ttool = self._getTool('portal_types')
-        fti = ttool.getTypeInfo(obj_type_id)
-        obj_type = translate(fti.Title(), self.context)
+        obj_type = translate(self.ti.Title(), self.context)
         return _(u'Add ${obj_type}', mapping={'obj_type': obj_type})
+
+    @property
+    def description(self):
+        return self.ti.Description()
 
     #same as in form.AddFormBase but without action decorator
     def handle_add(self, action, data):
@@ -143,22 +159,23 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
                                  ('object/folderContents', 'object/view'))
 
     def create(self, data):
-        id =  data.pop('id', '')
-        portal_type = data.pop('portal_type')
-        ttool = self._getTool('portal_types')
-        fti = ttool.getTypeInfo(portal_type)
-        factory = getUtility(IFactory, fti.factory)
+        id =  data.pop('id', '') or ''
+        factory = getUtility(IFactory, self.ti.factory)
         obj = factory(id=id, **data)
-        obj._setPortalTypeName(portal_type)
+        obj._setPortalTypeName(self.ti.getId())
         return obj
 
     def add(self, obj):
         container = self.context
+        portal_type = self.ti.getId()
+
+        # check allowed (sometimes redundant, but better safe than sorry)
+        if not self.ti.isConstructionAllowed(container):
+            raise AccessControl_Unauthorized('Cannot create %s' % portal_type)
 
         #check container constraints
         ttool = self._getTool('portal_types')
         container_ti = ttool.getTypeInfo(container)
-        portal_type = obj.getPortalTypeName()
         if container_ti is not None and \
                 not container_ti.allowType(portal_type):
             raise ValueError('Disallowed subobject type: %s' % portal_type)
@@ -168,7 +185,7 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
         container._setObject(name, obj)
         obj = container._getOb(name)
 
-        obj_type = translate(obj.Type(), self.context)
+        obj_type = translate(obj.Type(), container)
         self.status = _(u'${obj_type} added.', mapping={'obj_type': obj_type})
         self._finished_add = True
         self._added_obj = obj
@@ -176,12 +193,11 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
 
     def nextURL(self):
         obj = self._added_obj
-        fti = obj.getTypeInfo()
 
         message = translate(self.status, self.context)
         if isinstance(message, unicode):
             message = message.encode(self._getBrowserCharset())
-        return '%s/%s?%s' % (obj.absolute_url(), fti.immediate_view,
+        return '%s/%s?%s' % (obj.absolute_url(), self.ti.immediate_view,
                              make_query(portal_status_message=message))
 
 

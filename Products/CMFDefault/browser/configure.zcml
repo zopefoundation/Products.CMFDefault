@@ -20,6 +20,8 @@
       permission="cmf.ListFolderContents"
       />
 
+  <adapter factory=".folder.FallbackAddView" />
+
   <adapter factory=".metadata.MinimalMetadataSchemaAdapter"/>
 
   <browser:page
@@ -105,12 +107,9 @@
 
   <adapter factory=".file.FileSchemaAdapter"/>
 
-  <browser:page
-      for="Products.CMFCore.interfaces.IFolderish"
-      layer="..interfaces.ICMFDefaultSkin"
-      name="addFile.html"
-      class=".file.FileAddView"
-      permission="cmf.AddPortalContent"
+  <adapter
+      name="cmf.file"
+      factory=".file.FileAddView"
       />
 
   <browser:page

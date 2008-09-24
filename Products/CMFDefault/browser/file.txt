@@ -15,7 +15,7 @@ Create the browser object we'll be using.
 
 Use the add form without input.
 
-    >>> browser.open('http://localhost/site/@@addFile.html')
+    >>> browser.open('http://localhost/site/++add++File')
     >>> '[[cmf_default][Add [[cmf_default][File]]]]' in browser.contents
     True
     >>> browser.getControl('[[zope][Add]]').click()
@@ -27,7 +27,7 @@ Use the add form without input.
 Use the add form with valid input.
 
     >>> from StringIO import StringIO
-    >>> browser.open('http://localhost/site/@@addFile.html')
+    >>> browser.open('http://localhost/site/++add++File')
     >>> '[[cmf_default][Add [[cmf_default][File]]]]' in browser.contents
     True
     >>> browser.getControl(name='form.title').value = 'FILE TITLE'

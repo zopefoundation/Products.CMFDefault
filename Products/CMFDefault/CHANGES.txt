@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- views: Added FallbackAddView.
+  This add form works with any portal type. It just asks for the ID.
+
 - formlib widgets: Added special input widget for object IDs.
 
 - main_template: Display action icons, thereby replacing the separate
@@ -39,7 +42,7 @@ Products.CMFDefault Changelog
 
 - Image, File:  make ZMI "edit" view work.
 
-- views: Added ContentEditFormBase and FileAddView.
+- views: Added ContentAddFormBase and FileAddView.
   This shows how form-driven content creation works. The content is created
   without using the constructor methods provided by the types tool.
 
