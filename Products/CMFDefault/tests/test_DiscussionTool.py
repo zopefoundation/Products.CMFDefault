@@ -91,6 +91,10 @@ class DiscussionToolTests(SecurityTest):
 
         self.failIf(dtool.isDiscussionAllowedFor(baz))
 
+        # Make sure isDiscussionAllowedFor does not blow up on items
+        # that aren't content and/or discussable at all.
+        self.failIf(dtool.isDiscussionAllowedFor(self.site.portal_types))
+
     def test_getDiscussionFor(self):
         dtool = self.site.portal_discussion
         foo = self.site._setObject( 'foo', DummyFolder() )

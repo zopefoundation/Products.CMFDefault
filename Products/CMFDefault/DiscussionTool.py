@@ -24,6 +24,7 @@ from zope.interface import implements
 
 from Products.CMFCore.interfaces import IDiscussionResponse
 from Products.CMFCore.interfaces import IDiscussionTool
+from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
@@ -104,9 +105,13 @@ class DiscussionTool(UniqueObject, SimpleItem):
         """
         if hasattr( aq_base(content), 'allow_discussion' ):
             return bool(content.allow_discussion)
-        typeInfo = content.getTypeInfo()
-        if typeInfo:
-            return bool( typeInfo.allowDiscussion() )
+
+        if IDynamicType.providedBy(content):
+            # Grabbing type information objects only works for dynamic types
+            typeInfo = content.getTypeInfo()
+            if typeInfo:
+                return bool( typeInfo.allowDiscussion() )
+
         return False
 
     #

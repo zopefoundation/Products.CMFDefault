@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- DiscussionTool: Make sure to only ask "real" content for their type
+  information when checking whether discussions are allowed or not.
+
 - skins: Display add actions in the main_template.
   Using folder_factories is now deprecated.
 
