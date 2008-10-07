@@ -136,4 +136,11 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      for="*"
+      name="ursine_globals"
+      class=".ursa.UrsineGlobals"
+      permission="zope.Public"
+      />
+
 </configure>
