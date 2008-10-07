@@ -10,4 +10,8 @@
 
   <cmf:registerDirectory name="zpt_generic"/>
 
+  <cmf:registerDirectory name="ursine"/>
+
+  <cmf:registerDirectory name="werebear"/>
+
 </configure>

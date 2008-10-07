@@ -26,4 +26,20 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       />
 
+  <genericsetup:registerProfile
+      name="ursa"
+      title="CMF 'Bare' skin"
+      description="Provide skin w/ stripped-down main template."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      />
+
+  <genericsetup:registerProfile
+      name="were"
+      title="CMF 'Bare' / hybrid skin"
+      description="Use stripped-down globals in regular main template."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      />
+
 </configure>
