@@ -42,6 +42,8 @@ setup(name='Products.%s' % NAME,
       include_package_data=True,
       namespace_packages=['Products'],
       zip_safe=False,
+      setup_requires=['eggtestinfo',
+                     ],
       install_requires=[
           #'Zope >= 2.10.4',
           'setuptools',
@@ -49,8 +51,14 @@ setup(name='Products.%s' % NAME,
           'Products.DCWorkflow',
           'Products.GenericSetup',
           ],
+      tests_require=['zope.testing>=3.7.0',
+                    ],
+      test_loader='zope.testing.testrunner.eggsupport:SkipLayers',
+      test_suite='Products.%s' % NAME,
       entry_points="""
       [zope2.initialize]
       Products.%s = Products.%s:initialize
+      [distutils.commands]
+      ftest = zope.testing.testrunner.eggsupport:ftest
       """ % (NAME, NAME),
       )
