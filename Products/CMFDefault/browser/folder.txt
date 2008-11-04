@@ -1,109 +1,42 @@
-Browser Views for IFolderish
+Folder Views
+------------
 
+Set up user.
 
-  The required environment:
+    >>> uf = app.site.acl_users
+    >>> uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
 
-    Setting up a dummy site with required tools::
+Create the browser object we'll be using.
 
-      >>> from Products.CMFCore.tests.base.dummy import DummySite
-      >>> site = DummySite('site')
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
-      >>> from Products.CMFCore.tests.base.dummy import DummyTool
-      >>> from zope.component import getSiteManager
-      >>> from Products.CMFCore.interfaces import IPropertiesTool
-      >>> sm = getSiteManager()
-      >>> mtool = site._setObject('portal_membership', DummyTool())
-      >>> ptool = site._setObject('portal_properties', DummyTool())
-      >>> sm.registerUtility(ptool, IPropertiesTool)
-      >>> ttool = site._setObject('portal_types', DummyTool())
-      >>> utool = site._setObject('portal_url', DummyTool())
+Use the add form without input.
 
+    >>> browser.open('http://localhost/site/++add++Folder')
+    >>> '[[cmf_default][Add [[cmf_default][Folder]]]]' in browser.contents
+    True
+    >>> browser.getControl('[[zope][Add]]').click()
+    >>> '[[zope][There were errors]]' in browser.contents
+    True
+    >>> '[[zope][Required input is missing.]]' in browser.contents
+    True
 
-  Basic functionality without security setup:
+Use the add form with valid input.
 
-    Setting up a simple request and an empty context object::
+    >>> from StringIO import StringIO
+    >>> browser.open('http://localhost/site/++add++Folder')
+    >>> '[[cmf_default][Add [[cmf_default][Folder]]]]' in browser.contents
+    True
+    >>> browser.getControl(name='form.id').value = 'myFolder'
+    >>> browser.getControl('[[zope][Add]]').click()
+    >>> '[[cmf_default][[[cmf_default][Folder]] added.]]' in browser.contents
+    True
 
-      >>> class DummyRequest(dict):
-      ...     def __init__(self):
-      ...         self['ACTUAL_URL'] = 'actual_url'
-      ...         self.form = {}
-      >>> request = DummyRequest()
+Use the folder contents form without input.
 
-      >>> from Products.CMFCore.PortalFolder import PortalFolder
-      >>> context = PortalFolder('foo').__of__(site)
-
-    The FolderView interface used by templates::
-
-      >>> from Products.CMFDefault.browser.folder import FolderView
-      >>> view = FolderView(context, request)
-
-      >>> view.title()
-      u''
-
-      >>> view.description()
-      u''
-
-      >>> view.has_local()
-      False
-
-    The FolderContentsView interface used by templates::
-
-      >>> from Products.CMFDefault.browser.folder import FolderContentsView
-      >>> view = FolderContentsView(context, request)
-
-      >>> view.title()
-      u''
-
-      >>> view.description()
-      u''
-
-      >>> view.up_info()
-      {'url': u'', 'id': u'Root', 'icon': u''}
-
-      >>> view.listColumnInfos()
-      ({'url': 'actual_url?key=Type', 'width': '20', 'colspan': '2',
-        'key': 'Type', 'title': u'Type'},
-       {'url': 'actual_url?key=getId', 'width': '360', 'colspan': None,
-        'key': 'getId', 'title': u'Name'},
-       {'url': 'actual_url?key=modified', 'width': '180', 'colspan': None,
-        'key': 'modified', 'title': u'Last Modified'},
-       {'url': 'actual_url?key=position', 'width': '80', 'colspan': None,
-        'key': 'position', 'title': u'Position'})
-
-      >>> view.listItemInfos()
-      ()
-
-      >>> view.listDeltas()
-      ()
-
-      >>> view.is_orderable()
-      False
-
-      >>> view.is_sortable()
-      False
-
-    The FolderContentsView checkers used by button actions::
-
-      >>> view.checkAllowedContentTypes()
-      True
-
-      >>> view.checkClipboardData()
-      False
-
-      >>> view.checkItems()
-      False
-
-    The FolderContentsView validators used by button actions::
-
-      >>> view.validateItemIds()
-      (False, u'Please select one or more items first.')
-      >>> view.validateItemIds(('foo',))
-      True
-
-      >>> view.validateClipboardData()
-      (False, u'Please copy or cut one or more items to paste first.')
-
-    Finally we have to clean up::
-
-      >>> from zope.testing.cleanup import cleanUp
-      >>> cleanUp()
+    >>> browser.open('http://localhost/site/myFolder/@@edit.html')
+    >>> '[[cmf_default][Folder Contents: ]]' in browser.contents
+    True

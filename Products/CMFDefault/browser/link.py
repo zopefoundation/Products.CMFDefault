@@ -17,18 +17,25 @@ $Id$
 
 import urlparse
 
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
 from zope.app.form.browser import BytesWidget
 from zope.component import adapts
 from zope.formlib import form
 from zope.interface import implements
 from zope.interface import Interface
+from zope.schema import ASCIILine
 from zope.schema import BytesLine
+from zope.schema import Text
 from zope.schema import TextLine
 
+from Products.CMFDefault.formlib.form import ContentAddFormBase
 from Products.CMFDefault.formlib.form import ContentEditFormBase
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
+from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import IMutableLink
+from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 
 from utils import decode
@@ -40,8 +47,19 @@ class ILinkSchema(Interface):
 
     title = TextLine(
         title=_(u'Title'),
-        description=_(u'Title'),
-        readonly=True)
+        required=False,
+        missing_value=u'')
+
+    language = TextLine(
+        title=_(u'Language'),
+        required=False,
+        missing_value=u'',
+        max_length=2)
+
+    description = Text(
+        title=_(u'Description'),
+        required=False,
+        missing_value=u'')
 
     remote_url = BytesLine(
         title=_(u'URL'),
@@ -54,7 +72,11 @@ class LinkSchemaAdapter(SchemaAdapterBase):
     adapts(IMutableLink)
     implements(ILinkSchema)
 
-    title = ProxyFieldProperty(ILinkSchema['title'], 'Title')
+    title = ProxyFieldProperty(ILinkSchema['title'], 'Title', 'setTitle')
+    language = ProxyFieldProperty(ILinkSchema['language'],
+                                  'Language', 'setLanguage')
+    description = ProxyFieldProperty(ILinkSchema['description'],
+                                     'Description', 'setDescription')
     remote_url = ProxyFieldProperty(ILinkSchema['remote_url'])
 
 
@@ -97,10 +119,45 @@ class LinkURIWidget(BytesWidget):
             return urlparse.urlunparse(tokens)
 
 
+class LinkAddView(ContentAddFormBase):
+
+    """Add view for IMutableLink.
+    """
+
+    security = ClassSecurityInfo()
+    security.declareObjectProtected(AddPortalContent)
+
+    form_fields = (
+        form.FormFields(ASCIILine(__name__='id', title=_(u'ID'))) +
+        form.FormFields(ILinkSchema).omit('language')
+        )
+    form_fields['id'].custom_widget = IDInputWidget
+    form_fields['remote_url'].custom_widget = LinkURIWidget
+
+    def setUpWidgets(self, ignore_request=False):
+        super(LinkAddView, self).setUpWidgets(ignore_request=ignore_request)
+        self.widgets['description'].height = 3
+
+    def create(self, data):
+        obj = super(LinkAddView, self).create(dict(id=data['id']))
+        adapted = ILinkSchema(obj)
+        adapted.title = data['title']
+        adapted.language = u''
+        adapted.description = data['description']
+        adapted.remote_url = data['remote_url']
+        return obj
+
+InitializeClass(LinkAddView)
+
+
 class LinkEditView(ContentEditFormBase):
 
     """Edit view for IMutableLink.
     """
 
-    form_fields = form.FormFields(ILinkSchema)
+    form_fields = form.FormFields(ILinkSchema).omit('language')
     form_fields['remote_url'].custom_widget = LinkURIWidget
+
+    def setUpWidgets(self, ignore_request=False):
+        super(LinkEditView, self).setUpWidgets(ignore_request=ignore_request)
+        self.widgets['description'].height = 3

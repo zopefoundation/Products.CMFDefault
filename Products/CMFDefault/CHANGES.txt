@@ -48,7 +48,7 @@ Products.CMFDefault Changelog
 
 - Image, File:  make ZMI "edit" view work.
 
-- views: Added ContentAddFormBase and FileAddView.
+- views: Added ContentAddFormBase and several content add views.
   This shows how form-driven content creation works. The content is created
   without using the constructor methods provided by the types tool.
 

@@ -78,6 +78,11 @@
 
   <adapter factory=".link.LinkSchemaAdapter"/>
 
+  <adapter
+      name="cmf.link"
+      factory=".link.LinkAddView"
+      />
+
   <browser:page
       for="..interfaces.ILink"
       layer="..interfaces.ICMFDefaultSkin"
@@ -97,6 +102,11 @@
 
   <adapter factory=".favorite.FavoriteSchemaAdapter"/>
 
+  <adapter
+      name="cmf.favorite"
+      factory=".favorite.FavoriteAddView"
+      />
+
   <browser:page
       for="..interfaces.IMutableFavorite"
       layer="..interfaces.ICMFDefaultSkin"
@@ -109,6 +119,11 @@
 
   <adapter
       name="cmf.file"
+      factory=".file.FileAddView"
+      />
+
+  <adapter
+      name="cmf.image"
       factory=".file.FileAddView"
       />
 

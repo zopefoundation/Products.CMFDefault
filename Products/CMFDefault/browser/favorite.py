@@ -17,19 +17,26 @@ $Id$
 
 import urlparse
 
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
 from zope.app.form.browser import BytesWidget
 from zope.component import adapts
 from zope.formlib import form
 from zope.interface import implements
 from zope.interface import Interface
+from zope.schema import ASCIILine
 from zope.schema import BytesLine
+from zope.schema import Text
 from zope.schema import TextLine
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDefault.formlib.form import ContentAddFormBase
 from Products.CMFDefault.formlib.form import ContentEditFormBase
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
+from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import IMutableFavorite
+from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 
 
@@ -37,8 +44,19 @@ class IFavoriteSchema(Interface):
 
     title = TextLine(
         title=_(u'Title'),
-        description=_(u'Title'),
-        readonly=True)
+        required=False,
+        missing_value=u'')
+
+    language = TextLine(
+        title=_(u'Language'),
+        required=False,
+        missing_value=u'',
+        max_length=2)
+
+    description = Text(
+        title=_(u'Description'),
+        required=False,
+        missing_value=u'')
 
     remote_url = BytesLine(
         title=_(u'URL'),
@@ -61,7 +79,11 @@ class FavoriteSchemaAdapter(SchemaAdapterBase):
         self._remote_url = value
         self.context.remote_uid = self.context._getUidByUrl()
 
-    title = ProxyFieldProperty(IFavoriteSchema['title'], 'Title')
+    title = ProxyFieldProperty(IFavoriteSchema['title'], 'Title', 'setTitle')
+    language = ProxyFieldProperty(IFavoriteSchema['language'],
+                                  'Language', 'setLanguage')
+    description = ProxyFieldProperty(IFavoriteSchema['description'],
+                                     'Description', 'setDescription')
     remote_url = property(_getRemoteURL, _setRemoteURL)
 
 
@@ -81,8 +103,9 @@ class FavoriteURIWidget(BytesWidget):
             tokens = ('', '') + tokens[2:]
             value = urlparse.urlunparse(tokens)
         # if URL begins with site URL, remove site URL
-        obj = self.context.context.context
-        portal_url = getToolByName(obj, 'portal_url').getPortalPath()
+        context = getattr(self.context.context, 'context',
+                          self.context.context)
+        portal_url = getToolByName(context, 'portal_url').getPortalPath()
         if value.startswith(portal_url):
             value = value[len(portal_url):]
         # if site is still absolute, make it relative
@@ -91,10 +114,47 @@ class FavoriteURIWidget(BytesWidget):
         return value
 
 
+class FavoriteAddView(ContentAddFormBase):
+
+    """Add view for IMutableFavorite.
+    """
+
+    security = ClassSecurityInfo()
+    security.declareObjectProtected(AddPortalContent)
+
+    form_fields = (
+        form.FormFields(ASCIILine(__name__='id', title=_(u'ID'))) +
+        form.FormFields(IFavoriteSchema).omit('language')
+        )
+    form_fields['id'].custom_widget = IDInputWidget
+    form_fields['remote_url'].custom_widget = FavoriteURIWidget
+
+    def setUpWidgets(self, ignore_request=False):
+        super(FavoriteAddView,
+              self).setUpWidgets(ignore_request=ignore_request)
+        self.widgets['description'].height = 3
+
+    def create(self, data):
+        obj = super(FavoriteAddView, self).create(dict(id=data['id']))
+        adapted = IFavoriteSchema(obj)
+        adapted.title = data['title']
+        adapted.language = u''
+        adapted.description = data['description']
+        adapted.remote_url = data['remote_url']
+        return obj
+
+InitializeClass(FavoriteAddView)
+
+
 class FavoriteEditView(ContentEditFormBase):
 
     """Edit view for IMutableFavorite.
     """
 
-    form_fields = form.FormFields(IFavoriteSchema)
+    form_fields = form.FormFields(IFavoriteSchema).omit('language')
     form_fields['remote_url'].custom_widget = FavoriteURIWidget
+
+    def setUpWidgets(self, ignore_request=False):
+        super(FavoriteEditView,
+              self).setUpWidgets(ignore_request=ignore_request)
+        self.widgets['description'].height = 3

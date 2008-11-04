@@ -24,15 +24,24 @@ from Products.CMFDefault.testing import FunctionalLayer
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(doctest.DocFileSuite('folder.txt',
+    suite.addTest(doctest.DocFileSuite('folder_utest.txt',
                                     optionflags=doctest.NORMALIZE_WHITESPACE))
+    s = ZopeTestCase.FunctionalDocFileSuite('folder.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
     s = ZopeTestCase.FunctionalDocFileSuite('metadata.txt')
     s.layer = FunctionalLayer
     suite.addTest(s)
     s = ZopeTestCase.FunctionalDocFileSuite('document.txt')
     s.layer = FunctionalLayer
     suite.addTest(s)
+    s = ZopeTestCase.FunctionalDocFileSuite('favorite.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
     s = ZopeTestCase.FunctionalDocFileSuite('file.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
+    s = ZopeTestCase.FunctionalDocFileSuite('link.txt')
     s.layer = FunctionalLayer
     suite.addTest(s)
     return suite
