@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: CMFCore/PortalContent.py:73
-#: CMFDefault/formlib/form.py:214
+#: CMFDefault/formlib/form.py:236
 msgid "This resource is locked via webDAV."
 msgstr ""
 
@@ -121,11 +121,9 @@ msgid "restructured-text"
 msgstr ""
 
 #: CMFDefault/browser/document.py:65
-#: CMFDefault/browser/favorite.py:39
-#: CMFDefault/browser/favorite.py:40
-#: CMFDefault/browser/file.py:43
-#: CMFDefault/browser/link.py:42
-#: CMFDefault/browser/link.py:43
+#: CMFDefault/browser/favorite.py:46
+#: CMFDefault/browser/file.py:44
+#: CMFDefault/browser/link.py:49
 #: CMFDefault/browser/metadata.py:55
 #: CMFDefault/browser/metadata.py:80
 #: CMFDefault/browser/newsitem.py:41
@@ -145,7 +143,9 @@ msgid "Title"
 msgstr ""
 
 #: CMFDefault/browser/document.py:69
-#: CMFDefault/browser/file.py:54
+#: CMFDefault/browser/favorite.py:57
+#: CMFDefault/browser/file.py:55
+#: CMFDefault/browser/link.py:60
 #: CMFDefault/browser/metadata.py:60
 #: CMFDefault/browser/metadata.py:85
 #: CMFDefault/skins/zpt_content/document_edit_template.pt:20
@@ -170,8 +170,8 @@ msgid "Format"
 msgstr ""
 
 #: CMFDefault/browser/document.py:77
-#: CMFDefault/browser/file.py:63
-#: CMFDefault/browser/file.py:96
+#: CMFDefault/browser/file.py:64
+#: CMFDefault/browser/file.py:101
 #: CMFDefault/skins/zpt_content/document_edit_template.pt:43
 msgid "Upload"
 msgstr ""
@@ -182,203 +182,205 @@ msgstr ""
 msgid "Body"
 msgstr ""
 
-#: CMFDefault/browser/favorite.py:44
-#: CMFDefault/browser/link.py:47
-#: CMFDefault/skins/zpt_content/link_edit_template.pt:19
-msgid "URL"
+#: CMFDefault/browser/favorite.py:126
+#: CMFDefault/browser/folder.py:55
+#: CMFDefault/browser/link.py:131
+msgid "ID"
 msgstr ""
 
-#: CMFDefault/browser/favorite.py:45
-msgid "URL relative to the site root."
-msgstr ""
-
-#: CMFDefault/browser/file.py:48
+#: CMFDefault/browser/favorite.py:51
+#: CMFDefault/browser/file.py:49
+#: CMFDefault/browser/link.py:54
 #: CMFDefault/browser/metadata.py:125
 #: CMFDefault/skins/zpt_content/metadata_edit_template.pt:97
 #: CMFDefault/skins/zpt_generic/metadata_help.pt:149
 msgid "Language"
 msgstr ""
 
-#: CMFDefault/browser/file.py:59
+#: CMFDefault/browser/favorite.py:62
+#: CMFDefault/browser/link.py:65
+#: CMFDefault/skins/zpt_content/link_edit_template.pt:19
+msgid "URL"
+msgstr ""
+
+#: CMFDefault/browser/favorite.py:63
+msgid "URL relative to the site root."
+msgstr ""
+
+#: CMFDefault/browser/file.py:60
 #: CMFDefault/skins/zpt_content/file_edit_template.pt:23
 #: CMFDefault/skins/zpt_content/image_edit_template.pt:23
 msgid "Content type"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:205
+#: CMFDefault/browser/folder.py:240
 msgid "Previous item"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:207
+#: CMFDefault/browser/folder.py:242
 #. Default: ""
 msgid "Previous ${count} items"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:219
+#: CMFDefault/browser/folder.py:254
 msgid "Next item"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:221
+#: CMFDefault/browser/folder.py:256
 #. Default: ""
 msgid "Next ${count} items"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:232
+#: CMFDefault/browser/folder.py:267
 #: CMFDefault/skins/zpt_generic/search.py:47
 msgid "item"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:232
+#: CMFDefault/browser/folder.py:267
 #: CMFDefault/skins/zpt_generic/search.py:47
 msgid "items"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:268
-#: CMFDefault/skins/zpt_generic/folder_contents.py:172
-#: CMFDefault/skins/zpt_generic/members_manage_form.py:50
-msgid "New..."
-msgstr ""
-
-#: CMFDefault/browser/folder.py:273
-#: CMFDefault/skins/zpt_generic/folder_contents.py:175
+#: CMFDefault/browser/folder.py:303
+#: CMFDefault/skins/zpt_generic/folder_contents.py:169
 msgid "Rename..."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:280
-#: CMFDefault/skins/zpt_generic/folder_contents.py:177
+#: CMFDefault/browser/folder.py:310
+#: CMFDefault/skins/zpt_generic/folder_contents.py:171
 msgid "Cut"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:287
-#: CMFDefault/skins/zpt_generic/folder_contents.py:178
+#: CMFDefault/browser/folder.py:317
+#: CMFDefault/skins/zpt_generic/folder_contents.py:172
 msgid "Copy"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:294
-#: CMFDefault/skins/zpt_generic/folder_contents.py:180
+#: CMFDefault/browser/folder.py:324
+#: CMFDefault/skins/zpt_generic/folder_contents.py:174
 msgid "Paste"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:301
-#: CMFDefault/skins/zpt_generic/folder_contents.py:182
+#: CMFDefault/browser/folder.py:331
+#: CMFDefault/skins/zpt_generic/folder_contents.py:176
 #: CMFDefault/skins/zpt_generic/members_delete_form.py:28
 #: CMFDefault/skins/zpt_generic/folder_localrole_form.pt:196
 msgid "Delete"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:394
-#: CMFDefault/skins/zpt_generic/folder_contents.py:113
+#: CMFDefault/browser/folder.py:424
+#: CMFDefault/skins/zpt_generic/folder_contents.py:110
 #: CMFDefault/skins/zpt_generic/metadata_help.pt:110
 #: CMFDefault/skins/zpt_generic/review.pt:25
 #: CMFDefault/skins/zpt_generic/search_results_template.pt:16
 msgid "Type"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:398
-#: CMFDefault/skins/zpt_generic/folder_contents.py:117
+#: CMFDefault/browser/folder.py:428
+#: CMFDefault/skins/zpt_generic/folder_contents.py:114
 msgid "Name"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:402
-#: CMFDefault/skins/zpt_generic/folder_contents.py:121
+#: CMFDefault/browser/folder.py:432
+#: CMFDefault/skins/zpt_generic/folder_contents.py:118
 msgid "Last Modified"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:406
-#: CMFDefault/skins/zpt_generic/folder_contents.py:125
+#: CMFDefault/browser/folder.py:436
+#: CMFDefault/skins/zpt_generic/folder_contents.py:122
 msgid "Position"
 msgstr ""
 
-#: CMFDefault/browser/folder.py:483
+#: CMFDefault/browser/folder.py:513
 #: CMFDefault/skins/zpt_control/validateItemIds.py:8
 msgid "Please select one or more items first."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:489
+#: CMFDefault/browser/folder.py:519
 #: CMFDefault/skins/zpt_control/validateClipboardData.py:8
 msgid "Please copy or cut one or more items to paste first."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:500
+#: CMFDefault/browser/folder.py:530
 #: CMFDefault/skins/zpt_control/folder_cut_control.py:11
 msgid "Item cut."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:502
+#: CMFDefault/browser/folder.py:532
 #: CMFDefault/skins/zpt_control/folder_cut_control.py:13
 msgid "Items cut."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:504
+#: CMFDefault/browser/folder.py:534
 #: CMFDefault/skins/zpt_control/folder_cut_control.py:15
 msgid "CopyError: Cut failed."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:506
+#: CMFDefault/browser/folder.py:536
 #: CMFDefault/skins/zpt_control/folder_cut_control.py:17
 msgid "Unauthorized: Cut failed."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:514
+#: CMFDefault/browser/folder.py:544
 #: CMFDefault/skins/zpt_control/folder_copy_control.py:10
 msgid "Item copied."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:516
+#: CMFDefault/browser/folder.py:546
 #: CMFDefault/skins/zpt_control/folder_copy_control.py:12
 msgid "Items copied."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:518
+#: CMFDefault/browser/folder.py:548
 #: CMFDefault/skins/zpt_control/folder_copy_control.py:14
 msgid "CopyError: Copy failed."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:526
+#: CMFDefault/browser/folder.py:556
 #: CMFDefault/skins/zpt_control/folder_paste_control.py:11
 msgid "Item pasted."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:528
+#: CMFDefault/browser/folder.py:558
 #: CMFDefault/skins/zpt_control/folder_paste_control.py:13
 msgid "Items pasted."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:530
+#: CMFDefault/browser/folder.py:560
 #: CMFDefault/skins/zpt_control/folder_paste_control.py:15
 msgid "CopyError: Paste failed."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:532
+#: CMFDefault/browser/folder.py:562
 #: CMFDefault/skins/zpt_control/folder_paste_control.py:17
 msgid "Unauthorized: Paste failed."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:539
+#: CMFDefault/browser/folder.py:569
 #: CMFDefault/skins/zpt_control/folder_delete_control.py:9
 msgid "Item deleted."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:541
+#: CMFDefault/browser/folder.py:571
 #: CMFDefault/skins/zpt_control/folder_delete_control.py:11
 msgid "Items deleted."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:556
+#: CMFDefault/browser/folder.py:586
 #: CMFDefault/skins/zpt_control/folder_up_control.py:9
 msgid "Item moved up."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:558
+#: CMFDefault/browser/folder.py:588
 #: CMFDefault/skins/zpt_control/folder_up_control.py:11
 msgid "Items moved up."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:560
-#: CMFDefault/browser/folder.py:575
 #: CMFDefault/browser/folder.py:590
 #: CMFDefault/browser/folder.py:605
-#: CMFDefault/formlib/form.py:232
+#: CMFDefault/browser/folder.py:620
+#: CMFDefault/browser/folder.py:635
+#: CMFDefault/formlib/form.py:254
 #: CMFDefault/skins/zpt_content/document_edit_control.py:14
 #: CMFDefault/skins/zpt_content/folder_edit_control.py:9
 #: CMFDefault/skins/zpt_content/link_edit_control.py:13
@@ -392,10 +394,10 @@ msgstr ""
 msgid "Nothing to change."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:562
-#: CMFDefault/browser/folder.py:577
 #: CMFDefault/browser/folder.py:592
 #: CMFDefault/browser/folder.py:607
+#: CMFDefault/browser/folder.py:622
+#: CMFDefault/browser/folder.py:637
 #: CMFDefault/skins/zpt_control/folder_bottom_control.py:15
 #: CMFDefault/skins/zpt_control/folder_down_control.py:15
 #: CMFDefault/skins/zpt_control/folder_top_control.py:15
@@ -403,42 +405,48 @@ msgstr ""
 msgid "ValueError: Move failed."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:571
+#: CMFDefault/browser/folder.py:601
 #: CMFDefault/skins/zpt_control/folder_down_control.py:9
 msgid "Item moved down."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:573
+#: CMFDefault/browser/folder.py:603
 #: CMFDefault/skins/zpt_control/folder_down_control.py:11
 msgid "Items moved down."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:586
+#: CMFDefault/browser/folder.py:616
 #: CMFDefault/skins/zpt_control/folder_top_control.py:9
 msgid "Item moved to top."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:588
+#: CMFDefault/browser/folder.py:618
 #: CMFDefault/skins/zpt_control/folder_top_control.py:11
 msgid "Items moved to top."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:601
+#: CMFDefault/browser/folder.py:631
 #: CMFDefault/skins/zpt_control/folder_bottom_control.py:9
 msgid "Item moved to bottom."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:603
+#: CMFDefault/browser/folder.py:633
 #: CMFDefault/skins/zpt_control/folder_bottom_control.py:11
 msgid "Items moved to bottom."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:613
+#: CMFDefault/browser/folder.py:643
 msgid "Filter applied."
 msgstr ""
 
-#: CMFDefault/browser/folder.py:618
+#: CMFDefault/browser/folder.py:648
 msgid "Filter cleared."
+msgstr ""
+
+#: CMFDefault/browser/folder.py:68
+#: CMFDefault/formlib/form.py:189
+#. Default: ""
+msgid "${obj_type} added."
 msgstr ""
 
 #: CMFDefault/browser/metadata.py:102
@@ -473,7 +481,7 @@ msgid "Properties"
 msgstr ""
 
 #: CMFDefault/browser/metadata.py:224
-#: CMFDefault/formlib/form.py:187
+#: CMFDefault/formlib/form.py:209
 #: CMFDefault/skins/zpt_content/document_edit_form.py:34
 #: CMFDefault/skins/zpt_content/file_edit_form.py:25
 #: CMFDefault/skins/zpt_content/folder_edit_form.py:24
@@ -494,7 +502,7 @@ msgid "Change and Edit"
 msgstr ""
 
 #: CMFDefault/browser/metadata.py:236
-#: CMFDefault/formlib/form.py:193
+#: CMFDefault/formlib/form.py:215
 #: CMFDefault/skins/zpt_content/document_edit_form.py:35
 #: CMFDefault/skins/zpt_content/file_edit_form.py:26
 #: CMFDefault/skins/zpt_content/folder_edit_form.py:25
@@ -615,18 +623,23 @@ msgstr ""
 msgid "Link: ${link}"
 msgstr ""
 
+#: CMFDefault/browser/ursa.py:110
+#: CMFDefault/skins/zpt_generic/breadcrumbs.py:14
+msgid "root"
+msgstr ""
+
 #: CMFDefault/exceptions.py:68
-#: CMFDefault/formlib/widgets.py:62
+#: CMFDefault/formlib/widgets.py:68
 msgid "Invalid email address."
 msgstr ""
 
-#: CMFDefault/formlib/form.py:107
+#: CMFDefault/formlib/form.py:121
 #: CMFDefault/skins/zpt_generic/discussion_reply_form.py:39
 #: CMFDefault/skins/zpt_generic/folder_factories_template.pt:34
 msgid "Add"
 msgstr ""
 
-#: CMFDefault/formlib/form.py:113
+#: CMFDefault/formlib/form.py:127
 #: CMFDefault/skins/zpt_generic/folder_rename_form.py:44
 #: CMFDefault/skins/zpt_generic/join_form.py:57
 #: CMFDefault/skins/zpt_generic/members_delete_form.py:29
@@ -634,24 +647,24 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: CMFDefault/formlib/form.py:126
+#: CMFDefault/formlib/form.py:142
 #. Default: ""
 msgid "Add ${obj_type}"
 msgstr ""
 
-#: CMFDefault/formlib/form.py:136
-#. Default: ""
-msgid "${obj_type} added."
-msgstr ""
-
-#: CMFDefault/formlib/form.py:210
+#: CMFDefault/formlib/form.py:232
 #. Default: ""
 msgid "Edit ${obj_type}"
 msgstr ""
 
-#: CMFDefault/formlib/form.py:229
+#: CMFDefault/formlib/form.py:251
 #. Default: ""
 msgid "${obj_type} changed."
+msgstr ""
+
+#: CMFDefault/formlib/widgets.py:144
+#: CMFDefault/skins/zpt_control/validateId.py:9
+msgid "Please choose another ID."
 msgstr ""
 
 #: CMFDefault/profiles/default/actions.xml:10
@@ -841,12 +854,34 @@ msgstr ""
 msgid "News Items contain short text articles and carry a title as well as an optional description."
 msgstr ""
 
-#: CMFDefault/profiles/views_support/actions.xml:6
-msgid "Add File"
+#: CMFDefault/skins/werebear/main_template.pt:186
+#: CMFDefault/skins/zpt_generic/main_template.pt:214
+msgid "Status:"
 msgstr ""
 
-#: CMFDefault/profiles/views_support/actions.xml:7
-msgid "Add new File object"
+#: CMFDefault/skins/werebear/main_template.pt:232
+#: CMFDefault/skins/zpt_generic/main_template.pt:262
+msgid "Add..."
+msgstr ""
+
+#: CMFDefault/skins/werebear/main_template.pt:298
+#: CMFDefault/skins/zpt_generic/main_template.pt:338
+msgid "Permanent Link:"
+msgstr ""
+
+#: CMFDefault/skins/werebear/main_template.pt:44
+#: CMFDefault/skins/zpt_generic/main_template.pt:70
+msgid "home"
+msgstr ""
+
+#: CMFDefault/skins/werebear/main_template.pt:53
+#: CMFDefault/skins/zpt_generic/main_template.pt:79
+msgid "news"
+msgstr ""
+
+#: CMFDefault/skins/werebear/main_template.pt:56
+#: CMFDefault/skins/zpt_generic/main_template.pt:82
+msgid "search"
 msgstr ""
 
 #: CMFDefault/skins/zpt_content/content_hide_form.pt:10
@@ -1123,7 +1158,7 @@ msgstr ""
 msgid "Selected members deleted."
 msgstr ""
 
-#: CMFDefault/skins/zpt_control/portal_config_control.py:14
+#: CMFDefault/skins/zpt_control/portal_config_control.py:19
 msgid "CMF Settings changed."
 msgstr ""
 
@@ -1133,10 +1168,6 @@ msgstr ""
 
 #: CMFDefault/skins/zpt_control/validateId.py:11
 msgid "Please enter an ID."
-msgstr ""
-
-#: CMFDefault/skins/zpt_control/validateId.py:9
-msgid "Please choose another ID."
 msgstr ""
 
 #: CMFDefault/skins/zpt_control/validateMemberIds.py:8
@@ -1150,10 +1181,6 @@ msgstr ""
 #: CMFDefault/skins/zpt_generic/batch_widgets.pt:70
 #: CMFDefault/skins/zpt_generic/batch_widgets.pt:81
 msgid "${DYNAMIC_CONTENT} ${count} ${DYNAMIC_CONTENT}"
-msgstr ""
-
-#: CMFDefault/skins/zpt_generic/breadcrumbs.py:14
-msgid "root"
 msgstr ""
 
 #: CMFDefault/skins/zpt_generic/content_byline.pt:23
@@ -1447,32 +1474,16 @@ msgstr ""
 msgid "Your password has been mailed. <br /> It should arrive in your mailbox momentarily."
 msgstr ""
 
-#: CMFDefault/skins/zpt_generic/main_template.pt:200
-msgid "Status:"
-msgstr ""
-
-#: CMFDefault/skins/zpt_generic/main_template.pt:281
-msgid "Permanent Link:"
-msgstr ""
-
-#: CMFDefault/skins/zpt_generic/main_template.pt:68
-msgid "home"
-msgstr ""
-
-#: CMFDefault/skins/zpt_generic/main_template.pt:77
-msgid "news"
-msgstr ""
-
-#: CMFDefault/skins/zpt_generic/main_template.pt:80
-msgid "search"
-msgstr ""
-
 #: CMFDefault/skins/zpt_generic/members_delete_template.pt:13
 msgid "The following members - including all their data, home folders and roles - are selected for deletion:"
 msgstr ""
 
 #: CMFDefault/skins/zpt_generic/members_delete_template.pt:5
 msgid "Delete Members"
+msgstr ""
+
+#: CMFDefault/skins/zpt_generic/members_manage_form.py:50
+msgid "New..."
 msgstr ""
 
 #: CMFDefault/skins/zpt_generic/members_manage_form.py:52
@@ -1702,6 +1713,18 @@ msgstr ""
 
 #: CMFDefault/skins/zpt_generic/reconfig_template.pt:102
 msgid "Charset used to encode emails send by the portal. If empty, 'utf-8' is used if necessary."
+msgstr ""
+
+#: CMFDefault/skins/zpt_generic/reconfig_template.pt:108
+msgid "Action icons"
+msgstr ""
+
+#: CMFDefault/skins/zpt_generic/reconfig_template.pt:112
+msgid "Show action icons"
+msgstr ""
+
+#: CMFDefault/skins/zpt_generic/reconfig_template.pt:114
+msgid "Actions available to the user are shown as textual links. With this option enabled, they are also shown as icons if the action definition specifies one."
 msgstr ""
 
 #: CMFDefault/skins/zpt_generic/reconfig_template.pt:17
@@ -2131,16 +2154,16 @@ msgstr ""
 msgid "Query Parameters:"
 msgstr ""
 
-#: DCWorkflow/DCWorkflow.py:278
+#: DCWorkflow/DCWorkflow.py:280
 msgid "Object is in an undefined state."
 msgstr ""
 
-#: DCWorkflow/DCWorkflow.py:283
+#: DCWorkflow/DCWorkflow.py:285
 #. Default: ""
 msgid "Transition '${action_id}' is not triggered by a user action."
 msgstr ""
 
-#: DCWorkflow/DCWorkflow.py:466
+#: DCWorkflow/DCWorkflow.py:468
 #. Default: ""
 msgid "Destination state undefined: ${state_id}"
 msgstr ""
