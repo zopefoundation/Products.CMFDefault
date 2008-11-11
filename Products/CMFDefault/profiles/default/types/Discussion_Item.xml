@@ -9,6 +9,7 @@
  <property name="content_meta_type">Discussion Item</property>
  <property name="product"></property>
  <property name="factory"></property>
+ <property name="add_view_expr"></property>
  <property name="immediate_view"></property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
@@ -17,8 +18,8 @@
  <alias from="(Default)" to="discussionitem_view"/>
  <alias from="view" to="discussionitem_view"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/discussionitem_view" 
-    icon_expr="string:${portal_url}/preview_icon.png" visible="True">
+    icon_expr="string:${portal_url}/preview_icon.png"
+    url_expr="string:${object_url}/discussionitem_view" visible="True">
   <permission value="View"/>
  </action>
 </object>

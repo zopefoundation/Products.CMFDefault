@@ -74,8 +74,8 @@
              new_state="published" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_publish_form"
-          icon="%(portal_url)s/approve_icon.png"
-          category="workflow">Publish</action>
+          category="workflow"
+          icon="%(portal_url)s/approve_icon.png">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -86,8 +86,8 @@
              new_state="private" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_reject_form"
-          icon="%(portal_url)s/reject_icon.png"
-          category="workflow">Reject</action>
+          category="workflow"
+          icon="%(portal_url)s/reject_icon.png">Reject</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -98,8 +98,8 @@
              new_state="private" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_retract_form"
-          icon="%(portal_url)s/retract_icon.png"
-          category="workflow">Retract</action>
+          category="workflow"
+          icon="%(portal_url)s/retract_icon.png">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
@@ -110,8 +110,8 @@
              new_state="pending" trigger="USER"
              before_script="" after_script="">
   <action url="%(object_url)s/content_submit_form"
-          icon="%(portal_url)s/submit_icon.png"
-          category="workflow">Submit</action>
+          category="workflow"
+          icon="%(portal_url)s/submit_icon.png">Submit</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
@@ -120,8 +120,8 @@
  <worklist worklist_id="reviewer_queue" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending"
-          icon="%(portal_url)s/worklist_icon.png"
-          category="global">Pending (%(count)d)</action>
+          category="global"
+          icon="%(portal_url)s/worklist_icon.png">Pending (%(count)d)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>

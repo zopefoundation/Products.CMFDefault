@@ -35,7 +35,8 @@
    <property name="description"
       i18n:translate="">Change your user preferences</property>
    <property name="url_expr">string:${portal_url}/personalize_form</property>
-   <property name="icon_expr">string:${portal_url}/preferences_icon.png</property>
+   <property
+      name="icon_expr">string:${portal_url}/preferences_icon.png</property>
    <property name="available_expr">member</property>
    <property name="permissions">
     <element value="View"/>
@@ -59,7 +60,8 @@
    <property name="description"
       i18n:translate="">Add this item to your favorites</property>
    <property name="url_expr">string:${object_url}/addtoFavorites</property>
-   <property name="icon_expr">string:${portal_url}/addfavorite_icon.png</property>
+   <property
+      name="icon_expr">string:${portal_url}/addfavorite_icon.png</property>
    <property
       name="available_expr">portal/portal_membership/getHomeFolder</property>
    <property name="permissions">
@@ -87,7 +89,8 @@
       i18n:translate="">Browse your favorites</property>
    <property
       name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents</property>
-   <property name="icon_expr">string:${portal_url}/favorite_icon.png</property>
+   <property
+      name="icon_expr">string:${portal_url}/favorite_icon.png</property>
    <property
       name="available_expr">python: member and hasattr(portal.portal_membership.getHomeFolder(), "Favorites")</property>
    <property name="permissions">
@@ -126,7 +129,8 @@
    <property name="title" i18n:translate="">Syndication</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${folder_url}/synPropertiesForm</property>
-   <property name="icon_expr">string:${portal_url}/syndication_icon.png</property>
+   <property
+      name="icon_expr">string:${portal_url}/syndication_icon.png</property>
    <property name="available_expr">python: folder is object</property>
    <property name="permissions">
     <element value="Manage properties"/>
@@ -138,7 +142,8 @@
    <property name="description"
       i18n:translate="">Assign marker interfaces</property>
    <property name="url_expr">string:${object_url}/edit-markers.html</property>
-   <property name="icon_expr">string:${portal_url}/interfaces_icon.png</property>
+   <property
+      name="icon_expr">string:${portal_url}/interfaces_icon.png</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="Manage portal"/>

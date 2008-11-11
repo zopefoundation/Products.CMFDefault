@@ -8,6 +8,7 @@
  <property name="content_meta_type">Favorite</property>
  <property name="product"></property>
  <property name="factory">cmf.favorite</property>
+ <property name="add_view_expr"></property>
  <property name="immediate_view">metadata_edit_form</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
@@ -16,18 +17,18 @@
  <alias from="(Default)" to="favorite_view"/>
  <alias from="view" to="favorite_view"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/favorite_view" 
-    icon_expr="string:${portal_url}/preview_icon.png" visible="True">
+    icon_expr="string:${portal_url}/preview_icon.png"
+    url_expr="string:${object_url}/favorite_view" visible="True">
   <permission value="View"/>
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/link_edit_form" 
-    icon_expr="string:${portal_url}/edit_icon.png" visible="True">
+    icon_expr="string:${portal_url}/edit_icon.png"
+    url_expr="string:${object_url}/link_edit_form" visible="True">
   <permission value="Modify portal content"/>
  </action>
  <action title="Metadata" action_id="metadata" category="object"
-    condition_expr="" url_expr="string:${object_url}/metadata_edit_form"
-    icon_expr="string:${portal_url}/metadata_icon.png" visible="True">
+    condition_expr="" icon_expr="string:${portal_url}/metadata_icon.png"
+    url_expr="string:${object_url}/metadata_edit_form" visible="True">
   <permission value="Modify portal content"/>
  </action>
 </object>
