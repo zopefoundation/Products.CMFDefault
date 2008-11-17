@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="cmf_default">
+
+  <genericsetup:upgradeStep
+      source="2.0"
+      destination="2.1"
+      title="Upgrade CMFDefault from 2.0 to 2.1 (only site object)"
+      profile="Products.CMFDefault:default"
+      handler=".to21.upgrade_default"
+      />
+
+  <genericsetup:upgradeStep
+      source="2.1"
+      destination="2.2"
+      title="Upgrade CMFDefault from 2.1 to 2.2 (only site object)"
+      profile="Products.CMFDefault:default"
+      handler=".to22.upgrade_default"
+      />
+
+</configure>

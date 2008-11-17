@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- upgrade: Added basic upgrade steps.
+  So far they just allow to add and upgrade the root site manager.
+
 - DiscussionTool: Make sure to only ask "real" content for their type
   information when checking whether discussions are allowed or not.
 
