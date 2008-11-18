@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- skins/zpt_generic/permalink.py: fix typos, wrap object correctly.
+  See: https://bugs.launchpad.net/bugs/299058 .
+
 - upgrade: Added basic upgrade steps.
   So far they just allow to add and upgrade the root site manager.
 
@@ -77,7 +80,6 @@ Products.CMFDefault Changelog
   (http://www.zope.org/Collectors/CMF/485)
 
 - interfaces: Removed deprecated oldstyle interfaces.
-
 
 2.1.2-beta (2008-08-26)
 ------------------

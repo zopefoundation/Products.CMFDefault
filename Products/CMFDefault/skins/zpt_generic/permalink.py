@@ -10,7 +10,7 @@
 from Products.CMFCore.utils import getUtilityByInterfaceName
 
 subpath = traverse_subpath[0]
-uid_handler=getUtilityByInterfaceName('Products.CMFUid.interfaces.UniqueIDHandler')
+uid_handler=getUtilityByInterfaceName('Products.CMFUid.interfaces.IUniqueIdHandler')
 
 # appending 'isAvailable' instead of a unique id returns if
 # the site permalink feature is available.
@@ -23,9 +23,11 @@ if str(subpath).strip() == 'isAvailable':
     return str(int(isAvailable))
 
 obj = uid_handler.getObject(subpath)
+# workarround for an acquisition wrapping problem.
+obj = context.restrictedTraverse(obj.getPhysicalPath())
 
 ti = obj.getTypeInfo()
-method_id = ti and ti.queryMethodID('view', context=self)
+method_id = ti and ti.queryMethodID('view', context=obj)
 if method_id:
     return getattr(obj, method_id)()
 return obj()
