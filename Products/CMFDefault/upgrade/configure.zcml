@@ -14,7 +14,7 @@
   <genericsetup:upgradeStep
       source="2.1"
       destination="2.2"
-      title="Upgrade CMFDefault from 2.1 to 2.2 (only site object)"
+      title="Upgrade CMFDefault from 2.1 to 2.2 (only site object and add view expressions)"
       profile="Products.CMFDefault:default"
       handler=".to22.upgrade_default"
       />

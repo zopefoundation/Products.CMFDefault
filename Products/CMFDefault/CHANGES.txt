@@ -4,11 +4,14 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- profiles: Added add view expressions to content type definitions.
+
 - skins/zpt_generic/permalink.py: fix typos, wrap object correctly.
   See: https://bugs.launchpad.net/bugs/299058 .
 
 - upgrade: Added basic upgrade steps.
-  So far they just allow to add and upgrade the root site manager.
+  So far they just allow to add and upgrade the root site manager and to set
+  add view expressions.
 
 - DiscussionTool: Make sure to only ask "real" content for their type
   information when checking whether discussions are allowed or not.

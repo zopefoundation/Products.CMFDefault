@@ -15,6 +15,7 @@
 $Id$
 """
 import logging
+from urllib import quote
 
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -25,9 +26,23 @@ def upgrade_default(tool):
     portal = aq_parent(aq_inner(tool))
     logger = logging.getLogger('GenericSetup.upgrade')
     upgrade_CMFSite_object(portal, logger)
+    upgrade_TypeInfos(portal, logger)
 
 def upgrade_CMFSite_object(portal, logger):
     components = portal.getSiteManager()
     if components.__name__ != '++etc++site':
         components.__name__ = '++etc++site'
         logger.info('Site manager name changed.')
+
+def upgrade_TypeInfos(portal, logger):
+    ttool = portal.portal_types
+    for ti in ttool.listTypeInfo():
+        if ti.getProperty('content_meta_type') == 'Discussion Item':
+            continue
+        if ti.getProperty('add_view_expr'):
+            continue
+        ti._updateProperty('add_view_expr',
+                           'string:${folder_url}/++add++%s'
+                           % quote(ti.getId()))
+        logger.info("TypeInfo '%s' changed." % ti.getId())
+

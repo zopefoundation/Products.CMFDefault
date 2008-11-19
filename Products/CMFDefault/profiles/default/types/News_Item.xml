@@ -9,7 +9,8 @@
  <property name="content_meta_type">News Item</property>
  <property name="product"></property>
  <property name="factory">cmf.newsitem</property>
- <property name="add_view_expr"></property>
+ <property
+    name="add_view_expr">string:${folder_url}/++add++News%20Item</property>
  <property name="immediate_view">metadata_edit_form</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

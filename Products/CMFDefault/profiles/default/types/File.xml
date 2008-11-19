@@ -8,7 +8,7 @@
  <property name="content_meta_type">Portal File</property>
  <property name="product"></property>
  <property name="factory">cmf.file</property>
- <property name="add_view_expr"></property>
+ <property name="add_view_expr">string:${folder_url}/++add++File</property>
  <property name="immediate_view">metadata_edit_form</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
