@@ -34,6 +34,10 @@ def upgrade_CMFSite_object(portal, logger):
         components.__name__ = '++etc++site'
         logger.info('Site manager name changed.')
 
+    if not portal.hasProperty('enable_actionicons'):
+        portal.manage_addProperty('enable_actionicons', False, 'boolean')
+        logger.info("'enable_actionicons' property added.")
+
 def upgrade_TypeInfos(portal, logger):
     ttool = portal.portal_types
     for ti in ttool.listTypeInfo():

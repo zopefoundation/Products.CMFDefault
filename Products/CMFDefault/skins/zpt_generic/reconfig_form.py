@@ -29,9 +29,8 @@ options['form'] = { 'action': target,
                     'title': ptool.title(),
                     'description': ptool.getProperty('description'),
                     'validate_email': ptool.getProperty('validate_email'),
-                    'default_charset':
-                                    ptool.getProperty('default_charset', ''),
-                    'email_charset': ptool.getProperty('email_charset', ''),
+                    'default_charset': ptool.getProperty('default_charset'),
+                    'email_charset': ptool.getProperty('email_charset'),
                     'enable_actionicons':
                                       ptool.getProperty('enable_actionicons'),
                     'listButtonInfos': tuple(buttons) }

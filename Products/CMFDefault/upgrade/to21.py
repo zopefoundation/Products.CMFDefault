@@ -83,3 +83,14 @@ def upgrade_CMFSite_object(portal, logger):
     if not tuple(components.registeredUtilities()):
         getMultiAdapter((components, SetupEnviron()), IBody).body = _XML
         logger.info('Utility registrations added.')
+
+    if not portal.hasProperty('email_charset'):
+        portal.manage_addProperty('email_charset', 'iso-8859-1', 'string')
+        prop_map = list(portal._properties)
+        for i in range(len(prop_map)):
+            if prop_map[i]['id'] == 'default_charset':
+                email_charset_info = prop_map.pop(-1)
+                prop_map.insert(i+1, email_charset_info)
+                portal._properties = tuple(prop_map)
+                break
+        logger.info("'email_charset' property added.")

@@ -10,4 +10,5 @@
  <property name="default_charset" type="string">utf-8</property>
  <property name="email_charset" type="string">iso-8859-1</property>
  <property name="enable_permalink" type="boolean">False</property>
+ <property name="enable_actionicons" type="boolean">False</property>
 </site>
