@@ -59,6 +59,7 @@ def upgrade_default(tool):
     portal = aq_parent(aq_inner(tool))
     logger = logging.getLogger('GenericSetup.upgrade')
     upgrade_CMFSite_object(aq_base(portal), logger)
+    upgrade_TypeInfos(portal, logger)
 
 def upgrade_CMFSite_object(portal, logger):
     try:
@@ -94,3 +95,22 @@ def upgrade_CMFSite_object(portal, logger):
                 portal._properties = tuple(prop_map)
                 break
         logger.info("'email_charset' property added.")
+
+_FACTORIES = {
+    'CMFCore-manage_addPortalFolder': 'cmf.folder',
+    'CMFCore-manage_addCMFBTreeFolder': 'cmf.folder.btree',
+    'CMFDefault-addDocument': 'cmf.document',
+    'CMFDefault-addFavorite': 'cmf.favorite',
+    'CMFDefault-addFile': 'cmf.file',
+    'CMFDefault-addImage': 'cmf.image',
+    'CMFDefault-addLink': 'cmf.link',
+    'CMFDefault-addNewsItem': 'cmf.newsitem'}
+
+def upgrade_TypeInfos(portal, logger):
+    ttool = portal.portal_types
+    for ti in ttool.listTypeInfo():
+        key = '%s-%s' % (ti.getProperty('product'), ti.getProperty('factory'))
+        if key in _FACTORIES:
+            ti._updateProperty('product', '')
+            ti._updateProperty('factory', _FACTORIES[key])
+            logger.info("TypeInfo '%s' changed." % ti.getId())

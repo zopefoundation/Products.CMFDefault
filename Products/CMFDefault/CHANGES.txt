@@ -10,8 +10,7 @@ Products.CMFDefault Changelog
   See: https://bugs.launchpad.net/bugs/299058 .
 
 - upgrade: Added basic upgrade steps.
-  So far they just allow to add and upgrade the root site manager and to set
-  add view expressions.
+  So far they just allow to upgrade the site object and types.
 
 - DiscussionTool: Make sure to only ask "real" content for their type
   information when checking whether discussions are allowed or not.

@@ -38,15 +38,33 @@ def upgrade_CMFSite_object(portal, logger):
         portal.manage_addProperty('enable_actionicons', False, 'boolean')
         logger.info("'enable_actionicons' property added.")
 
+_ACTION_ICONS = {'download': 'download_icon.png',
+                 'edit': 'edit_icon.png',
+                 'folderContents': 'folder_icon.png',
+                 'localroles': 'localroles_icon.png',
+                 'metadata': 'metadata_icon.png',
+                 'view': 'preview_icon.png',
+                 'publish': 'approve_icon.png',
+                 'reject': 'reject_icon.png',
+                 'retract': 'retract_icon.png',
+                 'submit': 'submit_icon.png',
+                 'reviewer_queue': 'worklist_icon.png',
+                 }
+
 def upgrade_TypeInfos(portal, logger):
     ttool = portal.portal_types
     for ti in ttool.listTypeInfo():
-        if ti.getProperty('content_meta_type') == 'Discussion Item':
-            continue
-        if ti.getProperty('add_view_expr'):
-            continue
-        ti._updateProperty('add_view_expr',
-                           'string:${folder_url}/++add++%s'
-                           % quote(ti.getId()))
-        logger.info("TypeInfo '%s' changed." % ti.getId())
-
+        changed = False
+        if ti.getProperty('content_meta_type') != 'Discussion Item' and \
+                not ti.getProperty('add_view_expr'):
+            ti._updateProperty('add_view_expr',
+                               'string:${folder_url}/++add++%s'
+                               % quote(ti.getId()))
+            changed = True
+        for ai in ti.listActions():
+            if not ai.getIconExpression() and ai.getId() in _ACTION_ICONS:
+                ai.setIconExpression('string:${portal_url}/%s'
+                                     % _ACTION_ICONS[ai.getId()])
+                changed = True
+        if changed:
+            logger.info("TypeInfo '%s' changed." % ti.getId())
