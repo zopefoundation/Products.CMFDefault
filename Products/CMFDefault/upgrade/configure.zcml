@@ -4,19 +4,94 @@
     i18n_domain="cmf_default">
 
   <genericsetup:upgradeStep
-      source="2.0"
-      destination="2.1"
-      title="Upgrade CMFDefault from 2.0 to 2.1 (only site object and types)"
+      title="Mark 2.0 upgrade as finished"
+      source="*"
+      destination="2.0"
       profile="Products.CMFDefault:default"
-      handler=".to21.upgrade_default"
+      handler=".mark_as_finished"
+      sortkey="1"
       />
 
+  <genericsetup:upgradeSteps
+      source="2.0"
+      destination="2.1"
+      profile="Products.CMFDefault:default"
+      sortkey="2">
+
+    <genericsetup:upgradeStep
+        title="Add root site manager"
+        handler=".to21.add_root_site_manager"
+        checker=".to21.check_root_site_manager"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade root lookup class"
+        handler=".to21.upgrade_root_lookup_class"
+        checker=".to21.check_root_lookup_class"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade root properties"
+        handler=".to21.upgrade_root_properties"
+        checker=".to21.check_root_properties"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade type properties"
+        handler=".to21.upgrade_type_properties"
+        checker=".to21.check_type_properties"
+        />
+
+  </genericsetup:upgradeSteps>
+
   <genericsetup:upgradeStep
+      title="Mark 2.1 upgrade as finished"
+      source="2.0"
+      destination="2.1"
+      profile="Products.CMFDefault:default"
+      handler=".mark_as_finished"
+      sortkey="3"
+      />
+
+  <genericsetup:upgradeSteps
       source="2.1"
       destination="2.2"
-      title="Upgrade CMFDefault from 2.1 to 2.2 (only site object and types)"
       profile="Products.CMFDefault:default"
-      handler=".to22.upgrade_default"
+      sortkey="4">
+
+    <genericsetup:upgradeStep
+        title="Upgrade root site manager"
+        handler=".to22.upgrade_root_site_manager"
+        checker=".to22.check_root_site_manager"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade root properties"
+        handler=".to22.upgrade_root_properties"
+        checker=".to22.check_root_properties"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade type properties"
+        handler=".to22.upgrade_type_properties"
+        checker=".to22.check_type_properties"
+        />
+
+    <genericsetup:upgradeStep
+        title="Add action icons"
+        handler=".to22.add_action_icons"
+        checker=".to22.check_action_icons"
+        />
+
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+      title="Mark 2.2 upgrade as finished"
+      source="2.1"
+      destination="2.2"
+      profile="Products.CMFDefault:default"
+      handler=".mark_as_finished"
+      sortkey="5"
       />
 
 </configure>

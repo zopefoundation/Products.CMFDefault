@@ -14,3 +14,7 @@
 
 $Id$
 """
+
+def mark_as_finished(tool):
+    """empty upgrade step handler
+    """

@@ -19,24 +19,73 @@ from urllib import quote
 
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from zope.component.interfaces import ComponentLookupError
 
-def upgrade_default(tool):
-    """2.1.x to 2.2.0 upgrade step handler
+from Products.CMFCore.utils import getToolByName
+
+def check_root_site_manager(tool):
+    """2.1.x to 2.2.0 upgrade step checker
     """
     portal = aq_parent(aq_inner(tool))
+    try:
+        components = portal.getSiteManager()
+    except ComponentLookupError:
+        return True
+    return components.__name__ != '++etc++site'
+
+def upgrade_root_site_manager(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
     logger = logging.getLogger('GenericSetup.upgrade')
-    upgrade_CMFSite_object(portal, logger)
-    upgrade_TypeInfos(portal, logger)
+    portal = aq_parent(aq_inner(tool))
+    try:
+        components = portal.getSiteManager()
+    except ComponentLookupError:
+        logger.warning("Site manager missing.")
+        return
+    components.__name__ = '++etc++site'
+    logger.info("Site manager name changed to '++etc++site'.")
 
-def upgrade_CMFSite_object(portal, logger):
-    components = portal.getSiteManager()
-    if components.__name__ != '++etc++site':
-        components.__name__ = '++etc++site'
-        logger.info('Site manager name changed.')
+def check_root_properties(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    return not portal.hasProperty('enable_actionicons')
 
-    if not portal.hasProperty('enable_actionicons'):
-        portal.manage_addProperty('enable_actionicons', False, 'boolean')
-        logger.info("'enable_actionicons' property added.")
+def upgrade_root_properties(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    portal.manage_addProperty('enable_actionicons', False, 'boolean')
+    logger.info("'enable_actionicons' property added.")
+
+def check_type_properties(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        if ti.getProperty('add_view_expr'):
+            continue
+        if ti.getProperty('content_meta_type') == 'Discussion Item':
+            continue
+        return True
+    return False
+
+def upgrade_type_properties(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        if ti.getProperty('add_view_expr'):
+            continue
+        if ti.getProperty('content_meta_type') == 'Discussion Item':
+            continue
+        ti._updateProperty('add_view_expr',
+                           'string:${folder_url}/++add++%s'
+                           % quote(ti.getId()))
+        logger.info("TypeInfo '%s' changed." % ti.getId())
 
 _ACTION_ICONS = {'download': 'download_icon.png',
                  'edit': 'edit_icon.png',
@@ -51,16 +100,23 @@ _ACTION_ICONS = {'download': 'download_icon.png',
                  'reviewer_queue': 'worklist_icon.png',
                  }
 
-def upgrade_TypeInfos(portal, logger):
-    ttool = portal.portal_types
+def check_action_icons(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        for ai in ti.listActions():
+            if not ai.getIconExpression() and ai.getId() in _ACTION_ICONS:
+                return True
+    return False
+
+def add_action_icons(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    ttool = getToolByName(tool, 'portal_types')
     for ti in ttool.listTypeInfo():
         changed = False
-        if ti.getProperty('content_meta_type') != 'Discussion Item' and \
-                not ti.getProperty('add_view_expr'):
-            ti._updateProperty('add_view_expr',
-                               'string:${folder_url}/++add++%s'
-                               % quote(ti.getId()))
-            changed = True
         for ai in ti.listActions():
             if not ai.getIconExpression() and ai.getId() in _ACTION_ICONS:
                 ai.setIconExpression('string:${portal_url}/%s'

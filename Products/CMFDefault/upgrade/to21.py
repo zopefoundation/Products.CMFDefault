@@ -26,6 +26,7 @@ from zope.component import getMultiAdapter
 from zope.component.globalregistry import base
 from zope.component.interfaces import ComponentLookupError
 
+from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.context import SetupEnviron
 from Products.GenericSetup.interfaces import IBody
 
@@ -53,48 +54,76 @@ _XML = """\
 </componentregistry>
 """
 
-def upgrade_default(tool):
+def check_root_site_manager(tool):
+    """2.0.x to 2.1.0 upgrade step checker
+    """
+    portal = aq_base(aq_parent(aq_inner(tool)))
+    try:
+        portal.getSiteManager()
+        return False
+    except ComponentLookupError:
+        return True
+
+def add_root_site_manager(tool):
     """2.0.x to 2.1.0 upgrade step handler
     """
-    portal = aq_parent(aq_inner(tool))
     logger = logging.getLogger('GenericSetup.upgrade')
-    upgrade_CMFSite_object(aq_base(portal), logger)
-    upgrade_TypeInfos(portal, logger)
+    portal = aq_base(aq_parent(aq_inner(tool)))
+    next = find_next_sitemanager(portal)
+    if next is None:
+        next = base
+    name = '/'.join(portal.getPhysicalPath())
+    components = PersistentComponents(name, (next,))
+    components.__parent__ = portal
+    portal.setSiteManager(components)
+    logger.info("Site manager '%s' added." % name)
+    getMultiAdapter((components, SetupEnviron()), IBody).body = _XML
+    logger.info('Utility registrations added.')
 
-def upgrade_CMFSite_object(portal, logger):
+def check_root_lookup_class(tool):
+    """2.1 beta to 2.1.0 upgrade step checker
+    """
+    portal = aq_base(aq_parent(aq_inner(tool)))
     try:
         components = portal.getSiteManager()
     except ComponentLookupError:
-        next = find_next_sitemanager(portal)
-        if next is None:
-            next = base
-        name = '/'.join(portal.getPhysicalPath())
-        components = PersistentComponents(name, (next,))
-        components.__parent__ = portal
-        portal.setSiteManager(components)
-        logger.info("Site manager '%s' added." % name)
-    else:
-        if components.utilities.LookupClass != FiveVerifyingAdapterLookup:
-            # for CMF 2.1 beta instances
-            components.__parent__ = portal
-            components.utilities.LookupClass = FiveVerifyingAdapterLookup
-            components.utilities._createLookup()
-            components.utilities.__parent__ = components
-            logger.info('LookupClass replaced.')
-    if not tuple(components.registeredUtilities()):
-        getMultiAdapter((components, SetupEnviron()), IBody).body = _XML
-        logger.info('Utility registrations added.')
+        return False
+    return components.utilities.LookupClass != FiveVerifyingAdapterLookup
 
-    if not portal.hasProperty('email_charset'):
-        portal.manage_addProperty('email_charset', 'iso-8859-1', 'string')
-        prop_map = list(portal._properties)
-        for i in range(len(prop_map)):
-            if prop_map[i]['id'] == 'default_charset':
-                email_charset_info = prop_map.pop(-1)
-                prop_map.insert(i+1, email_charset_info)
-                portal._properties = tuple(prop_map)
-                break
-        logger.info("'email_charset' property added.")
+def upgrade_root_lookup_class(tool):
+    """2.1 beta to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_base(aq_parent(aq_inner(tool)))
+    components = portal.getSiteManager()
+    components.__parent__ = portal
+    components.utilities.LookupClass = FiveVerifyingAdapterLookup
+    components.utilities._createLookup()
+    components.utilities.__parent__ = components
+    logger.info('LookupClass replaced.')
+    getMultiAdapter((components, SetupEnviron()), IBody).body = _XML
+    logger.info('Utility registrations replaced.')
+
+def check_root_properties(tool):
+    """2.0.x to 2.1.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    return not portal.hasProperty('email_charset')
+
+def upgrade_root_properties(tool):
+    """2.0.x to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    portal.manage_addProperty('email_charset', 'iso-8859-1', 'string')
+    prop_map = list(portal._properties)
+    for i in range(len(prop_map)):
+        if prop_map[i]['id'] == 'default_charset':
+            email_charset_info = prop_map.pop(-1)
+            prop_map.insert(i+1, email_charset_info)
+            portal._properties = tuple(prop_map)
+            break
+    logger.info("'email_charset' property added.")
 
 _FACTORIES = {
     'CMFCore-manage_addPortalFolder': 'cmf.folder',
@@ -106,8 +135,21 @@ _FACTORIES = {
     'CMFDefault-addLink': 'cmf.link',
     'CMFDefault-addNewsItem': 'cmf.newsitem'}
 
-def upgrade_TypeInfos(portal, logger):
-    ttool = portal.portal_types
+def check_type_properties(tool):
+    """2.0.x to 2.1.0 upgrade step checker
+    """
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        key = '%s-%s' % (ti.getProperty('product'), ti.getProperty('factory'))
+        if key in _FACTORIES:
+            return True
+    return False
+
+def upgrade_type_properties(tool):
+    """2.0.x to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    ttool = getToolByName(tool, 'portal_types')
     for ti in ttool.listTypeInfo():
         key = '%s-%s' % (ti.getProperty('product'), ti.getProperty('factory'))
         if key in _FACTORIES:
