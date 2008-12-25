@@ -22,6 +22,13 @@
 
   <adapter factory=".folder.FallbackAddView" />
 
+  <class class=".folder.FallbackAddView">
+    <require
+        permission="cmf.AddPortalContent"
+        interface="zope.formlib.interfaces.IPageForm"
+        />
+  </class>
+
   <adapter factory=".metadata.MinimalMetadataSchemaAdapter"/>
 
   <browser:page
@@ -83,6 +90,13 @@
       factory=".link.LinkAddView"
       />
 
+  <class class=".link.LinkAddView">
+    <require
+        permission="cmf.AddPortalContent"
+        interface="zope.formlib.interfaces.IPageForm"
+        />
+  </class>
+
   <browser:page
       for="..interfaces.ILink"
       layer="..interfaces.ICMFDefaultSkin"
@@ -107,6 +121,13 @@
       factory=".favorite.FavoriteAddView"
       />
 
+  <class class=".favorite.FavoriteAddView">
+    <require
+        permission="cmf.AddPortalContent"
+        interface="zope.formlib.interfaces.IPageForm"
+        />
+  </class>
+
   <browser:page
       for="..interfaces.IMutableFavorite"
       layer="..interfaces.ICMFDefaultSkin"
@@ -121,6 +142,13 @@
       name="cmf.file"
       factory=".file.FileAddView"
       />
+
+  <class class=".file.FileAddView">
+    <require
+        permission="cmf.AddPortalContent"
+        interface="zope.formlib.interfaces.IPageForm"
+        />
+  </class>
 
   <adapter
       name="cmf.image"

@@ -15,8 +15,6 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
 from zope.component import adapts
 from zope.formlib import form
 from zope.interface import implements
@@ -31,7 +29,6 @@ from Products.CMFDefault.formlib.schema import FileUpload
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.interfaces import IMutableFile
-from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 
 
@@ -93,9 +90,6 @@ class FileAddView(ContentAddFormBase):
     """Add view for IMutableFile.
     """
 
-    security = ClassSecurityInfo()
-    security.declareObjectProtected(AddPortalContent)
-
     form_fields = (
         form.FormFields(IFileSchema).select('title', 'description') +
         form.FormFields(FileUpload(__name__='file', title=_(u'Upload')))
@@ -116,8 +110,6 @@ class FileAddView(ContentAddFormBase):
         adapted.description = data['description']
         adapted.file = data['file']
         return obj
-
-InitializeClass(FileAddView)
 
 
 class FileEditView(ContentEditFormBase):

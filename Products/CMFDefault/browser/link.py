@@ -17,8 +17,6 @@ $Id$
 
 import urlparse
 
-from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
 from zope.app.form.browser import BytesWidget
 from zope.component import adapts
 from zope.formlib import form
@@ -35,7 +33,6 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import IMutableLink
-from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 
 from utils import decode
@@ -124,9 +121,6 @@ class LinkAddView(ContentAddFormBase):
     """Add view for IMutableLink.
     """
 
-    security = ClassSecurityInfo()
-    security.declareObjectProtected(AddPortalContent)
-
     form_fields = (
         form.FormFields(ASCIILine(__name__='id', title=_(u'ID'))) +
         form.FormFields(ILinkSchema).omit('language')
@@ -146,8 +140,6 @@ class LinkAddView(ContentAddFormBase):
         adapted.description = data['description']
         adapted.remote_url = data['remote_url']
         return obj
-
-InitializeClass(LinkAddView)
 
 
 class LinkEditView(ContentEditFormBase):

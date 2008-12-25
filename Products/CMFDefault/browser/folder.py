@@ -15,9 +15,7 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
 from DocumentTemplate import sequence
-from Globals import InitializeClass
 from Products.PythonScripts.standard import thousands_commas
 from zope.formlib import form
 from zope.schema import ASCIILine
@@ -49,9 +47,6 @@ class FallbackAddView(ContentAddFormBase):
     """Add view for IDynamicType content.
     """
 
-    security = ClassSecurityInfo()
-    security.declareObjectProtected(AddPortalContent)
-
     form_fields = form.FormFields(ASCIILine(__name__='id', title=_(u'ID')))
     form_fields['id'].custom_widget = IDInputWidget
 
@@ -69,8 +64,6 @@ class FallbackAddView(ContentAddFormBase):
         self._finished_add = True
         self._added_obj = obj
         return obj
-
-InitializeClass(FallbackAddView)
 
 
 # XXX: This should be refactored using formlib. Please don't import from this

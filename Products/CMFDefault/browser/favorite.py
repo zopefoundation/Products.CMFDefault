@@ -17,8 +17,6 @@ $Id$
 
 import urlparse
 
-from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
 from zope.app.form.browser import BytesWidget
 from zope.component import adapts
 from zope.formlib import form
@@ -36,7 +34,6 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import IMutableFavorite
-from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 
 
@@ -119,9 +116,6 @@ class FavoriteAddView(ContentAddFormBase):
     """Add view for IMutableFavorite.
     """
 
-    security = ClassSecurityInfo()
-    security.declareObjectProtected(AddPortalContent)
-
     form_fields = (
         form.FormFields(ASCIILine(__name__='id', title=_(u'ID'))) +
         form.FormFields(IFavoriteSchema).omit('language')
@@ -142,8 +136,6 @@ class FavoriteAddView(ContentAddFormBase):
         adapted.description = data['description']
         adapted.remote_url = data['remote_url']
         return obj
-
-InitializeClass(FavoriteAddView)
 
 
 class FavoriteEditView(ContentEditFormBase):
