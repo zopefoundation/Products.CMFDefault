@@ -28,11 +28,11 @@ from zope.component import getUtility
 from zope.component.interfaces import IFactory
 from zope.datetime import parseDatetimetz
 from zope.formlib import form
+from zope.formlib.interfaces import IPageForm
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
 from zope.interface import implementsOnly
-from zope.publisher.interfaces.browser import IBrowserView
 from ZTUtils import make_query
 
 from Products.CMFCore.interfaces import IFolderish
@@ -113,7 +113,7 @@ class EditFormBase(_EditFormMixin, PageForm):
 class ContentAddFormBase(_EditFormMixin, PageAddForm):
 
     adapts(IFolderish, ICMFDefaultSkin, ITypeInformation)
-    implementsOnly(IBrowserView)
+    implementsOnly(IPageForm)
 
     actions = form.Actions(
         form.Action(
