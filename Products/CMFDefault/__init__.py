@@ -15,60 +15,58 @@
 $Id$
 """
 
-from Products.CMFCore.utils import ToolInit
-from Products.CMFCore.utils import ContentInit
-from Products.CMFCore.utils import registerIcon
-
-import DefaultWorkflow
-import DiscussionTool
-import Document
-import factory
-import Favorite
-import File
-import Image
-import Link
-import MembershipTool
-import MetadataTool
-import NewsItem
-import Portal
-import PropertiesTool
-import RegistrationTool
-import SkinnedFolder
-import SyndicationTool
-from permissions import AddPortalContent
-
-
-# Make sure security is initialized
-import DiscussionItem
-import DublinCore
-import utils
-
-contentConstructors = ( Document.addDocument
-                      , File.addFile
-                      , Image.addImage
-                      , Link.addLink
-                      , Favorite.addFavorite
-                      , NewsItem.addNewsItem
-                      , SkinnedFolder.addSkinnedFolder
-                      )
-
-tools = ( DiscussionTool.DiscussionTool
-        , MembershipTool.MembershipTool
-        , RegistrationTool.RegistrationTool
-        , PropertiesTool.PropertiesTool
-        , MetadataTool.MetadataTool
-        , SyndicationTool.SyndicationTool
-        )
-
-# Register the ID to interface data for those items that don't have their 
-# own module
-from Products.CMFCore.utils import registerToolInterface
-from Products.GenericSetup.interfaces import ISetupTool
-registerToolInterface('portal_setup', ISetupTool)
-from Products.MailHost.interfaces import IMailHost
-registerToolInterface('MailHost', IMailHost)
-
 def initialize(context):
+    from Products.CMFCore.utils import ToolInit
+    from Products.CMFCore.utils import ContentInit
+    from Products.CMFCore.utils import registerIcon
+    from Products.CMFDefault.permissions import AddPortalContent
+
+    import DefaultWorkflow
+    import DiscussionTool
+    import Document
+    import factory
+    import Favorite
+    import File
+    import Image
+    import Link
+    import MembershipTool
+    import MetadataTool
+    import NewsItem
+    import Portal
+    import PropertiesTool
+    import RegistrationTool
+    import SkinnedFolder
+    import SyndicationTool
+
+    # Make sure security is initialized
+    import DiscussionItem
+    import DublinCore
+    import utils
+
+    contentConstructors = ( Document.addDocument
+                        , File.addFile
+                        , Image.addImage
+                        , Link.addLink
+                        , Favorite.addFavorite
+                        , NewsItem.addNewsItem
+                        , SkinnedFolder.addSkinnedFolder
+                        )
+
+    tools = ( DiscussionTool.DiscussionTool
+            , MembershipTool.MembershipTool
+            , RegistrationTool.RegistrationTool
+            , PropertiesTool.PropertiesTool
+            , MetadataTool.MetadataTool
+            , SyndicationTool.SyndicationTool
+            )
+
+    # Register the ID to interface data for those items that don't have their 
+    # own module
+    from Products.CMFCore.utils import registerToolInterface
+    from Products.GenericSetup.interfaces import ISetupTool
+    registerToolInterface('portal_setup', ISetupTool)
+    from Products.MailHost.interfaces import IMailHost
+    registerToolInterface('MailHost', IMailHost)
 
     ToolInit( 'CMF Default Tool'
             , tools=tools
