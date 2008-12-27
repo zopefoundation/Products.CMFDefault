@@ -15,15 +15,15 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from App.class_init import default__class_init__ as InitializeClass
 from zope.component.factory import Factory
 from zope.interface import implements
 
-from Document import Document
-from interfaces import IMutableNewsItem
-from interfaces import INewsItem
-from permissions import ModifyPortalContent
+from Products.CMFDefault.Document import Document
+from Products.CMFDefault.interfaces import IMutableNewsItem
+from Products.CMFDefault.interfaces import INewsItem
+from Products.CMFDefault.permissions import ModifyPortalContent
 
 
 def addNewsItem( self

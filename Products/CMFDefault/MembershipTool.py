@@ -15,25 +15,25 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from Globals import DTMLFile
-from Globals import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
+from App.special_dtml import DTMLFile
 from zope.interface import implements
 
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
 
-from Document import addDocument
-from interfaces import IMembershipTool
-from permissions import ListPortalMembers
-from permissions import ManagePortal
-from permissions import ManageUsers
-from permissions import View
-from utils import _dtmldir
+from Products.CMFDefault.Document import addDocument
+from Products.CMFDefault.interfaces import IMembershipTool
+from Products.CMFDefault.permissions import ListPortalMembers
+from Products.CMFDefault.permissions import ManagePortal
+from Products.CMFDefault.permissions import ManageUsers
+from Products.CMFDefault.permissions import View
+from Products.CMFDefault.utils import _dtmldir
 
 DEFAULT_MEMBER_CONTENT = """\
 Default page for %s

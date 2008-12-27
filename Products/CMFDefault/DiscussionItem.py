@@ -15,13 +15,16 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
-from Acquisition import Implicit, aq_base, aq_inner, aq_parent
-from DateTime import DateTime
-from Globals import InitializeClass
-from Globals import Persistent
-from Globals import PersistentMapping
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from Acquisition import Implicit
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from DateTime.DateTime import DateTime
+from App.class_init import default__class_init__ as InitializeClass
 from OFS.Traversable import Traversable
+from Persistence import Persistent
+from Persistence import PersistentMapping
 from zope.component import getUtility
 from zope.interface import implements
 
@@ -30,11 +33,11 @@ from Products.CMFCore.interfaces import IDiscussable
 from Products.CMFCore.interfaces import IDiscussionResponse
 from Products.CMFCore.interfaces import IDiscussionTool
 
-from Document import Document
-from permissions import AccessContentsInformation
-from permissions import ManagePortal
-from permissions import ReplyToItem
-from permissions import View
+from Products.CMFDefault.Document import Document
+from Products.CMFDefault.permissions import AccessContentsInformation
+from Products.CMFDefault.permissions import ManagePortal
+from Products.CMFDefault.permissions import ReplyToItem
+from Products.CMFDefault.permissions import View
 
 
 class DiscussionItem(Document):

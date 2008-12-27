@@ -24,8 +24,8 @@ from Products.GenericSetup import EXTENSION
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup.tool import SetupTool
 
-from Portal import CMFSite
-from utils import _wwwdir
+from Products.CMFDefault.Portal import CMFSite
+from Products.CMFDefault.utils import _wwwdir
 
 _TOOL_ID = 'portal_setup'
 

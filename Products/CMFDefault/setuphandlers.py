@@ -15,7 +15,7 @@
 $Id$
 """
 
-from exceptions import BadRequest
+from Products.CMFDefault.exceptions import BadRequest
 
 
 def importVarious(context):

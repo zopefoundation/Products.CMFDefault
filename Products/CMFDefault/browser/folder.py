@@ -15,15 +15,20 @@
 $Id$
 """
 
-from DocumentTemplate import sequence
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from DocumentTemplate import sequence  # for sort()
+from App.class_init import default__class_init__ as InitializeClass
 from Products.PythonScripts.standard import thousands_commas
-from zope.formlib import form
+from zope.formlib.form import FormFields
 from zope.schema import ASCIILine
 from ZTUtils import Batch
 from ZTUtils import LazyFilter
 from ZTUtils import make_query
 
 from Products.CMFCore.interfaces import IDynamicType
+from Products.CMFDefault.browser.utils import decode
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.formlib.form import ContentAddFormBase
@@ -34,12 +39,8 @@ from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.permissions import ViewManagementScreens
 from Products.CMFDefault.utils import html_marshal
-from Products.CMFDefault.utils import translate
 from Products.CMFDefault.utils import Message as _
-
-from utils import decode
-from utils import memoize
-from utils import ViewBase
+from Products.CMFDefault.utils import translate
 
 
 class FallbackAddView(ContentAddFormBase):
@@ -47,7 +48,7 @@ class FallbackAddView(ContentAddFormBase):
     """Add view for IDynamicType content.
     """
 
-    form_fields = form.FormFields(ASCIILine(__name__='id', title=_(u'ID')))
+    form_fields = FormFields(ASCIILine(__name__='id', title=_(u'ID')))
     form_fields['id'].custom_widget = IDInputWidget
 
     def createAndAdd(self, data):

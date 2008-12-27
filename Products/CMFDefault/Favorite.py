@@ -17,9 +17,9 @@ $Id$
 
 import urlparse
 
-from AccessControl import ClassSecurityInfo
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
-from Globals import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import adapter
 from zope.component import getUtility
@@ -29,11 +29,11 @@ from zope.interface import implements
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
-from DublinCore import DefaultDublinCoreImpl
-from interfaces import IFavorite
-from interfaces import IMutableFavorite
-from Link import Link
-from permissions import View
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFDefault.interfaces import IFavorite
+from Products.CMFDefault.interfaces import IMutableFavorite
+from Products.CMFDefault.Link import Link
+from Products.CMFDefault.permissions import View
 
 
 def addFavorite(self, id, title='', remote_url='', description=''):

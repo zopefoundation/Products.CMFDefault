@@ -14,21 +14,20 @@
 
 $Id$
 """
-
-import transaction
-from AccessControl import ClassSecurityInfo
-from AccessControl import getSecurityManager
-from Acquisition import aq_base
-from App.config import getConfiguration
-from DocumentTemplate.DT_Util import html_quote
-from Globals import DTMLFile
-from Globals import InitializeClass
 try:
     from reStructuredText import HTML as ReST
     REST_AVAILABLE = True
 except ImportError:
     REST_AVAILABLE = False
-   
+
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from AccessControl.SecurityManagement import getSecurityManager
+from Acquisition import aq_base
+from App.config import getConfiguration
+from App.class_init import default__class_init__ as InitializeClass
+from App.special_dtml import DTMLFile
+from DocumentTemplate.DT_Util import html_quote
+import transaction
 from zope.component import queryUtility
 from zope.component.factory import Factory
 from zope.interface import implements
@@ -40,20 +39,20 @@ from Products.CMFCore.utils import contributorsplitter
 from Products.CMFCore.utils import keywordsplitter
 from Products.GenericSetup.interfaces import IDAVAware
 
-from DublinCore import DefaultDublinCoreImpl
-from exceptions import EditingConflict
-from exceptions import ResourceLockedError
-from interfaces import IDocument
-from interfaces import IMutableDocument
-from permissions import ModifyPortalContent
-from permissions import View
-from utils import _dtmldir
-from utils import bodyfinder
-from utils import formatRFC822Headers
-from utils import html_headcheck
-from utils import Message as _
-from utils import parseHeadersBody
-from utils import SimpleHTMLParser
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFDefault.exceptions import EditingConflict
+from Products.CMFDefault.exceptions import ResourceLockedError
+from Products.CMFDefault.interfaces import IDocument
+from Products.CMFDefault.interfaces import IMutableDocument
+from Products.CMFDefault.permissions import ModifyPortalContent
+from Products.CMFDefault.permissions import View
+from Products.CMFDefault.utils import _dtmldir
+from Products.CMFDefault.utils import bodyfinder
+from Products.CMFDefault.utils import formatRFC822Headers
+from Products.CMFDefault.utils import html_headcheck
+from Products.CMFDefault.utils import Message as _
+from Products.CMFDefault.utils import parseHeadersBody
+from Products.CMFDefault.utils import SimpleHTMLParser
 
 
 def addDocument(self, id, title='', description='', text_format='', text=''):

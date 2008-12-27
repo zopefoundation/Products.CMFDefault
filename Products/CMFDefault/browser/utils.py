@@ -16,7 +16,7 @@ $Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from Globals import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 from Products.Five import BrowserView
 from zope.component import getUtility
 

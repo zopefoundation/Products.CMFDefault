@@ -15,23 +15,23 @@
 $Id$
 """
 
-import os
-import re
-import StringIO
-import rfc822
 from email.Header import make_header
 from email.MIMEText import MIMEText
+import os
+import re
+import rfc822
 from sgmllib import SGMLParser
+import StringIO
 
-from AccessControl import ModuleSecurityInfo
-from Globals import package_home
+from AccessControl.SecurityInfo import ModuleSecurityInfo
+from App.Common import package_home
 from Products.PageTemplates.GlobalTranslationService \
         import getGlobalTranslationService
 from ZTUtils.Zope import complex_marshal
 
-from zope import i18n
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope import i18n # disambiguation
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.i18nmessageid import MessageFactory
 

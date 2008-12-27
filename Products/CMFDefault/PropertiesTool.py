@@ -15,9 +15,10 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_inner, aq_parent
-from Globals import InitializeClass, DTMLFile
+from App.class_init import default__class_init__ as InitializeClass
+from App.special_dtml import DTMLFile
 from OFS.SimpleItem import SimpleItem
 from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
@@ -29,8 +30,8 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 
-from permissions import ManagePortal
-from utils import _dtmldir
+from Products.CMFDefault.permissions import ManagePortal
+from Products.CMFDefault.utils import _dtmldir
 
 
 class PropertiesTool(UniqueObject, SimpleItem):

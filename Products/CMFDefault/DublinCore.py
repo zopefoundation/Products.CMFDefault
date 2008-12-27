@@ -15,12 +15,12 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
-from AccessControl import getSecurityManager
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
 from DateTime.DateTime import DateTime
-from Globals import DTMLFile
-from Globals import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
+from App.special_dtml import DTMLFile
 from OFS.PropertyManager import PropertyManager
 from zope.interface import implements
 
@@ -29,11 +29,11 @@ from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
 from Products.CMFCore.utils import getToolByName
 
-from permissions import ModifyPortalContent
-from permissions import View
-from utils import _dtmldir
-from utils import semi_split
-from utils import tuplize
+from Products.CMFDefault.permissions import ModifyPortalContent
+from Products.CMFDefault.permissions import View
+from Products.CMFDefault.utils import _dtmldir
+from Products.CMFDefault.utils import semi_split
+from Products.CMFDefault.utils import tuplize
 
 _marker=[]
 

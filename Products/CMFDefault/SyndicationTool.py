@@ -17,11 +17,11 @@ Manage outbound RSS syndication of folder content.
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
-from DateTime import DateTime
-from Globals import HTMLFile
-from Globals import InitializeClass
+from DateTime.DateTime import DateTime
+from App.class_init import default__class_init__ as InitializeClass
+from App.special_dtml import HTMLFile
 from OFS.SimpleItem import SimpleItem
 from zope.interface import implements
 
@@ -31,20 +31,17 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 
-from exceptions import AccessControl_Unauthorized
-from permissions import ManagePortal
-from permissions import ManageProperties
-from SyndicationInfo import SyndicationInformation
-from utils import _dtmldir
+from Products.CMFDefault.exceptions import AccessControl_Unauthorized
+from Products.CMFDefault.permissions import ManagePortal
+from Products.CMFDefault.permissions import ManageProperties
+from Products.CMFDefault.SyndicationInfo import SyndicationInformation
+from Products.CMFDefault.utils import _dtmldir
 
 
 class SyndicationTool(UniqueObject, SimpleItem):
-
-    """
-        The syndication tool manages the site-wide policy for
+    """ The syndication tool manages the site-wide policy for
         syndication of folder content as RSS.
     """
-
     implements(ISyndicationTool)
 
     id = 'portal_syndication'

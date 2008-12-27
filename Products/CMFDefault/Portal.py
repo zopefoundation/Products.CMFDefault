@@ -15,16 +15,16 @@
 $Id$
 """
 
-from Globals import InitializeClass
+from App.class_init import default__class_init__ as InitializeClass
 
 from Products.CMFCore.PortalObject import PortalObjectBase
 
-from DublinCore import DefaultDublinCoreImpl
-from permissions import AddPortalContent
-from permissions import AddPortalFolders
-from permissions import ListPortalMembers
-from permissions import ReplyToItem
-from permissions import View
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFDefault.permissions import AddPortalContent
+from Products.CMFDefault.permissions import AddPortalFolders
+from Products.CMFDefault.permissions import ListPortalMembers
+from Products.CMFDefault.permissions import ReplyToItem
+from Products.CMFDefault.permissions import View
 
 
 class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):

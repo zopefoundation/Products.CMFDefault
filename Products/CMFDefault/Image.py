@@ -16,10 +16,10 @@ Zope's built-in Image object.
 $Id$
 """
 
-import OFS.Image
-from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from App.class_init import default__class_init__ as InitializeClass
 from OFS.Cache import Cacheable
+import OFS.Image  # disambiguation
 from zope.component.factory import Factory
 from zope.interface import implements
 
@@ -30,11 +30,11 @@ from Products.CMFCore.utils import _setCacheHeaders
 from Products.CMFCore.utils import _ViewEmulator
 from Products.GenericSetup.interfaces import IDAVAware
 
-from DublinCore import DefaultDublinCoreImpl
-from interfaces import IImage
-from interfaces import IMutableImage
-from permissions import ModifyPortalContent
-from permissions import View
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFDefault.interfaces import IImage
+from Products.CMFDefault.interfaces import IMutableImage
+from Products.CMFDefault.permissions import ModifyPortalContent
+from Products.CMFDefault.permissions import View
 
 
 def addImage( self

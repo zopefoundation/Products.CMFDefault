@@ -15,12 +15,12 @@
 $Id$
 """
 
-from AccessControl import ClassSecurityInfo
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from DateTime import DateTime
-from Globals import InitializeClass
+from DateTime.DateTime import DateTime
+from App.class_init import default__class_init__ as InitializeClass
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import IWorkflowDefinition
@@ -29,11 +29,11 @@ from Products.CMFCore.utils import _modifyPermissionMappings
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import SimpleItemWithProperties
 
-from exceptions import AccessControl_Unauthorized
-from permissions import ModifyPortalContent
-from permissions import RequestReview
-from permissions import ReviewPortalContent
-from permissions import View
+from Products.CMFDefault.exceptions import AccessControl_Unauthorized
+from Products.CMFDefault.permissions import ModifyPortalContent
+from Products.CMFDefault.permissions import RequestReview
+from Products.CMFDefault.permissions import ReviewPortalContent
+from Products.CMFDefault.permissions import View
 
 
 class DefaultWorkflowDefinition(SimpleItemWithProperties):
