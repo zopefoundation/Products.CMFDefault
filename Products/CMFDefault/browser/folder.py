@@ -15,9 +15,7 @@
 $Id$
 """
 
-from AccessControl.SecurityInfo import ClassSecurityInfo
 from DocumentTemplate import sequence  # for sort()
-from App.class_init import default__class_init__ as InitializeClass
 from Products.PythonScripts.standard import thousands_commas
 from zope.formlib.form import FormFields
 from zope.schema import ASCIILine
