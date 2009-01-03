@@ -18,9 +18,9 @@ $Id$
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
-from DateTime.DateTime import DateTime
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from DateTime.DateTime import DateTime
 from OFS.PropertyManager import PropertyManager
 from zope.interface import implements
 
@@ -28,7 +28,6 @@ from Products.CMFCore.interfaces import ICatalogableDublinCore
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import View
 from Products.CMFDefault.utils import _dtmldir

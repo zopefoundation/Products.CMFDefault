@@ -24,7 +24,7 @@ from AccessControl.SecurityInfo import ClassSecurityInfo
 from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
 from App.config import getConfiguration
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from DocumentTemplate.DT_Util import html_quote
 import transaction
@@ -37,8 +37,6 @@ from Products.CMFCore.interfaces import ILinebreakNormalizer
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.utils import contributorsplitter
 from Products.CMFCore.utils import keywordsplitter
-from Products.GenericSetup.interfaces import IDAVAware
-
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.exceptions import EditingConflict
 from Products.CMFDefault.exceptions import ResourceLockedError
@@ -53,6 +51,7 @@ from Products.CMFDefault.utils import html_headcheck
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import parseHeadersBody
 from Products.CMFDefault.utils import SimpleHTMLParser
+from Products.GenericSetup.interfaces import IDAVAware
 
 
 def addDocument(self, id, title='', description='', text_format='', text=''):

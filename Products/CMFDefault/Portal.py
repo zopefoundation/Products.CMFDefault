@@ -15,10 +15,9 @@
 $Id$
 """
 
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 
 from Products.CMFCore.PortalObject import PortalObjectBase
-
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.permissions import AddPortalFolders

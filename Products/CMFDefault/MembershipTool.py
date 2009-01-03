@@ -19,14 +19,13 @@ from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from zope.interface import implements
 
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
-
 from Products.CMFDefault.Document import addDocument
 from Products.CMFDefault.interfaces import IMembershipTool
 from Products.CMFDefault.permissions import ListPortalMembers

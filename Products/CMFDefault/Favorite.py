@@ -19,7 +19,7 @@ import urlparse
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import adapter
 from zope.component import getUtility
@@ -28,7 +28,6 @@ from zope.interface import implements
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.interfaces import IFavorite
 from Products.CMFDefault.interfaces import IMutableFavorite

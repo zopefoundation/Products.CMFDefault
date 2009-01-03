@@ -18,7 +18,7 @@ $Id$
 import urlparse
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 import transaction
 from zope.component.factory import Factory
@@ -27,8 +27,6 @@ from zope.interface import implements
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.utils import contributorsplitter
 from Products.CMFCore.utils import keywordsplitter
-from Products.GenericSetup.interfaces import IDAVAware
-
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.exceptions import ResourceLockedError
 from Products.CMFDefault.interfaces import ILink
@@ -38,6 +36,7 @@ from Products.CMFDefault.permissions import View
 from Products.CMFDefault.utils import _dtmldir
 from Products.CMFDefault.utils import formatRFC822Headers
 from Products.CMFDefault.utils import parseHeadersBody
+from Products.GenericSetup.interfaces import IDAVAware
 
 
 def addLink( self

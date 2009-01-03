@@ -19,8 +19,8 @@ from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from App.class_init import InitializeClass
 from DateTime.DateTime import DateTime
-from App.class_init import default__class_init__ as InitializeClass
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import IWorkflowDefinition
@@ -28,7 +28,6 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _modifyPermissionMappings
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import SimpleItemWithProperties
-
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
 from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import RequestReview

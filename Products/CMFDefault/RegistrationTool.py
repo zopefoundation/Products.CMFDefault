@@ -20,16 +20,14 @@ from warnings import warn
 from AccessControl.requestmethod import postonly
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.schema import ValidationError
 
-from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFDefault.permissions import ManagePortal
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.utils import Message as _

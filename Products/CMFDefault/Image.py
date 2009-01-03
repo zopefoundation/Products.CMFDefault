@@ -17,7 +17,7 @@ $Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from OFS.Cache import Cacheable
 import OFS.Image  # disambiguation
 from zope.component.factory import Factory
@@ -28,13 +28,12 @@ from Products.CMFCore.utils import _checkConditionalGET
 from Products.CMFCore.utils import _OldCacheHeaders
 from Products.CMFCore.utils import _setCacheHeaders
 from Products.CMFCore.utils import _ViewEmulator
-from Products.GenericSetup.interfaces import IDAVAware
-
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.interfaces import IImage
 from Products.CMFDefault.interfaces import IMutableImage
 from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import View
+from Products.GenericSetup.interfaces import IDAVAware
 
 
 def addImage( self

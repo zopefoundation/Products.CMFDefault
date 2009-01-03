@@ -16,14 +16,13 @@ $Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import default__class_init__ as InitializeClass
+from App.class_init import InitializeClass
 from zope.component.factory import Factory
 from zope.interface import implements
 
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.PortalFolder import PortalFolder
-
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import View

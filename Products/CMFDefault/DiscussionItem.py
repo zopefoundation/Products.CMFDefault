@@ -20,8 +20,8 @@ from Acquisition import Implicit
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from App.class_init import InitializeClass
 from DateTime.DateTime import DateTime
-from App.class_init import default__class_init__ as InitializeClass
 from OFS.Traversable import Traversable
 from Persistence import Persistent
 from Persistence import PersistentMapping
@@ -32,7 +32,6 @@ from Products.CMFCore.interfaces import ICallableOpaqueItemEvents
 from Products.CMFCore.interfaces import IDiscussable
 from Products.CMFCore.interfaces import IDiscussionResponse
 from Products.CMFCore.interfaces import IDiscussionTool
-
 from Products.CMFDefault.Document import Document
 from Products.CMFDefault.permissions import AccessContentsInformation
 from Products.CMFDefault.permissions import ManagePortal
