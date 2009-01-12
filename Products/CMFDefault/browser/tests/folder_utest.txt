@@ -1,0 +1,97 @@
+Browser Views for IFolderish
+
+
+  The required environment:
+
+    Setting up a dummy site with required tools::
+
+      >>> from Products.CMFCore.tests.base.dummy import DummySite
+      >>> site = DummySite('site')
+
+      >>> from Products.CMFCore.tests.base.dummy import DummyTool
+      >>> from zope.component import getSiteManager
+      >>> from Products.CMFCore.interfaces import IPropertiesTool
+      >>> sm = getSiteManager()
+      >>> mtool = site._setObject('portal_membership', DummyTool())
+      >>> ptool = site._setObject('portal_properties', DummyTool())
+      >>> sm.registerUtility(ptool, IPropertiesTool)
+      >>> ttool = site._setObject('portal_types', DummyTool())
+      >>> utool = site._setObject('portal_url', DummyTool())
+
+
+  Basic functionality without security setup:
+
+    Setting up a simple request and an empty context object::
+
+      >>> class DummyRequest(dict):
+      ...     def __init__(self):
+      ...         self['ACTUAL_URL'] = 'actual_url'
+      ...         self.form = {}
+      >>> request = DummyRequest()
+
+      >>> from Products.CMFCore.PortalFolder import PortalFolder
+      >>> context = PortalFolder('foo').__of__(site)
+
+    The FolderView interface used by templates::
+
+      >>> from Products.CMFDefault.browser.folder import FolderView
+      >>> view = FolderView(context, request)
+
+      >>> view.title()
+      u''
+
+      >>> view.description()
+      u''
+
+      >>> view.has_local()
+      False
+
+    The ContentsView interface used by templates::
+
+      >>> from Products.CMFDefault.browser.new_folder import ContentsView
+      >>> view = ContentsView(context, request)
+
+      >>> view.title()
+      u''
+
+      >>> view.description
+      u''
+
+      >>> view.up_info()
+      {'url': u'', 'id': u'Root', 'icon': u''}
+
+      >>> view.column_headings()
+      ({'url': 'actual_url?key=Type', 'colspan': '2',
+        'key': 'Type', 'title': u'Type'},
+       {'url': 'actual_url?key=getId', 'key': 'getId', 'title': u'Name'},
+       {'url': 'actual_url?key=modified', 'key': 'modified', 'title': u'Last Modified'},
+       {'url': 'actual_url?key=position', 'key': 'position', 'title': u'Position'})
+
+      >>> view.layout_fields()
+      []
+
+      >>> view.is_orderable()
+      False
+
+      >>> view.can_sort_be_changed()
+      False
+
+    The ContentsView actions checkers:
+
+      >>> view.has_subobjects()
+      False
+
+      >>> view.check_clipboard_data()
+      False
+
+    The ContentsView has one validator:
+      >>> view.validate_items()
+      [u'Please select one or more items first.']
+
+      >>> view.validate_items(data={'foo':True})
+      []
+
+    Finally we have to clean up::
+
+      >>> from zope.testing.cleanup import cleanUp
+      >>> cleanUp()

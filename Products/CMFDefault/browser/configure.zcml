@@ -31,6 +31,20 @@
 
   <adapter factory=".metadata.MinimalMetadataSchemaAdapter"/>
 
+  <utility
+      component=".new_folder.contents_delta_vocabulary"
+      name="cmf.contents delta vocabulary"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      />
+      
+  <browser:page
+      for="Products.CMFCore.interfaces.IFolderish"
+      layer="..interfaces.ICMFDefaultSkin"
+      name="contents.html"
+      class=".new_folder.ContentsView"
+      permission="cmf.ListFolderContents"
+      />
+
   <browser:page
       for="Products.CMFCore.interfaces.IMutableMinimalDublinCore"
       layer="..interfaces.ICMFDefaultSkin"
