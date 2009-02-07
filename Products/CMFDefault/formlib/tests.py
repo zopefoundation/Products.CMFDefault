@@ -25,7 +25,8 @@ def test_suite():
     suite.addTest(doctest.DocFileSuite('schema.txt',
                                     optionflags=doctest.NORMALIZE_WHITESPACE))
     suite.addTest(doctest.DocFileSuite('widgets.txt',
-                                    optionflags=doctest.NORMALIZE_WHITESPACE))
+                                    optionflags=doctest.NORMALIZE_WHITESPACE |
+                                                doctest.ELLIPSIS))
     return suite
 
 if __name__ == '__main__':

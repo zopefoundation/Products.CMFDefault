@@ -125,7 +125,7 @@ Widgets
       >>> print widget.getInputValue()
       Traceback (most recent call last):
       ...
-      WidgetInputError: ('NAME', u'FIELD TITLE', )
+      WidgetInputError: ('NAME', u'FIELD TITLE', ...)
 
     Invalid input::
 
