@@ -45,14 +45,18 @@ setup(name='Products.%s' % NAME,
       setup_requires=['eggtestinfo',
                      ],
       install_requires=[
-          #'Zope >= 2.10.4',
           'setuptools',
+          #'Zope2 >= 2.10.4',
           'Products.CMFCore',
-          'Products.DCWorkflow',
           'Products.GenericSetup',
           ],
-      tests_require=['zope.testing>=3.7.0',
-                    ],
+      tests_require=[
+          'zope.testing >= 3.7.0',
+          'Products.DCWorkflow',
+          ],
+      extras_require = dict(
+          test = ['Products.DCWorkflow'],
+          ),
       test_loader='zope.testing.testrunner.eggsupport:SkipLayers',
       test_suite='Products.%s' % NAME,
       entry_points="""
