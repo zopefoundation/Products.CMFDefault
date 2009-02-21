@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- No longer rely on the PageTemplates.GlobalTranslationService but use
+  zope.i18n.translate directly.
+
 - Cleaned up / normalized imports:
 
   o Don't import from Globals;  instead, use real locations.

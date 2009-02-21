@@ -24,9 +24,8 @@ from sgmllib import SGMLParser
 import StringIO
 
 from AccessControl.SecurityInfo import ModuleSecurityInfo
+from Acquisition import aq_get
 from App.Common import package_home
-from Products.PageTemplates.GlobalTranslationService \
-        import getGlobalTranslationService
 from ZTUtils.Zope import complex_marshal
 
 from zope.component import getUtility
@@ -34,6 +33,7 @@ from zope.component import queryUtility
 from zope import i18n # disambiguation
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.i18nmessageid import MessageFactory
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 from Products.CMFCore.interfaces import IPropertiesTool
 
@@ -467,13 +467,20 @@ security.declarePublic('translate')
 def translate(message, context):
     """ Translate i18n message.
     """
-    GTS = getGlobalTranslationService()
     if isinstance(message, Exception):
         try:
             message = message[0]
         except (TypeError, IndexError):
             pass
-    return GTS.translate('cmf_default', message, context=context)
+    # in Zope3, context is adapted to IUserPreferredLanguages,
+    # which means context should be the request in this case.
+    # Do not attempt to acquire REQUEST from the context, when we already
+    # got a request as the context
+    if context is not None:
+        if not IBrowserRequest.providedBy(context):
+            context = aq_get(context, 'REQUEST', None)
+
+    return i18n.translate(message, domain='cmf_default', context=context)
 
 security.declarePublic('getBrowserCharset')
 def getBrowserCharset(request):
