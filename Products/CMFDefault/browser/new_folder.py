@@ -10,6 +10,7 @@ from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.formlib import form
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.Five.formlib.formbase import PageForm
 
 from Products.CMFCore.interfaces import IDynamicType
 
@@ -138,7 +139,7 @@ class ContentsView(ContentEditFormBase):
         self.form_fields = form.FormFields()
         self.delta_field = form.FormFields(IDeltaItem)
         self.contents = self.context.contentValues()
-
+        
         for item in self.contents:
             for n, f in schema.getFieldsInOrder(IFolderItem):
                 field = form.FormField(f, n, item.id)
