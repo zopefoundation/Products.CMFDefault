@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- profiles: Explicitly initialize the workflow manager_bypass value
+  which has been added to DCWorkflow.
+  (https://bugs.launchpad.net/zope-cmf/+bug/308947)
+
 - No longer rely on the PageTemplates.GlobalTranslationService but use
   zope.i18n.translate directly.
 
