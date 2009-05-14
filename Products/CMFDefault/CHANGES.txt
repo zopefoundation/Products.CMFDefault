@@ -4,8 +4,14 @@ Products.CMFDefault Changelog
 2.1.3-beta (unreleased)
 -----------------------
 
+- File and Image: Move the call to the underlying OFS rendering to the
+  end of their own index_html methods to ensure the caching policy
+  manager can set headers in all situations.
+  (https://bugs.launchpad.net/zope-cmf/+bug/161723)
+
 - skins/zpt_generic/permalink.py: fix typos, wrap object correctly.
   See: https://bugs.launchpad.net/bugs/299058 .
+
 
 2.1.2 (2008-09-13)
 ------------------

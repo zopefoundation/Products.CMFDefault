@@ -236,9 +236,14 @@ class TestCaching(RequestTest):
         self.assertEqual( self.RESPONSE.getStatus(), 304 )
 
     def test_caching( self ):
+        large_data = '0' * 100000
+        def fake_response_write(data):
+            return
+        response_write = self.RESPONSE.write
+        self.RESPONSE.write = fake_response_write
         self._setupCachingPolicyManager(DummyCachingManager())
         original_len = len(self.RESPONSE.headers)
-        image = self._makeOne('test_image', 'test_image.jpg')
+        image = self._makeOne('test_image', 'test_image.jpg', file=large_data)
         image = image.__of__(self.root)
         image.index_html(self.REQUEST, self.RESPONSE)
         headers = self.RESPONSE.headers
@@ -246,6 +251,7 @@ class TestCaching(RequestTest):
         self.failUnless('foo' in headers.keys())
         self.failUnless('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_image')
+        self.RESPONSE.write = response_write
 
     def test_index_html_200_with_cpm( self ):
         self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
