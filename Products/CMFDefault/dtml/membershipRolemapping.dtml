@@ -66,13 +66,14 @@ user folder) will have their own folder created upon first login or not</p>
 
 <h2>Set members folder</h2>
 
-<p>The members folder has to be in the same container as the membership tool.</p>
+<p>The Members folder path can be a simple name for a folder at the portal 
+root, or a relative path to a folder deeper inside the portal.</p>
 
 <form action="manage_setMembersFolderById" method="post">
 <table cellspacing="2">
 <tr>
   <td align="left" valign="top">
-    <div class="form-label">Members folder id</div>
+    <div class="form-label">Members folder path</div>
   </td>
   <td align="left" valign="top">
     <input class="form-element" type="text" name="id"

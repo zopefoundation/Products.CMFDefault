@@ -106,8 +106,11 @@ class MembershipTool(BaseTool):
         """ Get the members folder object.
         """
         parent = aq_parent( aq_inner(self) )
-        members = getattr(parent, self.membersfolder_id, None)
-        return members
+        try:
+            members_folder = parent.restrictedTraverse(self.membersfolder_id)
+        except (AttributeError, KeyError):
+            members_folder = None
+        return members_folder
 
     security.declarePublic('createMemberArea')
     def createMemberArea(self, member_id=''):

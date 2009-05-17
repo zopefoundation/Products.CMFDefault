@@ -4,6 +4,11 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- MembershipTool: Support members folder paths to folders deeper in 
+  the portal folder hierarchy by allowing to specify either a 
+  simple name (as before), or a relative path within the portal 
+  in the membership tool "Configuration" ZMI tab.
+
 - profiles: Explicitly initialize the workflow manager_bypass value
   which has been added to DCWorkflow.
   (https://bugs.launchpad.net/zope-cmf/+bug/308947)

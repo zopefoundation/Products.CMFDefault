@@ -56,8 +56,13 @@ class MembershipToolTests(unittest.TestCase):
         self.assertEqual( mtool.getMembersFolder(), None )
         self.site._setObject( 'foo', DummyFolder() )
         self.assertEqual( mtool.getMembersFolder(), self.site.foo )
-        mtool.setMembersFolderById()
+        mtool.setMembersFolderById( id='foo/members' )
         self.assertEqual( mtool.getMembersFolder(), None )
+        self.site.foo._setObject( 'members', DummyFolder() )
+        self.assertEqual( mtool.getMembersFolder(), self.site.foo.members )
+        mtool.setMembersFolderById()
+        # Note: self.site is returned due to DummyObject.restrictedTraverse
+        self.assertEqual( mtool.getMembersFolder(), self.site )
 
 
 class MembershipToolSecurityTests(SecurityTest):
