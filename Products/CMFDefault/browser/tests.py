@@ -26,6 +26,9 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite('folder_utest.txt',
                                     optionflags=doctest.NORMALIZE_WHITESPACE))
+    s = ZopeTestCase.FunctionalDocFileSuite('btreefolder.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
     s = ZopeTestCase.FunctionalDocFileSuite('folder.txt')
     s.layer = FunctionalLayer
     suite.addTest(s)

@@ -15,8 +15,8 @@ Create the browser object we'll be using.
 
 Use the add form without input.
 
-    >>> browser.open('http://localhost/site/++add++Folder')
-    >>> '[[cmf_default][Add [[cmf_default][Folder]]]]' in browser.contents
+    >>> browser.open('http://localhost/site/++add++CMF BTree Folder')
+    >>> '[[cmf_default][Add [[cmf_default][CMF BTree Folder]]]]' in browser.contents
     True
     >>> browser.getControl('[[zope][Add]]').click()
     >>> '[[zope][There were errors]]' in browser.contents
@@ -27,12 +27,12 @@ Use the add form without input.
 Use the add form with valid input.
 
     >>> from StringIO import StringIO
-    >>> browser.open('http://localhost/site/++add++Folder')
-    >>> '[[cmf_default][Add [[cmf_default][Folder]]]]' in browser.contents
+    >>> browser.open('http://localhost/site/++add++CMF BTree Folder')
+    >>> '[[cmf_default][Add [[cmf_default][CMF BTree Folder]]]]' in browser.contents
     True
     >>> browser.getControl(name='form.id').value = 'myFolder'
     >>> browser.getControl('[[zope][Add]]').click()
-    >>> '[[cmf_default][[[cmf_default][Folder]] added.]]' in browser.contents
+    >>> '[[cmf_default][[[cmf_default][CMF BTree Folder]] added.]]' in browser.contents
     True
 
 Use the folder contents form without input.

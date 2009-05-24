@@ -200,4 +200,10 @@
       permission="zope.Public"
       />
 
+  <adapter
+      for="Products.CMFCore.interfaces.IFolderish"
+      factory=".folder.PortalFolderNameChooser"
+      provides="zope.container.interfaces.INameChooser"
+      />
+
 </configure>

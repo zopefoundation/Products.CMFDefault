@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Add views: The standard INameChooser adapter from Products.Five 
+  fails with BTreeFolder-based portal folders, so we need our own.
+  (https://bugs.launchpad.net/zope-cmf/+bug/377562)
+
 - Actions: Utilize the new link_target attribute for the
   final rendered link tag's "target" attribute
   (https://bugs.launchpad.net/zope-cmf/+bug/376951)
