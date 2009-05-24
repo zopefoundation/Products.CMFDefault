@@ -97,7 +97,8 @@
             tal:attributes="src icon_url;
                             alt action/title;
                             title action/title"/>   
-    <a href="" tal:attributes="href action/url"
+    <a href="" tal:attributes="href action/url;
+                               target action/link_target|nothing"
                 tal:content="action/title" i18n:translate="">Login</a
     ><tal:span tal:condition="not: repeat/action/end"> |</tal:span></tal:span>
     <tal:span tal:condition="nothing"
@@ -160,7 +161,8 @@
                             alt action/title;
                             title action/title"/>
       <a href=""
-         tal:attributes="href action/url"
+         tal:attributes="href action/url;
+                         target action/link_target|nothing"
          tal:content="action/title"
          i18n:translate="">View</a><br />
      </span>
@@ -197,7 +199,8 @@
                             alt action/title;
                             title action/title"/>
        <a href="content_submit_form"
-          tal:attributes="href action/url"
+          tal:attributes="href action/url;
+                          target action/link_target|nothing"
           tal:content="action/title"
           i18n:translate="">Submit</a><br />
       </span>
@@ -216,7 +219,8 @@
                             alt action/title;
                             title action/title"/>
        <a href="../folder_contents"
-          tal:attributes="href action/url"
+          tal:attributes="href action/url;
+                          target action/link_target|nothing"
           tal:content="action/title"
           i18n:translate="">Folder contents</a><br />
       </span>
@@ -240,7 +244,8 @@
                             alt action/title;
                             title action/title"/>
        <a href="+Document"
-          tal:attributes="href action/url"
+          tal:attributes="href action/url;
+                          target action/link_target|nothing"
           tal:content="action/title"
           i18n:translate="">Document</a><br />
       </span>
@@ -259,7 +264,8 @@
                             alt action/title;
                             title action/title"/>
       <a href="undo_form"
-         tal:attributes="href action/url"
+         tal:attributes="href action/url;
+                         target action/link_target|nothing"
          tal:content="action/title"
          i18n:translate="">Undo</a><br />
      </span>

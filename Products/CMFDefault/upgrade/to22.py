@@ -17,6 +17,7 @@ $Id$
 import logging
 from urllib import quote
 
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from zope.component.interfaces import ComponentLookupError
@@ -124,3 +125,49 @@ def add_action_icons(tool):
                 changed = True
         if changed:
             logger.info("TypeInfo '%s' changed." % ti.getId())
+
+def check_action_linktargets(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    # Actions in portal_actions tool
+    atool = getToolByName(tool, 'portal_actions')
+    for ai in atool.listActions():
+        if getattr(aq_base(ai), 'link_target', None) is None:
+            return True
+
+    # Actions from TypeInformation objects
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        if getattr(aq_base(ti), 'link_target', None) is None:
+            return True
+
+        for ai in ti.listActions():
+            if getattr(aq_base(ai), 'link_target', None) is None:
+                return True
+    return False
+
+def add_action_linktargets(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+
+    # Actions in portal_actions tool
+    atool = getToolByName(tool, 'portal_actions')
+    for ai in atool.listActions():
+        if getattr(aq_base(ai), 'link_target', None) is None:
+            ai.link_target = ''
+            logger.info('Action "%s" changed.' % ai.getId())
+
+    # Actions from TypeInformation objects
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        if getattr(aq_base(ti), 'link_target', None) is None:
+            ti.link_target = ''
+            logger.info("TypeInfo '%s' changed." % ti.getId())
+
+        for ai in ti.listActions():
+            if getattr(aq_base(ai), 'link_target', None) is None:
+                ai.link_target = ''
+                msg = 'TypeInfo "%s" action "%s" changed.'
+                logger.info(msg % (ti.getId(), ai.getId()))
+

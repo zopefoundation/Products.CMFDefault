@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Actions: Utilize the new link_target attribute for the
+  final rendered link tag's "target" attribute
+  (https://bugs.launchpad.net/zope-cmf/+bug/376951)
+
 - MembershipTool: Support members folder paths to folders deeper in 
   the portal folder hierarchy by allowing to specify either a 
   simple name (as before), or a relative path within the portal 

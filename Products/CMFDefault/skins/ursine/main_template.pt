@@ -52,7 +52,8 @@
  <ul id="object_actions_menu">
   <li tal:repeat="action globals/object_actions">
   <a href="#object_action"
-      tal:attributes="href action/url"
+      tal:attributes="href action/url;
+                      target action/link_target|nothing"
       tal:content="action/title"
       i18n:translate="">OBJECT ACTION_TITLE</a><br />
   </li>
@@ -61,7 +62,8 @@
  <ul id="workflow_actions_menu">
   <li tal:repeat="action globals/workflow_actions">
   <a href="#workflow_action"
-      tal:attributes="href action/url"
+      tal:attributes="href action/url;
+                      target action/link_target|nothing"
       tal:content="action/title"
       i18n:translate="">OBJECT ACTION_TITLE</a><br />
   </li>
@@ -70,7 +72,8 @@
  <ul id="folder_actions_menu">
   <li tal:repeat="action globals/folder_actions">
   <a href="#folder_action"
-      tal:attributes="href action/url"
+      tal:attributes="href action/url;
+                      target action/link_target|nothing"
       tal:content="action/title"
       i18n:translate="">FOLDER ACTION_TITLE</a><br />
   </li>
@@ -79,7 +82,8 @@
  <ul id="add_actions_menu">
   <li tal:repeat="action globals/add_actions">
   <a href="#add_action"
-      tal:attributes="href action/url"
+      tal:attributes="href action/url;
+                      target action/link_target|nothing"
       tal:content="action/title"
       i18n:translate="">ADD ACTION_TITLE</a><br />
   </li>
@@ -88,7 +92,8 @@
  <ul id="user_actions_menu">
   <li tal:repeat="action globals/user_actions">
    <a href="#user_action"
-      tal:attributes="href action/url"
+      tal:attributes="href action/url;
+                      target action/link_target|nothing"
       tal:content="action/title" i18n:translate="">USER ACTION TITLE</a>
   </li>
  </ul>
@@ -96,7 +101,8 @@
  <ul id="global_actions_menu">
   <li tal:repeat="action globals/global_actions">
    <a href="#global_action"
-      tal:attributes="href action/url"
+      tal:attributes="href action/url;
+                      target action/link_target|nothing"
       tal:content="action/title" i18n:translate="">GLOBAL ACTION TITLE</a>
   </li>
  </ul>
