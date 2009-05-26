@@ -203,7 +203,7 @@
   <adapter
       for="Products.CMFCore.interfaces.IFolderish"
       factory=".folder.PortalFolderNameChooser"
-      provides="zope.container.interfaces.INameChooser"
+      provides="zope.app.container.interfaces.INameChooser"
       />
 
 </configure>
