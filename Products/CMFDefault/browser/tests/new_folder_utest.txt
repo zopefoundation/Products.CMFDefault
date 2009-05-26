@@ -46,62 +46,50 @@ Browser Views for IFolderish
       >>> view.has_local()
       False
 
-    The FolderContentsView interface used by templates::
+    The ContentsView interface used by templates::
 
-      >>> from Products.CMFDefault.browser.folder import FolderContentsView
-      >>> view = FolderContentsView(context, request)
+      >>> from Products.CMFDefault.browser.new_folder import ContentsView
+      >>> view = ContentsView(context, request)
 
       >>> view.title()
       u''
 
-      >>> view.description()
+      >>> view.description
       u''
 
       >>> view.up_info()
       {'url': u'', 'id': u'Root', 'icon': u''}
 
-      >>> view.listColumnInfos()
-      ({'url': 'actual_url?key=Type', 'width': '20', 'colspan': '2',
+      >>> view.column_headings()
+      ({'url': 'actual_url?key=Type', 'colspan': '2',
         'key': 'Type', 'title': u'Type'},
-       {'url': 'actual_url?key=getId', 'width': '360', 'colspan': None,
-        'key': 'getId', 'title': u'Name'},
-       {'url': 'actual_url?key=modified', 'width': '180', 'colspan': None,
-        'key': 'modified', 'title': u'Last Modified'},
-       {'url': 'actual_url?key=position', 'width': '80', 'colspan': None,
-        'key': 'position', 'title': u'Position'})
+       {'url': 'actual_url?key=getId', 'key': 'getId', 'title': u'Name'},
+       {'url': 'actual_url?key=modified', 'key': 'modified', 'title': u'Last Modified'},
+       {'url': 'actual_url?key=position', 'key': 'position', 'title': u'Position'})
 
-      >>> view.listItemInfos()
-      ()
-
-      >>> view.listDeltas()
-      ()
+      >>> view.layout_fields()
+      []
 
       >>> view.is_orderable()
       False
 
-      >>> view.is_sortable()
+      >>> view.can_sort_be_changed()
       False
 
-    The FolderContentsView checkers used by button actions::
+    The ContentsView actions checkers:
 
-      >>> view.checkAllowedContentTypes()
-      True
-
-      >>> view.checkClipboardData()
+      >>> view.has_subobjects()
       False
 
-      >>> view.checkItems()
+      >>> view.check_clipboard_data()
       False
 
-    The FolderContentsView validators used by button actions::
+    The ContentsView has one validator:
+      >>> view.validate_items()
+      [u'Please select one or more items first.']
 
-      >>> view.validateItemIds()
-      (False, u'Please select one or more items first.')
-      >>> view.validateItemIds(('foo',))
-      True
-
-      >>> view.validateClipboardData()
-      (False, u'Please copy or cut one or more items to paste first.')
+      >>> view.validate_items(data={'foo':True})
+      []
 
     Finally we have to clean up::
 

@@ -10,26 +10,21 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Test Products.CMFDefault.browser.folder
+""" Test Products.CMFDefault.browser.folder with CMFBTreeFolder
 
 $Id$
 """
 
 import unittest
 from Testing import ZopeTestCase
-from zope.testing import doctest
 
 from Products.CMFDefault.testing import FunctionalLayer
 
 
-utest_suite = doctest.DocFileSuite( 'folder_utest.txt'
-                                  , optionflags=doctest.NORMALIZE_WHITESPACE
-                                  )
-ftest_suite = ZopeTestCase.FunctionalDocFileSuite('folder.txt')
+ftest_suite = ZopeTestCase.FunctionalDocFileSuite('btreefolder.txt')
 ftest_suite.layer = FunctionalLayer
 
 def test_suite():
     return unittest.TestSuite((
-        utest_suite,
         ftest_suite,
     ))
