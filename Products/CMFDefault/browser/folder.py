@@ -641,6 +641,7 @@ class FolderContentsView(BatchViewBase, FormViewBase):
         return True, _(u'Filter cleared.')
 
 
+# BBB: for Zope < 2.12
 class PortalFolderNameChooser(ObjectManagerNameChooser):
     """ A name chooser for a portal folder
 
