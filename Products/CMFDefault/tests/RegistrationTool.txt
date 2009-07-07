@@ -26,9 +26,9 @@ RegistrationTool
 
   Now we can set up a RegistrationTool with dummy context::
 
-    >>> from zope.app.component.hooks import setSite
     >>> from zope.component import getSiteManager
     >>> from zope.component import getUtility
+    >>> from zope.site.hooks import setSite
     >>> from Products.MailHost.interfaces import IMailHost
     >>> setSite(app.site)
     >>> app.site.setupCurrentSkin(app.REQUEST)

@@ -20,10 +20,10 @@ import urlparse
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from App.class_init import InitializeClass
-from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import adapter
 from zope.component import getUtility
 from zope.component.factory import Factory
+from zope.container.interfaces import IObjectAddedEvent
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import ISiteRoot

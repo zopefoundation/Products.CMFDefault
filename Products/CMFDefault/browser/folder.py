@@ -16,7 +16,6 @@ $Id$
 """
 
 from DocumentTemplate import sequence  # for sort()
-from Products.Five.browser.adding import ObjectManagerNameChooser
 from Products.PythonScripts.standard import thousands_commas
 from zope.formlib.form import FormFields
 from zope.schema import ASCIILine
@@ -639,46 +638,3 @@ class FolderContentsView(BatchViewBase, FormViewBase):
         self.request.RESPONSE.expireCookie('folderfilter', path='/')
         self.request.RESPONSE.expireCookie('show_filter_form', path='/')
         return True, _(u'Filter cleared.')
-
-
-# BBB: for Zope < 2.12
-class PortalFolderNameChooser(ObjectManagerNameChooser):
-    """ A name chooser for a portal folder
-
-    Overridden to behave correctly with BTreeFolder-based PortalFolders
-    This class and the adapter registration can be removed as soon as the 
-    Products.Five.adding.ObjectManagerNameChooser works with BTreeFolders.
-    """
-
-    def chooseName(self, name, object):
-        if not name:
-            name = object.__class__.__name__
-        else:
-            try:
-                name = name.encode('ascii')
-            except UnicodeDecodeError:
-                raise UserError, "Id must contain only ASCII characters."
-
-        dot = name.rfind('.')
-        if dot >= 0:
-            suffix = name[dot:]
-            name = name[:dot]
-        else:
-            suffix = ''
-
-        n = name + suffix
-        i = 0
-        while True:
-            i += 1
-            try:
-                self.context._getOb(n)
-            except (AttributeError, KeyError):
-                break
-            n = name + '-' + str(i) + suffix
-
-        # Make sure the name is valid.  We may have started with
-        # something bad.
-        self.checkName(n, object)
-
-        return n
-

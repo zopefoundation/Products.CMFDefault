@@ -22,16 +22,13 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.formlib.formbase import PageAddForm
 from Products.Five.formlib.formbase import PageDisplayForm
 from Products.Five.formlib.formbase import PageForm
-from zope.app.container.interfaces import INameChooser
 from zope.component import adapts
 from zope.component import getUtility
 from zope.component.interfaces import IFactory
+from zope.container.interfaces import INameChooser
 from zope.datetime import parseDatetimetz
 from zope.formlib import form
 from zope.formlib.interfaces import IPageForm
-from zope.i18n.interfaces import IUserPreferredLanguages
-from zope.i18n.locales import LoadLocaleError
-from zope.i18n.locales import locales
 from zope.interface import implementsOnly
 from ZTUtils import make_query
 
@@ -44,36 +41,9 @@ from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import translate
 
 
-# from zope.publisher.http.HTTPRequest
-def _getLocale(request):
-    envadapter = IUserPreferredLanguages(request, None)
-    if envadapter is None:
-        return None
-
-    langs = envadapter.getPreferredLanguages()
-    for httplang in langs:
-        parts = (httplang.split('-') + [None, None])[:3]
-        try:
-            return locales.getLocale(*parts)
-        except LoadLocaleError:
-            # Just try the next combination
-            pass
-    else:
-        # No combination gave us an existing locale, so use the default,
-        # which is guaranteed to exist
-        return locales.getLocale(None, None, None)
-
-
 class _EditFormMixin(ViewBase):
 
     template = ViewPageTemplateFile('editform.pt')
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-        # BBB: for Zope 2.10
-        if getattr(self.request, 'locale', None) is None:
-            self.request.locale = _getLocale(request)
 
     def _setRedirect(self, provider_id, action_path, keys=''):
         provider = self._getTool(provider_id)
@@ -132,9 +102,6 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
         self.context = context
         self.request = request
         self.ti = ti
-        # BBB: for Zope 2.10
-        if getattr(self.request, 'locale', None) is None:
-            self.request.locale = _getLocale(request)
 
     @property
     def label(self):
@@ -266,13 +233,6 @@ class ContentEditFormBase(_EditFormMixin, PageForm):
 class DisplayFormBase(PageDisplayForm, ViewBase):
 
     template = ViewPageTemplateFile('viewform.pt')
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-        # BBB: for Zope 2.10
-        if getattr(self.request, 'locale', None) is None:
-            self.request.locale = _getLocale(request)
 
     @property
     def label(self):

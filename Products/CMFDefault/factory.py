@@ -16,7 +16,7 @@ $Id$
 """
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from zope.app.component.hooks import setSite
+from zope.site.hooks import setSite
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName

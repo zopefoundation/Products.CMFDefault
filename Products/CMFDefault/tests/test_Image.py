@@ -24,8 +24,8 @@ from cStringIO import StringIO
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
-from zope.app.component.hooks import setSite
 from zope.interface.verify import verifyClass
+from zope.site.hooks import setSite
 from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.testing import ConformsToContent

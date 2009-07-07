@@ -20,7 +20,7 @@ from Testing import ZopeTestCase
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import getSecurityManager
-from zope.app.component.hooks import setSite
+from zope.site.hooks import setSite
 
 from Products.CMFDefault.testing import FunctionalLayer
 
