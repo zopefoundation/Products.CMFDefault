@@ -83,12 +83,6 @@
         checker=".to22.check_action_icons"
         />
 
-    <genericsetup:upgradeStep
-        title="Add action link target"
-        handler=".to22.add_action_linktargets"
-        checker=".to22.check_action_linktargets"
-        />
-
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
