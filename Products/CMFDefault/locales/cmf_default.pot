@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2008 Zope Corporation and Contributors. All Rights Reserved.
+# Copyright (c) 2009 Zope Corporation and Contributors. All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
@@ -52,6 +52,136 @@ msgstr ""
 #: Products/CMFCore/WorkflowTool.py:279
 #. Default: ""
 msgid "Could not get info: ${name}"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:104
+msgid "Import cookie crumbler settings"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:104
+#: Products/CMFCore/exportimport/configure.zcml:112
+msgid "Cookie Authentication"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:112
+msgid "Export cookie crumbler settings"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:119
+msgid "Import mailhost settings"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:119
+#: Products/CMFCore/exportimport/configure.zcml:127
+msgid "MailHost"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:127
+msgid "Export the mailhost's settings and properties"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:134
+msgid "Import site properties."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:134
+#: Products/CMFCore/exportimport/configure.zcml:141
+msgid "Site Properties"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:141
+msgid "Export site properties."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:148
+msgid "Import skins tool's filesystem directory views and skin path definitions."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:148
+#: Products/CMFCore/exportimport/configure.zcml:156
+msgid "Skins Tool"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:156
+msgid "Export skins tool's filesystem directory views and skin path definitions."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:163
+msgid "Import types tool's type information objects."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:163
+#: Products/CMFCore/exportimport/configure.zcml:171
+msgid "Types Tool"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:171
+msgid "Export types tool's type information objects."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:178
+msgid "Import workflow tool's workflow definitions and supporting scripts."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:178
+#: Products/CMFCore/exportimport/configure.zcml:186
+msgid "Workflow Tool"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:186
+msgid "Export workflow tool's workflow definitions and supporting scripts."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:44
+msgid "Import actions tool's action providers and their actions."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:44
+#: Products/CMFCore/exportimport/configure.zcml:52
+msgid "Action Providers"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:52
+msgid "Export actions tool's action providers and their actions."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:59
+msgid "Import caching policy manager's policies."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:59
+#: Products/CMFCore/exportimport/configure.zcml:67
+msgid "Caching Policies"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:67
+msgid "Export caching policy manager's policies."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:74
+msgid "Import catalog tool's sub-objects, indexes and columns."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:74
+#: Products/CMFCore/exportimport/configure.zcml:82
+msgid "Catalog Tool"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:82
+msgid "Export catalog tool's sub-objects, indexes and columns."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:89
+msgid "Import content type registry's predicates and bindings."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:89
+#: Products/CMFCore/exportimport/configure.zcml:97
+msgid "Content Type Registry"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:97
+msgid "Export content type registry's predicates / bindings."
 msgstr ""
 
 #: Products/CMFDefault/Document.py:151
@@ -645,6 +775,12 @@ msgstr ""
 
 #: Products/CMFDefault/browser/templates/batch_widgets.pt:41
 #: Products/CMFDefault/browser/templates/batch_widgets.pt:47
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:32
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:32
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:70
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:70
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:106
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:106
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
@@ -691,6 +827,14 @@ msgstr ""
 msgid "Invalid email address."
 msgstr ""
 
+#: Products/CMFDefault/exportimport.zcml:6
+msgid "Various Settings"
+msgstr ""
+
+#: Products/CMFDefault/exportimport.zcml:6
+msgid "Import various settings from PortalGenerator."
+msgstr ""
+
 #: Products/CMFDefault/formlib/form.py:109
 #. Default: ""
 msgid "Add ${obj_type}"
@@ -725,9 +869,96 @@ msgstr ""
 msgid "Please choose another ID."
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:10
-#: Products/CMFDefault/skins/zpt_generic/login_form.pt:44
-msgid "Login"
+#: Products/CMFDefault/locales/cmf_default-manual.pot:1
+msgid "Found ${count} ${type}."
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:10
+msgid "Previous ${count} members"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:13
+msgid "Previous member"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:16
+msgid "Criteria"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:19
+msgid "Download"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:22
+msgid "Local Roles"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:25
+msgid "Metadata"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:28
+msgid "Subtopics"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:31
+msgid "View"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:34
+msgid "Retract"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:37
+msgid "Submit"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:4
+msgid "Next ${count} members"
+msgstr ""
+
+#: Products/CMFDefault/locales/cmf_default-manual.pot:7
+msgid "Next member"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:13
+msgid "Hooks up the browser views."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:13
+msgid "Experimental CMFDefault Browser Views"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:21
+msgid "Sample CMFDefault Content"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:21
+msgid "Content for a sample CMFSite."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:29
+msgid "Provide skin w/ stripped-down main template."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:29
+msgid "CMF 'Bare' skin"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:37
+msgid "Use stripped-down globals in regular main template."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:37
+msgid "CMF 'Bare' / hybrid skin"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:6
+msgid "CMFDefault Site"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:6
+msgid "Profile for a default CMFSite."
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:102
@@ -776,12 +1007,6 @@ msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:188
 msgid "Delete portal members"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:200
-#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:44
-#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:100
-msgid "Undo"
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:212
@@ -1492,6 +1717,11 @@ msgstr ""
 msgid "Remember my ID."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_generic/login_form.pt:44
+#: Products/CMFDefault/profiles/default/actions.xml:10
+msgid "Login"
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_generic/login_form.pt:51
 msgid "I forgot my password!"
 msgstr ""
@@ -2133,6 +2363,12 @@ msgstr ""
 msgid "Select one or more transactions below and then click on the &quot;Undo&quot; button to undo the transactions. Note that even though a transaction is shown below, you will not be able to undo it if later transactions modified objects that were modified by the transaction."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:44
+#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:100
+#: Products/CMFDefault/profiles/default/actions.xml:200
+msgid "Undo"
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_generic/undo_form.pt:5
 msgid "Undo Transactions"
 msgstr ""
@@ -2180,6 +2416,18 @@ msgstr ""
 msgid "Dynamic tag '${tag}' not allowed."
 msgstr ""
 
+#: Products/CMFTopic/configure.zcml:32
+msgid "Adds topic portal type."
+msgstr ""
+
+#: Products/CMFTopic/configure.zcml:32
+msgid "CMFTopic"
+msgstr ""
+
+#: Products/CMFTopic/configure.zcml:8
+msgid "Add portal topics"
+msgstr ""
+
 #: Products/CMFTopic/profiles/default/types/Topic.xml:4
 msgid "Topic"
 msgstr ""
@@ -2222,41 +2470,11 @@ msgstr ""
 msgid "Destination state undefined: ${state_id}"
 msgstr ""
 
-msgid "Found ${count} ${type}."
+#: Products/DCWorkflow/configure.zcml:15
+msgid "CMF Default Workflow [Revision 2]"
 msgstr ""
 
-msgid "Next ${count} members"
+#: Products/DCWorkflow/configure.zcml:15
+msgid "Adds revision 2 of default workflow."
 msgstr ""
 
-msgid "Next member"
-msgstr ""
-
-msgid "Previous ${count} members"
-msgstr ""
-
-msgid "Previous member"
-msgstr ""
-
-msgid "Criteria"
-msgstr ""
-
-msgid "Download"
-msgstr ""
-
-msgid "Local Roles"
-msgstr ""
-
-msgid "Metadata"
-msgstr ""
-
-msgid "Subtopics"
-msgstr ""
-
-msgid "View"
-msgstr ""
-
-msgid "Retract"
-msgstr ""
-
-msgid "Submit"
-msgstr ""
