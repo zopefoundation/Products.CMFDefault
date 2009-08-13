@@ -20,7 +20,8 @@ from App.class_init import InitializeClass
 from zope.component.factory import Factory
 from zope.interface import implements
 
-from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
+from Products.CMFCore.CMFCatalogAware import CatalogAware
+from Products.CMFCore.CMFCatalogAware import WorkflowAware
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.PortalFolder import PortalFolder
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
@@ -28,7 +29,7 @@ from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import View
 
 
-class SkinnedFolder(CMFCatalogAware, PortalFolder):
+class SkinnedFolder(CatalogAware, WorkflowAware, PortalFolder):
 
     """ Skinned Folder class. 
     """
@@ -37,7 +38,7 @@ class SkinnedFolder(CMFCatalogAware, PortalFolder):
 
     security = ClassSecurityInfo()
 
-    manage_options = PortalFolder.manage_options
+    manage_options = PortalFolder.manage_options + WorkflowAware.manage_options
 
     # XXX: maybe we should subclass from DefaultDublinCoreImpl or refactor it
 
@@ -58,12 +59,9 @@ class SkinnedFolder(CMFCatalogAware, PortalFolder):
     security.declareProtected(View, 'Creator')
     Creator = DefaultDublinCoreImpl.Creator.im_func
 
-    # We derive from CMFCatalogAware first, so we are cataloged too.
-
     #
-    #   IContentish method
+    #   'IContentish' interface method
     #
-
     security.declareProtected(View, 'SearchableText')
     def SearchableText(self):
         """
