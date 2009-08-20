@@ -12,7 +12,7 @@
 ##############################################################################
 """ Test Products.CMFDefault.browser.folder
 
-$Id$
+$Id: test_folder.py 100397 2009-05-26 11:51:22Z jens $
 """
 
 import unittest
