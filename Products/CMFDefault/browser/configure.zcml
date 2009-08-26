@@ -20,15 +20,6 @@
       permission="cmf.ListFolderContents"
       />
 
-  <adapter factory=".folder.FallbackAddView" />
-
-  <class class=".folder.FallbackAddView">
-    <require
-        permission="cmf.AddPortalContent"
-        interface="zope.formlib.interfaces.IPageForm"
-        />
-  </class>
-
   <adapter factory=".metadata.MinimalMetadataSchemaAdapter"/>
 
   <browser:page

@@ -11,4 +11,13 @@
       permission="zope.Public"
       />
 
+  <adapter factory=".form.FallbackAddView" />
+
+  <class class=".form.FallbackAddView">
+    <require
+        permission="cmf.AddPortalContent"
+        interface="zope.formlib.interfaces.IPageForm"
+        />
+  </class>
+
 </configure>

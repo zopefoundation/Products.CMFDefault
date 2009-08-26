@@ -30,12 +30,14 @@ from zope.datetime import parseDatetimetz
 from zope.formlib import form
 from zope.formlib.interfaces import IPageForm
 from zope.interface import implementsOnly
+from zope.schema import ASCIILine
 from ZTUtils import make_query
 
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ITypeInformation
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
+from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import ICMFDefaultSkin
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import translate
@@ -166,6 +168,30 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
             message = message.encode(self._getBrowserCharset())
         return '%s/%s?%s' % (obj.absolute_url(), self.ti.immediate_view,
                              make_query(portal_status_message=message))
+
+
+class FallbackAddView(ContentAddFormBase):
+
+    """Add view for IDynamicType content.
+    """
+
+    form_fields = form.FormFields(ASCIILine(__name__='id', title=_(u'ID')))
+    form_fields['id'].custom_widget = IDInputWidget
+
+    def createAndAdd(self, data):
+        if not self.ti.product:
+            return super(FallbackAddView, self).createAndAdd(data)
+
+        # for portal types with oldstyle factories
+        container = self.context
+        name = container.invokeFactory(self.ti.getId(), data['id'])
+        obj = container._getOb(name)
+
+        obj_type = translate(obj.Type(), container)
+        self.status = _(u'${obj_type} added.', mapping={'obj_type': obj_type})
+        self._finished_add = True
+        self._added_obj = obj
+        return obj
 
 
 class ContentEditFormBase(_EditFormMixin, PageForm):

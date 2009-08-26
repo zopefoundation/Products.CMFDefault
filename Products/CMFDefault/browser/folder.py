@@ -17,8 +17,6 @@ $Id$
 
 from DocumentTemplate import sequence  # for sort()
 from Products.PythonScripts.standard import thousands_commas
-from zope.formlib.form import FormFields
-from zope.schema import ASCIILine
 from ZTUtils import Batch
 from ZTUtils import LazyFilter
 from ZTUtils import make_query
@@ -29,8 +27,6 @@ from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
-from Products.CMFDefault.formlib.form import ContentAddFormBase
-from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.permissions import DeleteObjects
 from Products.CMFDefault.permissions import ListFolderContents
@@ -39,30 +35,6 @@ from Products.CMFDefault.permissions import ViewManagementScreens
 from Products.CMFDefault.utils import html_marshal
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import translate
-
-
-class FallbackAddView(ContentAddFormBase):
-
-    """Add view for IDynamicType content.
-    """
-
-    form_fields = FormFields(ASCIILine(__name__='id', title=_(u'ID')))
-    form_fields['id'].custom_widget = IDInputWidget
-
-    def createAndAdd(self, data):
-        if not self.ti.product:
-            return super(FallbackAddView, self).createAndAdd(data)
-
-        # for portal types with oldstyle factories
-        container = self.context
-        name = container.invokeFactory(self.ti.getId(), data['id'])
-        obj = container._getOb(name)
-
-        obj_type = translate(obj.Type(), container)
-        self.status = _(u'${obj_type} added.', mapping={'obj_type': obj_type})
-        self._finished_add = True
-        self._added_obj = obj
-        return obj
 
 
 # XXX: This should be refactored using formlib. Please don't import from this
