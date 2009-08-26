@@ -96,7 +96,7 @@ password_email and registered_email
     MIME-Version: 1.0
     Content-Transfer-Encoding: 7bit
     To: <foo@example.org>
-    From: WEBMASTER =?utf-8?b?w4TDlsOc?= <WEBMASTER@EXAMPLE.ORG>
+    From: WEBMASTER =?utf-8?...?= <WEBMASTER@EXAMPLE.ORG>
     Subject: [[cmf_default][WWW.EXAMPLE.ORG: Membership reminder]]
     <BLANKLINE>
     [[cmf_default][Your password: secret]]
@@ -142,10 +142,10 @@ password_email and registered_email
     >>> print s.registered_email()
     Content-Type: text/plain; charset="utf-8"
     MIME-Version: 1.0
-    Content-Transfer-Encoding: base64
+    Content-Transfer-Encoding: ...
     To: <foo@example.org>
-    From: WEBMASTER =?utf-8?b?w4TDlsOc?= <WEBMASTER@EXAMPLE.ORG>
+    From: WEBMASTER =?utf-8?...?= <WEBMASTER@EXAMPLE.ORG>
     Subject: [[cmf_default][WWW.EXAMPLE.ORG: Your Membership Information]]
     <BLANKLINE>
-    W1tj...
+    ...
     <BLANKLINE>
