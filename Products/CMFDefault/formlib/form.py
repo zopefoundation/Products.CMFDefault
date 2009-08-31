@@ -224,10 +224,26 @@ class ContentEditFormBase(_EditFormMixin, PageForm):
         obj_type = translate(self.context.Type(), self.context)
         return _(u'Edit ${obj_type}', mapping={'obj_type': obj_type})
 
+    @property
+    def successMessage(self):
+        obj_type = translate(self.context.Type(), self.context)
+        return _(u'${obj_type} changed.', mapping={'obj_type': obj_type})
+
+    noChangesMessage = _(u'Nothing to change.')
+
     def handle_validate(self, action, data):
         if self.context.wl_isLocked():
             return (_(u'This resource is locked via webDAV.'),)
         return None
+
+    def applyChanges(self, data):
+        content = self.context
+        changes = form.applyData(content, self.form_fields, data,
+                                 self.adapters)
+        # ``changes`` is a dictionary; if empty, there were no changes
+        if changes:
+            content.reindexObject()
+        return changes
 
     def _handle_success(self, action, data):
         # normalize set and datetime
@@ -236,16 +252,12 @@ class ContentEditFormBase(_EditFormMixin, PageForm):
                 data[k] = set(v)
             elif isinstance(v, datetime) and v.tzname() is None:
                 data[k] = parseDatetimetz(str(v))
-        changed = form.applyChanges(self.context, self.form_fields, data,
-                                    self.adapters)
-        if changed:
-            self.context.reindexObject()
-            obj_type = translate(self.context.Type(), self.context)
-            self.status = _(u'${obj_type} changed.',
-                            mapping={'obj_type': obj_type})
+        changes = self.applyChanges(data)
+        if changes:
+            self.status = self.successMessage
         else:
-            self.status = _(u'Nothing to change.')
-        return changed
+            self.status = self.noChangesMessage
+        return changes
 
     def handle_change_success(self, action, data):
         self._handle_success(action, data)
