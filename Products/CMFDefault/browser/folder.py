@@ -15,155 +15,110 @@
 $Id$
 """
 
-from DocumentTemplate import sequence  # for sort()
-from Products.PythonScripts.standard import thousands_commas
+import urllib
+
+from DocumentTemplate import sequence
 from ZTUtils import Batch
 from ZTUtils import LazyFilter
-from ZTUtils import make_query
+
+from zope import schema
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
+
+from zope.formlib import form
+
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.Five.formlib.formbase import PageForm
 
 from Products.CMFCore.interfaces import IDynamicType
+
+from Products.CMFDefault.browser.interfaces import IDeltaItem
+from Products.CMFDefault.browser.interfaces import IFolderItem
+from Products.CMFDefault.browser.interfaces import IHidden
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
-from Products.CMFDefault.permissions import AddPortalContent
-from Products.CMFDefault.permissions import DeleteObjects
+from Products.CMFDefault.formlib.form import _EditFormMixin
 from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
-from Products.CMFDefault.permissions import ViewManagementScreens
-from Products.CMFDefault.utils import html_marshal
 from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.utils import translate
 
 
-# XXX: This should be refactored using formlib. Please don't import from this
-#      module, things might be changed without further notice.
-
-class FormViewBase(ViewBase):
-
-    # helpers
-
-    def _setRedirect(self, provider_id, action_path, keys=''):
-        provider = self._getTool(provider_id)
-        try:
-            target = provider.getActionInfo(action_path, self.context)['url']
-        except ValueError:
-            target = self._getPortalURL()
-
-        kw = {}
-        message = self.request.other.get('portal_status_message', '')
-        if message:
-            if isinstance(message, unicode):
-                message = message.encode(self._getBrowserCharset())
-            kw['portal_status_message'] = message
-        for k in keys.split(','):
-            k = k.strip()
-            v = self.request.form.get(k, None)
-            if v:
-                kw[k] = v
-
-        query = kw and ( '?%s' % make_query(kw) ) or ''
-        self.request.RESPONSE.redirect( '%s%s' % (target, query) )
-
-        return True
-
-    # interface
-
-    def __call__(self, **kw):
-        form = self.request.form
-        for button in self._BUTTONS:
-            if button['id'] in form:
-                for permission in button.get('permissions', ()):
-                    if not self._checkPermission(permission):
-                        break
-                else:
-                    for transform in button.get('transform', ()):
-                        status = getattr(self, transform)(**form)
-                        if isinstance(status, bool):
-                            status = (status,)
-                        if len(status) > 1:
-                            message = translate(status[1], self.context)
-                            self.request.other['portal_status_message'] = message
-                        if not status[0]:
-                            return self.index()
-                    if self._setRedirect(*button['redirect']):
-                        return
-        return self.index()
-
-    @memoize
-    def form_action(self):
-        return self._getViewURL()
-
-    @memoize
-    def listButtonInfos(self):
-        form = self.request.form
-        buttons = []
-        for button in self._BUTTONS:
-            if button.get('title', None):
-                for permission in button.get('permissions', ()):
-                    if not self._checkPermission(permission):
-                        break
-                else:
-                    for condition in button.get('conditions', ()):
-                        if not getattr(self, condition)():
-                            break
-                    else:
-                        buttons.append({'name': button['id'],
-                                        'value': button['title']})
-        return tuple(buttons)
-
-    @memoize
-    @decode
-    def listHiddenVarInfos(self):
-        kw = self._getHiddenVars()
-        vars = [ {'name': name, 'value': value}
-                 for name, value in html_marshal(**kw) ]
-        return tuple(vars)
+def contents_delta_vocabulary(context):
+    """Vocabulary for the pulldown for moving objects up and down.
+    """
+    length = len(context.contentIds())
+    deltas = [SimpleTerm(i, str(i), str(i)) 
+            for i in range(1, min(5, length)) + range(5, length, 5)]
+    return SimpleVocabulary(deltas)
 
 
 class BatchViewBase(ViewBase):
-
-    # helpers
+    """ Helper class for creating batch-based views.
+    """
 
     _BATCH_SIZE = 25
+    hidden_fields = form.FormFields(IHidden)
+    prefix = ''
+    
+    @memoize
+    def setUpWidgets(self, ignore_request=False):
+        self.hidden_widgets = form.setUpWidgets(self.hidden_fields, self.prefix, 
+                                                self.context, self.request, 
+                                                ignore_request=ignore_request)
 
     @memoize
     def _getBatchStart(self):
-        return self.request.form.get('b_start', 0)
+        return self._getHiddenVars().get('b_start', 0)
 
     @memoize
     def _getBatchObj(self):
         b_start = self._getBatchStart()
-        items = self._getItems()
+        items = self._get_items()
         return Batch(items, self._BATCH_SIZE, b_start, orphan=0)
 
     @memoize
     def _getHiddenVars(self):
-        return {}
+        data = {}
+        if hasattr(self, 'hidden_widgets'):
+            form.getWidgetsData(self.hidden_widgets, self.prefix, data)
+        return data
 
     @memoize
     def _getNavigationVars(self):
         return self._getHiddenVars()
 
     @memoize
-    def _getNavigationURL(self, b_start):
+    def expand_prefix(self, key,):
+        """Return a form specific query key for use in GET strings"""
+        return "%s%s" % (form.expandPrefix(self.prefix), key)
+
+    @memoize
+    def _getNavigationURL(self, b_start=None):
         target = self._getViewURL()
         kw = self._getNavigationVars().copy()
+        if 'bstart' not in kw:
+            kw['b_start'] = b_start
 
-        kw['b_start'] = b_start
         for k, v in kw.items():
             if not v or k == 'portal_status_message':
-                del kw[k]
+                pass
+            else:
+                new_key = self.expand_prefix(k)
+                kw[new_key] = v
+            del kw[k]
 
-        query = kw and ('?%s' % make_query(kw)) or ''
+        query = kw and ('?%s' % urllib.urlencode(kw)) or ''
+
         return u'%s%s' % (target, query)
 
     # interface
 
     @memoize
     @decode
-    def listItemInfos(self):
+    def listBatchItems(self):
         batch_obj = self._getBatchObj()
         portal_url = self._getPortalURL()
 
@@ -220,6 +175,37 @@ class BatchViewBase(ViewBase):
             title = _(u'Next ${count} items', mapping={'count': length})
         return {'title': title, 'url': url}
 
+    def page_range(self):
+        """Create a range of up to ten pages around the current page"""
+        pages = [(idx + 1, b_start) for idx, b_start in enumerate(
+                    range(0, 
+                        self._getBatchObj().sequence_length, 
+                        self._BATCH_SIZE)
+                    )
+                ]
+        range_start = max(self.page_number() - 5, 0)
+        range_stop = min(max(self.page_number() + 5, 10), len(pages))
+        _page_range = []
+        for page, b_start in pages[range_start:range_stop]:
+            _page_range.append(
+                {'number':page, 
+                 'url':self._getNavigationURL(b_start)
+                }
+                              )
+        return _page_range
+
+    @memoize
+    def page_count(self):
+        """Count total number of pages in the batch"""
+        batch_obj = self._getBatchObj()
+        count = (batch_obj.sequence_length - 1) / self._BATCH_SIZE + 1
+        return count
+
+    @memoize
+    def page_number(self):
+        """Get the number of the current page in the batch"""
+        return (self._getBatchStart() / self._BATCH_SIZE) + 1
+
     @memoize
     def summary_length(self):
         length = self._getBatchObj().sequence_length
@@ -233,138 +219,106 @@ class BatchViewBase(ViewBase):
     @memoize
     @decode
     def summary_match(self):
-        return self.request.form.get('SearchableText')
+        return self.request.form.get('SearchableText')       
 
 
-class FolderView(BatchViewBase):
+class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
+    """Folder contents view"""
+    
+    template = ViewPageTemplateFile('templates/folder_contents.pt')
+    prefix = 'form'
+    
+    object_actions = form.Actions(
+        form.Action(
+            name='rename',
+            label=_(u'Rename'),
+            validator='validate_items',
+            condition='has_subobjects',
+            success='handle_rename'),
+        form.Action(
+            name='cut',
+            label=_(u'Cut'),
+            condition='has_subobjects',
+            validator='validate_items',
+            success='handle_cut'),
+        form.Action(
+            name='copy',
+            label=_(u'Copy'),
+            condition='has_subobjects',
+            validator='validate_items',
+            success='handle_copy'),
+        form.Action(
+            name='paste',
+            label=_(u'Paste'),
+            condition='check_clipboard_data',
+            success='handle_paste'),
+        form.Action(
+            name='delete',
+            label=_(u'Delete'),
+            condition='has_subobjects',
+            validator='validate_items',
+            success='handle_delete')
+            )
+            
+    delta_actions = form.Actions(
+        form.Action(
+            name='up',
+            label=_(u'Up'),
+            condition='is_orderable',
+            validator='validate_items',
+            success='handle_up'),
+        form.Action(
+            name='down',
+            label=_(u'Down'),
+            condition='is_orderable',
+            validator='validate_items',
+            success='handle_down')
+            )
+            
+    absolute_actions = form.Actions(
+        form.Action(
+            name='top',
+            label=_(u'Top'),
+            condition='is_orderable',
+            validator='validate_items',
+            success='handle_top'),
+        form.Action(
+            name='bottom',
+            label=_(u'Bottom'),
+            condition='is_orderable',
+            validator='validate_items',
+            success='handle_bottom')
+            )
 
-    """View for IFolderish.
-    """
-
-    # helpers
-
-    @memoize
-    def _getItems(self):
-        (key, reverse) = self.context.getDefaultSorting()
-        items = self.context.contentValues()
-        items = sequence.sort(items,
-                              ((key, 'cmp', reverse and 'desc' or 'asc'),))
-        return LazyFilter(items, skip='View')
-
-    # interface
-
-    @memoize
-    def has_local(self):
-        return 'local_pt' in self.context.objectIds()
-
-
-class FolderContentsView(BatchViewBase, FormViewBase):
-
-    """Contents view for IFolderish.
-    """
-
-    _BUTTONS = ({'id': 'items_rename',
-                 'title': _(u'Rename...'),
-                 'permissions': (ViewManagementScreens, AddPortalContent),
-                 'conditions': ('checkItems', 'checkAllowedContentTypes'),
-                 'transform': ('validateItemIds',),
-                 'redirect': ('portal_types', 'object/rename_items',
-                              'b_start, ids, key, reverse')},
-                {'id': 'items_cut',
-                 'title': _(u'Cut'),
-                 'permissions': (ViewManagementScreens,),
-                 'conditions': ('checkItems',),
-                 'transform': ('validateItemIds', 'cut_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_copy',
-                 'title': _(u'Copy'),
-                 'permissions': (ViewManagementScreens,),
-                 'conditions': ('checkItems',),
-                 'transform': ('validateItemIds', 'copy_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_paste',
-                 'title': _(u'Paste'),
-                 'permissions': (ViewManagementScreens, AddPortalContent),
-                 'conditions': ('checkClipboardData',),
-                 'transform': ('validateClipboardData', 'paste_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_delete',
-                 'title': _(u'Delete'),
-                 'permissions': (ViewManagementScreens, DeleteObjects),
-                 'conditions': ('checkItems',),
-                 'transform': ('validateItemIds', 'delete_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_sort',
-                 'permissions': (ManageProperties,),
-                 'transform': ('sort_control',),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start')},
-                {'id': 'items_up',
-                 'permissions': (ManageProperties,),
-                 'transform': ('validateItemIds', 'up_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_down',
-                 'permissions': (ManageProperties,),
-                 'transform': ('validateItemIds', 'down_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_top',
-                 'permissions': (ManageProperties,),
-                 'transform': ('validateItemIds', 'top_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'items_bottom',
-                 'permissions': (ManageProperties,),
-                 'transform': ('validateItemIds', 'bottom_control'),
-                 'redirect': ('portal_types', 'object/folderContents',
-                              'b_start, key, reverse')},
-                {'id': 'set_view_filter',
-                 'transform': ('set_filter_control',),
-                 'redirect': ('portal_types', 'object/folderContents')},
-                {'id': 'clear_view_filter',
-                 'transform': ('clear_filter_control',),
-                 'redirect': ('portal_types', 'object/folderContents')})
-
-    # helpers
-
-    @memoize
-    def _getSorting(self):
-        key = self.request.form.get('key', None)
-        if key:
-            return (key, self.request.form.get('reverse', 0))
-        else:
-            return self.context.getDefaultSorting()
-
-    @memoize
-    def _isDefaultSorting(self):
-        return self._getSorting() == self.context.getDefaultSorting()
-
-    @memoize
-    def _getHiddenVars(self):
-        b_start = self._getBatchStart()
-        is_default = self._isDefaultSorting()
-        (key, reverse) = is_default and ('', 0) or self._getSorting()
-        return {'b_start': b_start, 'key': key, 'reverse': reverse}
-
-    @memoize
-    def _getItems(self):
-        (key, reverse) = self._getSorting()
-        folderfilter = self.request.get('folderfilter', '')
-        filter = self.context.decodeFolderFilter(folderfilter)
-        items = self.context.listFolderContents(contentFilter=filter)
-        return sequence.sort(items,
-                             ((key, 'cmp', reverse and 'desc' or 'asc'),))
-
-    # interface
+    sort_actions = form.Actions(
+        form.Action(
+            name='sort_order',
+            label=_(u'Set as Default Sort'),
+            condition='can_sort_be_changed',
+            validator='validate_items',
+            success='handle_top')
+            )
+            
+    actions = object_actions + delta_actions + absolute_actions + sort_actions
+    errors = ()
+    
+    def __init__(self, *args, **kw):
+        super(ContentsView, self).__init__(*args, **kw)
+        self.form_fields = form.FormFields()
+        self.delta_field = form.FormFields(IDeltaItem)
+        self.contents = self.context.contentValues()        
+                
+    def content_fields(self):
+        """Create content field objects only for batched items"""
+        for item in self._getBatchObj():
+            for name, field in schema.getFieldsInOrder(IFolderItem):
+                field = form.FormField(field, name, item.id)
+                self.form_fields += form.FormFields(field)
 
     @memoize
     @decode
     def up_info(self):
+        """Link to the contens view of the parent object"""
         up_obj = self.context.aq_inner.aq_parent
         mtool = self._getTool('portal_membership')
         allowed = mtool.checkPermission(ListFolderContents, up_obj)
@@ -380,233 +334,289 @@ class FolderContentsView(BatchViewBase, FormViewBase):
                         'url': ''}
         else:
             return {}
-
+        
+    def setUpWidgets(self, ignore_request=False):
+        """Create widgets for the folder contents."""
+        super(ContentsView, self).setUpWidgets(ignore_request)
+        data = {}
+        self.content_fields()
+        for i in self._getBatchObj():
+            data['%s.name' % i.id] = i.getId()
+        self.widgets = form.setUpDataWidgets(
+                self.form_fields, self.prefix, self.context,
+                self.request, data=data, ignore_request=ignore_request)
+        self.widgets += form.setUpWidgets(
+                self.delta_field, self.prefix, self.context,
+                self.request, ignore_request=ignore_request)
+                
     @memoize
-    def listColumnInfos(self):
-        (key, reverse) = self._getSorting()
-        columns = ( {'key': 'Type',
+    def _get_sorting(self):
+        """How should the contents be sorted"""
+        data = self._getHiddenVars()
+        key = data.get('sort_key')
+        if key:
+            return (key, data.get('reverse', 0))
+        else:
+            return self.context.getDefaultSorting()
+            
+    @memoize
+    def _is_default_sorting(self,):
+        return self._get_sorting() == self.context.getDefaultSorting()
+        
+    @memoize
+    def column_headings(self):
+        key, reverse = self._get_sorting()
+        columns = ( {'sort_key': 'Type',
                      'title': _(u'Type'),
-                     'width': '20',
                      'colspan': '2'}
-                  , {'key': 'getId',
-                     'title': _(u'Name'),
-                     'width': '360',
-                     'colspan': None}
-                  , {'key': 'modified',
-                     'title': _(u'Last Modified'),
-                     'width': '180',
-                     'colspan': None}
-                  , {'key': 'position',
-                     'title': _(u'Position'),
-                     'width': '80',
-                     'colspan': None }
+                  , {'sort_key': 'getId',
+                     'title': _(u'Name')}
+                  , {'sort_key': 'modified',
+                     'title': _(u'Last Modified')}
+                  , {'sort_key': 'position',
+                     'title': _(u'Position')}
                   )
         for column in columns:
-            if key == column['key'] and not reverse and key != 'position':
-                query = make_query(key=column['key'], reverse=1)
-            else:
-                query = make_query(key=column['key'])
+            paras = {'form.sort_key':column['sort_key']}
+            if key == column['sort_key'] \
+            and not reverse and key != 'position':
+                paras['form.reverse'] = 1
+            query = urllib.urlencode(paras)
             column['url'] = '%s?%s' % (self._getViewURL(), query)
         return tuple(columns)
-
+        
     @memoize
-    @decode
-    def listItemInfos(self):
-        b_start = self._getBatchStart()
-        (key, reverse) = self._getSorting()
+    def _get_items(self):
+        key, reverse = self._get_sorting()
+        items = self.contents
+        return sequence.sort(items,
+                             ((key, 'cmp', reverse and 'desc' or 'asc'),))
+    
+    @memoize
+    def listBatchItems(self):
+        """Return the widgets for the form in the interface field order"""
         batch_obj = self._getBatchObj()
-        items_manage_allowed = self._checkPermission(ViewManagementScreens)
-        portal_url = self._getPortalURL()
+        b_start = self._getBatchStart()
+        key, reverse = self._get_sorting()
+        fields = []
 
-        items = []
-        i = 1
-        for item in batch_obj:
-            item_icon = item.getIcon(1)
-            item_id = item.getId()
-            item_position = (key == 'position') and str(b_start + i) or '...'
-            i += 1
-            item_url = item.getActionInfo(('object/folderContents',
-                                           'object/view'))['url']
-            items.append({'checkbox': items_manage_allowed and ('cb_%s' %
-                                                               item_id) or '',
-                          'icon': item_icon and ('%s/%s' %
-                                               (portal_url, item_icon)) or '',
-                          'id': item_id,
-                          'modified': item.ModificationDate(),
-                          'position': item_position,
-                          'title': item.Title(),
-                          'type': item.Type() or None,
-                          'url': item_url})
-        return tuple(items)
+        for idx, item in enumerate(batch_obj):
+            field = {'ModificationDate':item.ModificationDate()}
+            field['select'] = self.widgets['%s.select' % item.getId()]
+            field['name'] = self.widgets['%s.name' % item.getId()]
+            field['url'] = item.absolute_url()
+            field['title'] = item.TitleOrId()
+            field['icon'] = item.icon
+            field['position'] = (key == 'position') \
+                                and str(b_start + idx + 1) \
+                                or '...'
+            field['type'] = item.Type() or None
+            fields.append(field.copy())
+        return fields
+                
+    def _get_ids(self, data):
+        """Identify objects that have been selected"""
+        ids = [k[:-7] for k, v in data.items()
+                 if v is True and k.endswith('.select')]
+        return ids
 
+    #Action conditions
     @memoize
-    def listDeltas(self):
-        length = self._getBatchObj().sequence_length
-        deltas = range(1, min(5, length)) + range(5, length, 5)
-        return tuple(deltas)
-
+    def has_subobjects(self, action=None):
+        """Return false if the user cannot rename subobjects"""
+        return bool(self.contents)
+    
     @memoize
-    def is_orderable(self):
-        length = len(self._getBatchObj())
-        items_move_allowed = self._checkPermission(ManageProperties)
-        (key, reverse) = self._getSorting()
-        return items_move_allowed and (key == 'position') and length > 1
-
-    @memoize
-    def is_sortable(self):
-        items_move_allowed = self._checkPermission(ManageProperties)
-        return items_move_allowed and not self._isDefaultSorting()
-
-    # checkers
-
-    def checkAllowedContentTypes(self):
-        return bool(self.context.allowedContentTypes())
-
-    def checkClipboardData(self):
+    def check_clipboard_data(self, action=None):
+        """Any data in the clipboard"""
         return bool(self.context.cb_dataValid())
+    
+    @memoize
+    def can_sort_be_changed(self, action=None):
+        """Returns true if the default sort key may be changed 
+            may be sorted for display"""
+        items_move_allowed = self._checkPermission(ManageProperties)
+        return items_move_allowed and not \
+            self._get_sorting() == self.context.getDefaultSorting()
 
-    def checkItems(self):
-        return bool(self._getItems())
-
-    # validators
-
-    def validateItemIds(self, ids=(), **kw):
-        if ids:
-            return True
+    @memoize
+    def is_orderable(self, action=None):
+        """Returns true if the displayed contents can be
+            reorded."""
+        (key, reverse) = self._get_sorting()        
+        return key == 'position' and len(self.contents) > 1
+    
+    #Action validators
+    def validate_items(self, action=None, data=None):
+        """Check whether any items have been selected for 
+        the requested action."""
+        super(ContentsView, self).validate(action, data)
+        if data is None or data == {}:
+            return [_(u"Please select one or more items first.")]
         else:
-            return False, _(u'Please select one or more items first.')
-
-    def validateClipboardData(self, **kw):
-        if self.context.cb_dataValid():
-            return True
-        else:
-            return False, _(u'Please copy or cut one or more items to paste '
-                            u'first.')
-
-    # controllers
-
-    def cut_control(self, ids, **kw):
-        """Cut objects from a folder and copy to the clipboard.
-        """
+            return []
+            
+    #Action handlers
+    def handle_rename(self, action, data):
+        """Redirect to rename view passing the ids of objects to be renamed"""
+        # currently redirects to a PythonScript
+        # should be replaced with a dedicated form
+        self.request.form['ids'] = self._get_ids(data)
+        keys = ",".join(self._getHiddenVars().keys() + ['ids'])
+        # keys = 'b_start, ids, key, reverse'
+        return self._setRedirect('portal_types', 'object/rename_items', keys)
+        
+    def handle_cut(self, action, data):
+        """Cut the selected objects and put them in the clipboard"""
+        ids = self._get_ids(data)
         try:
             self.context.manage_cutObjects(ids, self.request)
             if len(ids) == 1:
-                return True, _(u'Item cut.')
+                self.status = _(u'Item cut.')
             else:
-                return True, _(u'Items cut.')
+                self.status = _(u'Items cut.')
         except CopyError:
-            return False, _(u'CopyError: Cut failed.')
+            self.status = _(u'CopyError: Cut failed.')
         except zExceptions_Unauthorized:
-            return False, _(u'Unauthorized: Cut failed.')
+            self.status = _(u'Unauthorized: Cut failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')    
 
-    def copy_control(self, ids, **kw):
-        """Copy objects from a folder to the clipboard.
-        """
+    def handle_copy(self, action, data):
+        """Copy the selected objects to the clipboard"""
+        ids = self._get_ids(data)
         try:
             self.context.manage_copyObjects(ids, self.request)
             if len(ids) == 1:
-                return True, _(u'Item copied.')
+                self.status = _(u'Item copied.')
             else:
-                return True, _(u'Items copied.')
+                self.status = _(u'Items copied.')
         except CopyError:
-            return False, _(u'CopyError: Copy failed.')
-
-    def paste_control(self, **kw):
-        """Paste objects to a folder from the clipboard.
-        """
+            self.status = _(u'CopyError: Copy failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')
+    
+    def handle_paste(self, action, data):
+        """Paste the objects from the clipboard into the folder"""
         try:
             result = self.context.manage_pasteObjects(self.request['__cp'])
             if len(result) == 1:
-                return True, _(u'Item pasted.')
+                self.status = _(u'Item pasted.')
             else:
-                return True, _(u'Items pasted.')
-        except CopyError:
-            return False, _(u'CopyError: Paste failed.')
-        except zExceptions_Unauthorized:
-            return False, _(u'Unauthorized: Paste failed.')
+                self.status = _(u'Items pasted.')
+        except CopyError, error:
+            self.status = _(u'CopyError: Paste failed.')
+            self.request['RESPONSE'].expireCookie('__cp', 
+                    path='%s' % (self.request['BASEPATH1'] or "/"))
 
-    def delete_control(self, ids, **kw):
-        """Delete objects from a folder.
-        """
+        except zExceptions_Unauthorized:
+            self.status = _(u'Unauthorized: Paste failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')
+
+    def handle_delete(self, action, data):
+        """Delete the selected objects"""
+        ids = self._get_ids(data)
         self.context.manage_delObjects(list(ids))
         if len(ids) == 1:
-            return True, _(u'Item deleted.')
+            self.status = _(u'Item deleted.')
         else:
-            return True, _(u'Items deleted.')
-
-    def sort_control(self, key='position', reverse=0, **kw):
-        """Sort objects in a folder.
-        """
-        self.context.setDefaultSorting(key, reverse)
-        return True
-
-    def up_control(self, ids, delta, **kw):
-        subset_ids = [ obj.getId()
-                       for obj in self.context.listFolderContents() ]
+            self.status = _(u'Items deleted.')
+        return self._setRedirect('portal_types', 'object/new_contents')
+    
+    def handle_up(self, action, data):
+        """Move the selected objects up the selected number of places"""
+        ids = self._get_ids(data)
+        delta = data.get('delta', 1)
+        subset_ids = [obj.getId()
+                       for obj in self.context.listFolderContents()]
         try:
             attempt = self.context.moveObjectsUp(ids, delta,
                                                  subset_ids=subset_ids)
             if attempt == 1:
-                return True, _(u'Item moved up.')
+                self.status = _(u'Item moved up.')
             elif attempt > 1:
-                return True, _(u'Items moved up.')
+                self.status = _(u'Items moved up.')
             else:
-                return False, _(u'Nothing to change.')
+                self.status = _(u'Nothing to change.')
         except ValueError:
-            return False, _(u'ValueError: Move failed.')
+            self.status = _(u'ValueError: Move failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')
 
-    def down_control(self, ids, delta, **kw):
-        subset_ids = [ obj.getId()
-                       for obj in self.context.listFolderContents() ]
+    def handle_down(self, action, data):
+        """Move the selected objects down the selected number of places"""
+        ids = self._get_ids(data)
+        delta = data.get('delta', 1)
+        subset_ids = [obj.getId()
+                       for obj in self.context.listFolderContents()]
         try:
             attempt = self.context.moveObjectsDown(ids, delta,
-                                                   subset_ids=subset_ids)
+                                                 subset_ids=subset_ids)
             if attempt == 1:
-                return True, _(u'Item moved down.')
+                self.status = _(u'Item moved down.')
             elif attempt > 1:
-                return True, _(u'Items moved down.')
+                self.status = _(u'Items moved down.')
             else:
-                return False, _(u'Nothing to change.')
+                self.status = _(u'Nothing to change.')
         except ValueError:
-            return False, _(u'ValueError: Move failed.')
-
-    def top_control(self, ids, **kw):
-        subset_ids = [ obj.getId()
-                       for obj in self.context.listFolderContents() ]
+            self.status = _(u'ValueError: Move failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')
+            
+    def handle_top(self, action, data):
+        """Move the selected objects to the top of the page"""
+        ids = self._get_ids(data)
+        subset_ids = [obj.getId()
+                       for obj in self.context.listFolderContents()]
         try:
             attempt = self.context.moveObjectsToTop(ids,
                                                     subset_ids=subset_ids)
             if attempt == 1:
-                return True, _(u'Item moved to top.')
+                self.status = _(u'Item moved to top.')
             elif attempt > 1:
-                return True, _(u'Items moved to top.')
+                self.status = _(u'Items moved to top.')
             else:
-                return False, _(u'Nothing to change.')
+                self.status = _(u'Nothing to change.')
         except ValueError:
-            return False, _(u'ValueError: Move failed.')
+            self.status = _(u'ValueError: Move failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')
 
-    def bottom_control(self, ids, **kw):
-        subset_ids = [ obj.getId()
-                       for obj in self.context.listFolderContents() ]
+    def handle_bottom(self, action, data):
+        """Move the selected objects to the bottom of the page"""
+        ids = self._get_ids(data)
+        subset_ids = [obj.getId()
+                       for obj in self.context.listFolderContents()]
         try:
             attempt = self.context.moveObjectsToBottom(ids,
                                                        subset_ids=subset_ids)
             if attempt == 1:
-                return True, _(u'Item moved to bottom.')
+                self.status = _(u'Item moved to bottom.')
             elif attempt > 1:
-                return True, _(u'Items moved to bottom.')
+                self.status = _(u'Items moved to bottom.')
             else:
-                return False, _(u'Nothing to change.')
+                self.status = _(u'Nothing to change.')
         except ValueError:
-            return False, _(u'ValueError: Move failed.')
+            self.status = _(u'ValueError: Move failed.')
+        return self._setRedirect('portal_types', 'object/new_contents')
+        
+    def handle_sort_order(self, action, data):
+        """Set the sort options for the folder."""
+        key = data['position']
+        reverse = data.get('reverse', 0)
+        self.context.setDefaultSorting(key, reverse)
+        self.status = _(u"Sort order changed")
+        return self._setRedirect('portal_types', 'object/new_contents')
+        
 
-    def set_filter_control(self, **kw):
-        filter = self.context.encodeFolderFilter(self.request)
-        self.request.RESPONSE.setCookie('folderfilter', filter, path='/',
-                                      expires='Wed, 19 Feb 2020 14:28:00 GMT')
-        return True, _(u'Filter applied.')
+class FolderView(BatchViewBase):
 
-    def clear_filter_control(self, **kw):
-        self.request.RESPONSE.expireCookie('folderfilter', path='/')
-        self.request.RESPONSE.expireCookie('show_filter_form', path='/')
-        return True, _(u'Filter cleared.')
+    """View for IFolderish.
+    """
+
+    @memoize
+    def _get_items(self):
+        (key, reverse) = self.context.getDefaultSorting()
+        items = self.context.contentValues()
+        items = sequence.sort(items,
+                              ((key, 'cmp', reverse and 'desc' or 'asc'),))
+        return LazyFilter(items, skip='View')
+
+    @memoize
+    def has_local(self):
+        return 'local_pt' in self.context.objectIds()

@@ -18,10 +18,15 @@ $Id$
 import unittest
 from Testing import ZopeTestCase
 
+from Products.CMFDefault.browser.tests.utils import clearVocabulary
+from Products.CMFDefault.browser.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
 
 
-ftest_suite = ZopeTestCase.FunctionalDocFileSuite('btreefolder.txt')
+ftest_suite = ZopeTestCase.FunctionalDocFileSuite('btreefolder.txt',
+                setUp=setupVocabulary,
+                tearDown=clearVocabulary
+                )
 ftest_suite.layer = FunctionalLayer
 
 def test_suite():

@@ -17,23 +17,16 @@ $Id$
 
 import unittest
 from Testing import ZopeTestCase
-from Products.Five.schema import Zope2VocabularyRegistry
 
+from Products.CMFDefault.browser.tests.utils import clearVocabulary
+from Products.CMFDefault.browser.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
-
-def _setupVocabulary(ztc):
-    from zope.schema.vocabulary import setVocabularyRegistry
-    setVocabularyRegistry(Zope2VocabularyRegistry())
-
-def _clearVocabulary(ztc):
-    from zope.schema.vocabulary import _clear
-    _clear()
 
 
 ftest_suite = ZopeTestCase.FunctionalDocFileSuite(
                 'document.txt',
-                setUp=_setupVocabulary,
-                tearDown=_clearVocabulary,
+                setUp=setupVocabulary,
+                tearDown=clearVocabulary,
                )
 ftest_suite.layer = FunctionalLayer
 

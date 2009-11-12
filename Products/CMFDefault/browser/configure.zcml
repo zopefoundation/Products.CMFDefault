@@ -10,13 +10,18 @@
       template="templates/folder.pt"
       permission="zope2.View"
       />
-
+  
+  <utility
+      component=".folder.contents_delta_vocabulary"
+      name="cmf.contents delta vocabulary"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      />
+      
   <browser:page
       for="Products.CMFCore.interfaces.IFolderish"
       layer="..interfaces.ICMFDefaultSkin"
       name="edit.html"
-      class=".folder.FolderContentsView"
-      template="templates/folder_contents.pt"
+      class=".folder.ContentsView"
       permission="cmf.ListFolderContents"
       />
 

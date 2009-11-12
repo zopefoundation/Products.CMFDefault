@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Folder views: Rebuilt the CMF folder views based on 
+  zope.formlib.
+
 - SkinnedFolder: Adjusted implementation to PortalFolder changes.
 
 - moved the Zope dependency to version 2.12.0b3dev

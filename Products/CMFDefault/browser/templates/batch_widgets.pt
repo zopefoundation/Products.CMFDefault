@@ -14,7 +14,7 @@
 ></metal:macro>
 
  <metal:macro metal:define-macro="listing" i18n:domain="cmf_default">
- <p class="BatchListing" tal:repeat="item_info view/listItemInfos"
+ <p class="BatchListing" tal:repeat="item_info view/listBatchItems"
  ><a href="" tal:attributes="href item_info/url"
   ><img src="" alt="" title="" border="0" width="16" height="16"
       tal:attributes="src item_info/icon; alt item_info/type;
@@ -49,6 +49,28 @@
      i18n:translate="">NEXT N ITEMS</a></tal:case
  ></p
 ></metal:macro>
+
+<metal:macro metal:define-macro="pagination"
+  tal:define="current_page view/page_number;
+              prev_info view/navigation_previous;
+              next_info view/navigation_next">
+	<a href="" 
+	   tal:condition="prev_info"
+		 tal:attributes="href prev_info/url">&lt;&lt;</a>
+  <tal:repeat condition="python: prev_info or next_info"
+                        repeat="page view/page_range">
+		<a tal:condition="python: not page['number'] == current_page" 
+		  tal:attributes="href page/url"
+		  tal:content="page/number">Page number</a>
+	  <span tal:condition="python: page['number'] == current_page"
+	        tal:content="page/number">Page number</span>
+		<tal:condition condition="not: repeat/page/end">|</tal:condition> 
+	</tal:repeat>
+	
+	<a href="" 
+	   tal:condition="python: current_page != view.page_count() and next_info" 
+	   tal:attributes="href next_info/url">&gt;&gt;</a>
+</metal:macro>
 
 </body>
 </html>

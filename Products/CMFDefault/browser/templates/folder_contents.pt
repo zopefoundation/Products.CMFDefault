@@ -16,74 +16,66 @@
 ><tal:case tal:condition="not: up_info/url"
  ><span class="mild" i18n:translate="">Root</span></tal:case></p>
 
-<form action="folder_contents" method="post"
-   tal:attributes="action view/form_action"
-><metal:macro metal:use-macro="context/@@form_widget/hidden_vars" />
- <table class="BatchTable"
-    tal:condition="view/listItemInfos">
-  <thead>
-   <tr class="list-header">
-    <th width="80" tal:repeat="column_info view/listColumnInfos"
-       tal:attributes="width column_info/width; colspan column_info/colspan"
-    ><a href="" tal:attributes="href column_info/url"
-        tal:content="column_info/title">COLUMN TITLE</a></th>
-   </tr>
-  </thead>
-  <tbody tal:repeat="item_info view/listItemInfos">
-   <tr class="" tal:define="even repeat/item_info/even"
-      tal:attributes="class python: (even and 'row-hilite') or 'row-normal'">
-      <td width="5"
-      ><input type="checkbox" name="ids:list" value="" id=""
-          tal:attributes="value item_info/id; id item_info/checkbox"
-          tal:condition="item_info/checkbox" /></td>
-      <td
-      ><a href="" tal:attributes="href item_info/url"
-          tal:condition="item_info/icon"
-       ><img src="" alt="" border="0"
-           tal:attributes="src item_info/icon; alt item_info/type"
-           i18n:attributes="alt" /></a></td>
-      <td
-      ><a href="" tal:attributes="href item_info/url"
-       ><tal:span tal:content="item_info/id">ID</tal:span>
-        <tal:case tal:condition="item_info/title"
-           tal:content="string:(${item_info/title})">(Title)</tal:case
-      ></a></td>
-      <td
-      ><tal:span tal:content="item_info/modified">2001</tal:span></td>
-      <td
-      ><tal:span tal:content="item_info/position">1</tal:span></td>
-   </tr>
-  </tbody>
- </table>
- <metal:macro metal:use-macro="context/@@batch_widget/navigation" />
- <metal:macro metal:use-macro="context/@@form_widget/buttons" />
-<tal:case tal:condition="python: view.is_orderable() or view.is_sortable()"
-> <div class="FormButtons"
- ><tal:case tal:condition="view/is_orderable">
-  <input type="submit" name="items_up" value="Up"
-     i18n:attributes="value" />
-  /
-  <input type="submit" name="items_down" value="Down"
-     i18n:attributes="value" />
-  by
-  <select name="delta:int">
-   <option value=""
-      tal:repeat="delta view/listDeltas"
-      tal:attributes="value delta"
-      tal:content="delta">
-   </option>
-  </select>
-  <input type="submit" name="items_top" value="Top"
-     i18n:attributes="value" />
-  <input type="submit" name="items_bottom" value="Bottom"
-     i18n:attributes="value" /></tal:case
- ><tal:case tal:condition="view/is_sortable">
-  <input type="submit" name="items_sort" value="Set Sorting as Default"
-     i18n:attributes="value" /></tal:case
-></div>
-</tal:case></form>
+<ul class="errors" tal:condition="view/errors">
+ <li tal:repeat="error view/error_views"><tal:span
+     tal:replace="structure error" /></li>
+</ul>
 
-<div tal:replace="structure context/folder_filter_form">Filter Form Here</div>
+<p class="status" 
+  tal:condition="exists: request/portal_status_message"
+  tal:content="request/portal_status_message"></p>
+  
+<form class="form" action="." method="post" enctype="multipart/form-data"
+   tal:attributes="action request/ACTUAL_URL">
+   <tal:block repeat="widget view/hidden_widgets"
+              replace="structure widget/hidden" />
+   <table tal:condition="view/has_subobjects">
+     <tr>
+       <th tal:repeat="column view/column_headings"
+            tal:attributes="colspan column/colspan | nothing"><a href="column"
+         tal:content="column/title"
+         tal:attributes="href column/url"
+         >Column Title</a></th>
+     </tr>
+   <tr tal:repeat="item view/listBatchItems" 
+      tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or ''">
+     <td tal:content="structure item/select">Checkbox</td>
+     <td><a href="" tal:attributes="href item/url"
+         tal:condition="item/icon"
+      ><img src="" alt="" border="0"
+          tal:attributes="src item/icon; alt item/type"
+          i18n:attributes="alt" /></a></td>
+     <td><a tal:attributes="href string:${item/url}/edit.html" tal:content="string:${item/name} (${item/title})"></a></td>
+     <td tal:content="item/ModificationDate"></td>
+    <td tal:content="item/position"></td>
+   </tr>
+   </table>
+<div class="buttons">
+  <tal:loop tal:repeat="action view/object_actions" 
+   tal:replace="structure action/render" />
+</div>
+<div class="buttons">
+  <tal:loop tal:repeat="action view/delta_actions" 
+   tal:replace="structure action/render" />
+   <div tal:condition="view/is_orderable"
+        tal:define="widget python:view.widgets.get('delta');
+                    hint widget/hint | nothing">
+     <label tal:attributes="for widget/name; title python: hint or None"
+       tal:content="widget/label">Move By</label>
+     <tal:block tal:replace="structure view/widgets/delta" />
+   </div>
+</div>
+<div class="buttons">
+  <tal:loop tal:repeat="action view/absolute_actions" 
+   tal:replace="structure action/render" />
+</div>
+<div class="buttons">
+  <tal:loop tal:repeat="action view/sort_actions" 
+   tal:replace="structure action/render" />
+</div>
+</form>
+<metal:macro metal:use-macro="context/@@batch_widget/navigation" />
+<metal:macro metal:use-macro="context/@@batch_widget/pagination" />
 </metal:slot>
 
 </body>

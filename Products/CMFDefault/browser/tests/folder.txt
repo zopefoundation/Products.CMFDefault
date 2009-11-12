@@ -1,10 +1,12 @@
-Folder Views
-------------
+Form Views
+--------------
 
 Set up user.
 
     >>> uf = app.site.acl_users
     >>> uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
+    >>> from zope.site.hooks import setSite
+    >>> setSite(app.site)
 
 Create the browser object we'll be using.
 
@@ -13,41 +15,48 @@ Create the browser object we'll be using.
     >>> browser.handleErrors = False
     >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
-Use the add form without input.
+Open the contents view with the various options selected.
+All sort options apart from position are reversible.
 
-    >>> browser.open('http://localhost/site/++add++Folder')
-    >>> '[[cmf_default][Add [[cmf_default][Folder]]]]' in browser.contents
+    >>> browser.open('http://localhost/site/@@edit.html?form.b_start=25')
+    >>> 'name="form.b_start" type="hidden" value="25"' in browser.contents
     True
-    >>> browser.getControl('[[zope][Add]]').click()
-    >>> '[[zope][There were errors]]' in browser.contents
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=Type')
+    >>> 'name="form.sort_key" type="hidden" value="Type"' in browser.contents
     True
-    >>> '[[zope][Required input is missing.]]' in browser.contents
+    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=Type&amp;form.reverse=1">' \
+    ... in browser.contents
     True
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=getId')
+    >>> 'name="form.sort_key" type="hidden" value="getId"' in browser.contents
+    True
+    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=getId&amp;form.reverse=1">' \
+    ... in browser.contents
+    True
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=modified')
+    >>> 'name="form.sort_key" type="hidden" value="modified"' in browser.contents
+    True
+    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=modified&amp;form.reverse=1">' \
+    ... in browser.contents
+    True
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=position')
+    >>> 'name="form.sort_key" type="hidden" value="position"' in browser.contents
+    True
+    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=position&amp;form.reverse=1">' \
+    ... in browser.contents
+    False
 
-Use the add form with valid input.
 
-    >>> from StringIO import StringIO
-    >>> browser.open('http://localhost/site/++add++Folder')
-    >>> '[[cmf_default][Add [[cmf_default][Folder]]]]' in browser.contents
+
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=Type&form.reverse=1')
+    >>> 'name="form.reverse" type="hidden" value="1"' in browser.contents
     True
-    >>> browser.getControl(name='form.id').value = 'myFolder'
-    >>> browser.getControl('[[zope][Add]]').click()
-    >>> '[[cmf_default][[[cmf_default][Folder]] added.]]' in browser.contents
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=getId&form.reverse=1')
+    >>> 'name="form.reverse" type="hidden" value="1"' in browser.contents
     True
-
-Use the folder contents form without input.
-
-    >>> browser.open('http://localhost/site/myFolder/@@edit.html')
-    >>> '[[cmf_default][Folder Contents: ]]' in browser.contents
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=modified&form.reverse=1')
+    >>> 'name="form.reverse" type="hidden" value="1"' in browser.contents
     True
-
-Try to add something to this folder.
-
-    >>> browser.open('http://localhost/site/myFolder/++add++Document')
-    >>> '[[cmf_default][Add [[cmf_default][Document]]]]' in browser.contents
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=position&form.reverse=1')
+    >>> 'name="form.reverse" type="hidden" value="1"' in browser.contents
     True
-    >>> browser.getControl(name='form.id').value = 'myDocument'
-    >>> browser.getControl('[[zope][Add]]').click()
-    >>> '[[cmf_default][[[cmf_default][Document]] added.]]' in browser.contents
-    True
-
