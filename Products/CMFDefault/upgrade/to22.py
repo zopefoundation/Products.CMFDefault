@@ -124,3 +124,24 @@ def add_action_icons(tool):
                 changed = True
         if changed:
             logger.info("TypeInfo '%s' changed." % ti.getId())
+
+def check_type_icons(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        if ti.content_icon and not ti.icon_expr:
+            return True
+    return False
+
+def convert_type_icons(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        if ti.content_icon and not ti.icon_expr:
+            icon_expr = 'string:${portal_url}/%s' % ti.content_icon
+            ti._setPropValue('icon_expr', icon_expr)
+            ti._setPropValue('content_icon', '')
+            logger.info("TypeInfo '%s' changed." % ti.getId())
