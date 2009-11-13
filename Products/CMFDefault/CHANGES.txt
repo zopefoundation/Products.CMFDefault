@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Got rid of redundant icon related type info properties.
+  (https://bugs.launchpad.net/zope-cmf/+bug/397795)
+
 - Folder views: Rebuilt the CMF folder views based on 
   zope.formlib.
 

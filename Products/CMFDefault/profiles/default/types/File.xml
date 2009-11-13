@@ -4,7 +4,7 @@
  <property name="title" i18n:translate="">File</property>
  <property name="description"
     i18n:translate="">File objects can contain arbitrary downloadable files.</property>
- <property name="content_icon">file_icon.gif</property>
+ <property name="icon_expr">string:${portal_url}/file_icon.gif</property>
  <property name="content_meta_type">Portal File</property>
  <property name="product"></property>
  <property name="factory">cmf.file</property>

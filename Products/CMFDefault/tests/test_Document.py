@@ -49,7 +49,7 @@ from Products.CMFCore.tests.base.content import STX_NO_HEADERS_BUT_COLON
 from Products.CMFCore.tests.base.content import STX_WITH_HTML
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.testcase import RequestTest
-from Products.CMFCore.tests.base.tidata import FTIDATA_CMF15
+from Products.CMFCore.tests.base.tidata import FTIDATA_CMF
 from Products.CMFCore.TypesTool import FactoryTypeInformation as FTI
 from Products.CMFCore.TypesTool import TypesTool
 from Products.CMFDefault import utils
@@ -564,7 +564,7 @@ class DocumentFTPGetTests(RequestTestBase):
         self.REQUEST['BODY']=BASIC_HTML
 
         ttool = self.site._setObject( 'portal_types', TypesTool() )
-        fti = FTIDATA_CMF15[0].copy()
+        fti = FTIDATA_CMF[0].copy()
         del fti['id']
         ttool._setObject( 'Document', FTI('Document', **fti) )
 
