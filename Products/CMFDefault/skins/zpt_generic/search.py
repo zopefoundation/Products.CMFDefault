@@ -35,7 +35,7 @@ items = ctool.searchResults(kw)
 batch_obj = Batch(items, 25, b_start, orphan=1)
 
 items = [ {'description': item.Description,
-           'icon': item.getIcon,
+           'icon': item.getIconURL,
            'title': item.Title,
            'type': item.Type,
            'date': item.Date,

@@ -132,15 +132,14 @@
    <tr class="ContextActionsRow">
 
     <td class="ActionTitle"
-        tal:define="getIcon python: hasattr(context, 'getIcon') and context.getIcon();
-                    icon python: getIcon or getattr(context, 'icon', '');
+        tal:define="icon_url python: getattr(context, 'getIconURL', '');
                     typ python: getattr(context, 'Type', '');
                     objID python: context.truncID(context.getId(), size=15)">
 
-     <img src="icon" align="left" title="Type" alt="[X]"
+     <img src="icon_url" align="left" title="Type" alt="[X]"
           height="16" width="16"
-          tal:condition="icon"
-          tal:attributes="src string:${globals/portal_url}/${icon};
+          tal:condition="icon_url"
+          tal:attributes="src icon_url;
                           alt typ; "
           i18n:attributes="alt" /> &nbsp;
 

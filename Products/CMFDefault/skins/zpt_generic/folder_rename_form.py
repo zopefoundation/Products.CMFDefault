@@ -27,9 +27,7 @@ raw_items = [ getattr(c, id) for id in ids if hasattr(c, id) ]
 raw_items = [ item for item in raw_items if item.cb_isMoveable() ]
 items = []
 for item in raw_items:
-    item_icon = item.getIcon(1)
-    items.append( { 'icon': item_icon and
-                            ( '%s/%s' % (portal_url, item_icon) ) or '',
+    items.append( { 'icon': item.getIconURL(),
                     'id': item.getId(),
                     'title': item.Title(),
                     'type': item.Type() or None } )

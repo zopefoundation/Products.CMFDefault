@@ -24,6 +24,7 @@ from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.testing import ConformsToContent
+from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 
@@ -44,6 +45,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         sm.registerUtility(self.site, ISiteRoot)
         self.site._setObject( 'portal_membership', DummyTool() )
         self.site._setObject( 'portal_url', DummyTool() )
+        self.site._setObject( 'target', DummyContent() )
 
     def tearDown(self):
         cleanUp()
@@ -66,13 +68,14 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         self.assertEqual( f.getId(), 'foo' )
         self.assertEqual( f.Title(), '' )
         self.assertEqual( f.Description(), '' )
-        self.assertEqual( f.getRemoteUrl(), utool.root )
+        self.assertEqual( f.getRemoteUrl(), utool() )
         self.assertEqual( f.getObject(), self.site )
-        self.assertEqual( f.getIcon(), self.site.getIcon() )
-        self.assertEqual( f.getIcon(1), self.site.getIcon(1) )
+        self.assertEqual( f.getIconURL(), self.site.getIconURL() )
+        self.assertEqual( f.icon(), self.site.icon() )
 
     def test_CtorArgs( self ):
         utool = self.site.portal_url
+        target = self.site.target
         self.assertEqual( self._makeOne( 'foo'
                                        , title='Title'
                                        ).Title(), 'Title' )
@@ -82,28 +85,30 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
                                        ).Description(), 'Description' )
 
         baz = self.site._setObject('foo',
-                                self._makeOne('baz', remote_url='portal_url'))
-        self.assertEqual( baz.getObject(), utool )
-        self.assertEqual( baz.getRemoteUrl()
-                        , '%s/portal_url' % utool.root )
-        self.assertEqual( baz.getIcon(), utool.getIcon() )
+                                self._makeOne('baz', remote_url='target'))
+        self.assertEqual( baz.getObject(), target )
+        self.assertEqual( baz.getRemoteUrl(), '%s/target' % utool() )
+        self.assertEqual( baz.getIconURL(), target.getIconURL() )
+        self.assertEqual( baz.icon(), target.icon() )
 
     def test_edit( self ):
         utool = self.site.portal_url
+        target = self.site.target
         f = self.site._setObject('foo', self._makeOne('foo'))
-        f.edit( 'portal_url' )
-        self.assertEqual( f.getObject(), utool )
-        self.assertEqual( f.getRemoteUrl()
-                        , '%s/portal_url' % utool.root )
-        self.assertEqual( f.getIcon(), utool.getIcon() )
+        f.edit( 'target' )
+        self.assertEqual( f.getObject(), target )
+        self.assertEqual( f.getRemoteUrl(), '%s/target' % utool() )
+        self.assertEqual( f.getIconURL(), target.getIconURL() )
+        self.assertEqual( f.icon(), target.icon() )
 
     def test_editEmpty( self ):
         utool = self.site.portal_url
         f = self.site._setObject('gnnn', self._makeOne('gnnn'))
         f.edit( '' )
         self.assertEqual( f.getObject(), self.site )
-        self.assertEqual( f.getRemoteUrl(), utool.root )
-        self.assertEqual( f.getIcon(), self.site.getIcon() )
+        self.assertEqual( f.getRemoteUrl(), utool() )
+        self.assertEqual( f.getIconURL(), self.site.getIconURL() )
+        self.assertEqual( f.icon(), self.site.icon() )
 
 
 def test_suite():

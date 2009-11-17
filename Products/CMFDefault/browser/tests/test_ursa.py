@@ -146,18 +146,18 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         view.context.getId = lambda: 'X' * 20
         self.assertEqual(view.trunc_id, 'X' * 15 + '...')
 
-    def test_icon_wo_getIcon_w_icon(self):
+    def test_icon_wo_getIconURL_w_icon(self):
         view = self._makeOne()
-        view.context.getIcon = lambda: 'ICON'
+        view.context.getIconURL = lambda: 'ICON'
         view.context.icon = 'ICON2'
         self.assertEqual(view.icon, 'ICON')
 
-    def test_icon_wo_getIcon_w_icon(self):
+    def test_icon_wo_getIconURL_w_icon(self):
         view = self._makeOne()
         view.context.icon = 'ICON'
         self.assertEqual(view.icon, 'ICON')
 
-    def test_icon_wo_getIcon_wo_icon(self):
+    def test_icon_wo_getIconURL_wo_icon(self):
         view = self._makeOne()
         self.assertEqual(view.icon, '')
 

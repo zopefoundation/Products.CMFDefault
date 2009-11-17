@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.0-beta (unreleased)
 -----------------------
 
+- Skins and browser views: Replaced 'getIcon' by 'getIconURL' calls.
+
 
 2.2.0-alpha (2009-11-13)
 ------------------------

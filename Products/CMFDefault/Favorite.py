@@ -117,17 +117,17 @@ class Favorite(Link):
         else:
             return portal_url()
 
-
-    security.declareProtected(View, 'getIcon')
-    def getIcon(self, relative_to_portal=0):
+    security.declareProtected(View, 'getIconURL')
+    def getIconURL(self):
         """
         Instead of a static icon, like for Link objects, we want
         to display an icon based on what the Favorite links to.
         """
         try:
-            return self.getObject().getIcon(relative_to_portal)
-        except:
-            return 'p_/broken'
+            return self.getObject().getIconURL()
+        except KeyError:
+            utool = getToolByName(self, 'portal_url')
+            return '%s/p_/broken' % utool()
 
     security.declareProtected(View, 'getObject')
     def getObject(self):

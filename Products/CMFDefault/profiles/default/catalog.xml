@@ -78,7 +78,7 @@
  <column value="created"/>
  <column value="effective"/>
  <column value="expires"/>
- <column value="getIcon"/>
+ <column value="getIconURL"/>
  <column value="getId"/>
  <column value="listCreators"/>
  <column value="modified"/>

@@ -80,7 +80,7 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def icon(self):
-        return getattr(self.context, 'getIcon',
+        return getattr(self.context, 'getIconURL',
                         lambda: getattr(self.context, 'icon', ''))()
     @property
     @memoize

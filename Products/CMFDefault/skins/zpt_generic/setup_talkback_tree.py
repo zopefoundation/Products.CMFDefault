@@ -7,8 +7,6 @@ from Products.CMFDefault.permissions import ManagePortal
 from Products.CMFDefault.utils import decode
 
 mtool = getToolByName(script, 'portal_membership')
-utool = getToolByName(script, 'portal_url')
-portal_url = utool()
 
 tm = SimpleTreeMaker('tb_tree')
 def getKids(object):
@@ -24,7 +22,6 @@ items = []
 for row in rows:
     branch = row.branch()
     item = row.object
-    item_icon = item.getIcon(1)
     item_url = item.absolute_url()
     items.append({'tree_colspan': tree.height - row.depth,
                   'tree_icon': branch and branch['img'] or '',
@@ -35,8 +32,7 @@ for row in rows:
                   'date': item.CreationDate(),
                   'delete_url': is_delete_allowed and \
                                 ('%s/discitem_delete' % item_url) or '',
-                  'icon': item_icon and \
-                          ('%s/%s' % (portal_url, item_icon)) or '',
+                  'icon': item.getIconURL(),
                   'title': item.Title(),
                   'url': item_url})
 

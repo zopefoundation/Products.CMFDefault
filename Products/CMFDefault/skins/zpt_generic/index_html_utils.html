@@ -31,9 +31,9 @@
    <li tal:repeat="item items">
     <a href="item_url" tal:attributes="href item/absolute_url"><img
       align="middle" border="0"
-      tal:attributes="src   string:${item/portal_url}/${item/getIcon};
-                      alt   string:${item/Type};
-                      title string:${item/Type}"
+      tal:attributes="src item/getIconURL;
+                      alt item/Type;
+                      title item/Type"
       i18n:attributes="alt; title" /></a>
     <a href="item_url" tal:attributes="href item/absolute_url"
        tal:content="item/Title"> Title </a>
@@ -69,9 +69,9 @@
    <li tal:repeat="item items">
     <a href="item_url" tal:attributes="href item/absolute_url"><img
       align="middle" border="0"
-      tal:attributes="src   string:${item/portal_url}/${item/getIcon};
-                      alt   string:${item/Type};
-                      title string:${item/Type}"
+      tal:attributes="src item/getIconURL;
+                      alt item/Type;
+                      title item/Type"
       i18n:attributes="alt; title" /></a>
     <a href="item_url" tal:attributes="href item/absolute_url"
        tal:content="item/Title"> Title </a>
@@ -105,9 +105,9 @@
    <li tal:repeat="item items">
     <a href="item_url" tal:attributes="href item/absolute_url"><img
       align="middle" border="0"
-      tal:attributes="src   string:${item/portal_url}/${item/getIcon};
-                      alt   string:${item/Type};
-                      title string:${item/Type}"
+      tal:attributes="src item/getIconURL;
+                      alt item/Type;
+                      title item/Type"
       i18n:attributes="alt; title" /></a>
     <a href="item_url" tal:attributes="href item/absolute_url"
        tal:content="item/TitleOrId"> Title </a>

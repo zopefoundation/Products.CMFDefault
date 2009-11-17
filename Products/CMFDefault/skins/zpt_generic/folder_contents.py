@@ -139,7 +139,6 @@ batch_obj = Batch(items, 25, b_start, orphan=0)
 items = []
 i = 1
 for item in batch_obj:
-    item_icon = item.getIcon(1)
     item_id = item.getId()
     item_position = key == 'position' and str(b_start + i) or '...'
     i += 1
@@ -147,8 +146,7 @@ for item in batch_obj:
                                     'object/view') )['url']
     items.append( { 'checkbox': items_manage_allowed and
                                 ('cb_%s' % item_id) or '',
-                    'icon': item_icon and
-                            ( '%s/%s' % (portal_url, item_icon) ) or '',
+                    'icon': item.getIconURL(),
                     'id': item_id,
                     'modified': item.ModificationDate(),
                     'position': item_position,
