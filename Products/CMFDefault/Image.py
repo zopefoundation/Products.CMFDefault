@@ -198,13 +198,15 @@ class Image(PortalContent, OFS.Image.Image, DefaultDublinCoreImpl):
             _setCacheHeaders(view, extra_context={})
             return ''
 
-        if self.ZCacheable_getManager() is None:
-            # not none cache manager already taken care of
-            _setCacheHeaders(view, extra_context={})
-        else:
-            self.ZCacheable_set(None)
-
-        return OFS.Image.Image.index_html(self, REQUEST, RESPONSE)
+        try:
+            return OFS.Image.Image.index_html(self, REQUEST, RESPONSE)
+        finally:
+            if self.ZCacheable_getManager() is None:
+                # not none cache manager already taken care of
+                _setCacheHeaders(view, extra_context={})
+            else:
+                self.ZCacheable_set(None)
+            
 
     security.declarePrivate('_setOldCacheHeaders')
     def _setOldCacheHeaders(self):

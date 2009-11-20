@@ -204,15 +204,17 @@ class File(PortalContent, OFS.Image.File, DefaultDublinCoreImpl):
             _setCacheHeaders(view, extra_context={})
             return ''
 
-        # There are 2 Cache Managers which can be in play....
-        # need to decide which to use to determine where the cache headers
-        # are decided on.
-        if self.ZCacheable_getManager() is not None:
-            self.ZCacheable_set(None)
-        else:
-            _setCacheHeaders(view, extra_context={})
+        try:
+            return OFS.Image.File.index_html(self, REQUEST, RESPONSE)
+        finally:
+            # There are 2 Cache Managers which can be in play....
+            # need to decide which to use to determine where the cache headers
+            # are decided on.
+            if self.ZCacheable_getManager() is not None:
+                self.ZCacheable_set(None)
+            else:
+                _setCacheHeaders(view, extra_context={})
 
-        return OFS.Image.File.index_html(self, REQUEST, RESPONSE)
 
     def _setOldCacheHeaders(self):
         # return False to disable this simple caching behaviour
