@@ -37,6 +37,8 @@ from Products.CMFCore.tests.base.testcase import RequestTest
 from Products.CMFDefault import tests
 from Products.CMFDefault.testing import FunctionalLayer
 
+from test_File import LMDummyCachingManager
+
 TESTS_HOME = tests.__path__[0]
 TEST_JPG = path_join(TESTS_HOME, 'TestImage.jpg')
 
@@ -306,6 +308,28 @@ class TestCaching(RequestTest):
         self.failUnless('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_image')
 
+    def test_caching_policy_headers_are_canonical(self):
+        """Ensure that headers set by the caching policy manager trump
+        any of the same name that from time to time may be set while 
+        rendering the object."""
+        path, ref = self._extractFile()
+
+        self._setupCachingPolicyManager(LMDummyCachingManager())
+
+        img = self._makeOne( 'test_image', 'test_image.gif' )
+                
+        # Cause persistent's modified time record to be set
+        self.root.foo = img
+        transaction.commit()
+        img = self.root.foo
+        # end
+        import pdb; pdb.set_trace( )
+        # index_html in OFS will set Last-modified if ._p_mtime exists
+        img.index_html(self.REQUEST, self.RESPONSE)
+        
+        headers = self.RESPONSE.headers
+        self.assertEqual(headers['last-modified'], 
+                         "Sun, 06 Nov 1994 08:49:37 GMT")
 
 def test_suite():
     return unittest.TestSuite((

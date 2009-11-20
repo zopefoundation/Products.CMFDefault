@@ -17,6 +17,8 @@ $Id$
 
 import unittest
 import Testing
+import transaction
+import DateTime
 
 from os.path import join as path_join
 
@@ -172,7 +174,37 @@ class CachingTests(RequestTest):
         self.failUnless('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_file')
         self.RESPONSE.write = response_write
+    
+    def test_caching_policy_headers_are_canonical(self):
+        """Ensure that headers set by the caching policy manager trump
+        any of the same name that from time to time may be set while 
+        rendering the object."""
+        path, ref = self._extractFile()
 
+        self._setupCachingPolicyManager(LMDummyCachingManager())
+
+        file = self._makeOne( 'test_file', 'test_file.swf', file=ref )
+                
+        # Cause persistent's modified time record to be set
+        self.root.foo = file
+        transaction.commit()
+        file = self.root.foo
+        # end
+
+        # index_html in OFS will set Last-modified if ._p_mtime exists
+        file.index_html(self.REQUEST, self.RESPONSE)
+        
+        headers = self.RESPONSE.headers
+        self.assertEqual(headers['last-modified'], 
+                         "Sun, 06 Nov 1994 08:49:37 GMT")
+
+# We set up a new type of dummy caching manager that sets a bogus
+# last modified date.  This should be visible in the request
+class LMDummyCachingManager(DummyCachingManager):
+
+    def getHTTPCachingHeaders( self, content, view_name, 
+                               keywords, time=None ):
+        return ('Last-modified', 'Sun, 06 Nov 1994 08:49:37 GMT'), 
 
 def test_suite():
     return unittest.TestSuite((
