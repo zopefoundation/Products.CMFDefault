@@ -323,7 +323,7 @@ class TestCaching(RequestTest):
         transaction.commit()
         img = self.root.foo
         # end
-        import pdb; pdb.set_trace( )
+        
         # index_html in OFS will set Last-modified if ._p_mtime exists
         img.index_html(self.REQUEST, self.RESPONSE)
         
