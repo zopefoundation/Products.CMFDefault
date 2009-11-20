@@ -83,12 +83,6 @@
         checker=".to22.check_action_icons"
         />
 
-    <genericsetup:upgradeStep
-        title="Convert icon expressions to new type property"
-        handler=".to22.convert_type_icons"
-        checker=".to22.check_type_icons"
-        />
-
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

@@ -65,11 +65,12 @@ def check_type_properties(tool):
     """
     ttool = getToolByName(tool, 'portal_types')
     for ti in ttool.listTypeInfo():
-        if ti.getProperty('add_view_expr'):
-            continue
-        if ti.getProperty('content_meta_type') == 'Discussion Item':
-            continue
-        return True
+        content_icon = getattr(ti, 'content_icon', None)
+        if content_icon is not None:
+            return True
+        if not ti.getProperty('add_view_expr') and \
+                ti.getProperty('content_meta_type') != 'Discussion Item':
+            return True
     return False
 
 def upgrade_type_properties(tool):
@@ -78,14 +79,22 @@ def upgrade_type_properties(tool):
     logger = logging.getLogger('GenericSetup.upgrade')
     ttool = getToolByName(tool, 'portal_types')
     for ti in ttool.listTypeInfo():
-        if ti.getProperty('add_view_expr'):
-            continue
-        if ti.getProperty('content_meta_type') == 'Discussion Item':
-            continue
-        ti._updateProperty('add_view_expr',
-                           'string:${folder_url}/++add++%s'
-                           % quote(ti.getId()))
-        logger.info("TypeInfo '%s' changed." % ti.getId())
+        changed = False
+        content_icon = getattr(ti, 'content_icon', None)
+        if content_icon is not None:
+            del ti.content_icon
+            if content_icon and not ti.getProperty('icon_expr'):
+                icon_expr = 'string:${portal_url}/%s' % content_icon
+                ti._updateProperty('icon_expr', icon_expr)
+            changed = True
+        if not ti.getProperty('add_view_expr') and \
+                ti.getProperty('content_meta_type') != 'Discussion Item':
+            ti._updateProperty('add_view_expr',
+                               'string:${folder_url}/++add++%s'
+                               % quote(ti.getId()))
+            changed = True
+        if changed:
+            logger.info("TypeInfo '%s' changed." % ti.getId())
 
 _ACTION_ICONS = {'download': 'download_icon.png',
                  'edit': 'edit_icon.png',
@@ -123,25 +132,4 @@ def add_action_icons(tool):
                                      % _ACTION_ICONS[ai.getId()])
                 changed = True
         if changed:
-            logger.info("TypeInfo '%s' changed." % ti.getId())
-
-def check_type_icons(tool):
-    """2.1.x to 2.2.0 upgrade step checker
-    """
-    ttool = getToolByName(tool, 'portal_types')
-    for ti in ttool.listTypeInfo():
-        if ti.content_icon and not ti.icon_expr:
-            return True
-    return False
-
-def convert_type_icons(tool):
-    """2.1.x to 2.2.0 upgrade step handler
-    """
-    logger = logging.getLogger('GenericSetup.upgrade')
-    ttool = getToolByName(tool, 'portal_types')
-    for ti in ttool.listTypeInfo():
-        if ti.content_icon and not ti.icon_expr:
-            icon_expr = 'string:${portal_url}/%s' % ti.content_icon
-            ti._setPropValue('icon_expr', icon_expr)
-            ti._setPropValue('content_icon', '')
             logger.info("TypeInfo '%s' changed." % ti.getId())
