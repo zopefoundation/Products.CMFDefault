@@ -78,9 +78,21 @@
         />
 
     <genericsetup:upgradeStep
-        title="Add action icons"
-        handler=".to22.add_action_icons"
-        checker=".to22.check_action_icons"
+        title="Upgrade type actions"
+        handler=".to22.upgrade_type_actions"
+        checker=".to22.check_type_actions"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade workflow definitions"
+        handler=".to22.upgrade_workflow_definitions"
+        checker=".to22.check_workflow_definitions"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade action properties"
+        handler=".to22.upgrade_action_properties"
+        checker=".to22.check_action_properties"
         />
 
   </genericsetup:upgradeSteps>

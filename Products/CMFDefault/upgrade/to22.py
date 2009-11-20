@@ -21,6 +21,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from zope.component.interfaces import ComponentLookupError
 
+from Products.CMFCore.interfaces import IWorkflowDefinition
 from Products.CMFCore.utils import getToolByName
 
 def check_root_site_manager(tool):
@@ -107,9 +108,23 @@ _ACTION_ICONS = {'download': 'download_icon.png',
                  'retract': 'retract_icon.png',
                  'submit': 'submit_icon.png',
                  'reviewer_queue': 'worklist_icon.png',
+                 'login': 'login_icon.png',
+                 'join': 'join_icon.png',
+                 'preferences': 'preferences_icon.png',
+                 'logout': 'logout_icon.png',
+                 'addFavorite': 'addfavorite_icon.png',
+                 'mystuff': 'user_icon.png',
+                 'favorites': 'favorite_icon.png',
+                 'reply': 'reply_icon.png',
+                 'syndication': 'syndication_icon.png',
+                 'interfaces': 'interfaces_icon.png',
+                 'folderContents': 'folder_icon.png',
+                 'manage_members': 'members_icon.png',
+                 'undo': 'undo_icon.png',
+                 'configPortal': 'tool_icon.png',
                  }
 
-def check_action_icons(tool):
+def check_type_actions(tool):
     """2.1.x to 2.2.0 upgrade step checker
     """
     ttool = getToolByName(tool, 'portal_types')
@@ -119,7 +134,7 @@ def check_action_icons(tool):
                 return True
     return False
 
-def add_action_icons(tool):
+def upgrade_type_actions(tool):
     """2.1.x to 2.2.0 upgrade step handler
     """
     logger = logging.getLogger('GenericSetup.upgrade')
@@ -133,3 +148,61 @@ def add_action_icons(tool):
                 changed = True
         if changed:
             logger.info("TypeInfo '%s' changed." % ti.getId())
+
+def check_workflow_definitions(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    wtool = getToolByName(tool, 'portal_workflow')
+    for obj in wtool.objectValues():
+        if IWorkflowDefinition.providedBy(obj):
+            for t in obj.transitions.values():
+                if not t.actbox_icon and t.getId() in _ACTION_ICONS:
+                    return True
+            for w in obj.worklists.values():
+                if not w.actbox_icon and w.getId() in _ACTION_ICONS:
+                    return True
+    return False
+
+def upgrade_workflow_definitions(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    wtool = getToolByName(tool, 'portal_workflow')
+    for wf in wtool.objectValues():
+        changed = False
+        if IWorkflowDefinition.providedBy(wf):
+            for t in wf.transitions.values():
+                if not t.actbox_icon and t.getId() in _ACTION_ICONS:
+                    icon = _ACTION_ICONS[t.getId()]
+                    t.actbox_icon = '%(portal_url)s/' + icon
+                    changed = True
+            for w in wf.worklists.values():
+                if not w.actbox_icon and w.getId() in _ACTION_ICONS:
+                    icon = _ACTION_ICONS[w.getId()]
+                    w.actbox_icon = '%(portal_url)s/' + icon
+                    changed = True
+        if changed:
+            logger.info("WorkflowDefinition '%s' changed." % wf.getId())
+
+def check_action_properties(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    atool = getToolByName(tool, 'portal_actions')
+    for category in atool.objectValues():
+        for action in category.listActions():
+            if not action.icon_expr and action.getId() in _ACTION_ICONS:
+                return True
+    return False
+
+def upgrade_action_properties(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    atool = getToolByName(tool, 'portal_actions')
+    for category in atool.objectValues():
+        for action in category.listActions():
+            if not action.icon_expr and action.getId() in _ACTION_ICONS:
+                icon = _ACTION_ICONS[action.getId()]
+                icon = 'string:${portal_url}/%s' % icon
+                action._setPropValue('icon_expr', icon)
+                logger.info("Action '%s' changed." % action.getId())

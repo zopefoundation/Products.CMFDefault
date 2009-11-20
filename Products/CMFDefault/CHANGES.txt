@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0-beta (unreleased)
 -----------------------
 
+- upgrade: Improved upgrade steps for type, workflow and action properties.
+  Please re-run them if you already used older versions of these steps.
+
 - Skins and browser views: Replaced 'getIcon' by 'getIconURL' calls.
 
 
