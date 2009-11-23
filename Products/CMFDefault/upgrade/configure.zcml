@@ -60,6 +60,12 @@
       sortkey="4">
 
     <genericsetup:upgradeStep
+        title="Upgrade setup tool"
+        handler=".to22.upgrade_setup_tool"
+        checker=".to22.check_setup_tool"
+        />
+
+    <genericsetup:upgradeStep
         title="Upgrade root site manager"
         handler=".to22.upgrade_root_site_manager"
         checker=".to22.check_root_site_manager"

@@ -24,6 +24,74 @@ from zope.component.interfaces import ComponentLookupError
 from Products.CMFCore.interfaces import IWorkflowDefinition
 from Products.CMFCore.utils import getToolByName
 
+_KNOWN_IMPORT_STEPS = (
+    'actions',
+    'caching_policy_mgr',
+    'catalog',
+    'componentregistry',
+    'content_type_registry',
+    'cookie_authentication',
+    'mailhost',
+    'properties',
+    'rolemap',
+    'skins',
+    'toolset',
+    'typeinfo',
+    'various',
+    'workflow',
+    )
+
+_KNOWN_EXPORT_STEPS = (
+    'actions',
+    'caching_policy_mgr',
+    'catalog',
+    'componentregistry',
+    'content_type_registry',
+    'cookieauth',
+    'mailhost',
+    'properties',
+    'rolemap',
+    'skins',
+    'step_registries',
+    'toolset',
+    'typeinfo',
+    'workflows',
+    )
+
+def check_setup_tool(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    registry = tool.getImportStepRegistry()
+    steps = registry.listSteps()
+    for step in _KNOWN_IMPORT_STEPS:
+        if step in steps:
+            return True
+    registry = tool.getExportStepRegistry()
+    steps = registry.listSteps()
+    for step in _KNOWN_EXPORT_STEPS:
+        if step in steps:
+            return True
+    return False
+
+def upgrade_setup_tool(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    registry = tool.getImportStepRegistry()
+    steps = registry.listSteps()
+    for step in _KNOWN_IMPORT_STEPS:
+        if step in steps:
+            registry.unregisterStep(step)
+            tool._p_changed = True
+            logger.info("Import step '%s' locally unregistered." % step)
+    registry = tool.getExportStepRegistry()
+    steps = registry.listSteps()
+    for step in _KNOWN_EXPORT_STEPS:
+        if step in steps:
+            registry.unregisterStep(step)
+            tool._p_changed = True
+            logger.info("Export step '%s' locally unregistered." % step)
+
 def check_root_site_manager(tool):
     """2.1.x to 2.2.0 upgrade step checker
     """

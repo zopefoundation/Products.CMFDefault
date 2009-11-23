@@ -4,8 +4,13 @@ Products.CMFDefault Changelog
 2.2.0-beta (unreleased)
 -----------------------
 
-- upgrade: Improved upgrade steps for type, workflow and action properties.
-  Please re-run them if you already used older versions of these steps.
+- upgrade: Added more upgrade steps.
+  There is now support for upgrading the step registrations in the setup tool,
+  the columns in the catalog tool and the icons in the actions tool and
+  in workflow definitions.
+
+- upgrade: Improved upgrade step for type properties.
+  Please re-run it if you already used an older version of this step.
 
 - Skins and browser views: Replaced 'getIcon' by 'getIconURL' calls.
 
