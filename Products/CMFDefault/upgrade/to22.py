@@ -206,3 +206,27 @@ def upgrade_action_properties(tool):
                 icon = 'string:${portal_url}/%s' % icon
                 action._setPropValue('icon_expr', icon)
                 logger.info("Action '%s' changed." % action.getId())
+
+def check_catalog_columns(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    ctool = getToolByName(tool, 'portal_catalog')
+    columns = ctool.schema()
+    if 'getIcon' in columns:
+        return True
+    if 'getIconURL' not in columns:
+        return True
+    return False
+
+def upgrade_catalog_columns(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    ctool = getToolByName(tool, 'portal_catalog')
+    columns = ctool.schema()
+    if 'getIcon' in columns:
+        ctool.delColumn('getIcon')
+        logger.info("Catalog column 'getIcon' deleted.")
+    if 'getIconURL' not in columns:
+        ctool.addColumn('getIconURL')
+        logger.info("Catalog column 'getIconURL' added.")

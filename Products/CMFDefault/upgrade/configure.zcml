@@ -95,6 +95,12 @@
         checker=".to22.check_action_properties"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade catalog columns"
+        handler=".to22.upgrade_catalog_columns"
+        checker=".to22.check_catalog_columns"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
