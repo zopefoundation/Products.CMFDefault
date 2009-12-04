@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: Products/CMFCore/PortalContent.py:73
-#: Products/CMFDefault/formlib/form.py:203
+#: Products/CMFDefault/formlib/form.py:250
 msgid "This resource is locked via webDAV."
 msgstr ""
 
@@ -313,8 +313,8 @@ msgid "Body"
 msgstr ""
 
 #: Products/CMFDefault/browser/favorite.py:120
-#: Products/CMFDefault/browser/folder.py:49
 #: Products/CMFDefault/browser/link.py:125
+#: Products/CMFDefault/formlib/form.py:192
 msgid "ID"
 msgstr ""
 
@@ -343,67 +343,86 @@ msgstr ""
 msgid "Content type"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:232
+#: Products/CMFDefault/browser/folder.py:159
 msgid "Previous item"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:234
+#: Products/CMFDefault/browser/folder.py:161
 #. Default: ""
 msgid "Previous ${count} items"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:246
+#: Products/CMFDefault/browser/folder.py:173
 msgid "Next item"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:248
+#: Products/CMFDefault/browser/folder.py:175
 #. Default: ""
 msgid "Next ${count} items"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:259
+#: Products/CMFDefault/browser/folder.py:217
 #: Products/CMFDefault/skins/zpt_generic/search.py:47
 msgid "item"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:259
+#: Products/CMFDefault/browser/folder.py:217
 #: Products/CMFDefault/skins/zpt_generic/search.py:47
 msgid "items"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:295
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:169
-msgid "Rename..."
+#: Products/CMFDefault/browser/folder.py:234
+#: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:41
+msgid "Rename"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:302
-#: Products/CMFDefault/browser/new_folder.py:71
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:171
+#: Products/CMFDefault/browser/folder.py:240
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:169
 msgid "Cut"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:309
-#: Products/CMFDefault/browser/new_folder.py:77
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:172
+#: Products/CMFDefault/browser/folder.py:246
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:170
 msgid "Copy"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:316
-#: Products/CMFDefault/browser/new_folder.py:83
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:174
+#: Products/CMFDefault/browser/folder.py:252
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:172
 msgid "Paste"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:323
-#: Products/CMFDefault/browser/new_folder.py:88
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:176
+#: Products/CMFDefault/browser/folder.py:257
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:174
 #: Products/CMFDefault/skins/zpt_generic/members_delete_form.py:28
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:196
 msgid "Delete"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:416
-#: Products/CMFDefault/browser/new_folder.py:190
+#: Products/CMFDefault/browser/folder.py:266
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:67
+msgid "Up"
+msgstr ""
+
+#: Products/CMFDefault/browser/folder.py:272
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:70
+msgid "Down"
+msgstr ""
+
+#: Products/CMFDefault/browser/folder.py:281
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:80
+msgid "Top"
+msgstr ""
+
+#: Products/CMFDefault/browser/folder.py:287
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:82
+msgid "Bottom"
+msgstr ""
+
+#: Products/CMFDefault/browser/folder.py:296
+msgid "Set as Default Sort"
+msgstr ""
+
+#: Products/CMFDefault/browser/folder.py:370
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:110
 #: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:110
 #: Products/CMFDefault/skins/zpt_generic/review.pt:25
@@ -411,134 +430,106 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:420
-#: Products/CMFDefault/browser/new_folder.py:193
+#: Products/CMFDefault/browser/folder.py:373
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:114
 msgid "Name"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:424
-#: Products/CMFDefault/browser/new_folder.py:195
+#: Products/CMFDefault/browser/folder.py:375
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:118
 msgid "Last Modified"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:428
-#: Products/CMFDefault/browser/new_folder.py:197
+#: Products/CMFDefault/browser/folder.py:377
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:122
 msgid "Position"
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:505
-#: Products/CMFDefault/browser/new_folder.py:268
+#: Products/CMFDefault/browser/folder.py:455
 #: Products/CMFDefault/skins/zpt_control/validateItemIds.py:8
 msgid "Please select one or more items first."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:511
-#: Products/CMFDefault/skins/zpt_control/validateClipboardData.py:8
-msgid "Please copy or cut one or more items to paste first."
-msgstr ""
-
-#: Products/CMFDefault/browser/folder.py:522
-#: Products/CMFDefault/browser/new_folder.py:284
+#: Products/CMFDefault/browser/folder.py:475
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:11
 msgid "Item cut."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:524
-#: Products/CMFDefault/browser/new_folder.py:286
+#: Products/CMFDefault/browser/folder.py:477
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:13
 msgid "Items cut."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:526
-#: Products/CMFDefault/browser/new_folder.py:288
+#: Products/CMFDefault/browser/folder.py:479
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:15
 msgid "CopyError: Cut failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:528
-#: Products/CMFDefault/browser/new_folder.py:290
+#: Products/CMFDefault/browser/folder.py:481
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:17
 msgid "Unauthorized: Cut failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:536
-#: Products/CMFDefault/browser/new_folder.py:300
+#: Products/CMFDefault/browser/folder.py:490
 #: Products/CMFDefault/skins/zpt_control/folder_copy_control.py:10
 msgid "Item copied."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:538
-#: Products/CMFDefault/browser/new_folder.py:302
+#: Products/CMFDefault/browser/folder.py:492
 #: Products/CMFDefault/skins/zpt_control/folder_copy_control.py:12
 msgid "Items copied."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:540
-#: Products/CMFDefault/browser/new_folder.py:304
+#: Products/CMFDefault/browser/folder.py:494
 #: Products/CMFDefault/skins/zpt_control/folder_copy_control.py:14
 msgid "CopyError: Copy failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:548
-#: Products/CMFDefault/browser/new_folder.py:312
+#: Products/CMFDefault/browser/folder.py:502
 #: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:11
 msgid "Item pasted."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:550
-#: Products/CMFDefault/browser/new_folder.py:314
+#: Products/CMFDefault/browser/folder.py:504
 #: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:13
 msgid "Items pasted."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:552
-#: Products/CMFDefault/browser/new_folder.py:316
+#: Products/CMFDefault/browser/folder.py:506
 #: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:15
 msgid "CopyError: Paste failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:554
-#: Products/CMFDefault/browser/new_folder.py:321
+#: Products/CMFDefault/browser/folder.py:511
 #: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:17
 msgid "Unauthorized: Paste failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:561
-#: Products/CMFDefault/browser/new_folder.py:329
+#: Products/CMFDefault/browser/folder.py:519
 #: Products/CMFDefault/skins/zpt_control/folder_delete_control.py:9
 msgid "Item deleted."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:563
-#: Products/CMFDefault/browser/new_folder.py:331
+#: Products/CMFDefault/browser/folder.py:521
 #: Products/CMFDefault/skins/zpt_control/folder_delete_control.py:11
 msgid "Items deleted."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:578
-#: Products/CMFDefault/browser/new_folder.py:344
+#: Products/CMFDefault/browser/folder.py:534
 #: Products/CMFDefault/skins/zpt_control/folder_up_control.py:9
 msgid "Item moved up."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:580
-#: Products/CMFDefault/browser/new_folder.py:346
+#: Products/CMFDefault/browser/folder.py:536
 #: Products/CMFDefault/skins/zpt_control/folder_up_control.py:11
 msgid "Items moved up."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:582
-#: Products/CMFDefault/browser/folder.py:597
-#: Products/CMFDefault/browser/folder.py:612
-#: Products/CMFDefault/browser/folder.py:627
-#: Products/CMFDefault/browser/new_folder.py:348
-#: Products/CMFDefault/browser/new_folder.py:367
-#: Products/CMFDefault/browser/new_folder.py:385
-#: Products/CMFDefault/browser/new_folder.py:403
-#: Products/CMFDefault/formlib/form.py:221
+#: Products/CMFDefault/browser/folder.py:538
+#: Products/CMFDefault/browser/folder.py:557
+#: Products/CMFDefault/browser/folder.py:575
+#: Products/CMFDefault/browser/folder.py:593
+#: Products/CMFDefault/formlib/form.py:246
 #: Products/CMFDefault/skins/zpt_content/document_edit_control.py:14
 #: Products/CMFDefault/skins/zpt_content/folder_edit_control.py:9
 #: Products/CMFDefault/skins/zpt_content/link_edit_control.py:13
@@ -552,14 +543,10 @@ msgstr ""
 msgid "Nothing to change."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:584
-#: Products/CMFDefault/browser/folder.py:599
-#: Products/CMFDefault/browser/folder.py:614
-#: Products/CMFDefault/browser/folder.py:629
-#: Products/CMFDefault/browser/new_folder.py:350
-#: Products/CMFDefault/browser/new_folder.py:369
-#: Products/CMFDefault/browser/new_folder.py:387
-#: Products/CMFDefault/browser/new_folder.py:405
+#: Products/CMFDefault/browser/folder.py:540
+#: Products/CMFDefault/browser/folder.py:559
+#: Products/CMFDefault/browser/folder.py:577
+#: Products/CMFDefault/browser/folder.py:595
 #: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:15
 #: Products/CMFDefault/skins/zpt_control/folder_down_control.py:15
 #: Products/CMFDefault/skins/zpt_control/folder_top_control.py:15
@@ -567,54 +554,38 @@ msgstr ""
 msgid "ValueError: Move failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:593
-#: Products/CMFDefault/browser/new_folder.py:363
+#: Products/CMFDefault/browser/folder.py:553
 #: Products/CMFDefault/skins/zpt_control/folder_down_control.py:9
 msgid "Item moved down."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:595
-#: Products/CMFDefault/browser/new_folder.py:365
+#: Products/CMFDefault/browser/folder.py:555
 #: Products/CMFDefault/skins/zpt_control/folder_down_control.py:11
 msgid "Items moved down."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:608
-#: Products/CMFDefault/browser/new_folder.py:381
+#: Products/CMFDefault/browser/folder.py:571
 #: Products/CMFDefault/skins/zpt_control/folder_top_control.py:9
 msgid "Item moved to top."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:610
-#: Products/CMFDefault/browser/new_folder.py:383
+#: Products/CMFDefault/browser/folder.py:573
 #: Products/CMFDefault/skins/zpt_control/folder_top_control.py:11
 msgid "Items moved to top."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:62
-#: Products/CMFDefault/formlib/form.py:156
-#. Default: ""
-msgid "${obj_type} added."
-msgstr ""
-
-#: Products/CMFDefault/browser/folder.py:623
-#: Products/CMFDefault/browser/new_folder.py:399
+#: Products/CMFDefault/browser/folder.py:589
 #: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:9
 msgid "Item moved to bottom."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:625
-#: Products/CMFDefault/browser/new_folder.py:401
+#: Products/CMFDefault/browser/folder.py:591
 #: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:11
 msgid "Items moved to bottom."
 msgstr ""
 
-#: Products/CMFDefault/browser/folder.py:635
-msgid "Filter applied."
-msgstr ""
-
-#: Products/CMFDefault/browser/folder.py:640
-msgid "Filter cleared."
+#: Products/CMFDefault/browser/folder.py:603
+msgid "Sort order changed"
 msgstr ""
 
 #: Products/CMFDefault/browser/metadata.py:102
@@ -649,7 +620,7 @@ msgid "Properties"
 msgstr ""
 
 #: Products/CMFDefault/browser/metadata.py:224
-#: Products/CMFDefault/formlib/form.py:176
+#: Products/CMFDefault/formlib/form.py:216
 #: Products/CMFDefault/skins/zpt_content/document_edit_form.py:34
 #: Products/CMFDefault/skins/zpt_content/file_edit_form.py:25
 #: Products/CMFDefault/skins/zpt_content/folder_edit_form.py:24
@@ -670,7 +641,7 @@ msgid "Change and Edit"
 msgstr ""
 
 #: Products/CMFDefault/browser/metadata.py:236
-#: Products/CMFDefault/formlib/form.py:182
+#: Products/CMFDefault/formlib/form.py:222
 #: Products/CMFDefault/skins/zpt_content/document_edit_form.py:35
 #: Products/CMFDefault/skins/zpt_content/file_edit_form.py:26
 #: Products/CMFDefault/skins/zpt_content/folder_edit_form.py:25
@@ -720,43 +691,6 @@ msgstr ""
 msgid "Contributors"
 msgstr ""
 
-#: Products/CMFDefault/browser/new_folder.py:103
-#: Products/CMFDefault/browser/templates/folder_contents.pt:66
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:70
-msgid "Down"
-msgstr ""
-
-#: Products/CMFDefault/browser/new_folder.py:112
-#: Products/CMFDefault/browser/templates/folder_contents.pt:76
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:80
-msgid "Top"
-msgstr ""
-
-#: Products/CMFDefault/browser/new_folder.py:118
-#: Products/CMFDefault/browser/templates/folder_contents.pt:78
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:82
-msgid "Bottom"
-msgstr ""
-
-#: Products/CMFDefault/browser/new_folder.py:127
-msgid "Set as Default Sort"
-msgstr ""
-
-#: Products/CMFDefault/browser/new_folder.py:413
-msgid "Sort order changed"
-msgstr ""
-
-#: Products/CMFDefault/browser/new_folder.py:65
-#: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:43
-msgid "Rename"
-msgstr ""
-
-#: Products/CMFDefault/browser/new_folder.py:97
-#: Products/CMFDefault/browser/templates/folder_contents.pt:63
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:67
-msgid "Up"
-msgstr ""
-
 #: Products/CMFDefault/browser/newsitem.py:49
 #: Products/CMFDefault/skins/zpt_content/newsitem_edit_template.pt:38
 msgid "Lead-in"
@@ -784,32 +718,24 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: Products/CMFDefault/browser/templates/contents.pt:11
-#: Products/CMFDefault/browser/templates/folder_contents.pt:13
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:17
-msgid "Up to"
-msgstr ""
-
-#: Products/CMFDefault/browser/templates/contents.pt:15
-#: Products/CMFDefault/browser/templates/folder_contents.pt:17
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:21
-msgid "Root"
-msgstr ""
-
-#: Products/CMFDefault/browser/templates/contents.pt:9
 #: Products/CMFDefault/browser/templates/folder_contents.pt:11
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:15
 msgid "[Link]"
 msgstr ""
 
+#: Products/CMFDefault/browser/templates/folder_contents.pt:13
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:17
+msgid "Up to"
+msgstr ""
+
+#: Products/CMFDefault/browser/templates/folder_contents.pt:17
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:21
+msgid "Root"
+msgstr ""
+
 #: Products/CMFDefault/browser/templates/folder_contents.pt:5
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:5
 msgid "Folder Contents: ${obj_title}"
-msgstr ""
-
-#: Products/CMFDefault/browser/templates/folder_contents.pt:81
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:85
-msgid "Set Sorting as Default"
 msgstr ""
 
 #: Products/CMFDefault/browser/templates/link.pt:20
@@ -835,33 +761,39 @@ msgstr ""
 msgid "Import various settings from PortalGenerator."
 msgstr ""
 
-#: Products/CMFDefault/formlib/form.py:109
-#. Default: ""
-msgid "Add ${obj_type}"
-msgstr ""
-
-#: Products/CMFDefault/formlib/form.py:199
-#. Default: ""
-msgid "Edit ${obj_type}"
-msgstr ""
-
-#: Products/CMFDefault/formlib/form.py:218
-#. Default: ""
-msgid "${obj_type} changed."
-msgstr ""
-
-#: Products/CMFDefault/formlib/form.py:91
-#: Products/CMFDefault/skins/zpt_generic/discussion_reply_form.py:39
-#: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:34
-msgid "Add"
-msgstr ""
-
-#: Products/CMFDefault/formlib/form.py:97
-#: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:44
+#: Products/CMFDefault/formlib/form.py:105
+#: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:42
 #: Products/CMFDefault/skins/zpt_generic/join_form.py:57
 #: Products/CMFDefault/skins/zpt_generic/members_delete_form.py:29
 #: Products/CMFDefault/skins/zpt_generic/password_form.py:40
 msgid "Cancel"
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:135
+#. Default: ""
+msgid "Add ${obj_type}"
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:170
+#: Products/CMFDefault/formlib/form.py:205
+#. Default: ""
+msgid "${obj_type} added."
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:239
+#. Default: ""
+msgid "Edit ${obj_type}"
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:244
+#. Default: ""
+msgid "${obj_type} changed."
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:99
+#: Products/CMFDefault/skins/zpt_generic/discussion_reply_form.py:39
+#: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:34
+msgid "Add"
 msgstr ""
 
 #: Products/CMFDefault/formlib/widgets.py:144
@@ -961,107 +893,107 @@ msgstr ""
 msgid "Profile for a default CMFSite."
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:102
+#: Products/CMFDefault/profiles/default/actions.xml:109
 msgid "Logged in"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:103
-msgid "Used by scripts"
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:11
 msgid "Click here to Login"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:116
+#: Products/CMFDefault/profiles/default/actions.xml:110
+msgid "Used by scripts"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:124
 msgid "Reply"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:129
+#: Products/CMFDefault/profiles/default/actions.xml:138
 msgid "Syndication"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:141
+#: Products/CMFDefault/profiles/default/actions.xml:151
 msgid "Interfaces"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:142
+#: Products/CMFDefault/profiles/default/actions.xml:152
 msgid "Assign marker interfaces"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:158
+#: Products/CMFDefault/profiles/default/actions.xml:169
 msgid "Folder contents"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:173
+#: Products/CMFDefault/profiles/default/actions.xml:185
 msgid "Manage members"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:174
+#: Products/CMFDefault/profiles/default/actions.xml:186
 msgid "Manage portal members"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:187
+#: Products/CMFDefault/profiles/default/actions.xml:200
 msgid "Delete members"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:188
+#: Products/CMFDefault/profiles/default/actions.xml:201
 msgid "Delete portal members"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:212
+#: Products/CMFDefault/profiles/default/actions.xml:227
 msgid "Reconfigure Portal"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:213
+#: Products/CMFDefault/profiles/default/actions.xml:228
 msgid "Reconfigure the portal"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:22
+#: Products/CMFDefault/profiles/default/actions.xml:23
 msgid "Join"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:23
+#: Products/CMFDefault/profiles/default/actions.xml:24
 msgid "Click here to Join"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:34
+#: Products/CMFDefault/profiles/default/actions.xml:36
 msgid "Preferences"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:35
+#: Products/CMFDefault/profiles/default/actions.xml:37
 msgid "Change your user preferences"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:47
+#: Products/CMFDefault/profiles/default/actions.xml:50
 msgid "Log out"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:48
+#: Products/CMFDefault/profiles/default/actions.xml:51
 msgid "Click here to logout"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:59
+#: Products/CMFDefault/profiles/default/actions.xml:63
 msgid "Add to favorites"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:60
+#: Products/CMFDefault/profiles/default/actions.xml:64
 msgid "Add this item to your favorites"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:73
+#: Products/CMFDefault/profiles/default/actions.xml:78
 msgid "My stuff"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:74
+#: Products/CMFDefault/profiles/default/actions.xml:79
 msgid "Goto your home folder"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:87
+#: Products/CMFDefault/profiles/default/actions.xml:93
 msgid "My favorites"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:88
+#: Products/CMFDefault/profiles/default/actions.xml:94
 msgid "Browse your favorites"
 msgstr ""
 
@@ -1137,18 +1069,18 @@ msgstr ""
 msgid "News Items contain short text articles and carry a title as well as an optional description."
 msgstr ""
 
-#: Products/CMFDefault/skins/werebear/main_template.pt:188
-#: Products/CMFDefault/skins/zpt_generic/main_template.pt:216
+#: Products/CMFDefault/skins/werebear/main_template.pt:187
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:215
 msgid "Status:"
 msgstr ""
 
-#: Products/CMFDefault/skins/werebear/main_template.pt:236
-#: Products/CMFDefault/skins/zpt_generic/main_template.pt:266
+#: Products/CMFDefault/skins/werebear/main_template.pt:235
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:265
 msgid "Add..."
 msgstr ""
 
-#: Products/CMFDefault/skins/werebear/main_template.pt:304
-#: Products/CMFDefault/skins/zpt_generic/main_template.pt:344
+#: Products/CMFDefault/skins/werebear/main_template.pt:303
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:343
 msgid "Permanent Link:"
 msgstr ""
 
@@ -1449,6 +1381,10 @@ msgstr ""
 msgid "Transaction(s) undone."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_control/validateClipboardData.py:8
+msgid "Please copy or cut one or more items to paste first."
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_control/validateId.py:11
 msgid "Please enter an ID."
 msgstr ""
@@ -1497,6 +1433,14 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/discussion_reply_template.pt:23
 msgid "Reply body"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:167
+msgid "Rename..."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:85
+msgid "Set Sorting as Default"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:31
@@ -2365,7 +2309,7 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/undo_form.pt:44
 #: Products/CMFDefault/skins/zpt_generic/undo_form.pt:100
-#: Products/CMFDefault/profiles/default/actions.xml:200
+#: Products/CMFDefault/profiles/default/actions.xml:214
 msgid "Undo"
 msgstr ""
 
