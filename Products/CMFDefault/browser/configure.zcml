@@ -10,13 +10,13 @@
       template="templates/folder.pt"
       permission="zope2.View"
       />
-  
+
   <utility
       component=".folder.contents_delta_vocabulary"
       name="cmf.contents delta vocabulary"
       provides="zope.schema.interfaces.IVocabularyFactory"
       />
-      
+
   <browser:page
       for="Products.CMFCore.interfaces.IFolderish"
       layer="..interfaces.ICMFDefaultSkin"
@@ -86,13 +86,6 @@
       factory=".link.LinkAddView"
       />
 
-  <class class=".link.LinkAddView">
-    <require
-        permission="cmf.AddPortalContent"
-        interface="zope.formlib.interfaces.IPageForm"
-        />
-  </class>
-
   <browser:page
       for="..interfaces.ILink"
       layer="..interfaces.ICMFDefaultSkin"
@@ -117,13 +110,6 @@
       factory=".favorite.FavoriteAddView"
       />
 
-  <class class=".favorite.FavoriteAddView">
-    <require
-        permission="cmf.AddPortalContent"
-        interface="zope.formlib.interfaces.IPageForm"
-        />
-  </class>
-
   <browser:page
       for="..interfaces.IMutableFavorite"
       layer="..interfaces.ICMFDefaultSkin"
@@ -138,13 +124,6 @@
       name="cmf.file"
       factory=".file.FileAddView"
       />
-
-  <class class=".file.FileAddView">
-    <require
-        permission="cmf.AddPortalContent"
-        interface="zope.formlib.interfaces.IPageForm"
-        />
-  </class>
 
   <adapter
       name="cmf.image"

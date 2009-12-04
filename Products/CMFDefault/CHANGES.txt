@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.2.0-beta (unreleased)
 -----------------------
 
+- views: Improved ContentAddFormBase.
+  Permissions and container constraints are now checked by the '__call__'
+  method. There is no need to add security declarations for derived add forms.
+
 - upgrade: Added more upgrade steps.
   There is now support for upgrading the step registrations in the setup tool,
   the columns in the catalog tool and the icons in the actions tool and

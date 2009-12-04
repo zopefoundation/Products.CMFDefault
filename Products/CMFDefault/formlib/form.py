@@ -18,6 +18,8 @@ $Id$
 from datetime import datetime
 from sets import Set
 
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from App.class_init import InitializeClass
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.formlib.formbase import PageAddForm
 from Products.Five.formlib.formbase import PageDisplayForm
@@ -39,6 +41,7 @@ from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
 from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import ICMFDefaultSkin
+from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import translate
 
@@ -87,6 +90,9 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
     adapts(IFolderish, ICMFDefaultSkin, ITypeInformation)
     implementsOnly(IPageForm)
 
+    security = ClassSecurityInfo()
+    security.declareObjectPrivate()
+
     actions = form.Actions(
         form.Action(
             name='add',
@@ -104,6 +110,24 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
         self.context = context
         self.request = request
         self.ti = ti
+
+    security.declareProtected(AddPortalContent, '__call__')
+    def __call__(self):
+        container = self.context
+        portal_type = self.ti.getId()
+
+        # check allowed (sometimes redundant, but better safe than sorry)
+        if not self.ti.isConstructionAllowed(container):
+            raise AccessControl_Unauthorized('Cannot create %s' % portal_type)
+
+        # check container constraints
+        ttool = self._getTool('portal_types')
+        container_ti = ttool.getTypeInfo(container)
+        if container_ti is not None and \
+                not container_ti.allowType(portal_type):
+            raise ValueError('Disallowed subobject type: %s' % portal_type)
+
+        return super(ContentAddFormBase, self).__call__()
 
     @property
     def label(self):
@@ -136,18 +160,6 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
 
     def add(self, obj):
         container = self.context
-        portal_type = self.ti.getId()
-
-        # check allowed (sometimes redundant, but better safe than sorry)
-        if not self.ti.isConstructionAllowed(container):
-            raise AccessControl_Unauthorized('Cannot create %s' % portal_type)
-
-        #check container constraints
-        ttool = self._getTool('portal_types')
-        container_ti = ttool.getTypeInfo(container)
-        if container_ti is not None and \
-                not container_ti.allowType(portal_type):
-            raise ValueError('Disallowed subobject type: %s' % portal_type)
 
         name = INameChooser(container).chooseName(obj.getId(), obj)
         obj.id = name
@@ -168,6 +180,8 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
             message = message.encode(self._getBrowserCharset())
         return '%s/%s?%s' % (obj.absolute_url(), self.ti.immediate_view,
                              make_query(portal_status_message=message))
+
+InitializeClass(ContentAddFormBase)
 
 
 class FallbackAddView(ContentAddFormBase):
