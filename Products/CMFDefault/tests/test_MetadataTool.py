@@ -485,6 +485,7 @@ class TestMetadataTool(unittest.TestCase):
         from Products.CMFDefault.MetadataTool import ElementSpec
 
         tool = self._makeOne()
+        tool._DCMI = None
         tool.element_specs = { 'Title' : ElementSpec( 0 )
                              , 'Description' : ElementSpec( 0 )
                              , 'Subject' : ElementSpec( 1 )

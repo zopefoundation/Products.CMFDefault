@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0-beta (unreleased)
 -----------------------
 
+- MetadataTool: Improved tool initialization.
+  This prevents write-on-read behavior of newly created tool instances.
+
 - views: Improved ContentAddFormBase.
   Permissions and container constraints are now checked by the '__call__'
   method. There is no need to add security declarations for derived add forms.

@@ -324,7 +324,7 @@ class MetadataSchema( SimpleItem ):
         """
         # Don't replace.
         if self.element_specs.has_key( element ):
-           return
+            return
 
         self.element_specs[ element ] = ElementSpec( is_multi_valued )
 
@@ -377,7 +377,9 @@ class MetadataTool(UniqueObject, Folder):
 
     _DCMI = None
     def _get_DCMI( self ):
-
+        # BBB: for metadata tools created with CMF 1.6 (or older) and
+        #      for never used metadata tools created with CMF 2.0 or CMF 2.1
+        # XXX: this should be replaced by upgrade steps
         if self._DCMI is None:
             dcmi = self._DCMI = MetadataSchema( 'DCMI', _DCMI_ELEMENT_SPECS )
 
@@ -410,7 +412,8 @@ class MetadataTool(UniqueObject, Folder):
 
     def __init__( self, publisher=None ):
 
-        self.editProperties( publisher )
+        self.editProperties(publisher)
+        self._DCMI = MetadataSchema('DCMI', _DCMI_ELEMENT_SPECS)
 
     #
     #   ZMI methods
