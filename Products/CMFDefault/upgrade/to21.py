@@ -23,8 +23,11 @@ from five.localsitemanager import find_next_sitemanager
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 from five.localsitemanager.registry import PersistentComponents
 from zope.component import getMultiAdapter
+from zope.component import getSiteManager
 from zope.component.globalregistry import base
 from zope.component.interfaces import ComponentLookupError
+from zope.dottedname.resolve import resolve
+from zope.site.hooks import setSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.context import SetupEnviron
@@ -156,3 +159,53 @@ def upgrade_type_properties(tool):
             ti._updateProperty('product', '')
             ti._updateProperty('factory', _FACTORIES[key])
             logger.info("TypeInfo '%s' changed." % ti.getId())
+
+
+BAD_UTILITIES = [
+         'Products.CMFCalendar.interfaces.ICalendarTool',
+         'Products.CMFCore.interfaces.IActionsTool',
+         'Products.CMFCore.interfaces.ICatalogTool',
+         'Products.CMFCore.interfaces.IContentTypeRegistry',
+         'Products.CMFCore.interfaces.ISkinsTool',
+         'Products.CMFCore.interfaces.ITypesTool',
+         'Products.CMFCore.interfaces.IURLTool',
+         'Products.CMFCore.interfaces.IConfigurableWorkflowTool',
+         'Products.CMFCore.interfaces.IMembershipTool',
+         'Products.CMFCore.interfaces.IRegistrationTool',
+         ]
+
+def check_bad_utilities(tool):
+    """2.1.0-beta to 2.1.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+
+    # We have to call setSite to make sure we have a site with a proper
+    # acquisition context.
+    setSite(portal)
+
+    sm = getSiteManager(portal)
+    for utility in BAD_UTILITIES:
+        iface = resolve(utility)
+        if sm.queryUtility(iface) is not None:
+            return True
+
+    return False
+
+def unregister_bad_utilities(tool):
+    """2.1.0-beta to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+
+    # We have to call setSite to make sure we have a site with a proper
+    # acquisition context.
+    setSite(portal)
+
+    sm = getSiteManager(portal)
+    for dotted_path in BAD_UTILITIES:
+        iface = resolve(dotted_path)
+        if sm.queryUtility(iface) is not None:
+            sm.unregisterUtility(provided=iface)
+            logger.info('Unregistered utility for %s' % dotted_path)
+
+
