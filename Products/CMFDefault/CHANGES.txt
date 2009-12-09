@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- MetadataTool: Replaced write-on-read upgrade for the Dublin Core
+  metadata definitions with a set of GenericSetup upgrade steps.
+
 
 2.2.0-beta (2009-12-06)
 -----------------------

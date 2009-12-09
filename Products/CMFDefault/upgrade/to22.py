@@ -17,6 +17,7 @@ $Id$
 import logging
 from urllib import quote
 
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from zope.component.interfaces import ComponentLookupError
@@ -298,3 +299,20 @@ def upgrade_catalog_columns(tool):
     if 'getIconURL' not in columns:
         ctool.addColumn('getIconURL')
         logger.info("Catalog column 'getIconURL' added.")
+
+def check_dcmi_metadata(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    metadata_tool = getToolByName(tool, 'portal_metadata')
+    return getattr(aq_base(metadata_tool), '_DCMI', None) is not None
+
+def upgrade_dcmi_metadata(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    metadata_tool = getToolByName(tool, 'portal_metadata')
+    dcmi = metadata_tool._DCMI
+    del metadata_tool._DCMI
+    metadata_tool.DCMI = dcmi
+    logger.info('Dublin Core metadata definition updated.')
+

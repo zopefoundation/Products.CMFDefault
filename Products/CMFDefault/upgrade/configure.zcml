@@ -3,20 +3,34 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="cmf_default">
 
+  <genericsetup:upgradeSteps
+      source="*"
+      destination="2.0"
+      profile="Products.CMFDefault:default"
+      sortkey="1">
+
+    <genericsetup:upgradeStep
+        title="Upgrade Dublin Core metadata definitions"
+        handler=".to20.upgrade_dcmi_metadata"
+        checker=".to20.check_dcmi_metadata"
+        />
+
+  </genericsetup:upgradeSteps>
+
   <genericsetup:upgradeStep
       title="Mark 2.0 upgrade as finished"
       source="*"
       destination="2.0"
       profile="Products.CMFDefault:default"
       handler=".mark_as_finished"
-      sortkey="1"
+      sortkey="2"
       />
 
   <genericsetup:upgradeSteps
       source="2.0"
       destination="2.1"
       profile="Products.CMFDefault:default"
-      sortkey="2">
+      sortkey="3">
 
     <genericsetup:upgradeStep
         title="Add root site manager"
@@ -50,14 +64,14 @@
       destination="2.1"
       profile="Products.CMFDefault:default"
       handler=".mark_as_finished"
-      sortkey="3"
+      sortkey="4"
       />
 
   <genericsetup:upgradeSteps
       source="2.1"
       destination="2.2"
       profile="Products.CMFDefault:default"
-      sortkey="4">
+      sortkey="5">
 
     <genericsetup:upgradeStep
         title="Upgrade setup tool"
@@ -107,6 +121,12 @@
         checker=".to22.check_catalog_columns"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade Dublin Core metadata definitions"
+        handler=".to22.upgrade_dcmi_metadata"
+        checker=".to22.check_dcmi_metadata"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
@@ -115,7 +135,7 @@
       destination="2.2"
       profile="Products.CMFDefault:default"
       handler=".mark_as_finished"
-      sortkey="5"
+      sortkey="6"
       />
 
 </configure>
