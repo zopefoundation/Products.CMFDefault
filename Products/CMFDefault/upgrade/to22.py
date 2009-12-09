@@ -307,16 +307,17 @@ def check_dcmi_metadata(tool):
     """2.1.x to 2.2.0 upgrade step checker
     """
     metadata_tool = getToolByName(tool, 'portal_metadata')
-    return getattr(aq_base(metadata_tool), '_DCMI', None) is not None
+    return getattr(aq_base(metadata_tool), 'DCMI', None) is None
 
 def upgrade_dcmi_metadata(tool):
     """2.1.x to 2.2.0 upgrade step handler
     """
     logger = logging.getLogger('GenericSetup.upgrade')
     metadata_tool = getToolByName(tool, 'portal_metadata')
-    dcmi = metadata_tool._DCMI
-    del metadata_tool._DCMI
-    metadata_tool.DCMI = dcmi
+    if getattr(aq_base(metadata_tool), 'DCMI', None) is None:
+        dcmi = metadata_tool._DCMI
+        del metadata_tool._DCMI
+        metadata_tool.DCMI = dcmi
     logger.info('Dublin Core metadata definition updated.')
 
 
