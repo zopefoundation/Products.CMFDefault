@@ -480,47 +480,6 @@ class TestMetadataTool(unittest.TestCase):
         tool.removeSchema( 'Arbitrary' )
         self.assertRaises( KeyError, tool.removeSchema, 'Arbitrary' )
 
-    def test_migration( self ):
-        # Test that we forward-migrate old-style DCMI policies.
-        from Products.CMFDefault.MetadataTool import ElementSpec
-
-        tool = self._makeOne()
-        tool._DCMI = None
-        tool.element_specs = { 'Title' : ElementSpec( 0 )
-                             , 'Description' : ElementSpec( 0 )
-                             , 'Subject' : ElementSpec( 1 )
-                             , 'Format' : ElementSpec( 0 )
-                             , 'Language' : ElementSpec( 0 )
-                             , 'Rights' : ElementSpec( 0 )
-                             }
-        subj = tool.element_specs[ 'Subject' ]
-        subj.addPolicy( 'Foo' )
-        subj.getPolicy( 'Foo' ).edit( False
-                                    , False
-                                    , None
-                                    , True
-                                    , ( 'bar', 'baz' )
-                                    )
-
-        dcmi = tool.DCMI
-
-        self.assertEqual( dcmi.getId(), 'DCMI' )
-
-        # Accessing the DCMI property converts and clears 'element_specs'
-        self.assertRaises(AttributeError, lambda: tool.element_specs )
-
-        subj2 = dcmi.getElementSpec( 'Subject' )
-        subj_default = subj2.getPolicy( None )
-        subj_foo = subj2.getPolicy( 'Foo' )
-
-        self.assertEqual( subj_foo.isRequired(), False )
-        self.assertEqual( subj_foo.supplyDefault(), False )
-        self.assertEqual( subj_foo.defaultValue(), None )
-        self.assertEqual( subj_foo.enforceVocabulary(), True )
-        self.assertEqual( len( subj_foo.allowedVocabulary() ), 2 )
-        self.failUnless( 'bar' in subj_foo.allowedVocabulary() )
-        self.failUnless( 'baz' in subj_foo.allowedVocabulary() )
-
 
 def test_suite():
     return unittest.TestSuite((

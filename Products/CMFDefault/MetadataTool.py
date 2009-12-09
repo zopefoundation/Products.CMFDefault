@@ -375,34 +375,6 @@ class MetadataTool(UniqueObject, Folder):
     id = 'portal_metadata'
     meta_type = 'Default Metadata Tool'
 
-    _DCMI = None
-    def _get_DCMI( self ):
-        # BBB: for metadata tools created with CMF 1.6 (or older) and
-        #      for never used metadata tools created with CMF 2.0 or CMF 2.1
-        # XXX: this should be replaced by upgrade steps
-        if self._DCMI is None:
-            dcmi = self._DCMI = MetadataSchema( 'DCMI', _DCMI_ELEMENT_SPECS )
-
-            old_specs = getattr( self, 'element_specs', None )
-            if old_specs is not None:
-                del self.element_specs
-                for element_id, old_spec in old_specs.items():
-                    new_spec = dcmi.getElementSpec( element_id )
-                    for typ, policy in old_spec.listPolicies():
-                        if typ is not None:
-                            new_spec.addPolicy( typ )
-                        tp = new_spec.getPolicy( typ )
-                        tp.edit( is_required=policy.isRequired()
-                               , supply_default=policy.supplyDefault()
-                               , default_value=policy.defaultValue()
-                               , enforce_vocabulary=policy.enforceVocabulary()
-                               , allowed_vocabulary=policy.allowedVocabulary()
-                               )
-
-        return self._DCMI
-
-    DCMI = property(_get_DCMI, None)
-
     #
     #   Default values.
     #
@@ -413,7 +385,7 @@ class MetadataTool(UniqueObject, Folder):
     def __init__( self, publisher=None ):
 
         self.editProperties(publisher)
-        self._DCMI = MetadataSchema('DCMI', _DCMI_ELEMENT_SPECS)
+        self.DCMI = MetadataSchema('DCMI', _DCMI_ELEMENT_SPECS)
 
     #
     #   ZMI methods
