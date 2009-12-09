@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- WorkflowTool/DiscussionItem: Create a set of GenericSetup 
+  upgrade steps to instantiate the new single-state workflow 
+  for Discussion Items and associate it with the content type.
+
 - MetadataTool: Replaced write-on-read upgrade for the Dublin Core
   metadata definitions with a set of GenericSetup upgrade steps.
 
