@@ -56,6 +56,12 @@
         checker=".to21.check_type_properties"
         />
 
+    <genericsetup:upgradeStep
+        title="Unregister bad utility registrations"
+        handler=".to21.unregister_bad_utilities"
+        checker=".to21.check_bad_utilities"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
