@@ -17,12 +17,15 @@ $Id$
 import logging
 from urllib import quote
 
+from AccessControl.Permissions import access_contents_information
+from AccessControl.Permissions import view
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from zope.component.interfaces import ComponentLookupError
 
 from Products.CMFCore.interfaces import IWorkflowDefinition
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 
 _KNOWN_IMPORT_STEPS = (
@@ -315,4 +318,59 @@ def upgrade_dcmi_metadata(tool):
     del metadata_tool._DCMI
     metadata_tool.DCMI = dcmi
     logger.info('Dublin Core metadata definition updated.')
+
+
+_SINGLESTATE_WF_ID = 'singlestate_workflow'
+
+def check_singlestate_workflow(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    wf_tool = getToolByName(tool, 'portal_workflow')
+    return wf_tool.getWorkflowById(_SINGLESTATE_WF_ID) is None
+
+def add_singlestate_workflow(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    wf_tool = getToolByName(tool, 'portal_workflow')
+    if wf_tool.getWorkflowById(_SINGLESTATE_WF_ID) is None:
+        from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
+        wf = DCWorkflowDefinition(_SINGLESTATE_WF_ID)
+        wf.title = 'Single-state workflow'
+        wf.initial_state = 'published'
+        wf.state_var = 'review_state'
+        wf.manager_bypass = False
+        wf.permissions = ( access_contents_information
+                         , ModifyPortalContent
+                         , view
+                         )
+        wf.states.addState('published')
+        public = wf.states.published
+        public.title = 'Public'
+        public.setPermission( access_contents_information
+                            , True
+                            , ('Anonymous', 'Manager')
+                            )
+        public.setPermission(ModifyPortalContent, False, ('Manager', 'Owner'))
+        public.setPermission(view, True, ('Anonymous', 'Manager'))
+        wf_tool._setObject(_SINGLESTATE_WF_ID, wf)
+
+def check_discussionitem_workflow(tool):
+    """2.1.x to 2.2.0 upgrade step checker
+    """
+    wf_tool = getToolByName(tool, 'portal_workflow')
+    discussion_overrides = [x for x in wf_tool.listChainOverrides()
+                                               if x[0] == 'Discussion Item']
+
+    # Only apply if Discussion Item has an empty workflow chain
+    if discussion_overrides and not discussion_overrides[0][1]:
+        return True
+
+    return False
+
+def upgrade_discussionitem_workflow(tool):
+    """2.1.x to 2.2.0 upgrade step handler
+    """
+    wf_tool = getToolByName(tool, 'portal_workflow')
+    wf_tool.setChainForPortalTypes(('Discussion Item',), _SINGLESTATE_WF_ID)
+
 

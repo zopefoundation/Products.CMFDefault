@@ -104,6 +104,18 @@
         />
 
     <genericsetup:upgradeStep
+        title="Add Single-state workflow"
+        handler=".to22.add_singlestate_workflow"
+        checker=".to22.check_singlestate_workflow"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade Discussion Item workflow"
+        handler=".to22.upgrade_discussionitem_workflow"
+        checker=".to22.check_discussionitem_workflow"
+        />
+
+    <genericsetup:upgradeStep
         title="Upgrade workflow definitions"
         handler=".to22.upgrade_workflow_definitions"
         checker=".to22.check_workflow_definitions"
