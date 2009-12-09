@@ -62,6 +62,12 @@
         checker=".to21.check_bad_utilities"
         />
 
+    <genericsetup:upgradeStep
+        title="Register tool utilities"
+        handler=".to21.handle_tool_utility_registrations"
+        checker=".to21.check_tool_utility_registrations"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

@@ -5,8 +5,8 @@ Products.CMFDefault Changelog
 ------------------
 
 - Upgrade steps: Merged faulty utility registration fixup script
-  from Products.CMFCore for pre-2.1.0 instances into a GenericSetup
-  upgrade step
+  and tool utility registration from Products.CMFCore for 
+  pre-2.1.0 instances into a GenericSetup upgrade step
 
 - WorkflowTool/DiscussionItem: Create a set of GenericSetup 
   upgrade steps to instantiate the new single-state workflow 
