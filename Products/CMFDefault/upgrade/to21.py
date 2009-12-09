@@ -208,4 +208,49 @@ def unregister_bad_utilities(tool):
             sm.unregisterUtility(provided=iface)
             logger.info('Unregistered utility for %s' % dotted_path)
 
+_TOOL_UTILITIES = (
+    ('portal_uidgenerator', 'Products.CMFUid.interfaces.IUniqueIdGenerator'),
+    ('portal_uidannotation', 'Products.CMFUid.interfaces.IUniqueIdAnnotationManagement'),
+    ('portal_uidhandler', 'Products.CMFUid.interfaces.IUniqueIdHandler'),
+    ('portal_actionicons', 'Products.CMFActionIcons.interfaces.IActionIconsTool'),
+)
+    
+def check_tool_utility_registrations(tool):
+    """2.1.0-alpha to 2.1.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    setSite(portal)
+    sm = getSiteManager(portal)
+
+    for tool_id, tool_interface in _TOOL_UTILITIES:
+        tool_obj = getToolByName(portal, tool_id, default=None)
+        try:
+            iface = resolve(tool_interface)
+        except ImportError:
+            continue
+
+        if tool_obj is not None and sm.queryUtility(iface) is None:
+            return True
+
+    return False
+             
+def handle_tool_utility_registrations(tool):
+    """2.1.0-alpha to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    setSite(portal)
+    sm = getSiteManager(portal)
+
+    for tool_id, tool_interface in _TOOL_UTILITIES:
+        tool_obj = getToolByName(portal, tool_id, default=None)
+        try:
+            iface = resolve(tool_interface)
+        except ImportError:
+            continue
+
+        if tool_obj is not None and sm.queryUtility(iface) is None:
+            sm.registerUtility(tool_obj, iface)
+            logger.info('Registered %s for interface %s' % (
+                                                tool_id, tool_interface))
 
