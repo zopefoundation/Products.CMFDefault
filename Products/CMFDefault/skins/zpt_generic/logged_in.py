@@ -1,7 +1,7 @@
 ##parameters=
 ##
-from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
@@ -13,7 +13,8 @@ portal_url = utool()
 
 
 if stool.updateSkinCookie():
-    context.setupCurrentSkin()
+    skinname = context.getSkinNameFromRequest(context.REQUEST)
+    context.changeSkin(skinname, context.REQUEST)
 
 
 options = {}
