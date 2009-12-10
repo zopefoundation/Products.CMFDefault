@@ -178,12 +178,14 @@ def check_bad_utilities(tool):
     """2.1.0-beta to 2.1.0 upgrade step checker
     """
     portal = aq_parent(aq_inner(tool))
+    try:
+        # We have to call setSite to make sure we have a site with a proper
+        # acquisition context.
+        setSite(portal)
+        sm = getSiteManager(portal)
+    except ComponentLookupError:
+        return False
 
-    # We have to call setSite to make sure we have a site with a proper
-    # acquisition context.
-    setSite(portal)
-
-    sm = getSiteManager(portal)
     for utility in BAD_UTILITIES:
         iface = resolve(utility)
         if sm.queryUtility(iface) is not None:
@@ -219,8 +221,11 @@ def check_tool_utility_registrations(tool):
     """2.1.0-alpha to 2.1.0 upgrade step checker
     """
     portal = aq_parent(aq_inner(tool))
-    setSite(portal)
-    sm = getSiteManager(portal)
+    try:
+        setSite(portal)
+        sm = getSiteManager(portal)
+    except ComponentLookupError:
+        return False
 
     for tool_id, tool_interface in _TOOL_UTILITIES:
         tool_obj = getToolByName(portal, tool_id, default=None)
