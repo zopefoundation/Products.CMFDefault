@@ -27,6 +27,8 @@ from zope.component.interfaces import ComponentLookupError
 from Products.CMFCore.interfaces import IWorkflowDefinition
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDefault.MetadataTool import MetadataSchema
+from Products.CMFDefault.MetadataTool import _DCMI_ELEMENT_SPECS
 
 _KNOWN_IMPORT_STEPS = (
     'actions',
@@ -315,9 +317,11 @@ def upgrade_dcmi_metadata(tool):
     logger = logging.getLogger('GenericSetup.upgrade')
     metadata_tool = getToolByName(tool, 'portal_metadata')
     if getattr(aq_base(metadata_tool), 'DCMI', None) is None:
-        dcmi = metadata_tool._DCMI
-        del metadata_tool._DCMI
-        metadata_tool.DCMI = dcmi
+        if getattr(aq_base(metadata_tool), '_DCMI', None) is None:
+            metadata_tool.DCMI = MetadataSchema('DCMI', _DCMI_ELEMENT_SPECS)
+        else:
+            metadata_tool.DCMI = metadata_tool._DCMI
+            del metadata_tool._DCMI
     logger.info('Dublin Core metadata definition updated.')
 
 
@@ -362,8 +366,11 @@ def check_discussionitem_workflow(tool):
     discussion_overrides = [x for x in wf_tool.listChainOverrides()
                                                if x[0] == 'Discussion Item']
 
+    if not discussion_overrides: 
+        return True
+
     # Only apply if Discussion Item has an empty workflow chain
-    if discussion_overrides and not discussion_overrides[0][1]:
+    if not discussion_overrides[0][1]:
         return True
 
     return False
