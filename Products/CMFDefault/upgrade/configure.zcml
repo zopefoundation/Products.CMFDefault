@@ -68,6 +68,12 @@
         checker=".to21.check_tool_utility_registrations"
         />
 
+    <genericsetup:upgradeStep
+        title="Instantiate new-style actions"
+        handler=".to21.upgrade_to_newstyle_actions"
+        checker=".to21.check_newstyle_actions"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
