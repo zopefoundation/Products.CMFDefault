@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- skins: Fixed skin changing for logged in members.
+
 - Upgrade steps: Merged faulty utility registration fixup script,
   tool utility registration and new-style actions upgrade from 
   an older migration script in Products.CMFCore for pre-2.1.0 
