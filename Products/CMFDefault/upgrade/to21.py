@@ -187,7 +187,11 @@ def check_bad_utilities(tool):
         return False
 
     for utility in BAD_UTILITIES:
-        iface = resolve(utility)
+        try:
+            iface = resolve(utility)
+        except ImportError:
+            continue
+
         if sm.queryUtility(iface) is not None:
             return True
 
@@ -205,7 +209,11 @@ def unregister_bad_utilities(tool):
 
     sm = getSiteManager(portal)
     for dotted_path in BAD_UTILITIES:
-        iface = resolve(dotted_path)
+        try:
+            iface = resolve(dotted_path)
+        except ImportError:
+            continue
+
         if sm.queryUtility(iface) is not None:
             sm.unregisterUtility(provided=iface)
             logger.info('Unregistered utility for %s' % dotted_path)
