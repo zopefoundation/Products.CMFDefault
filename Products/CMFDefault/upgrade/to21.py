@@ -254,3 +254,23 @@ def handle_tool_utility_registrations(tool):
             logger.info('Registered %s for interface %s' % (
                                                 tool_id, tool_interface))
 
+def check_newstyle_actions(tool):
+    """2.1.0-alpha to 2.1.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    if not portal.portal_actions.objectIds(['CMF Action Category']):
+        return True
+
+    return False
+
+def upgrade_to_newstyle_actions(tool):
+    """2.1.0-alpha to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    if not portal.portal_actions.objectIds(['CMF Action Category']):
+        tool.runImportStepFromProfile( 'profile-Products.CMFDefault:default'
+                                     , 'actions'
+                                     )
+        logger.info('Instantiated new-style actions in portal_actions')
+
