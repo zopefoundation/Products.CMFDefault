@@ -52,11 +52,14 @@ setup(name='Products.%s' % NAME,
           ],
       tests_require=[
           'zope.testing >= 3.7.0',
+          'zope.app.testing',
           'Products.DCWorkflow',
           ],
-      extras_require = dict(
-          test = ['Products.DCWorkflow'],
-          ),
+      extras_require=dict(
+        test=[
+          'zope.app.testing',
+          'Products.DCWorkflow',
+          ]),
       test_loader='zope.testing.testrunner.eggsupport:SkipLayers',
       test_suite='Products.%s' % NAME,
       entry_points="""
