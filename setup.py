@@ -52,7 +52,6 @@ setup(name='Products.%s' % NAME,
           ],
       tests_require=[
           'zope.testing >= 3.7.0',
-          'zope.app.testing',
           'Products.DCWorkflow',
           ],
       extras_require=dict(

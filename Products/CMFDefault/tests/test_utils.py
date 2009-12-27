@@ -16,13 +16,7 @@ $Id$
 """
 
 import unittest
-import Testing
 
-from Products.CMFCore.tests.base.content import FAUX_HTML_LEADING_TEXT
-from Products.CMFCore.tests.base.content import SIMPLE_HTML
-from Products.CMFCore.tests.base.content import SIMPLE_STRUCTUREDTEXT
-from Products.CMFCore.tests.base.content import SIMPLE_XHTML
-from Products.CMFCore.tests.base.content import STX_WITH_HTML
 
 
 class DefaultUtilsTests(unittest.TestCase):
@@ -43,6 +37,14 @@ lines.  It can even include "headerish" lines, like:
 
 Header: value
 '''
+
+    def setUp(self):
+        from zope.component.testing import setUp
+        setUp()
+
+    def tearDown(self):
+        from zope.component.testing import tearDown
+        tearDown()
 
     def test_parseHeadersBody_no_body( self ):
         from Products.CMFDefault.utils import parseHeadersBody
@@ -145,10 +147,11 @@ Header: value
                           '<meta name="title" content="" /><meta />' )
 
     def test_scrubHTML_with_adapter(self):
-        from zope.interface import implements
         from zope.component.testing import setUp
         from zope.component.testing import tearDown
-        from zope.app.testing import ztapi
+        from zope.component import getSiteManager
+        from zope.interface import implements
+
         from Products.CMFDefault.interfaces import IHTMLScrubber
         from Products.CMFDefault.utils import scrubHTML
 
@@ -159,8 +162,10 @@ Header: value
 
 
         setUp()
+
+        sm = getSiteManager()
         try:
-            ztapi.provideUtility(IHTMLScrubber, _Scrubber())
+            sm.registerUtility(_Scrubber(), IHTMLScrubber)
             self.assertEqual( scrubHTML('<a href="foo.html">bar</a>'),
                             '<A HREF="FOO.HTML">BAR</A>' )
             self.assertEqual( scrubHTML('<b>bar</b>'),
@@ -185,6 +190,11 @@ Header: value
             tearDown()
 
     def test_bodyfinder(self):
+        from Products.CMFCore.tests.base.content import FAUX_HTML_LEADING_TEXT
+        from Products.CMFCore.tests.base.content import SIMPLE_HTML
+        from Products.CMFCore.tests.base.content import SIMPLE_STRUCTUREDTEXT
+        from Products.CMFCore.tests.base.content import SIMPLE_XHTML
+        from Products.CMFCore.tests.base.content import STX_WITH_HTML
         from Products.CMFDefault.utils import bodyfinder
 
         self.assertEqual( bodyfinder(FAUX_HTML_LEADING_TEXT),
@@ -199,6 +209,11 @@ Header: value
                           '<p>Hello world, I am Bruce.</p>' )
 
     def test_html_headcheck(self):
+        from Products.CMFCore.tests.base.content import FAUX_HTML_LEADING_TEXT
+        from Products.CMFCore.tests.base.content import SIMPLE_HTML
+        from Products.CMFCore.tests.base.content import SIMPLE_STRUCTUREDTEXT
+        from Products.CMFCore.tests.base.content import SIMPLE_XHTML
+        from Products.CMFCore.tests.base.content import STX_WITH_HTML
         from Products.CMFDefault.utils import html_headcheck
 
         self.assertEqual( html_headcheck(FAUX_HTML_LEADING_TEXT), 0 )
