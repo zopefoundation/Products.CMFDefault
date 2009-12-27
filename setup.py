@@ -46,7 +46,7 @@ setup(name='Products.%s' % NAME,
                      ],
       install_requires=[
           'setuptools',
-          'Zope2 >= 2.12.0b3dev',
+          'Zope2 >= 2.12.0',
           'Products.CMFCore',
           'Products.GenericSetup',
           ],
@@ -56,7 +56,6 @@ setup(name='Products.%s' % NAME,
           ],
       extras_require=dict(
         test=[
-          'zope.app.testing',
           'Products.DCWorkflow',
           ]),
       test_loader='zope.testing.testrunner.eggsupport:SkipLayers',
