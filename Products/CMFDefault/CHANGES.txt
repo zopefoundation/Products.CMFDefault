@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Use five.formlib in favor of Products.Five.formlib if it is available.
+
 - skins: Fixed skin changing for logged in members.
 
 - Upgrade steps: Merged faulty utility registration fixup script,
