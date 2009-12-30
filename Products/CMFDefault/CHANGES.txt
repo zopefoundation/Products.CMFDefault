@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Use five.formlib in favor of Products.Five.formlib if it is available.
+
 - Removed testing dependency on zope.app.testing.
 
 - Upgrade steps: Merged faulty utility registration fixup script,
