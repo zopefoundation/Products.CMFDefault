@@ -1,7 +1,7 @@
 Products.CMFDefault Changelog
 =============================
 
-2.2.0 (unreleased)
+2.2.0 (2010-01-04)
 ------------------
 
 - Use five.formlib in favor of Products.Five.formlib if it is available.
