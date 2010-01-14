@@ -21,16 +21,10 @@ from sets import Set
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-# BBB Zope 2.12
-try:
-    from five.formlib.formbase import PageAddForm
-    from five.formlib.formbase import PageDisplayForm
-    from five.formlib.formbase import PageForm
-except ImportError:
-    from Products.Five.formlib.formbase import PageAddForm
-    from Products.Five.formlib.formbase import PageDisplayForm
-    from Products.Five.formlib.formbase import PageForm
 
+from five.formlib.formbase import PageAddForm
+from five.formlib.formbase import PageDisplayForm
+from five.formlib.formbase import PageForm
 from zope.component import adapts
 from zope.component import getUtility
 from zope.component.interfaces import IFactory
