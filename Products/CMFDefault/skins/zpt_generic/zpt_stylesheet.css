@@ -146,7 +146,6 @@ th {
     background-color: #AAAAAA;
 }
 
-
 .ActionTitle {
     color: Black;
     font-family: sans-serif;
@@ -159,7 +158,6 @@ th {
     font-family: sans-serif;
     font-size: 90%;
 }
-
 
 .ActionLink a:link {
     color: White;
@@ -238,16 +236,6 @@ table.FormLayout tr {
     vertical-align: top;
 }
 
-table.FormLayout tr th.TextField {
-    vertical-align: top;
-    color: #000000;
-}
-
-table.FormLayout tr td.TextField {
-    vertical-align: top;
-    color: #000000;
-}
-
 table.FormLayout th {
     padding: 1pt 2pt 1pt 2pt;
     width: 100px;
@@ -279,14 +267,6 @@ table.FormLayout td.ListDefinition {
     color: #000000;
 }
 
-table.ContentsList tr td {
-    font-size: 100%;
-}
-
-table.ContentsList tr td img {
-    border: 0;
-}
-
 table.SearchResults {
     width: auto;
 }
@@ -297,22 +277,6 @@ table.SearchResults tr th {
 
 table.SearchResults tr td img {
     border: 0;
-}
-
-table.Wizard {
-    width: auto;
-}
-
-table.Wizard tr {
-    vertical-align: top;
-}
-
-table.Wizard tr th {
-    text-align: right;
-}
-
-div.NewsBar {
-    text-align: right;
 }
 
 table.NewsItems {
@@ -344,17 +308,7 @@ td.NewsByLine {
     vertical-align: top;
 }
 
-.NewsLeadin {
-    background-color: #FFFFFF;
-    color:  #336699;
-}
-
 .NewsByLine {
-    background-color:  #336699;
-    color:  #FFFFFF;
-}
-
-.NewsDateline {
     background-color:  #336699;
     color:  #FFFFFF;
 }
@@ -370,10 +324,6 @@ td.NewsTitle {
 .NewsItemRow {
     background-color: #AAAAAA;
     font-size: 70%;
-}
-
-p.NewsHeadline {
-    background-color:  #336699;
 }
 
 .BatchListing {
@@ -397,7 +347,6 @@ p.NewsHeadline {
 
 .BatchTable th {
     padding: 1pt 2pt 1pt 2pt;
-
 }
 
 .BatchTable td {

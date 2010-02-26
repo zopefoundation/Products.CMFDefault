@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- skins: Removed unused styles from css.
+
 - Require at least Zope 2.12.3 and use the optional five.formlib extension.
 
 - Use five.formlib in favor of Products.Five.formlib if it is available.
