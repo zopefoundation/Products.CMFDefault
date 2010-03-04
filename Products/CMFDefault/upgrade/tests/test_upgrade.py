@@ -96,8 +96,7 @@ class UpgradeFrom21Tests(FunctionalUpgradeTestCase):
 
 def test_suite():
     return unittest.TestSuite((
-        # XXX: this test fails and depends on five.localsitemanager >= 2.0.3
-        #unittest.makeSuite(UpgradeFrom20Tests),
+        unittest.makeSuite(UpgradeFrom20Tests),
         unittest.makeSuite(UpgradeFrom21Tests),
         ))
 

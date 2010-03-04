@@ -29,11 +29,14 @@ from zope.component.interfaces import ComponentLookupError
 from zope.dottedname.resolve import resolve
 from zope.site.hooks import setSite
 
+from Products.CMFCore.DirectoryView import _dirreg
+from Products.CMFCore.DirectoryView import _generateKey
+from Products.CMFCore.interfaces import IDirectoryView
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.context import SetupEnviron
 from Products.GenericSetup.interfaces import IBody
 
-_XML = """\
+_COMPONENTS_XML = """\
 <?xml version="1.0"?>
 <componentregistry>
  <adapters/>
@@ -55,6 +58,29 @@ _XML = """\
      object="MailHost"/>
  </utilities>
 </componentregistry>
+"""
+
+_ACTIONS_XML = """\
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="CMF Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="object" meta_type="CMF Action Category">
+  <object name="interfaces" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Interfaces</property>
+   <property name="description"
+      i18n:translate="">Assign marker interfaces</property>
+   <property name="url_expr">string:${object_url}/edit-markers.html</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/interfaces_icon.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage portal"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+</object>
 """
 
 def check_root_site_manager(tool):
@@ -80,7 +106,7 @@ def add_root_site_manager(tool):
     components.__parent__ = portal
     portal.setSiteManager(components)
     logger.info("Site manager '%s' added." % name)
-    getMultiAdapter((components, SetupEnviron()), IBody).body = _XML
+    getMultiAdapter((components, SetupEnviron()), IBody).body = _COMPONENTS_XML
     logger.info('Utility registrations added.')
 
 def check_root_lookup_class(tool):
@@ -104,7 +130,7 @@ def upgrade_root_lookup_class(tool):
     components.utilities._createLookup()
     components.utilities.__parent__ = components
     logger.info('LookupClass replaced.')
-    getMultiAdapter((components, SetupEnviron()), IBody).body = _XML
+    getMultiAdapter((components, SetupEnviron()), IBody).body = _COMPONENTS_XML
     logger.info('Utility registrations replaced.')
 
 def check_root_properties(tool):
@@ -160,6 +186,66 @@ def upgrade_type_properties(tool):
             ti._updateProperty('factory', _FACTORIES[key])
             logger.info("TypeInfo '%s' changed." % ti.getId())
 
+def check_actions_tool(tool):
+    """2.0.x to 2.1.0 upgrade step checker
+    """
+    atool = getToolByName(tool, 'portal_actions')
+    try:
+        atool.object.interfaces
+    except AttributeError:
+        return True
+    return False
+
+def upgrade_actions_tool(tool):
+    """2.0.x to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    atool = getToolByName(tool, 'portal_actions')
+    environ = SetupEnviron()
+    environ._should_purge = False
+    getMultiAdapter((atool, environ), IBody).body = _ACTIONS_XML
+    logger.info("'interfaces' action added.")
+
+def check_skins_tool(tool):
+    """2.0.x to 2.1.0 upgrade step checker
+    """
+    stool = getToolByName(tool, 'portal_skins')
+    for obj in stool.objectValues():
+        if IDirectoryView.providedBy(obj):
+            dirpath = obj.getDirPath()
+            if dirpath is None:
+                continue
+            if dirpath not in _dirreg.listDirectories():
+                return True
+    return False
+
+def _getCurrentKeyFormat(reg_key):
+    dirpath = reg_key.replace('\\', '/')
+    if dirpath.startswith('Products/'):
+        dirpath = dirpath[9:]
+    product = ['Products']
+    dirparts = dirpath.split('/')
+    while dirparts:
+        product.append(dirparts[0])
+        dirparts = dirparts[1:]
+        possible_key = _generateKey('.'.join(product), '/'.join(dirparts))
+        if possible_key in _dirreg._directories:
+            return possible_key
+    return reg_key
+
+def upgrade_skins_tool(tool):
+    """2.0.x to 2.1.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    stool = getToolByName(tool, 'portal_skins')
+    for obj in stool.objectValues():
+        if IDirectoryView.providedBy(obj):
+            dirpath = obj.getDirPath()
+            if dirpath is None:
+                continue
+            if dirpath not in _dirreg.listDirectories():
+                obj._dirpath = _getCurrentKeyFormat(dirpath)
+                logger.info("DirectoryView '%s' changed." % obj.getId())
 
 BAD_UTILITIES = [
          'Products.CMFCalendar.interfaces.ICalendarTool',
@@ -224,7 +310,7 @@ _TOOL_UTILITIES = (
     ('portal_uidhandler', 'Products.CMFUid.interfaces.IUniqueIdHandler'),
     ('portal_actionicons', 'Products.CMFActionIcons.interfaces.IActionIconsTool'),
 )
-    
+
 def check_tool_utility_registrations(tool):
     """2.1.0-alpha to 2.1.0 upgrade step checker
     """
@@ -246,7 +332,7 @@ def check_tool_utility_registrations(tool):
             return True
 
     return False
-             
+
 def handle_tool_utility_registrations(tool):
     """2.1.0-alpha to 2.1.0 upgrade step handler
     """
@@ -266,24 +352,3 @@ def handle_tool_utility_registrations(tool):
             sm.registerUtility(tool_obj, iface)
             logger.info('Registered %s for interface %s' % (
                                                 tool_id, tool_interface))
-
-def check_newstyle_actions(tool):
-    """2.1.0-alpha to 2.1.0 upgrade step checker
-    """
-    portal = aq_parent(aq_inner(tool))
-    if not portal.portal_actions.objectIds(['CMF Action Category']):
-        return True
-
-    return False
-
-def upgrade_to_newstyle_actions(tool):
-    """2.1.0-alpha to 2.1.0 upgrade step handler
-    """
-    logger = logging.getLogger('GenericSetup.upgrade')
-    portal = aq_parent(aq_inner(tool))
-    if not portal.portal_actions.objectIds(['CMF Action Category']):
-        tool.runImportStepFromProfile( 'profile-Products.CMFDefault:default'
-                                     , 'actions'
-                                     )
-        logger.info('Instantiated new-style actions in portal_actions')
-
