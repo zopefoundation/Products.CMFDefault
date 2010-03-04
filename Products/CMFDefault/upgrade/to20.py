@@ -17,6 +17,8 @@ $Id$
 import logging
 
 from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MetadataTool import _DCMI_ELEMENT_SPECS
@@ -51,3 +53,23 @@ def upgrade_dcmi_metadata(tool):
                        , allowed_vocabulary=policy.allowedVocabulary()
                        )
     logger.info('Dublin Core metadata definition updated.')
+
+def check_newstyle_actions(tool):
+    """1.6.x to 2.0.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    if not portal.portal_actions.objectIds(['CMF Action Category']):
+        return True
+
+    return False
+
+def upgrade_to_newstyle_actions(tool):
+    """1.6.x to 2.0.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    if not portal.portal_actions.objectIds(['CMF Action Category']):
+        tool.runImportStepFromProfile( 'profile-Products.CMFDefault:default'
+                                     , 'actions'
+                                     )
+        logger.info('Instantiated new-style actions in portal_actions')

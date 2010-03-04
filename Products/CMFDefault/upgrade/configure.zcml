@@ -15,6 +15,12 @@
         checker=".to20.check_dcmi_metadata"
         />
 
+    <genericsetup:upgradeStep
+        title="Instantiate new-style actions"
+        handler=".to20.upgrade_to_newstyle_actions"
+        checker=".to20.check_newstyle_actions"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
@@ -57,6 +63,18 @@
         />
 
     <genericsetup:upgradeStep
+        title="Upgrade actions tool"
+        handler=".to21.upgrade_actions_tool"
+        checker=".to21.check_actions_tool"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade skins tool"
+        handler=".to21.upgrade_skins_tool"
+        checker=".to21.check_skins_tool"
+        />
+
+    <genericsetup:upgradeStep
         title="Unregister bad utility registrations"
         handler=".to21.unregister_bad_utilities"
         checker=".to21.check_bad_utilities"
@@ -66,12 +84,6 @@
         title="Register tool utilities"
         handler=".to21.handle_tool_utility_registrations"
         checker=".to21.check_tool_utility_registrations"
-        />
-
-    <genericsetup:upgradeStep
-        title="Instantiate new-style actions"
-        handler=".to21.upgrade_to_newstyle_actions"
-        checker=".to21.check_newstyle_actions"
         />
 
   </genericsetup:upgradeSteps>
