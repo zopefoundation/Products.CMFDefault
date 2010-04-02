@@ -41,5 +41,13 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFCore.interfaces.ISiteRoot"
       />
+      
+  <genericsetup:registerProfile
+      name="absolut"
+      title="'Absolut' - the pure CSS skin"
+      description="All layouting done using CSS"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      />
 
 </configure>

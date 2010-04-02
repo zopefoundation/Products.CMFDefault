@@ -1,0 +1,115 @@
+/* global style definitions */
+
+body {
+    width: 60em;
+    max-width: 76.255em;
+    margin: 252px auto 1em auto; 
+    background: #FFF url(images/header.jpg) no-repeat center 0%;
+    font: normal 100%;
+}
+
+img {
+    border: 0;
+}
+
+nav a { 
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+nav#top {
+    float: left;
+    width: 48%;
+    margin: 1em 0em 1em 20em;
+    font-size: 0.75em;
+}
+
+nav#top a{
+    display: block;
+    float: left;
+    width: 25%;
+    }
+
+#top a:hover {
+    font-weight: bold;
+}
+
+nav#left {
+    clear: left;
+}
+
+nav#left, {
+    float: left;
+    border: 2px solid #EEE;
+    border-top: 2px solid #DDD;
+    border-left: 2px solid #DDD;
+    margin: 0;
+    padding: 0 0 0 0.625em;
+    width: 13.5em;
+}
+
+nav ul { /* all lists */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    }
+
+nav li { /* all list items */
+    margin-top: 1em;
+    }
+    
+nav li ul li {
+    margin: 0;
+    margin-left: 1.5em;
+}
+
+nav li a{
+    display: block;
+    font-size: 0.875em;
+    font-weight: bold;
+    }
+
+nav li ul li a{
+    font-weight: normal;
+}
+
+nav#left a {
+    color: #b4975d;
+}
+
+nav#left a:hover{
+    color: #c63540;
+}
+
+#main {
+/*    490px 30.625em*/
+    float: left;
+    width: 28.625em;
+    border-top: 2px solid #DDD;
+    margin: 0 0.625em 0 0.625em;
+    padding: 0 0.375em 0 0.375em;
+    font-size: 0.875em;
+}
+
+#main a {
+    text-decoration: none;
+    border-bottom: 1px dotted #000;
+}
+
+#main a:hover {
+    background: #DDD;
+}
+
+#footer {
+    clear: left;
+    width: 29em;
+    margin: 1em auto;
+    }
+
+#footer a {
+    font-size: 0.75em;
+}
