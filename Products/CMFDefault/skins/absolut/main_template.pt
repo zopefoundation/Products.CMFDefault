@@ -3,7 +3,8 @@
 <html tal:define="globals context/@@ursine_globals;
                   portal_url globals/portal_url;
                   object_title globals/object_title;
-                  object_description globals/object_description"
+                  object_description globals/object_description;
+                  atool globals/atool"
       i18n:domain="cmf_default">
 <head>
   

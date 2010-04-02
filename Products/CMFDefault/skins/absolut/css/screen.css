@@ -82,6 +82,10 @@ nav#user ul {
     float: right;
 }
 
+nav#user ul li {
+    display: inline;
+}
+
 nav#user a {
 }
 
@@ -96,6 +100,7 @@ nav#user a {
 /*actions and object navigation*/
 
 nav#actions {
+    margin-top: 0.1em;
     background: #AAA;
     clear: left;
     float: left;
