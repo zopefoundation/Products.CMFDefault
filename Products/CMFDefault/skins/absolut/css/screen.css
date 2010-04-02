@@ -1,10 +1,11 @@
 /* global style definitions */
 
+
 body {
     width: 60em;
-    max-width: 76.255em;
-    margin: 252px auto 1em auto; 
-    background: #FFF url(images/header.jpg) no-repeat center 0%;
+    max-width: 76em;
+    margin: 0 auto 1em auto; 
+    background: #FFF;
     font: normal 100%;
 }
 
@@ -20,96 +21,106 @@ nav a:hover {
     text-decoration: underline;
 }
 
-
-nav#top {
-    float: left;
-    width: 48%;
-    margin: 1em 0em 1em 20em;
-    font-size: 0.75em;
-}
-
-nav#top a{
-    display: block;
-    float: left;
-    width: 25%;
-    }
-
-#top a:hover {
-    font-weight: bold;
-}
-
-nav#left {
-    clear: left;
-}
-
-nav#left, {
-    float: left;
-    border: 2px solid #EEE;
-    border-top: 2px solid #DDD;
-    border-left: 2px solid #DDD;
-    margin: 0;
-    padding: 0 0 0 0.625em;
-    width: 13.5em;
-}
-
 nav ul { /* all lists */
     padding: 0;
     margin: 0;
     list-style: none;
     }
 
-nav li { /* all list items */
-    margin-top: 1em;
-    }
-    
-nav li ul li {
-    margin: 0;
-    margin-left: 1.5em;
-}
-
 nav li a{
     display: block;
-    font-size: 0.875em;
-    font-weight: bold;
     }
 
-nav li ul li a{
-    font-weight: normal;
-}
+/*Site Navigation*/
 
-nav#left a {
-    color: #b4975d;
-}
-
-nav#left a:hover{
-    color: #c63540;
-}
-
-#main {
-/*    490px 30.625em*/
+nav#site {
+    background: #369;
     float: left;
-    width: 28.625em;
-    border-top: 2px solid #DDD;
-    margin: 0 0.625em 0 0.625em;
-    padding: 0 0.375em 0 0.375em;
-    font-size: 0.875em;
+    width: 100%;
 }
 
-#main a {
+nav#site a{
+    display: block;
+    float: left;
+    font-size: 80%;
+}
+
+nav#site li a{
+    margin-right: 0.5em;
+    text-transform: lowercase;
+    color: #FFF;
+    }
+
+nav#site ul{
+    margin-top: 0.1em;
+    float: right;
+}
+
+nav#site form{
+    display: block;
+    float: left;
+}
+
+/*User navigation*/
+
+nav#user {
+    width: 100%;
+    float: left;
+    clear: left;
+    background: #59C;
+    border-top: #CCC 1px solid;
+}
+
+nav#user .username {
+    float: left;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+nav#user ul {
+    float: right;
+}
+
+nav#user a {
+}
+
+nav#user a {
+    color: #FFF;
+    float: left;
+    margin-right: 0.5em;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+nav#actions {
+    background: #AAA;
+    clear: left;
+    float: left;
+    width: 20%;
+}
+
+nav#actions a{
+    color: #FFF;
+    font-weight: bold;
+}
+
+nav#actions ul{
+    border-top: 0.1em solid #FFF;
+}
+
+nav#actions li a{
+    display: inline;
+    padding: 0.1em;
+}
+
+#Desktop {
+    background: #FFF;
+    float: left;
+    width: 78%;
+    margin: 1em 0  0 1em;
+}
+
+#Desktop a {
     text-decoration: none;
     border-bottom: 1px dotted #000;
-}
-
-#main a:hover {
-    background: #DDD;
-}
-
-#footer {
-    clear: left;
-    width: 29em;
-    margin: 1em auto;
-    }
-
-#footer a {
-    font-size: 0.75em;
 }
