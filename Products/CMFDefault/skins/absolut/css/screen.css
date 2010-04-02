@@ -2,8 +2,9 @@
 
 
 body {
-    width: 60em;
-    max-width: 76em;
+    width: 100%;
+    max-width: 70em;
+    min-width: 50em;
     margin: 0 auto 1em auto; 
     background: #FFF;
     font: normal 100%;
@@ -92,6 +93,8 @@ nav#user a {
     font-size: 90%;
 }
 
+/*actions and object navigation*/
+
 nav#actions {
     background: #AAA;
     clear: left;
@@ -106,11 +109,11 @@ nav#actions a{
 
 nav#actions ul{
     border-top: 0.1em solid #FFF;
+    padding-left: 0.1em;
 }
 
 nav#actions li a{
     display: inline;
-    padding: 0.1em;
 }
 
 #Desktop {
