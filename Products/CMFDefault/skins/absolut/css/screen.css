@@ -35,31 +35,46 @@ nav li a{
 /*Site Navigation*/
 
 nav#site {
+    vertical-align: middle;
     background: #369;
     float: left;
+    height: 2.375em;
     width: 100%;
 }
 
 nav#site a{
     display: block;
     float: left;
-    font-size: 80%;
+    
+}
+
+nav#site ul li,
+nav#user ul li {
+    display: inline;
 }
 
 nav#site li a{
+    font-size: 80%;
     margin-right: 0.5em;
     text-transform: lowercase;
     color: #FFF;
     }
 
 nav#site ul{
-    margin-top: 0.1em;
+/*    vertical-align: middle;
+    margin-top: 0.1em;*/
+    margin: 0.5em 0;
+    height: 100%;
     float: right;
 }
 
 nav#site form{
     display: block;
     float: left;
+}
+
+nav#site form input{
+    border: 0;
 }
 
 /*User navigation*/
@@ -80,10 +95,6 @@ nav#user .username {
 
 nav#user ul {
     float: right;
-}
-
-nav#user ul li {
-    display: inline;
 }
 
 nav#user a {

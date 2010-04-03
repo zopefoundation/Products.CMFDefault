@@ -48,6 +48,10 @@
     background: url(preview_icon.png) no-repeat 0.1em;
 }
 
+.metadata {
+    background: url(metadata_icon.png) no-repeat 0.1em;
+}
+
 .roles {
     background: url(preview_icon.png) no-repeat 0.1em;
 }
@@ -112,6 +116,14 @@
 
 .logout {
     background: url(logout_icon.png) no-repeat 0.1em;
+}
+
+.addFavorite {
+    background: url(addfavorite_icon.png) no-repeat 0.1em;
+}
+
+.mystuff {
+    background: url(user_icon.png) no-repeat 0.1em;
 }
 
 /*Global*/
