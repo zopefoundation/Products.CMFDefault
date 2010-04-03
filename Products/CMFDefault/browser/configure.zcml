@@ -160,5 +160,13 @@
       class=".ursa.UrsineGlobals"
       permission="zope.Public"
       />
+      
+  <browser:page
+     for="*"
+     layer="..interfaces.ICMFDefaultSkin"
+     name="icons.css"
+     class=".icons.View"
+     permission="zope.Public"
+     />
 
 </configure>
