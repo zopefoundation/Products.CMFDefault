@@ -7,7 +7,7 @@ body {
     min-width: 50em;
     margin: 0 auto 1em auto; 
     background: #FFF;
-    font: normal 100%;
+    font: normal 100% sans-serif;
 }
 
 img {
@@ -81,6 +81,7 @@ nav#site form input{
 
 nav#user {
     width: 100%;
+    height: 1.25em;
     float: left;
     clear: left;
     background: #59C;
