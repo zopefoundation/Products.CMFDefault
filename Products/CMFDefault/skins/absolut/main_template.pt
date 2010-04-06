@@ -14,11 +14,12 @@
  <script src="/js/html5.js"
          tal:attributes="src string: ${portal_url}/js/html5.js"></script>
  <![endif]-->
- <!--[if lte IE 6]><meta name="name" content="content"><![endif]-->
+ <!--[if lte IE 6]><![endif]-->
  
- <link rel="icon" 
-      tal:attributes="href string:${portal_url}/images/favicon.png"
-      href="images/favicon.png" type="image/x-icon" />
+ <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon" /> -->
+ 
+ <meta name="content-type" content="text/html; charset=utf-8" />
+ 
  <link rel="stylesheet" type="text/css" 
       tal:attributes="href string:${portal_url}/css/cmf.css"
       href="cmf.css" media="screen" />
@@ -38,7 +39,7 @@
 
 <body>
 
- <nav id="site">
+ <nav id="site" i18n:domain="cmf_default">
    <a href="/" tal:attributes="href string:${portal_url}/">
       <img src="Zope_logo.gif" alt="Zope Logo"
          border="0" width="87" height="38"
@@ -77,7 +78,7 @@
 
  </nav>
  
- <nav id="user">
+ <nav id="user" i18n:domain="cmf_default">
    <div class="username" tal:content="globals/membername">USERNAME</div>
    <ul>
     <li tal:repeat="action globals/user_actions">
@@ -90,7 +91,7 @@
    </ul>
  </nav>
  
- <nav id="actions">
+ <nav id="actions" i18n:domain="cmf_default">
  <span class="icon" tal:content="globals/trunc_id"
       tal:attributes="class string:icon ${globals/typename}">ID</span>
       
@@ -101,7 +102,7 @@
                       target action/link_target|nothing;
                       class string:icon ${action/id}"
       tal:content="action/title"
-      i18n:translate="">OBJECT ACTION_TITLE</a><br />
+      i18n:translate="">OBJECT ACTION_TITLE</a>
   </li>
  </ul>
 
@@ -113,7 +114,7 @@
                       target action/link_target|nothing;
                       class string:icon ${action/id}"
       tal:content="action/title"
-      i18n:translate="">OBJECT ACTION_TITLE</a><br />
+      i18n:translate="">OBJECT ACTION_TITLE</a>
   </li>
  </ul>
 
@@ -124,7 +125,7 @@
                       target action/link_target|nothing;
                       class string:icon ${action/id}"
       tal:content="action/title"
-      i18n:translate="">FOLDER ACTION_TITLE</a><br />
+      i18n:translate="">FOLDER ACTION_TITLE</a>
   </li>
  </ul>
 
@@ -135,7 +136,7 @@
                       target action/link_target|nothing;
                       class string:icon ${action/id}"
       tal:content="action/title"
-      i18n:translate="">ADD ACTION_TITLE</a><br />
+      i18n:translate="">ADD ACTION_TITLE</a>
   </li>
  </ul>
 
