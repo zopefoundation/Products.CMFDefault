@@ -1,0 +1,71 @@
+Authentication Views
+--------------------
+
+Set up user.
+
+    >>> uf = app.site.acl_users
+    >>> uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
+
+Create the browser object we'll be using.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> browser.handleErrors = False
+
+Use the login form without input.
+
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> '[[cmf_default][Log in]]' in browser.contents
+    True
+    >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[zope][There were errors]]' in browser.contents
+    True
+
+Use the login form with invalid input.
+
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'unknown'
+    >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[zope][There were errors]]' in browser.contents
+    True
+    >>> '[[zope][Constraint not satisfied]]' in browser.contents
+    True
+
+Use the login form with valid input but wrong password.
+
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mgr'
+    >>> browser.getControl('[[cmf_default][Password]]').value = 'wrong'
+    >>> browser.getControl('[[cmf_default][Remember my ID.]]').selected = False
+    >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[cmf_default][Login failure]]' in browser.contents
+    True
+
+Use the login form with valid input and correct password.
+
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mgr'
+    >>> browser.getControl('[[cmf_default][Password]]').value = 'mgrpw'
+    >>> browser.getControl('[[cmf_default][Remember my ID.]]').selected = False
+    >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[cmf_default][Login success]]' in browser.contents
+    True
+
+Use the mail password form without input.
+
+    >>> browser.open('http://localhost/site/@@mail_password.html')
+    >>> "[[cmf_default][Don't panic!]]" in browser.contents
+    True
+    >>> browser.getControl('[[cmf_default][Send]]').click()
+    >>> '[[zope][There were errors]]' in browser.contents
+    True
+
+Use the mail password form with invalid input.
+
+    >>> browser.open('http://localhost/site/@@mail_password.html')
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'unknown'
+    >>> browser.getControl('[[cmf_default][Send]]').click()
+    >>> '[[zope][There were errors]]' in browser.contents
+    True
+    >>> '[[zope][Constraint not satisfied]]' in browser.contents
+    True

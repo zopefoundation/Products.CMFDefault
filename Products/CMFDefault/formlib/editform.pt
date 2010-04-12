@@ -2,7 +2,8 @@
 <body>
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
-<ul class="errors" tal:condition="view/errors">
+<metal:macro metal:define-macro="form"
+><ul class="errors" tal:condition="view/errors">
  <li tal:repeat="error view/error_views"><tal:span
      tal:replace="structure error" /></li>
 </ul>
@@ -36,7 +37,8 @@
     tal:replace="structure action/render" />
 </div>
 </form>
-</metal:slot>
+</metal:macro
+></metal:slot>
 
 </body>
 </html>

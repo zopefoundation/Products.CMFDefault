@@ -169,4 +169,18 @@
      permission="zope.Public"
      />
 
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="login.html"
+      class=".authentication.LoginFormView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="mail_password.html"
+      class=".authentication.MailPasswordFormView"
+      permission="zope2.View"
+      />
+
 </configure>
