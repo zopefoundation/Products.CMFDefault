@@ -411,11 +411,13 @@ td.NewsTitle {
                    background-color: #ffffff; }
 .widget.split .data { width: 240px; }
 .widget input.fileType,
+.widget input.passwordType,
 .widget input.textType,
 .widget select,
 .widget textarea { width: 596px; margin: 0 -2px; padding: 0 2px;
                    font-family: inherit; font-size: inherit; }
 .widget select   { padding: 0 }
+.widget input.passwordType,
 .widget input.textType {
                    min-height: 30px; height: auto !important; height: 24px; }
 .widget.split input.textType,
