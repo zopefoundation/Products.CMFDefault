@@ -162,15 +162,16 @@
       />
       
   <browser:page
-     for="*"
-     layer="..interfaces.ICMFDefaultSkin"
-     name="icons.css"
-     class=".icons.View"
-     permission="zope.Public"
-     />
+      for="*"
+      layer="..interfaces.ICMFDefaultSkin"
+      name="icons.css"
+      class=".icons.View"
+      permission="zope.Public"
+      />
 
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="..interfaces.ICMFDefaultSkin"
       name="login.html"
       class=".authentication.LoginFormView"
       permission="zope2.View"
@@ -178,6 +179,7 @@
 
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="..interfaces.ICMFDefaultSkin"
       name="mail_password.html"
       class=".authentication.MailPasswordFormView"
       permission="zope2.View"
