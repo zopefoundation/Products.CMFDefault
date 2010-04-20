@@ -104,7 +104,8 @@ class LoginFormView(EditFormBase):
             failure='handle_failure'))
 
     def setUpWidgets(self, ignore_request=False):
-        ac_name = self.request.get('__ac_name')
+        cctool = self._getTool('cookie_authentication')
+        ac_name = self.request.get(cctool.name_cookie)
         if ac_name and not self.request.has_key('%s.name' % self.prefix):
             self.request.form['%s.name' % self.prefix] = ac_name
         super(LoginFormView,
@@ -119,12 +120,12 @@ class LoginFormView(EditFormBase):
                 if candidate['email'].lower() == data['name'].lower():
                     data['name'] = candidate['username']
                     break
+        cctool = self._getTool('cookie_authentication')
         # logged_in uses default charset for decoding
         charset = self._getDefaultCharset()
-        self.request.form['__ac_name'] = data['name'].encode(charset)
-        self.request.form['__ac_password'] = data['password'].encode(charset)
-        self.request.form['__ac_persistent'] = data['persistent']
-        cctool = self._getTool('cookie_authentication')
+        self.request.form[cctool.name_cookie] = data['name'].encode(charset)
+        self.request.form[cctool.pw_cookie] = data['password'].encode(charset)
+        self.request.form[cctool.persist_cookie] = data['persistent']
         cctool(self.context, self.request)
         return self._setRedirect('portal_actions', 'user/logged_in',
                                  '%s.came_from' % self.prefix)
@@ -153,7 +154,8 @@ class MailPasswordFormView(EditFormBase):
             failure='handle_failure'))
 
     def setUpWidgets(self, ignore_request=False):
-        ac_name = self.request.get('__ac_name')
+        cctool = self._getTool('cookie_authentication')
+        ac_name = self.request.get(cctool.name_cookie)
         if ac_name and not self.request.has_key('%s.name' % self.prefix):
             self.request.form['%s.name' % self.prefix] = ac_name
         super(MailPasswordFormView,
