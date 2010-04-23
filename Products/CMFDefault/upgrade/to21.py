@@ -23,7 +23,6 @@ from five.localsitemanager import find_next_sitemanager
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 from five.localsitemanager.registry import PersistentComponents
 from zope.component import getMultiAdapter
-from zope.component import getSiteManager
 from zope.component.globalregistry import base
 from zope.component.interfaces import ComponentLookupError
 from zope.dottedname.resolve import resolve
@@ -83,55 +82,109 @@ _ACTIONS_XML = """\
 </object>
 """
 
+_BAD_UTILITIES = [
+         'Products.CMFCalendar.interfaces.ICalendarTool',
+         'Products.CMFCore.interfaces.IActionsTool',
+         'Products.CMFCore.interfaces.ICatalogTool',
+         'Products.CMFCore.interfaces.IContentTypeRegistry',
+         'Products.CMFCore.interfaces.ISkinsTool',
+         'Products.CMFCore.interfaces.ITypesTool',
+         'Products.CMFCore.interfaces.IURLTool',
+         'Products.CMFCore.interfaces.IConfigurableWorkflowTool',
+         'Products.CMFCore.interfaces.IMembershipTool',
+         'Products.CMFCore.interfaces.IRegistrationTool',
+         ]
+
+_TOOL_UTILITIES = (
+    ('portal_uidgenerator', 'Products.CMFUid.interfaces.IUniqueIdGenerator'),
+    ('portal_uidannotation', 'Products.CMFUid.interfaces.IUniqueIdAnnotationManagement'),
+    ('portal_uidhandler', 'Products.CMFUid.interfaces.IUniqueIdHandler'),
+    ('portal_actionicons', 'Products.CMFActionIcons.interfaces.IActionIconsTool'),
+)
+
 def check_root_site_manager(tool):
     """2.0.x to 2.1.0 upgrade step checker
     """
-    portal = aq_base(aq_parent(aq_inner(tool)))
+    portal = aq_parent(aq_inner(tool))
     try:
-        portal.getSiteManager()
-        return False
+        # We have to call setSite to make sure we have a site with a proper
+        # acquisition context.
+        setSite(portal)
+        sm = portal.getSiteManager()
+        if sm.utilities.LookupClass != FiveVerifyingAdapterLookup:
+            return True
     except ComponentLookupError:
         return True
 
-def add_root_site_manager(tool):
+    for tool_interface in _BAD_UTILITIES:
+        try:
+            iface = resolve(tool_interface)
+        except ImportError:
+            continue
+
+        if sm.queryUtility(iface) is not None:
+            return True
+
+    for tool_id, tool_interface in _TOOL_UTILITIES:
+        tool_obj = getToolByName(portal, tool_id, default=None)
+        try:
+            iface = resolve(tool_interface)
+        except ImportError:
+            continue
+
+        if tool_obj is not None and sm.queryUtility(iface) is None:
+            return True
+
+    return False
+
+def upgrade_root_site_manager(tool):
     """2.0.x to 2.1.0 upgrade step handler
     """
     logger = logging.getLogger('GenericSetup.upgrade')
-    portal = aq_base(aq_parent(aq_inner(tool)))
-    next = find_next_sitemanager(portal)
-    if next is None:
-        next = base
-    name = '/'.join(portal.getPhysicalPath())
-    components = PersistentComponents(name, (next,))
-    components.__parent__ = portal
-    portal.setSiteManager(components)
-    logger.info("Site manager '%s' added." % name)
-    getMultiAdapter((components, SetupEnviron()), IBody).body = _COMPONENTS_XML
-    logger.info('Utility registrations added.')
-
-def check_root_lookup_class(tool):
-    """2.1 beta to 2.1.0 upgrade step checker
-    """
-    portal = aq_base(aq_parent(aq_inner(tool)))
+    portal = aq_parent(aq_inner(tool))
     try:
-        components = portal.getSiteManager()
-    except ComponentLookupError:
-        return False
-    return components.utilities.LookupClass != FiveVerifyingAdapterLookup
+        setSite(portal)
+        sm = portal.getSiteManager()
+        if sm.utilities.LookupClass != FiveVerifyingAdapterLookup:
+            sm.__parent__ = aq_base(portal)
+            sm.utilities.LookupClass = FiveVerifyingAdapterLookup
+            sm.utilities._createLookup()
+            sm.utilities.__parent__ = sm
+            logger.info('LookupClass replaced.')
+        else:
+            for tool_interface in _BAD_UTILITIES:
+                try:
+                    iface = resolve(tool_interface)
+                except ImportError:
+                    continue
 
-def upgrade_root_lookup_class(tool):
-    """2.1 beta to 2.1.0 upgrade step handler
-    """
-    logger = logging.getLogger('GenericSetup.upgrade')
-    portal = aq_base(aq_parent(aq_inner(tool)))
-    components = portal.getSiteManager()
-    components.__parent__ = portal
-    components.utilities.LookupClass = FiveVerifyingAdapterLookup
-    components.utilities._createLookup()
-    components.utilities.__parent__ = components
-    logger.info('LookupClass replaced.')
-    getMultiAdapter((components, SetupEnviron()), IBody).body = _COMPONENTS_XML
-    logger.info('Utility registrations replaced.')
+                if sm.queryUtility(iface) is not None:
+                    sm.unregisterUtility(provided=iface)
+                    logger.info('Unregistered utility for %s' % tool_interface)
+
+            for tool_id, tool_interface in _TOOL_UTILITIES:
+                tool_obj = getToolByName(portal, tool_id, default=None)
+                try:
+                    iface = resolve(tool_interface)
+                except ImportError:
+                    continue
+
+                if tool_obj is not None and sm.queryUtility(iface) is None:
+                    sm.registerUtility(tool_obj, iface)
+                    logger.info('Registered %s for interface %s' % (
+                                                      tool_id, tool_interface))
+            return
+    except ComponentLookupError:
+        next = find_next_sitemanager(portal)
+        if next is None:
+            next = base
+        name = '/'.join(portal.getPhysicalPath())
+        sm = PersistentComponents(name, (next,))
+        sm.__parent__ = aq_base(portal)
+        portal.setSiteManager(sm)
+        logger.info("Site manager '%s' added." % name)
+    getMultiAdapter((sm, SetupEnviron()), IBody).body = _COMPONENTS_XML
+    logger.info('Utility registrations added.')
 
 def check_root_properties(tool):
     """2.0.x to 2.1.0 upgrade step checker
@@ -246,109 +299,3 @@ def upgrade_skins_tool(tool):
             if dirpath not in _dirreg.listDirectories():
                 obj._dirpath = _getCurrentKeyFormat(dirpath)
                 logger.info("DirectoryView '%s' changed." % obj.getId())
-
-BAD_UTILITIES = [
-         'Products.CMFCalendar.interfaces.ICalendarTool',
-         'Products.CMFCore.interfaces.IActionsTool',
-         'Products.CMFCore.interfaces.ICatalogTool',
-         'Products.CMFCore.interfaces.IContentTypeRegistry',
-         'Products.CMFCore.interfaces.ISkinsTool',
-         'Products.CMFCore.interfaces.ITypesTool',
-         'Products.CMFCore.interfaces.IURLTool',
-         'Products.CMFCore.interfaces.IConfigurableWorkflowTool',
-         'Products.CMFCore.interfaces.IMembershipTool',
-         'Products.CMFCore.interfaces.IRegistrationTool',
-         ]
-
-def check_bad_utilities(tool):
-    """2.1.0-beta to 2.1.0 upgrade step checker
-    """
-    portal = aq_parent(aq_inner(tool))
-    try:
-        # We have to call setSite to make sure we have a site with a proper
-        # acquisition context.
-        setSite(portal)
-        sm = getSiteManager(portal)
-    except ComponentLookupError:
-        return False
-
-    for utility in BAD_UTILITIES:
-        try:
-            iface = resolve(utility)
-        except ImportError:
-            continue
-
-        if sm.queryUtility(iface) is not None:
-            return True
-
-    return False
-
-def unregister_bad_utilities(tool):
-    """2.1.0-beta to 2.1.0 upgrade step handler
-    """
-    logger = logging.getLogger('GenericSetup.upgrade')
-    portal = aq_parent(aq_inner(tool))
-
-    # We have to call setSite to make sure we have a site with a proper
-    # acquisition context.
-    setSite(portal)
-
-    sm = getSiteManager(portal)
-    for dotted_path in BAD_UTILITIES:
-        try:
-            iface = resolve(dotted_path)
-        except ImportError:
-            continue
-
-        if sm.queryUtility(iface) is not None:
-            sm.unregisterUtility(provided=iface)
-            logger.info('Unregistered utility for %s' % dotted_path)
-
-_TOOL_UTILITIES = (
-    ('portal_uidgenerator', 'Products.CMFUid.interfaces.IUniqueIdGenerator'),
-    ('portal_uidannotation', 'Products.CMFUid.interfaces.IUniqueIdAnnotationManagement'),
-    ('portal_uidhandler', 'Products.CMFUid.interfaces.IUniqueIdHandler'),
-    ('portal_actionicons', 'Products.CMFActionIcons.interfaces.IActionIconsTool'),
-)
-
-def check_tool_utility_registrations(tool):
-    """2.1.0-alpha to 2.1.0 upgrade step checker
-    """
-    portal = aq_parent(aq_inner(tool))
-    try:
-        setSite(portal)
-        sm = getSiteManager(portal)
-    except ComponentLookupError:
-        return False
-
-    for tool_id, tool_interface in _TOOL_UTILITIES:
-        tool_obj = getToolByName(portal, tool_id, default=None)
-        try:
-            iface = resolve(tool_interface)
-        except ImportError:
-            continue
-
-        if tool_obj is not None and sm.queryUtility(iface) is None:
-            return True
-
-    return False
-
-def handle_tool_utility_registrations(tool):
-    """2.1.0-alpha to 2.1.0 upgrade step handler
-    """
-    logger = logging.getLogger('GenericSetup.upgrade')
-    portal = aq_parent(aq_inner(tool))
-    setSite(portal)
-    sm = getSiteManager(portal)
-
-    for tool_id, tool_interface in _TOOL_UTILITIES:
-        tool_obj = getToolByName(portal, tool_id, default=None)
-        try:
-            iface = resolve(tool_interface)
-        except ImportError:
-            continue
-
-        if tool_obj is not None and sm.queryUtility(iface) is None:
-            sm.registerUtility(tool_obj, iface)
-            logger.info('Registered %s for interface %s' % (
-                                                tool_id, tool_interface))
