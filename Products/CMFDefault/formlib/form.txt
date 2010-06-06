@@ -21,7 +21,13 @@ Create the browser object we'll be using.
 Register the content class and factory.
 
     >>> from Products.CMFDefault.formlib.tests import CONTENT_ZCML
-    >>> from Products.Five import zcml
+
+    # BBB for Zope 2.12
+    >>> try:
+    ...     from Zope2.App import zcml
+    ... except ImportError:
+    ...     from Products.Five import zcml
+
     >>> zcml.load_string(CONTENT_ZCML)
 
 Create the type info object.
