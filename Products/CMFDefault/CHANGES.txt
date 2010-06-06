@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Deal with deprecation warnings for Zope 2.13.
+
 - Use the standard libraries doctest module.
 
 - skins: Removed unused styles from css.
