@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.1-beta (unreleased)
 -----------------------
 
+- Use the standard libraries doctest module.
+
 - upgrade: Added 2 more upgrade steps for upgrades from CMF 2.0.
   Upgrades from unmodified CMF 2.0 and CMF 2.1 sites are now fully covered,
   customized or older CMF sites might require additional manual upgrades.

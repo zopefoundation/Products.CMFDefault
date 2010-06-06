@@ -15,10 +15,9 @@
 $Id$
 """
 
+import doctest
 import unittest
-import Testing
 from Testing import ZopeTestCase
-from zope.testing import doctest
 
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
