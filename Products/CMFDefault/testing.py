@@ -20,10 +20,15 @@ ZopeTestCase.installProduct('ZCTextIndex', 1)
 ZopeTestCase.installProduct('CMFCore', 1)
 
 import transaction
-from Products.Five import zcml
 
 from Products.CMFCore.testing import FunctionalZCMLLayer
 from Products.CMFDefault.factory import addConfiguredSite
+
+# BBB for Zope 2.12
+try:
+    from Zope2.App import zcml
+except ImportError:
+    from Products.Five import zcml
 
 
 class FunctionalLayer(FunctionalZCMLLayer):

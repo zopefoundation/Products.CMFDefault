@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.1-beta (unreleased)
 -----------------------
 
+- Deal with deprecation warnings for Zope 2.13.
+
 - Use the standard libraries doctest module.
 
 - upgrade: Added 2 more upgrade steps for upgrades from CMF 2.0.
