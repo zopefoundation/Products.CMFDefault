@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.2.1-beta (unreleased)
 -----------------------
 
+- Require at least Zope 2.12.3 and always use the five.formlib extension.
+
+- Removed testing dependency on zope.app.testing.
+
 - Deal with deprecation warnings for Zope 2.13.
 
 - Use the standard libraries doctest module.

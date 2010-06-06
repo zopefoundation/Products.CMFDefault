@@ -25,14 +25,10 @@ from zope import schema
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
+from five.formlib.formbase import PageForm
 from zope.formlib import form
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-# BBB Zope 2.12
-try:
-    from five.formlib.formbase import PageForm
-except ImportError:
-    from Products.Five.formlib.formbase import PageForm
 
 from Products.CMFCore.interfaces import IDynamicType
 

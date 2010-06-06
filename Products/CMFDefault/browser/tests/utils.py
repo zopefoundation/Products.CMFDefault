@@ -15,7 +15,10 @@
 $Id$
 """
 
-from Products.Five.schema import Zope2VocabularyRegistry
+try:
+    from Zope2.App.schema import Zope2VocabularyRegistry
+except ImportError:  # Zope2 <= 2.12
+    from Products.Five.schema import Zope2VocabularyRegistry
 
 
 def setupVocabulary(testcase):

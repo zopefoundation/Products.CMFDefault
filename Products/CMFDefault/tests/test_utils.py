@@ -16,7 +16,6 @@ $Id$
 """
 
 import unittest
-import Testing
 
 from Products.CMFCore.tests.base.content import FAUX_HTML_LEADING_TEXT
 from Products.CMFCore.tests.base.content import SIMPLE_HTML
@@ -43,6 +42,14 @@ lines.  It can even include "headerish" lines, like:
 
 Header: value
 '''
+
+    def setUp(self):
+        from zope.component.testing import setUp
+        setUp()
+
+    def tearDown(self):
+        from zope.component.testing import tearDown
+        tearDown()
 
     def test_parseHeadersBody_no_body( self ):
         from Products.CMFDefault.utils import parseHeadersBody
@@ -145,12 +152,12 @@ Header: value
                           '<meta name="title" content="" /><meta />' )
 
     def test_scrubHTML_with_adapter(self):
-        from zope.interface import implements
         from zope.component.testing import setUp
         from zope.component.testing import tearDown
-        from zope.app.testing import ztapi
         from Products.CMFDefault.interfaces import IHTMLScrubber
         from Products.CMFDefault.utils import scrubHTML
+        from zope.component import getSiteManager
+        from zope.interface import implements
 
         class _Scrubber:
             implements(IHTMLScrubber)
@@ -159,8 +166,10 @@ Header: value
 
 
         setUp()
+
+        sm = getSiteManager()
         try:
-            ztapi.provideUtility(IHTMLScrubber, _Scrubber())
+            sm.registerUtility(_Scrubber(), IHTMLScrubber)
             self.assertEqual( scrubHTML('<a href="foo.html">bar</a>'),
                             '<A HREF="FOO.HTML">BAR</A>' )
             self.assertEqual( scrubHTML('<b>bar</b>'),
