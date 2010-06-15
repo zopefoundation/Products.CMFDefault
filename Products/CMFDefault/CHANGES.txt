@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- views: Added Unauthorized exception view.
+  This replaces CookieCrumbler's old redirect support.
+
 - Deal with deprecation warnings for Zope 2.13.
 
 - Use the standard libraries doctest module.

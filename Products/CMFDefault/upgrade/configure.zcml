@@ -181,4 +181,28 @@
       sortkey="6"
       />
 
+  <genericsetup:upgradeSteps
+      source="2.2"
+      destination="2.3"
+      profile="Products.CMFDefault:default"
+      sortkey="7">
+
+    <genericsetup:upgradeStep
+        title="Upgrade cookie crumbler"
+        description="Remove obsolete cookie crumbler properties."
+        handler=".to23.upgrade_cookie_crumbler"
+        checker=".to23.check_cookie_crumbler"
+        />
+
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+      title="Mark 2.3 upgrade as finished"
+      source="2.2"
+      destination="2.3"
+      profile="Products.CMFDefault:default"
+      handler=".mark_as_finished"
+      sortkey="8"
+      />
+
 </configure>

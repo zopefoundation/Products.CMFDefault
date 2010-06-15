@@ -3,8 +3,10 @@ Authentication Views
 
 Set up user.
 
+    >>> from urllib import quote
     >>> uf = app.site.acl_users
-    >>> uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
+    >>> uf._doAddUser('mbr', 'mbrpw', ['Member'], [])
+    >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
 
 Create the browser object we'll be using.
 
@@ -13,9 +15,73 @@ Create the browser object we'll be using.
     ...     from Testing.testbrowser import Browser
     ... except ImportError:
     ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> # XXX: browser has no API for disabling redirects
+    >>> browser.mech_browser.set_handle_redirect(False)
+
+The view for zExceptions.Unauthorized redirects anonymous requests to the
+login_form. This works if raised by the object (here by the reconfig_form).
+
+    >>> browser.open('http://localhost/site/reconfig_form')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 302: Moved Temporarily
+    >>> browser.contents
+    ''
+    >>> browser.headers['Location']
+    'http://localhost/site/login_form?came_from=http%3A//localhost/site/reconfig_form'
+
+And it works if raised by BaseRequest.traverse (here caused by manage_main).
+
+    >>> browser.open('http://localhost/site/manage_main')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 302: Moved Temporarily
+    >>> browser.contents
+    ''
+    >>> browser.headers['Location']
+    'http://localhost/site/login_form?came_from=http%3A//localhost/site/manage_main'
+
+Same redirect with a query string. The query string is preserved.
+
+    >>> browser.open('http://localhost/site/manage_main?a:int=1&x:string=y')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 302: Moved Temporarily
+    >>> browser.contents
+    ''
+    >>> browser.headers['Location']
+    'http://localhost/site/login_form?came_from=http%3A//localhost/site/manage_main%3Fa%3Aint%3D1%26x%3Astring%3Dy'
+    >>> quote('manage_main?a:int=1&x:string=y') in browser.headers['Location']
+    True
+
+And requests are redirected to the login_form if a login attempt fails.
+
+    >>> browser.post('http://localhost/site/manage_main',
+    ...              '__ac_name=mbr&__ac_password=wrong')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 302: Moved Temporarily
+    >>> browser.contents
+    ''
+    >>> browser.headers['Location']
+    'http://localhost/site/login_form?came_from=http%3A//localhost/site/manage_main'
+
+The view for zExceptions.Unauthorized shows a Forbidden error if logged in.
+
+    >>> browser.cookies['__ac'] = '%s' % mbr_credentials
+    >>> browser.open('http://localhost/site/manage_main')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 403: Forbidden
+    >>> 'zpt_stylesheet.css' in browser.contents
+    True
+    >>> '[[cmf_default][Forbidden]]' in browser.contents
+    True
+
+For the following examples we have to reset the browser object.
 
     >>> browser = Browser()
-    >>> browser.handleErrors = False
 
 Use the login form without input.
 
@@ -33,27 +99,33 @@ Use the login form with invalid input.
     >>> browser.getControl('[[cmf_default][Login]]').click()
     >>> '[[zope][There were errors]]' in browser.contents
     True
-    >>> '[[zope][Constraint not satisfied]]' in browser.contents
+    >>> '[[cmf_default][Login failure]]' in browser.contents
     True
 
 Use the login form with valid input but wrong password.
 
     >>> browser.open('http://localhost/site/@@login.html')
-    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mgr'
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mbr'
     >>> browser.getControl('[[cmf_default][Password]]').value = 'wrong'
     >>> browser.getControl('[[cmf_default][Remember my ID.]]').selected = False
     >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[zope][There were errors]]' in browser.contents
+    True
     >>> '[[cmf_default][Login failure]]' in browser.contents
+    True
+    >>> '__ac' not in browser.cookies
     True
 
 Use the login form with valid input and correct password.
 
     >>> browser.open('http://localhost/site/@@login.html')
-    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mgr'
-    >>> browser.getControl('[[cmf_default][Password]]').value = 'mgrpw'
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mbr'
+    >>> browser.getControl('[[cmf_default][Password]]').value = 'mbrpw'
     >>> browser.getControl('[[cmf_default][Remember my ID.]]').selected = False
     >>> browser.getControl('[[cmf_default][Login]]').click()
     >>> '[[cmf_default][Login success]]' in browser.contents
+    True
+    >>> browser.cookies['__ac'] == '"%s"' % mbr_credentials
     True
 
 Use the mail password form without input.
@@ -73,4 +145,15 @@ Use the mail password form with invalid input.
     >>> '[[zope][There were errors]]' in browser.contents
     True
     >>> '[[zope][Constraint not satisfied]]' in browser.contents
+    True
+
+Log the user in and then out
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mbr'
+    >>> browser.getControl('[[cmf_default][Password]]').value = 'mbrpw'
+    >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[cmf_default][Login success]]' in browser.contents
+    True
+    >>> browser.open('http://localhost/site/@@logout.html')
+    >>> '[cmf_default][You have been logged out.' in browser.contents
     True

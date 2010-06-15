@@ -70,7 +70,7 @@ class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase,
         stool.manage_doUpgrades(request)
 
         self.assertEqual(stool.getLastVersionForProfile(profile_id),
-                         ('2', '2'))
+                         ('2', '3'))
 
         newSecurityManager(None, UnrestrictedUser('god', '', ['Manager'], ''))
         setSite(self.app.site)
