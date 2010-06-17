@@ -84,7 +84,7 @@
             tal:define="icon_url action/icon|nothing"
             tal:attributes="src icon_url;
                             alt action/title;
-                            title action/title"/>   
+                            title action/title"/>
     <a href="" tal:attributes="href action/url;
                                target action/link_target|nothing"
                 tal:content="action/title" i18n:translate="">Login</a

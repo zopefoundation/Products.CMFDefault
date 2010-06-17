@@ -7,32 +7,32 @@
                   atool globals/atool"
       i18n:domain="cmf_default">
 <head>
-  
+
  <title tal:content="globals/page_title">Title goes here</title>
- 
+
  <!--[if IE]>
  <script src="/js/html5.js"
          tal:attributes="src string: ${portal_url}/js/html5.js"></script>
  <![endif]-->
  <!--[if lte IE 6]><![endif]-->
- 
+
  <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon" /> -->
- 
+
  <meta name="content-type" content="text/html; charset=utf-8" />
- 
- <link rel="stylesheet" type="text/css" 
+
+ <link rel="stylesheet" type="text/css"
       tal:attributes="href string:${portal_url}/css/cmf.css"
       href="cmf.css" media="screen" />
- <link rel="stylesheet" type="text/css" 
-      tal:attributes="href string:${portal_url}/css/screen.css" 
+ <link rel="stylesheet" type="text/css"
+      tal:attributes="href string:${portal_url}/css/screen.css"
       href="/screen.css" media="screen"/>
-  <link rel="stylesheet" type="text/css" 
-     tal:attributes="href string:${context/absolute_url}/@@icons.css" 
+  <link rel="stylesheet" type="text/css"
+     tal:attributes="href string:${context/absolute_url}/@@icons.css"
      href="/icons.css" media="screen"/>
- <link rel="stylesheet" type="text/css" 
+ <link rel="stylesheet" type="text/css"
       tal:attributes="href string:${portal_url}/css/print.css"
       href="print.css" media="print" />
- 
+
  <metal:slot define-slot="base" />
  <metal:slot define-slot="styles" />
 </head>
@@ -77,7 +77,7 @@
   </ul>
 
  </nav>
- 
+
  <nav id="user" i18n:domain="cmf_default">
    <div class="username" tal:content="globals/membername">USERNAME</div>
    <ul>
@@ -90,11 +90,11 @@
     </li>
    </ul>
  </nav>
- 
+
  <nav id="actions" i18n:domain="cmf_default">
  <span class="icon" tal:content="globals/trunc_id"
       tal:attributes="class string:icon ${globals/typename}">ID</span>
-      
+
  <ul id="object_actions_menu" tal:condition="globals/object_actions">
   <li tal:repeat="action globals/object_actions">
   <a href="#object_action"
@@ -150,7 +150,7 @@
   </li>
  </ul>
  </nav>
- 
+
  <div id="Desktop">
 
   <div id="Breadcrumbs">
