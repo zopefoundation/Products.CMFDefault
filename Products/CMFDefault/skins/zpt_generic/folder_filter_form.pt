@@ -18,12 +18,12 @@
       tal:define="showfilter request/show_filter_form|nothing;
                   hidefilter python:not showfilter;
                  "
-      tal:attributes="action string:${here/absolute_url}/folder_contents"
+      tal:attributes="action string:${context/absolute_url}/folder_contents"
       i18n:domain="cmf_default"
 >
 <table class="FormLayout"
     tal:condition="showfilter"
-    tal:define="filter python:here.decodeFolderFilter(
+    tal:define="filter python:context.decodeFolderFilter(
                                         request.get('folderfilter', '') );
                 portal_type python:filter.get( 'portal_type', [] );
                 Subject python:filter.get( 'Subject', () );
@@ -47,7 +47,7 @@
         i18n:translate="">Content Type:</td>
     <td align="left" valign="top">
         <select name="filter_by_portal_type:list" multiple="multiple" size="3"
-            tal:define="typeinfos here/portal_types/listTypeInfo">
+            tal:define="typeinfos context/portal_types/listTypeInfo">
             <option value="type"
                 tal:repeat="typeinfo typeinfos"
                 tal:attributes="value typeinfo/getId;
