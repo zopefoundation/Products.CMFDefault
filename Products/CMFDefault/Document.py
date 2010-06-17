@@ -110,8 +110,6 @@ class Document(PortalContent, DefaultDublinCoreImpl):
         self._size = len(text)
 
         text_format = self.text_format
-        if not text_format:
-            text_format = self.text_format
 
         if text_format != 'html':
             normalizer = queryUtility(ILinebreakNormalizer)
