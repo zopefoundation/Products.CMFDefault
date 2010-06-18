@@ -17,16 +17,14 @@ $Id$
 
 import urllib
 
-from DocumentTemplate import sequence
-from ZTUtils import Batch
-from ZTUtils import LazyFilter
-
+from five.formlib.formbase import PageForm
+from zope.formlib import form
 from zope import schema
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-
-from five.formlib.formbase import PageForm
-from zope.formlib import form
+from zope.sequencesort.ssort import sort
+from ZTUtils import Batch
+from ZTUtils import LazyFilter
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -389,9 +387,8 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     def _get_items(self):
         key, reverse = self._get_sorting()
         items = self.contents
-        return sequence.sort(items,
-                             ((key, 'cmp', reverse and 'desc' or 'asc'),))
-    
+        return sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
+
     @memoize
     def listBatchItems(self):
         """Return the widgets for the form in the interface field order"""
@@ -602,7 +599,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         self.context.setDefaultSorting(key, reverse)
         self.status = _(u"Sort order changed")
         return self._setRedirect('portal_types', 'object/new_contents')
-        
+
 
 class FolderView(BatchViewBase):
 
@@ -613,8 +610,7 @@ class FolderView(BatchViewBase):
     def _get_items(self):
         (key, reverse) = self.context.getDefaultSorting()
         items = self.context.contentValues()
-        items = sequence.sort(items,
-                              ((key, 'cmp', reverse and 'desc' or 'asc'),))
+        items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
         return LazyFilter(items, skip='View')
 
     @memoize
