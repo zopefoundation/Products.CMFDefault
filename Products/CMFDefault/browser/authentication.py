@@ -254,7 +254,7 @@ class Logout(ViewBase):
     def logged_in(self):
         """Check whether the user is (still logged in)"""
         mtool = self._getTool('portal_membership')
-        return mtool.isAnonymousUser()
+        return not mtool.isAnonymousUser()
         
     @memoize
     def logout(self):
@@ -269,7 +269,7 @@ class Logout(ViewBase):
     
     def __call__(self):
         """Clear cookies and return the template"""
-        if not self.logged_in():
+        if self.logged_in():
             self.clear_skin_cookie()
             self.logout()
             return self.request.response.redirect(self.request.URL)
