@@ -13,9 +13,16 @@ from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.Expression import getExprContext
 from Products.CMFCore.utils import getToolByName
 
-from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import memoize, ViewBase
 
-class View(BrowserView):
+class View(ViewBase):
+    """
+    CSS that dynamically checks whether Action Icons are can be used.
+    Type Icons can always be used.
+    """
+    
+    default_style = ".%s {/* %s */}"
+    icon_style = ".%s {background: url(%s) no-repeat 0.1em}"
     
     def __init__(self, context, request):
         super(View, self).__init__(context, request)
@@ -25,8 +32,8 @@ class View(BrowserView):
     @memoize
     def _show_icons(self):
         """Are action icons enabled?"""
-        ptool = getUtility(IPropertiesTool)
-        show = ptool.getProperty('enable_actionicons')
+        ptool = self._getTool('portal_properties')
+        show = ptool.getProperty('enable_actionicons', False)
         if show:
             self.icon = ".icon {padding-left: 1.5em;}\n\n"
         else:
@@ -35,33 +42,34 @@ class View(BrowserView):
 
     @property
     @memoize
-    def template(self):
+    def style(self):
         """Always return a template so there are no browser errors"""
-        if self.show_icons:    
-            return ".%s {background: url(%s) no-repeat 0.1em}"
+        if self.show_icons:
+            return self.icon_style
         else:
-            return ".%s {/* %s */}"
+            return self.default_style
 
     @memoize
     def actions(self):
         """List all action icons"""
-        atool = getToolByName(self.context, 'portal_actions')
+        atool = self._getTool('portal_actions')
         all_actions = atool.listFilteredActionsFor(self.context)
         icons = []
         for cat in ['user', 'object', 'folder', 'workflow', 'global']:
             cat_actions = all_actions[cat]
             icons.append("/* %s actions */" % cat)
             for a in cat_actions:
-                icons.append(self.template % (a['id'], a['icon']))
+                icons.append(self.style % (a['id'], a['icon']))
         return "\n\n".join(icons)
 
     @memoize
     def types(self):
-        """List all type icons"""
-        ttool = getToolByName(self.context, 'portal_types')
+        """List all type icons
+        Type actions are always visible"""
+        ttool = self._getTool('portal_types')
         types = ttool.listTypeInfo()
         econtext = getExprContext(self.context)
-        icons = [self.template %  (t.id,
+        icons = [self.icon_style %  (t.id,
                                   t.getIconExprObject()(econtext)) \
                 for t in types]
         return "\n\n".join(icons)
