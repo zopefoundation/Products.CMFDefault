@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="login.html"
+      class=".authentication.LoginFormView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="logout.html"
+      class=".authentication.Logout"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="mail_password.html"
+      class=".authentication.MailPasswordFormView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="zExceptions.Unauthorized"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="index.html"
+      class=".authentication.UnauthorizedView"
+      permission="zope.Public"
+      />
+
+</configure>

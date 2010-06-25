@@ -30,12 +30,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from Products.CMFCore.interfaces import IDynamicType
 
-from Products.CMFDefault.browser.interfaces import IDeltaItem
-from Products.CMFDefault.browser.interfaces import IFolderItem
-from Products.CMFDefault.browser.interfaces import IHidden
-from Products.CMFDefault.browser.utils import decode
-from Products.CMFDefault.browser.utils import memoize
-from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.formlib.form import _EditFormMixin
@@ -43,6 +37,8 @@ from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.utils import Message as _
 
+from Products.CMFDefault.browser.utils import decode, memoize, ViewBase
+from interfaces import IDeltaItem, IFolderItem, IHidden
 
 def contents_delta_vocabulary(context):
     """Vocabulary for the pulldown for moving objects up and down.

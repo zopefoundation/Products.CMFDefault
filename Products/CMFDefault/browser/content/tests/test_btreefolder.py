@@ -18,8 +18,8 @@ $Id$
 import unittest
 from Testing import ZopeTestCase
 
-from Products.CMFDefault.browser.tests.utils import clearVocabulary
-from Products.CMFDefault.browser.tests.utils import setupVocabulary
+from Products.CMFDefault.browser.content.tests.utils import clearVocabulary
+from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
 
 

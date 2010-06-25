@@ -30,9 +30,9 @@ from Products.CMFCore.tests.base.dummy import DummySite, DummyTool
 from Products.CMFCore.tests.base.dummy import DummyUserFolder, DummyContent
 from Products.CMFCore.interfaces import IPropertiesTool
 
-from Products.CMFDefault.browser.folder import ContentsView
-from Products.CMFDefault.browser.tests.utils import clearVocabulary
-from Products.CMFDefault.browser.tests.utils import setupVocabulary
+from Products.CMFDefault.browser.content.folder import ContentsView
+from Products.CMFDefault.browser.content.tests.utils import clearVocabulary
+from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
 
 

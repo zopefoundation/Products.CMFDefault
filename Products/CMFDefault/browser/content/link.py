@@ -35,9 +35,7 @@ from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import IMutableLink
 from Products.CMFDefault.utils import Message as _
 
-from utils import decode
-from utils import memoize
-from utils import ViewBase
+from Products.CMFDefault.browser.utils import decode, memoize, ViewBase
 
 
 class ILinkSchema(Interface):

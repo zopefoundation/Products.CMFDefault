@@ -35,9 +35,7 @@ from Products.CMFDefault.formlib.widgets import TextInputWidget
 from Products.CMFDefault.interfaces import IMutableDocument
 from Products.CMFDefault.utils import Message as _
 
-from utils import decode
-from utils import memoize
-from utils import ViewBase
+from Products.CMFDefault.browser.utils import decode, memoize, ViewBase
 
 available_text_formats = (
         (u'structured-text', 'structured-text', _(u'structured-text')),

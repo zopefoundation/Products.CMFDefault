@@ -26,7 +26,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         PlacelessSetup.tearDown(self)
 
     def _getTargetClass(self):
-        from Products.CMFDefault.browser.ursa import UrsineGlobals
+        from Products.CMFDefault.browser.skins.ursa import UrsineGlobals
         return UrsineGlobals
 
     def _makeOne(self, context=None, request=None):
