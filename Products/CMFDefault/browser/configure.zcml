@@ -182,7 +182,6 @@
       layer="..interfaces.ICMFDefaultSkin"
       name="logout.html"
       class=".authentication.Logout"
-      template="templates/logged_out.pt"
       permission="zope2.View"
       />
 

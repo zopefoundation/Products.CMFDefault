@@ -15,7 +15,7 @@
 $Id$
 """
 
-from urllib import quote
+from urllib import quote, urlencode
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -250,6 +250,8 @@ class MailPasswordFormView(EditFormBase):
 class Logout(ViewBase):
     """Log the user out"""
     
+    template = ViewPageTemplateFile("templates/logged_out.pt")
+    
     @memoize
     def logged_in(self):
         """Check whether the user is (still logged in)"""
@@ -269,8 +271,11 @@ class Logout(ViewBase):
     
     def __call__(self):
         """Clear cookies and return the template"""
+        if 'portal_status_message' in self.request:
+            return self.template()
         if self.logged_in():
             self.clear_skin_cookie()
             self.logout()
-            return self.request.response.redirect(self.request.URL)
-        return super(Logout, self).__call__()
+            status = "?" + urlencode({'portal_status_message':
+                                      _(u'You have been logged out.')})
+            return self.request.response.redirect(self.request.URL + status)
