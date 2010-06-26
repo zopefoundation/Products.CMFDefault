@@ -17,6 +17,7 @@ $Id$
 
 from urllib import quote, urlencode
 
+from DateTime import DateTime
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import Forbidden
@@ -197,6 +198,44 @@ class LoginFormView(EditFormBase):
     def handle_login_success(self, action, data):
         return self._setRedirect('portal_actions', 'user/logged_in',
                                  'came_from')
+
+class LoggedIn(ViewBase):
+    """Post login methods"""
+    
+    template = ViewPageTemplateFile("templates/logged_in.pt")
+        
+    def set_skin_cookie(self):
+        stool = self._getTool('portal_skins')
+        if stool.updateSkinCookie():
+            skinname = stool.getSkinNameFromRequest(self.request)
+            stool.changeSkin(skinname, self.request)
+    
+    def first_login(self, member):
+        """First time login, reset password"""
+        utool = self._getTool('portal_url')
+        now = DateTime()
+        member.setProperties(last_login_time='1999/01/01', login_time=now)
+        target = '%s/password_form' % utool()
+        return self.context.request.response.redirect(target)
+            
+    def __call__(self):
+        self.set_skin_cookie()
+        mtool = self._getTool('portal_membership')
+        mtool.createMemberArea()
+        member = mtool.getAuthenticatedMember()
+        now = DateTime()
+        last_login = member.getProperty('login_time', None)
+        ptool = self._getTool('portal_properties')
+        is_first_login = (last_login == '2000/01/01' and
+                          ptool.getProperty('validate_email'))
+        if is_first_login:
+            return self.first_login(member)
+        else:
+            member.setProperties(last_login_time=last_login, login_time=now)
+        came_from = self.request.get('came_from', None)
+        if came_from:
+            return self.request.response.redirect(came_from)
+        return self.template()
 
 
 class MailPasswordFormView(EditFormBase):

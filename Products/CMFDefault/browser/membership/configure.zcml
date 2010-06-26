@@ -9,13 +9,21 @@
       class=".authentication.LoginFormView"
       permission="zope2.View"
       />
-
+      
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="logged_in.html"
+      class=".authentication.LoggedIn"
+      permission="cmf.ModifyPortalContent"
+      />
+    
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="logout.html"
       class=".authentication.Logout"
-      permission="zope2.View"
+      permission="cmf.ModifyPortalContent"
       />
 
   <browser:page
