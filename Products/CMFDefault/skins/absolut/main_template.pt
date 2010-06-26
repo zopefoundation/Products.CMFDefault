@@ -4,7 +4,8 @@
                   portal_url globals/portal_url;
                   object_title globals/object_title;
                   object_description globals/object_description;
-                  atool globals/atool"
+                  atool globals/atool;
+                  mtool globals/mtool"
       i18n:domain="cmf_default">
 <head>
 
