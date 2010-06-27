@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="CMF Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <action-provider name="portal_types"/>
+ <action-provider name="portal_workflow"/>
+ <action-provider name="portal_actions"/>
+ <object name="user" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="login" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Login</property>
+   <property name="description"
+      i18n:translate="">Click here to Login</property>
+   <property name="url_expr">string:${portal_url}/@@login.html </property>
+   <property name="link_target"></property>
+   <property name="icon_expr">string:${portal_url}/login_icon.png</property>
+   <property name="available_expr">not: member</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="logout" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Log out</property>
+   <property name="description"
+      i18n:translate="">Click here to logout</property>
+   <property name="url_expr">string:${portal_url}/@@logout.html</property>
+   <property name="link_target"></property>
+   <property name="icon_expr">string:${portal_url}/logout_icon.png</property>
+   <property name="available_expr">member</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="logged_in" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Logged in</property>
+   <property name="description" i18n:translate="">Used by scripts</property>
+   <property name="url_expr">string:${portal_url}/@@logged_in.html</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+ </object>
+</object>
