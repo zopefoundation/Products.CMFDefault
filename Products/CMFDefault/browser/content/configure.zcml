@@ -138,4 +138,14 @@
       permission="cmf.ModifyPortalContent"
       />
 
+  <browser:page
+      for="Products.CMFDefault.interfaces.IImage"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="view.html"
+      class=".image.ImageView"
+      template="templates/image.pt"
+      permission="zope2.View"
+      />
+  
+
 </configure>

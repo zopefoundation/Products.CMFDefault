@@ -79,7 +79,7 @@ Converting skins to views:
       link_edit_template.pt -> formlib based
       link_edit_control.py -> formlib based
 
-  [ ] IFile @@view.html:
+  [x] IFile @@view.html:
 
       file_view.py -> FileView
       file_view_template.pt -> templates/file.pt
@@ -90,7 +90,7 @@ Converting skins to views:
       file_edit_template.pt, image_edit_template.pt -> formlib based
       file_edit_control.py, image_edit_control.py -> formlib based
 
-  [ ] IImage @@view.html:
+  [x] IImage @@view.html:
 
       image_view.py -> ImageView
       image_view_template.pt -> templates/image.pt
