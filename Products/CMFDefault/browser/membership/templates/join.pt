@@ -1,0 +1,17 @@
+<html metal:use-macro="context/main_template/macros/master">
+<body>
+
+<metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
+  <h1 i18n:translate="">Become a Member</h1>
+
+  <p i18n:translate="">Becoming a member gives you the ability to personalize the site and participate in the community.</p>
+
+  <p i18n:translate="">It does not cost any money to become a member and your email and other personal information will remain private.</p>
+
+<metal:macro metal:use-macro="view/base_template/macros/form" />
+
+
+</metal:slot>
+
+</body>
+</html>
