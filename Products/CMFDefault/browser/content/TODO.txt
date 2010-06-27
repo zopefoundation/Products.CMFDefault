@@ -52,6 +52,10 @@ Converting skins to views:
       document_view.py, newsitem_view.py -> DocumentView
       document_view_template.pt -> document.pt
 
+  [x] IDocument @@source.html:
+      source_html.pt -> SourceView
+                        templates/source.pt
+
   [x] IMutableDocument @@edit.html:
 
       document_edit_form.py -> DocumentEditView

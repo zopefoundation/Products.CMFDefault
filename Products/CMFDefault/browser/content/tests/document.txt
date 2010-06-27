@@ -73,3 +73,33 @@ Changes can't be saved if the document is locked.
     True
     >>> '[[cmf_default][This resource is locked ' in browser.contents
     True
+
+Test source view.
+Unlock document first.
+
+    >>> app.site.myDocument.wl_clearLocks()
+    >>> app.site.myDocument.wl_isLocked()
+    0
+    >>> browser.open('http://localhoste/site/myDocument/@@edit.html')
+    
+    >>> browser.getControl(name='form.text_format').value ==     ['structured-text']
+    True
+    >>> browser.getControl('[[cmf_default][Body]]').value = '*spam and eggs*'
+    >>> browser.getControl('[[cmf_default][Change]]').click()
+
+Structured Text will be formatted as HTML in the view
+
+    >>> browser.open('http://localhoste/site/myDocument/@@view.html')
+    >>> '*spam and eggs*' in browser.contents
+    False
+    >>> '<em>spam and eggs</em>' in browser.contents
+    True
+
+Structured Text markup will be visible in the source view
+
+    >>> browser.open('http://localhoste/site/myDocument/@@source.html')
+    >>> '*spam and eggs*' in browser.contents
+    True
+    >>> '<meta name="Description" content="" />' in browser.contents
+    True
+    

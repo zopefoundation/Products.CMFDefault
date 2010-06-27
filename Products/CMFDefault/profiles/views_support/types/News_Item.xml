@@ -4,5 +4,6 @@
  <alias from="metadata_edit_form" to="@@properties.html"/>
  <alias from="newsitem_edit_form" to="@@edit.html"/>
  <alias from="newsitem_view" to="@@view.html"/>
+ <alias from="gethtml" to="@@source.html"/>
  <alias from="view" to="@@view.html"/>
 </object>

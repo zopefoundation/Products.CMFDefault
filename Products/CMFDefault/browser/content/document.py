@@ -151,3 +151,13 @@ class DocumentEditView(ContentEditFormBase):
         # make sure applyChanges doesn't try to update safety_belt
         self.request.form['form.safety_belt'] = self.context._safety_belt
         return None
+
+
+class SourceView(ViewBase):
+
+    """View the document source"""
+    
+    @decode
+    @memoize
+    def editable_body(self):
+        return self.context.EditableBody()

@@ -62,6 +62,15 @@
       />
 
   <browser:page
+      for="Products.CMFDefault.interfaces.IDocument"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="source.html"
+      class=".document.SourceView"
+      template="templates/source.pt"
+      permission="cmf.ModifyPortalContent"
+  />
+
+  <browser:page
       for="Products.CMFDefault.interfaces.IMutableDocument"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="edit.html"

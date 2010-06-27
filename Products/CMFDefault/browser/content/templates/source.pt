@@ -1,0 +1,11 @@
+<html tal:define="hdrlist context/getMetadataHeaders">
+ <head>
+ <title tal:content="view/title">the title</title><tal:block
+   tal:repeat="hdr hdrlist"><tal:block
+   tal:condition="python:hdr[0].lower() != 'title'">
+ <meta name="" content=""
+   tal:attributes="name python:hdr[0]; content python:hdr[1];"
+ /></tal:block></tal:block>
+ </head>
+ <body><p tal:replace="structure view/editable_body">EditableBody</p></body>
+</html>
