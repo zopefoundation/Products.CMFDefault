@@ -1,0 +1,25 @@
+Converting skins to views:
+
+  [x] login:
+
+      login_form_template -> templates/login.pt
+      loggged_in.py -> LoggedIn
+      logged_in.pt -> templates/logged_in.pt
+
+  [x] logout:
+
+      logout.py -> Logout
+      logged_out.pt -> templates/logout.pt
+
+  [x] mail password:
+
+      mail_password_form -> MailPasswordFormView
+      mail_password_form.pt -> templates/mail_password.pt
+      mail_password_response.pt 
+
+  [x] join:
+
+      join_form.py -> Join
+      join_form_template -> templates/join.pt
+
+  [ ] complete this todo list
