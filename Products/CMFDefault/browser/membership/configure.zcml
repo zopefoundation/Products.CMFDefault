@@ -23,7 +23,7 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="logout.html"
       class=".authentication.Logout"
-      permission="cmf.ModifyPortalContent"
+      permission="zope2.View"
       />
 
   <browser:page
