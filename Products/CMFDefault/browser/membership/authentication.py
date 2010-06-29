@@ -216,7 +216,7 @@ class LoggedIn(ViewBase):
         now = DateTime()
         member.setProperties(last_login_time='1999/01/01', login_time=now)
         target = '%s/password_form' % utool()
-        return self.context.request.response.redirect(target)
+        return self.request.response.redirect(target)
             
     def __call__(self):
         self.set_skin_cookie()
