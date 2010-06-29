@@ -1,0 +1,85 @@
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+""" Test Products.CMFDefault.browser.join
+
+$Id$
+"""
+
+import unittest
+
+from zope.component.testing import PlacelessSetup
+
+from Products.CMFDefault.browser.skins.tests.test_ursa import (
+                    DummyRequest, DummySite, DummyContext,
+                    DummyPropertiesTool, DummyURLTool, DummyActionsTool,
+                    DummyRegistrationTool
+                    )
+
+class JoinFormTests(unittest.TestCase, PlacelessSetup):
+    
+    def setUp(self):
+        PlacelessSetup.setUp(self)
+
+    def tearDown(self):
+        PlacelessSetup.tearDown(self)
+        
+    def _getTargetClass(self):
+        from Products.CMFDefault.browser.membership.join import Join
+        return Join
+
+    def _makeOne(self, site=None):
+        if site is None:
+            site = self._makeSite()
+        request = DummyRequest()
+        return self._getTargetClass()(site, request)
+        
+    def _makeSite(self, types=None, actions=None):
+        from zope.component import getSiteManager
+        from Products.CMFCore.interfaces import IPropertiesTool
+        site = DummyContext()
+        tool = site.portal_properties = DummyPropertiesTool()
+        sm = getSiteManager()
+        sm.registerUtility(tool, IPropertiesTool)
+        if types is not None:
+            site.portal_types = DummyTypesTool(types)
+            site.portal_url = DummyURLTool(site)
+            site.portal_membership = DummyMembershipTool()
+        if actions is not None:
+            site.portal_actions = DummyActionsTool(actions)
+        site.absolute_url = lambda: 'http://example.com'
+        return site
+        
+    def test_validation_not_required(self):
+        site = self._makeSite()
+        site.portal_properties.validate_email = False
+        view = self._makeOne(site)
+        self.assertTrue(view.form_fields.get("password"))
+        
+    def test_validation_required(self):
+        site = self._makeSite()
+        site.portal_properties.validate_email = True
+        view = self._makeOne(site)
+        self.assertEqual(view.form_fields.get("password"), None)
+        
+    def test_logged_in_user(self):
+        # logged in users cannot join
+        # they get to see the preferences
+        pass
+    
+    def test_successful_registration_validation_not_required(self):
+        # can proceed straight to login
+        pass
+    
+    def test_successful_registration_validation_required(self):
+        # note that password will be sent by e-mail    
+        pass
