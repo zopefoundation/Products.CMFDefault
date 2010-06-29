@@ -1,0 +1,26 @@
+Join views
+----------
+
+Create the browser object we'll be using.
+
+    # BBB for Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Set properties to validation not required.
+    
+    >>> from zope.component import getSiteManager
+    >>> from Products.CMFCore.interfaces import IPropertiesTool
+    >>> sm = getSiteManager()
+    >>> ptool = app.site.portal_properties
+    >>> sm.registerUtility(ptool, IPropertiesTool)
+    >>> ptool.editProperties({'validate_email':False})
+
+Open the join form. Password field should be visible
+
+    >>> browser.open("http://localhost/site/@@join.html")
+    >>> browser.getControl(name='form.password').value == ''
+    True

@@ -15,11 +15,17 @@ Converting skins to views:
 
       mail_password_form -> MailPasswordFormView
       mail_password_form.pt -> templates/mail_password.pt
-      mail_password_response.pt 
+      mail_password_response.pt -> joined.pt
 
   [x] join:
 
-      join_form.py -> Join
+      validatePassword.py
+      join_form.py
+      members_add_control.py -> Join
       join_form_template -> templates/join.pt
+      
+  [ ] preferences:
+      
+  [ ] member roster:
 
   [ ] complete this todo list

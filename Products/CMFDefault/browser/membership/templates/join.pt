@@ -1,16 +1,32 @@
-<html metal:use-macro="context/main_template/macros/master">
+<html metal:use-macro="context/@@standard_macros/page">
 <body>
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
-  <h1 i18n:translate="">Become a Member</h1>
+  <h1 tal:content="view/title" i18n:translate="">Become a member</h1>
+  
+  <tal:case tal:condition="view/isAnon">
+    <p i18n:translate="">Becoming a member gives you the ability to personalize the site and participate in the community.</p>
 
-  <p i18n:translate="">Becoming a member gives you the ability to personalize the site and participate in the community.</p>
+    <p i18n:translate="">It does not cost any money to become a member and your email and other personal information will remain private.</p>
+  </tal:case>
+  
+  <tal:case tal:condition="view/isOrdinaryMember">
+    <p i18n:translate=""> You are already a member. You may use the
+        <a tal:attributes="href view/personalize">personalization form</a>
+         to change your membership information. </p>
+  </tal:case>
+  
+  <tal:case condition="view/registered">
+  <p i18n:translate="">You have been registered as a member.</p>
 
-  <p i18n:translate="">It does not cost any money to become a member and your email and other personal information will remain private.</p>
+  <p tal:condition="view/validate_email" i18n:translate="">You will receive
+    an email shortly containing your password and instructions on how to
+    activate your membership.</p>
+  </tal:case>
 
-<metal:macro metal:use-macro="view/base_template/macros/form" />
-
-
+<tal:case condition="not: view/isOrdinaryMember">
+  <metal:macro metal:use-macro="view/base_template/macros/form" />
+</tal:case>
 </metal:slot>
 
 </body>
