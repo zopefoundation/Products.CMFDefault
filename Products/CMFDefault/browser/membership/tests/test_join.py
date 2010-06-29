@@ -21,8 +21,7 @@ from zope.component.testing import PlacelessSetup
 
 from Products.CMFDefault.browser.skins.tests.test_ursa import (
                     DummyRequest, DummySite, DummyContext,
-                    DummyPropertiesTool, DummyURLTool, DummyActionsTool,
-                    DummyRegistrationTool
+                    DummyPropertiesTool, DummyURLTool, DummyActionsTool
                     )
 
 class JoinFormTests(unittest.TestCase, PlacelessSetup):
@@ -43,19 +42,17 @@ class JoinFormTests(unittest.TestCase, PlacelessSetup):
         request = DummyRequest()
         return self._getTargetClass()(site, request)
         
-    def _makeSite(self, types=None, actions=None):
+    def _makeSite(self,):
         from zope.component import getSiteManager
         from Products.CMFCore.interfaces import IPropertiesTool
         site = DummyContext()
         tool = site.portal_properties = DummyPropertiesTool()
         sm = getSiteManager()
         sm.registerUtility(tool, IPropertiesTool)
-        if types is not None:
-            site.portal_types = DummyTypesTool(types)
-            site.portal_url = DummyURLTool(site)
-            site.portal_membership = DummyMembershipTool()
-        if actions is not None:
-            site.portal_actions = DummyActionsTool(actions)
+        site.portal_url = DummyURLTool(site)
+        site.portal_membership = DummyMembershipTool()
+        site.portal_registration = DummyRegistrationTool()
+        site.portal_actions = DummyActionsTool()
         site.absolute_url = lambda: 'http://example.com'
         return site
         
@@ -83,3 +80,13 @@ class JoinFormTests(unittest.TestCase, PlacelessSetup):
     def test_successful_registration_validation_required(self):
         # note that password will be sent by e-mail    
         pass
+        
+
+class DummyRegistrationTool:
+    pass
+
+class DummyMembershipTool:
+    pass
+    
+class DummyActionsTool:
+    pass
