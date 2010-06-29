@@ -57,7 +57,7 @@ class UnauthorizedView(BrowserView):
     """Exception view for Unauthorized.
     """
 
-    forbidden_template = ViewPageTemplateFile('templates/forbidden.pt')
+    forbidden_template = ViewPageTemplateFile('forbidden.pt')
 
     def __call__(self):
         try:
@@ -147,7 +147,7 @@ class LoginFormView(EditFormBase):
     """
 
     base_template = EditFormBase.template
-    template = ViewPageTemplateFile('templates/login.pt')
+    template = ViewPageTemplateFile('login.pt')
     label = _(u'Log in')
     prefix = ''
 
@@ -202,7 +202,7 @@ class LoginFormView(EditFormBase):
 class LoggedIn(ViewBase):
     """Post login methods"""
     
-    template = ViewPageTemplateFile("templates/logged_in.pt")
+    template = ViewPageTemplateFile("logged_in.pt")
         
     def set_skin_cookie(self):
         stool = self._getTool('portal_skins')
@@ -244,7 +244,7 @@ class MailPasswordFormView(EditFormBase):
     """
 
     base_template = EditFormBase.template
-    template = ViewPageTemplateFile('templates/mail_password.pt')
+    template = ViewPageTemplateFile('mail_password.pt')
     label = _(u"Don't panic!")
     description = _(u"Just enter your member ID below, click 'Send', and "
                     u"your password will be mailed to you if you gave a "
@@ -289,7 +289,7 @@ class MailPasswordFormView(EditFormBase):
 class Logout(ViewBase):
     """Log the user out"""
     
-    template = ViewPageTemplateFile("templates/logged_out.pt")
+    template = ViewPageTemplateFile("logged_out.pt")
     
     @memoize
     def logged_in(self):

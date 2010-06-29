@@ -53,7 +53,7 @@ class IJoinSchema(Interface):
 class Join(EditFormBase):
     
     base_template = EditFormBase.template
-    template = ViewPageTemplateFile("templates/join.pt")
+    template = ViewPageTemplateFile("join.pt")
     registered = False
     form_fields = form.FormFields(IJoinSchema)
     
@@ -74,6 +74,8 @@ class Join(EditFormBase):
         super(Join, self).__init__(context, request)
         ptool = self._getTool("portal_properties")
         self.validate_email = ptool.getProperty('validate_email', None)
+        if self.validate_email:
+            self.form_fields = self.form_fields.select('member_id', 'email')
         self.rtool = self._getTool('portal_registration')
         self.mtool = self._getTool('portal_membership')
 
@@ -98,8 +100,6 @@ class Join(EditFormBase):
                     
     def setUpWidgets(self, ignore_request=False):
         """If e-mail validation is in effect, users cannot select passwords"""
-        if self.validate_email:
-            self.form_fields = self.form_fields.select('member_id', 'email')
         super(Join, self).setUpWidgets(ignore_request)
 
     def personalize(self):
