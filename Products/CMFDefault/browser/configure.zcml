@@ -4,7 +4,7 @@
     
   <include package=".skins" />
   
-  <include package=".form" />
+  <include package=".widgets" />
 
   <include package=".content" />
   
