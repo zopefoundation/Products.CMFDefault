@@ -219,7 +219,7 @@ class BatchViewBase(ViewBase):
 class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     """Folder contents view"""
     
-    template = ViewPageTemplateFile('templates/folder_contents.pt')
+    template = ViewPageTemplateFile('folder_contents.pt')
     prefix = 'form'
     
     object_actions = form.Actions(

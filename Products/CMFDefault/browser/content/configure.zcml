@@ -7,7 +7,7 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="view.html"
       class=".folder.FolderView"
-      template="templates/folder.pt"
+      template="folder.pt"
       permission="zope2.View"
       />
 
@@ -57,7 +57,7 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="view.html"
       class=".document.DocumentView"
-      template="templates/document.pt"
+      template="document.pt"
       permission="zope2.View"
       />
 
@@ -66,7 +66,7 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="source.html"
       class=".document.SourceView"
-      template="templates/source.pt"
+      template="source.pt"
       permission="cmf.ModifyPortalContent"
   />
 
@@ -100,7 +100,7 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="view.html"
       class=".link.LinkView"
-      template="templates/link.pt"
+      template="link.pt"
       permission="zope2.View"
       />
 
@@ -152,7 +152,7 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="view.html"
       class=".image.ImageView"
-      template="templates/image.pt"
+      template="image.pt"
       permission="zope2.View"
       />
   
