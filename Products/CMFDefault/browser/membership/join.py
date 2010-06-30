@@ -109,7 +109,7 @@ class Join(EditFormBase):
     def validate_username(self, action, data):
         """Avoid duplicate registration"""
         errors = super(Join, self).validate(action, data)
-        member = self.mtool.getMemberById(data['member_id'])
+        member = self.mtool.getMemberById(data.get('member_id', None))
         if member is not None:
             errors.append(_(u"The login name you selected is already in use or is not valid. Please choose another."))
         return errors
