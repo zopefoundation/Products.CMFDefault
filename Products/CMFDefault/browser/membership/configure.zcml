@@ -50,5 +50,20 @@
       permission="zope.Public"
   />
   
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="preferences.html"
+      class=".preferences.Preferences"
+      permission="cmf.SetOwnProperties"
+  />
+  
+  <utility
+   component=".preferences.portal_skins"
+   provides="zope.schema.interfaces.IVocabularyFactory"
+   name="cmf.portal_skins"
+  />
+  
+  
 
 </configure>
