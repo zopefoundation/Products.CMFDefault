@@ -41,8 +41,7 @@ class IPreferencesSchema(Interface):
 class Preferences(EditFormBase):
 
     form_fields = form.FormFields(IPreferencesSchema)
-    base_template = EditFormBase.template
-    template = ViewPageTemplateFile("preferences.pt")
+    
     actions = form.Actions(
                 form.Action(
                 name="change",
@@ -51,6 +50,7 @@ class Preferences(EditFormBase):
                 failure="handle_failure"
                     )
                 )
+    label = _(u"Member preferences")
                 
     def __init__(self, context, request):
         super(Preferences, self).__init__(context, request)
@@ -67,10 +67,6 @@ class Preferences(EditFormBase):
     def member(self):
         """Get the current user"""
         return self.mtool.getAuthenticatedMember()
-        
-    def change_password(self):
-        """URL for the password form"""
-        return self.atool.getActionInfo("user/change_password")['url']
         
     def setUpWidgets(self, ignore_request=False):
         """Populate form with member preferences"""
