@@ -1,0 +1,10 @@
+User preferences view
+---------------------
+
+Only user can change his own preference
+User can change the following preferences:
+E-mail address
+Listed or unlisted
+User's chosen skin if set
+
+The preferences form contains a link to password change form

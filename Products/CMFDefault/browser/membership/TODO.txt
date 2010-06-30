@@ -25,7 +25,13 @@ Converting skins to views:
       join_form_template -> templates/join.pt
       
   [ ] preferences:
-      
+
+      preference_form.pt -> preferences.py
+      personalize.py -> preferences.py
+  
+  [ ] password:
+        
   [ ] member roster:
+  
 
   [ ] complete this todo list
