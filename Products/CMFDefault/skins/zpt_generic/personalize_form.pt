@@ -55,8 +55,7 @@
        <label for="cb_unlisted" i18n:translate="">Unlisted</label>
         <dl class="FieldHelp">
           <dd i18n:translate="">You will <i>not</i> show up on the public
-            membership roster. Your Member folder will still be publicly
-            accessible unless you change its security settings.</dd>
+            membership roster.</dd>
         </dl>
       </td>
      </tr>
