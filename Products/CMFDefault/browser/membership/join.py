@@ -1,6 +1,5 @@
 """
 Join form
-$Id$
 """
 
 from zope.interface import Interface, invariant, Invalid
@@ -13,9 +12,6 @@ from Products.CMFDefault.formlib.schema import EmailLine
 from Products.CMFDefault.permissions import ManageUsers
 
 from Products.CMFDefault.utils import Message as _
-
-def passwords_must_match(pw, confirmation):
-    pass
 
 
 class IJoinSchema(Interface):
