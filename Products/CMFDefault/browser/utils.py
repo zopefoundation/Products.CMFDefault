@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Browser view utilities.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
