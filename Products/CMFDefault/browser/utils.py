@@ -45,7 +45,7 @@ class MacroView(BrowserView):
 
     """Allows to use macros from non-view templates.
     """
-    
+
     # The following allows to traverse the view/class and reach
     # macros defined in page templates, e.g. in a use-macro.
     security = ClassSecurityInfo()

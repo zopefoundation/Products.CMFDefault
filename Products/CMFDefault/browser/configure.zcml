@@ -1,13 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
-    
+
   <include package=".skins" />
-  
+
   <include package=".widgets" />
 
   <include package=".content" />
-  
+
   <include package=".membership" />
 
 </configure>
