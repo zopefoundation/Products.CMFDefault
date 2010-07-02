@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Authentication browser views.
-
-$Id$
 """
 
 from urllib import quote, urlencode
@@ -201,15 +199,15 @@ class LoginFormView(EditFormBase):
 
 class LoggedIn(ViewBase):
     """Post login methods"""
-    
+
     template = ViewPageTemplateFile("logged_in.pt")
-        
+
     def set_skin_cookie(self):
         stool = self._getTool('portal_skins')
         if stool.updateSkinCookie():
             skinname = stool.getSkinNameFromRequest(self.request)
             stool.changeSkin(skinname, self.request)
-    
+
     def first_login(self, member):
         """First time login, reset password"""
         utool = self._getTool('portal_url')
@@ -217,7 +215,7 @@ class LoggedIn(ViewBase):
         member.setProperties(last_login_time='1999/01/01', login_time=now)
         target = '%s/password_form' % utool()
         return self.request.response.redirect(target)
-            
+
     def __call__(self):
         self.set_skin_cookie()
         mtool = self._getTool('portal_membership')
@@ -288,26 +286,26 @@ class MailPasswordFormView(EditFormBase):
 
 class Logout(ViewBase):
     """Log the user out"""
-    
+
     template = ViewPageTemplateFile("logged_out.pt")
-    
+
     @memoize
     def logged_in(self):
         """Check whether the user is (still logged in)"""
         mtool = self._getTool('portal_membership')
         return not mtool.isAnonymousUser()
-        
+
     @memoize
     def logout(self):
         """Log the user out"""
         _expireAuthCookie(self)
-    
+
     @memoize
     def clear_skin_cookie(self):
         """Remove skin cookie"""
         stool = self._getTool('portal_skins')
         stool.clearSkinCookie()
-    
+
     def __call__(self):
         """Clear cookies and return the template"""
         if 'portal_status_message' in self.request:

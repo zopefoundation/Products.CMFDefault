@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.preferences
-
-$Id$
 """
 
 import unittest
@@ -25,13 +23,13 @@ from Products.CMFDefault.browser.skins.tests.test_ursa import (
                     )
 
 class PreferencesFormTests(unittest.TestCase, PlacelessSetup):
-    
+
     def setUp(self):
         PlacelessSetup.setUp(self)
 
     def tearDown(self):
         PlacelessSetup.tearDown(self)
-        
+
     def _getTargetClass(self):
         from Products.CMFDefault.browser.membership.join import Join
         return Join
@@ -41,7 +39,7 @@ class PreferencesFormTests(unittest.TestCase, PlacelessSetup):
             site = self._makeSite()
         request = DummyRequest()
         return self._getTargetClass()(site, request)
-        
+
     def _makeSite(self,):
         from zope.component import getSiteManager
         from Products.CMFCore.interfaces import IPropertiesTool
@@ -55,11 +53,11 @@ class PreferencesFormTests(unittest.TestCase, PlacelessSetup):
         site.portal_actions = DummyActionsTool()
         site.absolute_url = lambda: 'http://example.com'
         return site
-        
+
     def test_user_folder(self):
         site = self._makeSite()
         view = self._makeOne(site)
-                        
+
 
 class DummyRegistrationTool:
     pass

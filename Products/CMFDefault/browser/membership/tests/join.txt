@@ -11,7 +11,7 @@ Create the browser object we'll be using.
     >>> browser = Browser()
 
 Set properties to validation not required.
-    
+
     >>> from zope.component import getSiteManager
     >>> from Products.CMFCore.interfaces import IPropertiesTool
     >>> sm = getSiteManager()

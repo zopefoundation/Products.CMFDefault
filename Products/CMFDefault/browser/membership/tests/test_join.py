@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.join
-
-$Id$
 """
 
 import unittest
@@ -25,13 +23,13 @@ from Products.CMFDefault.browser.skins.tests.test_ursa import (
                     )
 
 class JoinFormTests(unittest.TestCase, PlacelessSetup):
-    
+
     def setUp(self):
         PlacelessSetup.setUp(self)
 
     def tearDown(self):
         PlacelessSetup.tearDown(self)
-        
+
     def _getTargetClass(self):
         from Products.CMFDefault.browser.membership.join import Join
         return Join
@@ -41,7 +39,7 @@ class JoinFormTests(unittest.TestCase, PlacelessSetup):
             site = self._makeSite()
         request = DummyRequest()
         return self._getTargetClass()(site, request)
-        
+
     def _makeSite(self,):
         from zope.component import getSiteManager
         from Products.CMFCore.interfaces import IPropertiesTool
@@ -55,38 +53,38 @@ class JoinFormTests(unittest.TestCase, PlacelessSetup):
         site.portal_actions = DummyActionsTool()
         site.absolute_url = lambda: 'http://example.com'
         return site
-        
+
     def test_validation_not_required(self):
         site = self._makeSite()
         site.portal_properties.validate_email = False
         view = self._makeOne(site)
         self.assertTrue(view.form_fields.get("password"))
-        
+
     def test_validation_required(self):
         site = self._makeSite()
         site.portal_properties.validate_email = True
         view = self._makeOne(site)
         self.assertEqual(view.form_fields.get("password"), None)
-        
+
     def test_logged_in_user(self):
         # logged in users cannot join
         # they get to see the preferences
         pass
-    
+
     def test_successful_registration_validation_not_required(self):
         # can proceed straight to login
         pass
-    
+
     def test_successful_registration_validation_required(self):
-        # note that password will be sent by e-mail    
+        # note that password will be sent by e-mail
         pass
-        
+
 
 class DummyRegistrationTool:
     pass
 
 class DummyMembershipTool:
     pass
-    
+
 class DummyActionsTool:
     pass

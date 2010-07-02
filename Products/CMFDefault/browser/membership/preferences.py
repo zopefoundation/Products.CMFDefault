@@ -1,6 +1,16 @@
-"""
-Change user preferences
-$Id$
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""Change user preferences.
 """
 
 from zope.schema import Choice, Bool
@@ -19,10 +29,10 @@ from Products.CMFDefault.formlib.form import EditFormBase
 def portal_skins(context):
     stool = getToolByName(context, 'portal_skins')
     return SimpleVocabulary.fromValues(stool.getSkinSelections())
-    
+
 
 class IPreferencesSchema(Interface):
-    
+
     email = EmailLine(
                 title=_(u"E-mail address")
                 )
@@ -31,7 +41,7 @@ class IPreferencesSchema(Interface):
                 title=_(u"Listed status"),
                 description=_(u"Select to be listed on the public membership roster.")
                 )
-    
+
     portal_skin = Choice(
                 title=_(u"Skin"),
                 vocabulary="cmf.portal_skins",
@@ -41,7 +51,7 @@ class IPreferencesSchema(Interface):
 class Preferences(EditFormBase):
 
     form_fields = form.FormFields(IPreferencesSchema)
-    
+
     actions = form.Actions(
                 form.Action(
                 name="change",
@@ -51,13 +61,13 @@ class Preferences(EditFormBase):
                     )
                 )
     label = _(u"Member preferences")
-                
+
     def __init__(self, context, request):
         super(Preferences, self).__init__(context, request)
         self.mtool = self._getTool('portal_membership')
         self.stool = self._getTool('portal_skins')
         self.atool = self._getTool('portal_actions')
-        
+
     def get_skin_cookie(self):
         """Check for user cookie"""
         cookies = self.request.cookies
@@ -67,21 +77,21 @@ class Preferences(EditFormBase):
     def member(self):
         """Get the current user"""
         return self.mtool.getAuthenticatedMember()
-        
+
     def setUpWidgets(self, ignore_request=False):
         """Populate form with member preferences"""
         data = {}
         data['email'] = self.member.email
         data['listed'] = getattr(self.member, 'listed', None)
         data['portal_skin'] = self.get_skin_cookie()
-        
+
         self.widgets = form.setUpDataWidgets(self.form_fields,
                                         self.prefix,
                                         self.context,
                                         self.request,
                                         data=data,
                                         ignore_request=False)
-        
+
     def handle_success(self, action, data):
         if 'portal_skin' in data:
             self.stool.portal_skins.updateSkinCookie()

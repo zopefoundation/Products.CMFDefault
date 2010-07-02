@@ -1,5 +1,16 @@
-"""
-Join form
+#############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""Join form.
 """
 
 from zope.interface import Interface, invariant, Invalid
@@ -15,30 +26,31 @@ from Products.CMFDefault.utils import Message as _
 
 
 class IJoinSchema(Interface):
+
     """Zope generates password and sends it by e-mail"""
-    
+
     member_id = ASCIILine(
                     title=_(u"Member ID")
                     )
-                    
+
     email = EmailLine(
                     title=_(u"E-mail address")
                     )
-    
+
     password = Password(
                     title=_(u"Password"),
                     min_length=5
                     )
-                    
+
     confirmation = Password(
                     title=_(u"Password (confirm)"),
                     min_length=5
                     )
-                    
+
     send_password = Bool(
                     title=_(u"Mail Password?"),
                     description=_(u"Check this box to have the password mailed."))
-                    
+
     @invariant
     def check_passwords_match(schema):
         """Password and confirmation must match"""
@@ -47,12 +59,12 @@ class IJoinSchema(Interface):
 
 
 class Join(EditFormBase):
-    
+
     base_template = EditFormBase.template
     template = ViewPageTemplateFile("join.pt")
     registered = False
     form_fields = form.FormFields(IJoinSchema)
-    
+
     actions = form.Actions(
         form.Action(
             name='register',
@@ -65,7 +77,7 @@ class Join(EditFormBase):
             label=_(u'Cancel')
                 )
             )
-    
+
     def __init__(self, context, request):
         super(Join, self).__init__(context, request)
         ptool = self._getTool("portal_properties")
@@ -78,11 +90,11 @@ class Join(EditFormBase):
     @property
     def isAnon(self):
         return self.mtool.isAnonymousUser()
-                
+
     @property
     def isManager(self):
         return self.mtool.checkPermission(ManageUsers, self.mtool)
-        
+
     @property
     def isOrdinaryMember(self):
         return not (self.registered or self.isManager or self.isAnon)
@@ -93,7 +105,7 @@ class Join(EditFormBase):
             return _(u"Register a new member")
         else:
             return _(u'Become a Member')
-                    
+
     def setUpWidgets(self, ignore_request=False):
         """If e-mail validation is in effect, users cannot select passwords"""
         super(Join, self).setUpWidgets(ignore_request)
@@ -101,7 +113,7 @@ class Join(EditFormBase):
     def personalize(self):
         atool = self._getTool('portal_actions')
         return atool.getActionInfo("user/preferences")['url']
-        
+
     def validate_username(self, action, data):
         """Avoid duplicate registration"""
         errors = super(Join, self).validate(action, data)
@@ -124,7 +136,7 @@ class Join(EditFormBase):
             self.rtool.registeredNotify(data['member_id'])
         self.registered = True
         self.label = _(u'Success')
-        
+
     def handle_register_success(self, action, data):
         """Register user and inform they have been registered"""
         if self.validate_email:

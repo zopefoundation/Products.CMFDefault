@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.authentication
-
-$Id$
 """
 
 import unittest

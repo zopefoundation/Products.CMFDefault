@@ -9,7 +9,7 @@
       class=".authentication.LoginFormView"
       permission="zope2.View"
       />
-      
+
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
@@ -17,7 +17,7 @@
       class=".authentication.LoggedIn"
       permission="cmf.ModifyPortalContent"
       />
-    
+
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
@@ -48,21 +48,21 @@
       name="join.html"
       class=".join.Join"
       permission="zope.Public"
-  />
-  
+      />
+
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="preferences.html"
       class=".preferences.Preferences"
       permission="cmf.SetOwnProperties"
-  />
-  
+      />
+
   <utility
       component=".preferences.portal_skins"
       provides="zope.schema.interfaces.IVocabularyFactory"
       name="cmf.portal_skins"
-  />
+      />
 
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
@@ -70,6 +70,6 @@
       name="password.html"
       class=".password.Password"
       permission="cmf.SetOwnPassword"
-  />
+      />
 
 </configure>
