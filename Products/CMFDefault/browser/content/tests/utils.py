@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Shared utility functions for browser view tests
-
-$Id$
 """
 
 try:

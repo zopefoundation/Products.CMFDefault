@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.metadata
-
-$Id$
 """
 
 import unittest

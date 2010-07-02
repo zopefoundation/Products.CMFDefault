@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Browser view interfaces.
-
-$Id$
 """
 
 from zope.interface import Interface
@@ -24,10 +22,10 @@ from zope.schema import TextLine
 
 class IFolderItem(Interface):
     """Schema for folderish objects contents."""
-    
+
     select = Bool(
         required=False)
-        
+
     name = TextLine(
         title=u"Name",
         required=False,
@@ -35,7 +33,7 @@ class IFolderItem(Interface):
 
 
 class IDeltaItem(Interface):
-    """Schema for delta"""    
+    """Schema for delta"""
     delta = Choice(
         title=u"By",
         description=u"Move an object up or down the chosen number of places.",
@@ -43,19 +41,19 @@ class IDeltaItem(Interface):
         vocabulary=u'cmf.contents delta vocabulary',
         default=1)
 
-        
+
 class IHidden(Interface):
     """Schema for hidden items"""
-    
+
     b_start = Int(
         title=u"Batch start",
         required=False,
         default=0)
-        
+
     sort_key = TextLine(
         title=u"Sort key",
         required=False)
-        
+
     reverse = Int(
         title=u"Reverse sort order",
         required=False)

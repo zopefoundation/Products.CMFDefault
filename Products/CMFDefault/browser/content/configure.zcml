@@ -68,7 +68,7 @@
       class=".document.SourceView"
       template="source.pt"
       permission="cmf.ModifyPortalContent"
-  />
+      />
 
   <browser:page
       for="Products.CMFDefault.interfaces.IMutableDocument"
@@ -155,6 +155,5 @@
       template="image.pt"
       permission="zope2.View"
       />
-  
 
 </configure>

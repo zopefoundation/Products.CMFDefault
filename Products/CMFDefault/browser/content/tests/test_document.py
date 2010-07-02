@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.document
-
-$Id$
 """
 
 import unittest

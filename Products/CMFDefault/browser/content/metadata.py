@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Browser views for metadata.
-
-$Id$
 """
 
 from Acquisition import aq_self

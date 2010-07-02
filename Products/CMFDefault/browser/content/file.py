@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Browser views for files.
-
-$Id$
 """
 
 from zope.component import adapts

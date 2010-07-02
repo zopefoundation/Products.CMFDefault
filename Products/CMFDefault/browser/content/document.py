@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Browser views for documents.
-
-$Id$
 """
 
 from zope.component import adapts
@@ -156,7 +154,7 @@ class DocumentEditView(ContentEditFormBase):
 class SourceView(ViewBase):
 
     """View the document source"""
-    
+
     @decode
     @memoize
     def editable_body(self):

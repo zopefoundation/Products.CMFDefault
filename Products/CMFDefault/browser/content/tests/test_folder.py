@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.folder
-
-$Id$
 """
 
 import unittest
@@ -51,7 +49,7 @@ class FolderBrowserViewTests(unittest.TestCase):
         folder = PortalFolder('test_folder')
         self.folder = site._setObject('test_folder', folder)
         self.uf = self.site._setObject('acl_users', DummyUserFolder())
-        
+
     def _make_one(self, name="DummyItem"):
         content = DummyContent(name)
         content.portal_type = "Dummy Content"
@@ -65,49 +63,49 @@ class FolderBrowserViewTests(unittest.TestCase):
             self._make_one(content_id)
 
     def site_login(self):
-        newSecurityManager(None, 
+        newSecurityManager(None,
                     UnrestrictedUser('god', '', ['Manager'], ''))
-    
+
     def test_view(self):
         view = ContentsView(self.folder, TestRequest())
         self.failUnless(IBrowserPublisher.providedBy(view))
-        
+
     def test_up_info(self):
         view = ContentsView(self.folder, TestRequest())
         self.assertEquals({'url':u'', 'id':u'Root', 'icon':u''},
                             view.up_info())
-        
+
     def test_list_batch_items(self):
         view = ContentsView(self.folder, TestRequest())
         self.assertEquals(view.listBatchItems(), [])
-    
+
     def test_is_orderable(self):
         view = ContentsView(self.folder, TestRequest())
         self.failIf(view.is_orderable())
-        
+
     def test_sort_can_be_changed(self):
         view = ContentsView(self.folder, TestRequest())
         self.failIf(view.can_sort_be_changed())
-    
+
     def test_empty_has_subobjects(self):
         view = ContentsView(self.folder, TestRequest())
         self.failIf(view.has_subobjects())
-        
+
     def test_has_subobjects(self):
         self._make_one()
         view = ContentsView(self.folder, TestRequest())
         self.failUnless(view.has_subobjects())
-        
+
     def test_check_clipboard_data(self):
         view = ContentsView(self.folder, TestRequest())
         self.failIf(view.check_clipboard_data())
-    
+
     def test_validate_items(self):
         """Cannot validate forms without widgets"""
         view = ContentsView(self.folder, TestRequest())
-        self.assertRaises(AttributeError, 
+        self.assertRaises(AttributeError,
                             view.validate_items, "", {'foo':'bar'})
-                            
+
     def test_get_ids(self):
         view = ContentsView(self.folder, TestRequest())
         self.assertEquals(
@@ -129,7 +127,7 @@ ftest_suite = ZopeTestCase.FunctionalDocFileSuite('folder.txt',
                         setUp=setupVocabulary,
                         tearDown=clearVocabulary,
                         )
-                        
+
 ftest_suite.layer = FunctionalLayer
 
 def test_suite():

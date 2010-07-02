@@ -21,10 +21,10 @@
      tal:replace="structure error" /></li>
 </ul>
 
-<p class="status" 
+<p class="status"
   tal:condition="exists: request/portal_status_message"
   tal:content="request/portal_status_message"></p>
-  
+
 <form class="form" action="." method="post" enctype="multipart/form-data"
    tal:attributes="action request/ACTUAL_URL">
    <tal:block repeat="widget view/hidden_widgets"
@@ -37,7 +37,7 @@
          tal:attributes="href column/url"
          >Column Title</a></th>
      </tr>
-   <tr tal:repeat="item view/listBatchItems" 
+   <tr tal:repeat="item view/listBatchItems"
       tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or ''">
      <td tal:content="structure item/select">Checkbox</td>
      <td><a href="" tal:attributes="href item/url"
@@ -51,11 +51,11 @@
    </tr>
    </table>
 <div class="buttons">
-  <tal:loop tal:repeat="action view/object_actions" 
+  <tal:loop tal:repeat="action view/object_actions"
    tal:replace="structure action/render" />
 </div>
 <div class="buttons">
-  <tal:loop tal:repeat="action view/delta_actions" 
+  <tal:loop tal:repeat="action view/delta_actions"
    tal:replace="structure action/render" />
    <div tal:condition="view/is_orderable"
         tal:define="widget python:view.widgets.get('delta');
@@ -66,11 +66,11 @@
    </div>
 </div>
 <div class="buttons">
-  <tal:loop tal:repeat="action view/absolute_actions" 
+  <tal:loop tal:repeat="action view/absolute_actions"
    tal:replace="structure action/render" />
 </div>
 <div class="buttons">
-  <tal:loop tal:repeat="action view/sort_actions" 
+  <tal:loop tal:repeat="action view/sort_actions"
    tal:replace="structure action/render" />
 </div>
 </form>

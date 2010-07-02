@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Browser views for folders.
-
-$Id$
 """
 
 import urllib
@@ -44,7 +42,7 @@ def contents_delta_vocabulary(context):
     """Vocabulary for the pulldown for moving objects up and down.
     """
     length = len(context.contentIds())
-    deltas = [SimpleTerm(i, str(i), str(i)) 
+    deltas = [SimpleTerm(i, str(i), str(i))
             for i in range(1, min(5, length)) + range(5, length, 5)]
     return SimpleVocabulary(deltas)
 
@@ -56,11 +54,11 @@ class BatchViewBase(ViewBase):
     _BATCH_SIZE = 25
     hidden_fields = form.FormFields(IHidden)
     prefix = ''
-    
+
     @memoize
     def setUpWidgets(self, ignore_request=False):
-        self.hidden_widgets = form.setUpWidgets(self.hidden_fields, self.prefix, 
-                                                self.context, self.request, 
+        self.hidden_widgets = form.setUpWidgets(self.hidden_fields, self.prefix,
+                                                self.context, self.request,
                                                 ignore_request=ignore_request)
 
     @memoize
@@ -172,8 +170,8 @@ class BatchViewBase(ViewBase):
     def page_range(self):
         """Create a range of up to ten pages around the current page"""
         pages = [(idx + 1, b_start) for idx, b_start in enumerate(
-                    range(0, 
-                        self._getBatchObj().sequence_length, 
+                    range(0,
+                        self._getBatchObj().sequence_length,
                         self._BATCH_SIZE)
                     )
                 ]
@@ -182,7 +180,7 @@ class BatchViewBase(ViewBase):
         _page_range = []
         for page, b_start in pages[range_start:range_stop]:
             _page_range.append(
-                {'number':page, 
+                {'number':page,
                  'url':self._getNavigationURL(b_start)
                 }
                               )
@@ -213,15 +211,15 @@ class BatchViewBase(ViewBase):
     @memoize
     @decode
     def summary_match(self):
-        return self.request.form.get('SearchableText')       
+        return self.request.form.get('SearchableText')
 
 
 class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     """Folder contents view"""
-    
+
     template = ViewPageTemplateFile('folder_contents.pt')
     prefix = 'form'
-    
+
     object_actions = form.Actions(
         form.Action(
             name='rename',
@@ -253,7 +251,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             validator='validate_items',
             success='handle_delete')
             )
-            
+
     delta_actions = form.Actions(
         form.Action(
             name='up',
@@ -268,7 +266,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             validator='validate_items',
             success='handle_down')
             )
-            
+
     absolute_actions = form.Actions(
         form.Action(
             name='top',
@@ -292,16 +290,16 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             validator='validate_items',
             success='handle_top')
             )
-            
+
     actions = object_actions + delta_actions + absolute_actions + sort_actions
     errors = ()
-    
+
     def __init__(self, *args, **kw):
         super(ContentsView, self).__init__(*args, **kw)
         self.form_fields = form.FormFields()
         self.delta_field = form.FormFields(IDeltaItem)
-        self.contents = self.context.contentValues()        
-                
+        self.contents = self.context.contentValues()
+
     def content_fields(self):
         """Create content field objects only for batched items"""
         for item in self._getBatchObj():
@@ -328,7 +326,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                         'url': ''}
         else:
             return {}
-        
+
     def setUpWidgets(self, ignore_request=False):
         """Create widgets for the folder contents."""
         super(ContentsView, self).setUpWidgets(ignore_request)
@@ -342,7 +340,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         self.widgets += form.setUpWidgets(
                 self.delta_field, self.prefix, self.context,
                 self.request, ignore_request=ignore_request)
-                
+
     @memoize
     def _get_sorting(self):
         """How should the contents be sorted"""
@@ -352,11 +350,11 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             return (key, data.get('reverse', 0))
         else:
             return self.context.getDefaultSorting()
-            
+
     @memoize
     def _is_default_sorting(self,):
         return self._get_sorting() == self.context.getDefaultSorting()
-        
+
     @memoize
     def column_headings(self):
         key, reverse = self._get_sorting()
@@ -378,7 +376,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             query = urllib.urlencode(paras)
             column['url'] = '%s?%s' % (self._getViewURL(), query)
         return tuple(columns)
-        
+
     @memoize
     def _get_items(self):
         key, reverse = self._get_sorting()
@@ -406,7 +404,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             field['type'] = item.Type() or None
             fields.append(field.copy())
         return fields
-                
+
     def _get_ids(self, data):
         """Identify objects that have been selected"""
         ids = [k[:-7] for k, v in data.items()
@@ -418,15 +416,15 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     def has_subobjects(self, action=None):
         """Return false if the user cannot rename subobjects"""
         return bool(self.contents)
-    
+
     @memoize
     def check_clipboard_data(self, action=None):
         """Any data in the clipboard"""
         return bool(self.context.cb_dataValid())
-    
+
     @memoize
     def can_sort_be_changed(self, action=None):
-        """Returns true if the default sort key may be changed 
+        """Returns true if the default sort key may be changed
             may be sorted for display"""
         items_move_allowed = self._checkPermission(ManageProperties)
         return items_move_allowed and not \
@@ -436,19 +434,19 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     def is_orderable(self, action=None):
         """Returns true if the displayed contents can be
             reorded."""
-        (key, reverse) = self._get_sorting()        
+        (key, reverse) = self._get_sorting()
         return key == 'position' and len(self.contents) > 1
-    
+
     #Action validators
     def validate_items(self, action=None, data=None):
-        """Check whether any items have been selected for 
+        """Check whether any items have been selected for
         the requested action."""
         super(ContentsView, self).validate(action, data)
         if data is None or data == {}:
             return [_(u"Please select one or more items first.")]
         else:
             return []
-            
+
     #Action handlers
     def handle_rename(self, action, data):
         """Redirect to rename view passing the ids of objects to be renamed"""
@@ -458,7 +456,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         keys = ",".join(self._getHiddenVars().keys() + ['ids'])
         # keys = 'b_start, ids, key, reverse'
         return self._setRedirect('portal_types', 'object/rename_items', keys)
-        
+
     def handle_cut(self, action, data):
         """Cut the selected objects and put them in the clipboard"""
         ids = self._get_ids(data)
@@ -472,7 +470,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             self.status = _(u'CopyError: Cut failed.')
         except zExceptions_Unauthorized:
             self.status = _(u'Unauthorized: Cut failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')    
+        return self._setRedirect('portal_types', 'object/new_contents')
 
     def handle_copy(self, action, data):
         """Copy the selected objects to the clipboard"""
@@ -486,7 +484,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         except CopyError:
             self.status = _(u'CopyError: Copy failed.')
         return self._setRedirect('portal_types', 'object/new_contents')
-    
+
     def handle_paste(self, action, data):
         """Paste the objects from the clipboard into the folder"""
         try:
@@ -497,7 +495,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Items pasted.')
         except CopyError, error:
             self.status = _(u'CopyError: Paste failed.')
-            self.request['RESPONSE'].expireCookie('__cp', 
+            self.request['RESPONSE'].expireCookie('__cp',
                     path='%s' % (self.request['BASEPATH1'] or "/"))
 
         except zExceptions_Unauthorized:
@@ -513,7 +511,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         else:
             self.status = _(u'Items deleted.')
         return self._setRedirect('portal_types', 'object/new_contents')
-    
+
     def handle_up(self, action, data):
         """Move the selected objects up the selected number of places"""
         ids = self._get_ids(data)
@@ -551,7 +549,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
         return self._setRedirect('portal_types', 'object/new_contents')
-            
+
     def handle_top(self, action, data):
         """Move the selected objects to the top of the page"""
         ids = self._get_ids(data)
@@ -587,7 +585,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
         return self._setRedirect('portal_types', 'object/new_contents')
-        
+
     def handle_sort_order(self, action, data):
         """Set the sort options for the folder."""
         key = data['position']

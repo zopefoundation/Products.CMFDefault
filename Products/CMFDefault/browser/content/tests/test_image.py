@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.image
-
-$Id$
 """
 
 import unittest

@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.folder with CMFBTreeFolder
-
-$Id$
 """
 
 import unittest

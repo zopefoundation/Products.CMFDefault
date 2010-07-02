@@ -40,6 +40,6 @@ Look at the result.
     >>> browser.open('http://localhost/site/myImage.gif/@@view.html')
     >>> 'IMAGE DESCRIPTION' in browser.contents
     True
-    
+
     >>> '<img src="http://localhost/site/myImage.gif" alt="" title="IMAGE TITLE" />' in browser.contents
     True

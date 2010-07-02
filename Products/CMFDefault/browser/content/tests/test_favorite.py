@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.favorite
-
-$Id$
 """
 
 import unittest

@@ -55,4 +55,3 @@ Try to add something to this folder.
     >>> browser.getControl('[[zope][Add]]').click()
     >>> '[[cmf_default][[[cmf_default][Document]] added.]]' in browser.contents
     True
-

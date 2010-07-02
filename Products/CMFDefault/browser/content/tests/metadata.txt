@@ -3,7 +3,7 @@ Metadata Views
 
 Set up content and user.
 
-    >>> from Products.CMFDefault.Document import Document 
+    >>> from Products.CMFDefault.Document import Document
     >>> id = app.site._setObject('myContent', Document('myContent'))
     >>> app.site.myContent._setPortalTypeName('Document')
 

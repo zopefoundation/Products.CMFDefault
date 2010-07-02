@@ -81,8 +81,8 @@ Unlock document first.
     >>> app.site.myDocument.wl_isLocked()
     0
     >>> browser.open('http://localhoste/site/myDocument/@@edit.html')
-    
-    >>> browser.getControl(name='form.text_format').value ==     ['structured-text']
+
+    >>> browser.getControl(name='form.text_format').value == ['structured-text']
     True
     >>> browser.getControl('[[cmf_default][Body]]').value = '*spam and eggs*'
     >>> browser.getControl('[[cmf_default][Change]]').click()
@@ -102,4 +102,3 @@ Structured Text markup will be visible in the source view
     True
     >>> '<meta name="Description" content="" />' in browser.contents
     True
-    
