@@ -11,11 +11,11 @@
 #
 ##############################################################################
 """ Test Products.CMFDefault.browser.ursa
-
-$Id$
 """
+
 import unittest
 from zope.component.testing import PlacelessSetup
+
 
 class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 

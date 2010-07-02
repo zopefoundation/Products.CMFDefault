@@ -1,6 +1,18 @@
-"""CSS for action icons
-$Id$
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""CSS for action icons.
 """
+
 from logging import getLogger
 
 LOG = getLogger("Action Icons CSS")
@@ -20,10 +32,10 @@ class View(ViewBase):
     CSS that dynamically checks whether Action Icons are can be used.
     Type Icons can always be used.
     """
-    
+
     default_style = ".%s {/* %s */}"
     icon_style = ".%s {background: url(%s) no-repeat 0.1em}"
-    
+
     def __init__(self, context, request):
         super(View, self).__init__(context, request)
         self.show_icons = self._show_icons

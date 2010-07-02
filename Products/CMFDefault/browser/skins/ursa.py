@@ -1,3 +1,18 @@
+##############################################################################
+#
+# Copyright (c) 2008 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""
+"""
+
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.browser.utils import ViewBase
@@ -158,37 +173,37 @@ class UrsineGlobals(ViewBase):
         if message is not None:
             message = decode(message, self.context)
         return message
- 
+
     @property
     @memoize
     def actions(self):
         return self.atool.listFilteredActionsFor(self.context)
-    
+
     @property
     @memoize
     def user_actions(self):
         return self.actions['user']
-    
+
     @property
     @memoize
     def object_actions(self):
         return self.actions['object']
-    
+
     @property
     @memoize
     def workflow_actions(self):
         return self.actions['workflow']
-    
+
     @property
     @memoize
     def folder_actions(self):
         return self.actions['folder']
-    
+
     @property
     @memoize
     def global_actions(self):
         return self.actions['global']
-    
+
     @property
     @memoize
     def add_actions(self):

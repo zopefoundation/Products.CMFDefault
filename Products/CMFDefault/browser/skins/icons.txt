@@ -7,11 +7,11 @@ Possible improvements
 =====================
 
     * icon discovery independent of user status
-    
+
     * local serialisation of the two sets using either an adapter or, preferably a local utility
-    
+
     * sprites
-    
+
 Independent icon discovery
 ==========================
 An adapter for ActionsTool to provide listUnfilteredActions()

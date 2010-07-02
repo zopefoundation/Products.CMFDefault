@@ -1,5 +1,16 @@
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 """
-$Id$
 """
 
 import unittest
@@ -11,13 +22,13 @@ from test_ursa import (
                     )
 
 class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
-    
+
     def setUp(self):
         PlacelessSetup.setUp(self)
 
     def tearDown(self):
         PlacelessSetup.tearDown(self)
-        
+
     def _getTargetClass(self):
         from Products.CMFDefault.browser.skins.icons import View
         return View
@@ -48,7 +59,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         #Show action icons not set
         view = self._makeOne()
         self.failIf(view._show_icons)
-        
+
     def test_show_icons_enabled(self):
         #Show actions set to True
         site = self._makeSite()
@@ -62,19 +73,19 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         site.portal_properties.enable_actionicons = False
         view = self._makeOne(site)
         self.failIf(view._show_icons)
-    
+
     def test_type_icons_with_action_icons_disabled(self):
         #Type actions should always be visible
         types = [DummyType("Document"), DummyType("Image")]
         site = self._makeSite(types=types)
         view = self._makeOne(site)
         self.failIf(view.show_icons)
-        
+
         css = view.types()
         self.assertEqual(css,""".Document {background: url(http://example.com/Document.png) no-repeat 0.1em}
 
 .Image {background: url(http://example.com/Image.png) no-repeat 0.1em}""")
-        
+
     def test_type_icons_with_action_icons_enabled(self):
         #Type actions should always be visible"""
         types = [DummyType("Document"), DummyType("Image")]
@@ -82,18 +93,18 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         site.portal_properties.enable_actionicons = True
         view = self._makeOne(site)
         self.failUnless(view.show_icons)
-        
+
         css = view.types()
         self.assertEqual(css,""".Document {background: url(http://example.com/Document.png) no-repeat 0.1em}
 
 .Image {background: url(http://example.com/Image.png) no-repeat 0.1em}""")
-        
+
     def test_action_icons_with_action_icons_disabled(self):
         #Action icons disabled. Image less styles should be returned.
         site = self._makeSite(actions=ACTIONS)
         view = self._makeOne(site)
         self.failIf(view.show_icons)
-        
+
         css = view.actions()
         self.assertEqual(css, """/* user actions */
 
@@ -116,14 +127,14 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
 /* global actions */
 
 .Undo {/* Undo.png */}""")
-        
+
     def test_action_icons_with_action_icons_enabled(self):
         #Action icons enabled. Styles with images should be returned.
         site = self._makeSite(actions=ACTIONS)
         site.portal_properties.enable_actionicons = True
         view = self._makeOne(site)
         self.failUnless(view.show_icons)
-        
+
         css = view.actions()
         self.assertEqual(css, """/* user actions */
 
@@ -146,33 +157,33 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
 /* global actions */
 
 .Undo {background: url(Undo.png) no-repeat 0.1em}""")
-    
+
 
 class DummyType:
-    
+
     def __init__(self, id):
         from Products.CMFCore.Expression import Expression
         self.id = id
         self.icon_expr_object = Expression('string:${portal_url}/%s.png' % id)
-    
+
     def getIconExprObject(self):
         return getattr(self, 'icon_expr_object', None)
-        
+
 
 class DummyTypesTool:
-    
+
     def __init__(self, types=None):
         if types is None:
             self.typeInfos = []
         else:
             self.typeInfos = types[:]
-            
+
     def listTypeInfo(self):
         return self.typeInfos
 
 
 def DummyAction(name):
-    
+
     return {'id':name, 'icon':'%s.png' % name}
 
 
@@ -183,9 +194,8 @@ ACTIONS = {'global': [DummyAction('Undo')],
            'workflow': [DummyAction('Publish')],
           }
 
+
 class DummyMembershipTool:
-    
+
     def isAnonymousUser(self):
         return True
-
-        
