@@ -1,8 +1,8 @@
 Products.CMFDefault Changelog
 =============================
 
-2.2.1-beta (unreleased)
------------------------
+2.2.1 (2010-07-04)
+------------------
 
 - Require at least Zope 2.12.3 and always use the five.formlib extension.
 
