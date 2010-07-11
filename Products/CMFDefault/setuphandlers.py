@@ -16,6 +16,7 @@ $Id$
 """
 
 from Products.CMFDefault.exceptions import BadRequest
+from OFS.DTMLMethod import addDTMLMethod
 
 
 def importVarious(context):
@@ -35,8 +36,8 @@ def importVarious(context):
 
     try:
         site.manage_addPortalFolder('Members')
-        site.Members.manage_addProduct['OFSP'].manage_addDTMLMethod(
-                          'index_html', 'Member list', '<dtml-return roster>')
+        addDTMLMethod(site.Members,
+                      'index_html', 'Member list', '<dtml-return roster>')
         logger.info('Members folder imported.')
     except BadRequest:
         logger.warning('Importing Members folder failed.')
