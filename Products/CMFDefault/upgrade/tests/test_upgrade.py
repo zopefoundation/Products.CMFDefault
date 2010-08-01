@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Upgrade tests.
-
-$Id$
 """
 
 import unittest
@@ -94,11 +92,14 @@ class UpgradeFrom21Tests(FunctionalUpgradeTestCase):
     _SITE_ID = 'cmf21Site'
 
 
+class UpgradeFrom22Tests(FunctionalUpgradeTestCase):
+
+    _SITE_ID = 'cmf22Site'
+
+
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(UpgradeFrom20Tests),
         unittest.makeSuite(UpgradeFrom21Tests),
+        unittest.makeSuite(UpgradeFrom22Tests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
