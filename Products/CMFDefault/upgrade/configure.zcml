@@ -194,6 +194,20 @@
         checker=".to23.check_cookie_crumbler"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade setup tool"
+        description="Update class registered for 'acl_users'."
+        handler=".to23.upgrade_setup_tool"
+        checker=".to23.check_setup_tool"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade acl_users"
+        description="Update UserFolder class."
+        handler=".to23.upgrade_acl_users"
+        checker=".to23.check_acl_users"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Require at least Zope 2.12.11.
+
+- profiles and upgrade: Added support for using the new OFS UserFolder class.
+
 - views: Added Unauthorized exception view.
   This replaces CookieCrumbler's old redirect support.
 
@@ -13,9 +17,7 @@ Products.CMFDefault Changelog
 
 - skins: Removed unused styles from css.
 
-- Require at least Zope 2.12.3 and use the optional five.formlib extension.
-
-- Use five.formlib in favor of Products.Five.formlib if it is available.
+- Use the optional five.formlib extension in favor of Products.Five.formlib.
 
 - Removed testing dependency on zope.app.testing.
 

@@ -47,7 +47,7 @@ setup(name='Products.%s' % NAME,
       install_requires=[
           'setuptools',
           'five.formlib >= 1.0.2',
-          'Zope2 >= 2.12.3',
+          'Zope2 >= 2.12.11dev',
           'Products.CMFCore',
           'Products.GenericSetup',
           ],
