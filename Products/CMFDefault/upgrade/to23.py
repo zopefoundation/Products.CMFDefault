@@ -15,7 +15,6 @@
 
 import logging
 
-from AccessControl.User import UserFolder as OldUserFolder
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -78,6 +77,8 @@ def upgrade_setup_tool(tool):
 def check_acl_users(tool):
     """2.2.x to 2.3.0 upgrade step checker
     """
+    from AccessControl.User import UserFolder as OldUserFolder
+
     portal = aq_parent(aq_inner(tool))
     users = aq_base(portal.acl_users)
     if not getattr(users, '_ofs_migrated', False):
@@ -88,6 +89,8 @@ def check_acl_users(tool):
 def upgrade_acl_users(tool):
     """2.2.x to 2.3.0 upgrade step handler
     """
+    from AccessControl.User import UserFolder as OldUserFolder
+
     logger = logging.getLogger('GenericSetup.upgrade')
     portal = aq_parent(aq_inner(tool))
     users = aq_base(portal.acl_users)
