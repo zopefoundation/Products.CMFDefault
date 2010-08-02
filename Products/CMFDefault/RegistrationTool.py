@@ -11,11 +11,7 @@
 #
 ##############################################################################
 """ CMFDefault portal_registration tool.
-
-$Id$
 """
-
-from warnings import warn
 
 from AccessControl.requestmethod import postonly
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -159,13 +155,8 @@ class RegistrationTool(BaseTool):
     def registeredNotify(self, new_member_id, password=None, REQUEST=None):
         """ Handle mailing the registration / welcome message.
         """
-        # XXX: this method violates the rules for tools/utilities:
-        # it depends on a non-utility tool and uses self.REQUEST
         if REQUEST is None:
-            REQUEST = self.REQUEST
-            warn("registeredNotify should be called with 'REQUEST' as third "
-                 "argument. The BBB code will be removed in CMF 2.3.",
-                 DeprecationWarning, stacklevel=2)
+            raise ValueError(u"'REQUEST' argument is missing.")
 
         membership = getToolByName( self, 'portal_membership' )
         member = membership.getMemberById( new_member_id )
