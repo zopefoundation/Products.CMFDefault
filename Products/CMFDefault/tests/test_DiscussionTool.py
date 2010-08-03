@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for DiscussionTool module.
-
-$Id$
 """
 
 import unittest
@@ -116,6 +114,3 @@ def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(DiscussionToolTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

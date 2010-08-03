@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for adding members.
-
-$Id$
 """
 
 import unittest
@@ -102,7 +100,3 @@ def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(MembershipTests),
         ))
-
-if __name__ == '__main__':
-    from Products.CMFCore.testing import run
-    run(test_suite())

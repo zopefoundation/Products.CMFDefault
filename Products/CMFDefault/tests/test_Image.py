@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for Image module.
-
-$Id$
 """
 
 import unittest
@@ -331,13 +329,10 @@ class TestCaching(RequestTest):
         self.assertEqual(headers['last-modified'], 
                          "Sun, 06 Nov 1994 08:49:37 GMT")
 
+
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(TestImageElement),
         unittest.makeSuite(TestImageCopyPaste),
         unittest.makeSuite(TestCaching),
         ))
-
-if __name__ == '__main__':
-    from Products.CMFCore.testing import run
-    run(test_suite())

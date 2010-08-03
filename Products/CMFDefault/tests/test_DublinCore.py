@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for DublinCore module.
-
-$Id$
 """
 
 import unittest
@@ -218,10 +216,8 @@ class DublinCoreTests(SecurityTest):
         self.assertEqual(item.ExpirationDate('US/Eastern'),
                          '2007-01-01 07:00:00')
 
+
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(DublinCoreTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

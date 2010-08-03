@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for Discussions.
-
-$Id$
 """
 
 import unittest
@@ -329,7 +327,3 @@ def test_suite():
         unittest.makeSuite(DiscussionItemContainerTests),
         unittest.makeSuite(DiscussionTests),
         ))
-
-if __name__ == '__main__':
-    from Products.CMFCore.testing import run
-    run(test_suite())

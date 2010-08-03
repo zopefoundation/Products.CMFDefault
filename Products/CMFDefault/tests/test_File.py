@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for File module.
-
-$Id$
 """
 
 import unittest
@@ -206,11 +204,9 @@ class LMDummyCachingManager(DummyCachingManager):
                                keywords, time=None ):
         return ('Last-modified', 'Sun, 06 Nov 1994 08:49:37 GMT'), 
 
+
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(FileTests),
         unittest.makeSuite(CachingTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

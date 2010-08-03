@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for DefaultWorkflow module.
-
-$Id$
 """
 
 import unittest
@@ -77,6 +75,3 @@ def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(DefaultWorkflowDefinitionTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

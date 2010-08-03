@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for Document module.
-
-$Id$
 """
 
 import unittest
@@ -758,6 +756,3 @@ def test_suite():
         unittest.makeSuite(DocumentFTPGetTests),
         unittest.makeSuite(DocumentPUTTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

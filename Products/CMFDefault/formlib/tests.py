@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """CMFDefault formlib tests.
-
-$Id$
 """
 
 import doctest
@@ -94,6 +92,3 @@ def test_suite():
                                     optionflags=doctest.NORMALIZE_WHITESPACE |
                                                 doctest.ELLIPSIS))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

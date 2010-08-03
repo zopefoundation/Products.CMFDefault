@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for http://zope.org/Collectors/CMF/318
-
-$Id$
 """
 
 import unittest
@@ -83,7 +81,3 @@ def test_suite():
     suite.addTest(unittest.makeSuite(DiscussionReplyTest))
     suite.addTest(unittest.makeSuite(DiscussionReplyTestMember))
     return suite
-
-if __name__ == '__main__':
-    from Products.CMFCore.testing import run
-    run(test_suite())

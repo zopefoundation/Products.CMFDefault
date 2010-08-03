@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for MetadataTool module.
-
-$Id$
 """
 
 import unittest
@@ -487,6 +485,3 @@ def test_suite():
         unittest.makeSuite(TestElementSpec),
         unittest.makeSuite(TestMetadataTool),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

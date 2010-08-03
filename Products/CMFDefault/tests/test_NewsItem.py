@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for NewsItem module.
-
-$Id$
 """
 
 import unittest
@@ -195,6 +193,3 @@ def test_suite():
         unittest.makeSuite(NewsItemTests),
         unittest.makeSuite(NewsItemPUTTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

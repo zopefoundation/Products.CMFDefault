@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit tests for SyndicationTool module.
-
-$Id$
 """
 
 import unittest
@@ -200,6 +198,3 @@ def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(SyndicationToolTests),
         ))
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
