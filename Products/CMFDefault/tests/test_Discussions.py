@@ -30,17 +30,21 @@ from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyUser
 from Products.CMFCore.tests.base.testcase import SecurityTest
 from Products.CMFCore.tests.base.tidata import FTIDATA_DUMMY
-from Products.CMFCore.tests.base.utils import has_path
 from Products.CMFCore.TypesTool import FactoryTypeInformation as FTI
 from Products.CMFCore.TypesTool import TypesTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.DiscussionTool import DiscussionTool
 from Products.CMFDefault.exceptions import DiscussionNotAllowed
 
+def has_path(catalog, path):
+    if isinstance(path, tuple):
+        path = '/'.join(path)
+    return bool(catalog.getrid(path))
+
 
 class DiscussionItemTests(unittest.TestCase):
 
-   def test_interfaces(self):
+    def test_interfaces(self):
         from Products.CMFCore.interfaces import ICatalogableDublinCore
         from Products.CMFCore.interfaces import IContentish
         from Products.CMFCore.interfaces import IDiscussionResponse
@@ -174,12 +178,11 @@ class DiscussionTests(SecurityTest):
         ctool = self.site._setObject( 'portal_catalog', CatalogTool() )
         ctool.addColumn('in_reply_to')
         dtool = self.site.portal_discussion
-        catalog = ctool._catalog
         test = self._makeDummyContent('test', catalog=1)
         test.allow_discussion = 1
 
         self.assertEqual( len(ctool), 1 )
-        self.failUnless( has_path( catalog, test.getPhysicalPath() ) )
+        self.failUnless(has_path(ctool, test.getPhysicalPath()))
         talkback = dtool.getDiscussionFor(test)
         self.assertEqual( talkback.getPhysicalPath(),
                           ('', 'bar', 'site', 'test', 'talkback') )
@@ -188,9 +191,9 @@ class DiscussionTests(SecurityTest):
                             )
         self.assertEqual( len(ctool), 2 )
         for reply in talkback.getReplies():
-            self.failUnless( has_path( catalog, reply.getPhysicalPath() ) )
-            self.failUnless( has_path( catalog,
-                              '/bar/site/test/talkback/%s' % reply.getId() ) )
+            self.failUnless(has_path(ctool, reply.getPhysicalPath()))
+            self.failUnless(has_path(ctool, '/bar/site/test/talkback/%s'
+                                            % reply.getId()))
 
         reply1 = talkback.getReplies()[0]
         path1 = '/'.join(reply1.getPhysicalPath())
@@ -202,13 +205,13 @@ class DiscussionTests(SecurityTest):
                              , text='blah2'
                              )
         for reply in talkback.getReplies():
-            self.failUnless( has_path( catalog, reply.getPhysicalPath() ) )
-            self.failUnless( has_path( catalog,
-                              '/bar/site/test/talkback/%s' % reply.getId() ) )
+            self.failUnless(has_path(ctool, reply.getPhysicalPath()))
+            self.failUnless(has_path(ctool, '/bar/site/test/talkback/%s'
+                                            % reply.getId()))
         for reply in talkback1.getReplies():
-            self.failUnless( has_path( catalog, reply.getPhysicalPath() ) )
-            self.failUnless( has_path( catalog,
-                              '/bar/site/test/talkback/%s' % reply.getId() ) )
+            self.failUnless(has_path(ctool, reply.getPhysicalPath()))
+            self.failUnless(has_path(ctool, '/bar/site/test/talkback/%s'
+                                            % reply.getId()))
 
         reply2 = talkback1.getReplies()[0]
         path2 = '/'.join(reply2.getPhysicalPath())
