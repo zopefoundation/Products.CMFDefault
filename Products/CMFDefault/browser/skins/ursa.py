@@ -32,7 +32,7 @@ class UrsineGlobals(ViewBase):
             default_charset = self.ptool.getProperty('default_charset', None)
             if default_charset:
                 self.request.RESPONSE.setHeader('content-type',
-                              '%s; charset=%s' % (ct, default_charset))
+                              'text/html; charset=%s' % default_charset)
 
     @property
     @memoize
