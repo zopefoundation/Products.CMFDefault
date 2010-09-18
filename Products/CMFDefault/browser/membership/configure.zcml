@@ -71,12 +71,5 @@
       class=".password.Password"
       permission="cmf.SetOwnPassword"
       />
-
-  <browser:page
-      for="*"
-      class=".user.Snoop"
-      name="userjs.html"
-      permission="zope.Public"
-  />
   
 </configure>
