@@ -32,7 +32,6 @@ if is_first_login:
 else:
     options['title'] = _(u'Change your Password')
 options['member_id'] = member.getId()
-options['domains'] = ' '.join(member.getDomains())
 buttons = []
 target = '%s/password_form' % portal_url
 buttons.append( {'name': 'change', 'value': _(u'Change')} )
