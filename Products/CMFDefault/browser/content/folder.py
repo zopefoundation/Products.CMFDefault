@@ -470,7 +470,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             self.status = _(u'CopyError: Cut failed.')
         except zExceptions_Unauthorized:
             self.status = _(u'Unauthorized: Cut failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_copy(self, action, data):
         """Copy the selected objects to the clipboard"""
@@ -483,7 +483,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Items copied.')
         except CopyError:
             self.status = _(u'CopyError: Copy failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_paste(self, action, data):
         """Paste the objects from the clipboard into the folder"""
@@ -500,7 +500,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
 
         except zExceptions_Unauthorized:
             self.status = _(u'Unauthorized: Paste failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_delete(self, action, data):
         """Delete the selected objects"""
@@ -510,7 +510,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             self.status = _(u'Item deleted.')
         else:
             self.status = _(u'Items deleted.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_up(self, action, data):
         """Move the selected objects up the selected number of places"""
@@ -529,7 +529,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_down(self, action, data):
         """Move the selected objects down the selected number of places"""
@@ -548,7 +548,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_top(self, action, data):
         """Move the selected objects to the top of the page"""
@@ -566,7 +566,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_bottom(self, action, data):
         """Move the selected objects to the bottom of the page"""
@@ -584,7 +584,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_sort_order(self, action, data):
         """Set the sort options for the folder."""
@@ -592,7 +592,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         reverse = data.get('reverse', 0)
         self.context.setDefaultSorting(key, reverse)
         self.status = _(u"Sort order changed")
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/folderContents')
 
 
 class FolderView(BatchViewBase):
