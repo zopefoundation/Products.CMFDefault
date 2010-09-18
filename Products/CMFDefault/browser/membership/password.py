@@ -16,7 +16,7 @@
 from DateTime import DateTime
 
 from zope.formlib import form
-from zope.interface import Interface, invariant
+from zope.interface import Interface, invariant, Invalid
 from zope.schema import ASCIILine, Password, List, TextLine
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -25,35 +25,18 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.formlib.form import EditFormBase
 
-def check_domain(value):
-    if " " in value:
-        return False
-    return True
-
 
 class IPasswordSchema(Interface):
 
     password = Password(
                     title=_(u"New password"),
-                    min_length=5,
-                    required=False
+                    min_length=5
                     )
 
     confirmation = Password(
                     title=_(u"Confirm new password"),
                     required=False
                     )
-
-    domains = List(
-                    title=_("Domains"),
-                    description=_(u"""If you do not know what this field is
-                                      for, leave it blank."""),
-                    value_type=ASCIILine(
-                            title=_(u"Domain name"),
-                            constraint=check_domain
-                            ),
-                    required = False
-                )
 
     @invariant
     def check_passwords_match(schema):
@@ -84,18 +67,6 @@ class Password(EditFormBase):
         self.rtool = getToolByName(self.context, 'portal_registration')
         if self.member.getProperty('last_login_time') == DateTime('1999/01/01'):
             self.member.setProperties(last_login_time='2000/01/01')
-
-    def setUpWidgets(self, ignore_request=False):
-        """Populate form with user domains"""
-        data = {}
-        data['domains'] = " ".join(self.member.getDomains())
-        self.widgets = form.setUpDataWidgets(
-                            self.form_fields,
-                            self.prefix,
-                            self.context,
-                            self.request,
-                            data=data,
-                            ignore_request=ignore_request)
 
     @property
     def member(self):
