@@ -15,13 +15,39 @@
 
 import logging
 
+from zope.component import getMultiAdapter
+
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from OFS.userfolder import UserFolder
 from Products.CMFCore.utils import getToolByName
+from Products.GenericSetup.context import SetupEnviron
+from Products.GenericSetup.interfaces import IBody
 
 _MARKER = object()
+
+_ACTIONS_XML = """\
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="CMF Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+   <object insert-after="join" name="change_password" meta_type="CMF Action"
+      i18n:domain="cmf_default">
+    <property name="title" i18n:translate="">Change password</property>
+    <property name="description"
+       i18n:translate="">Change your password</property>
+    <property name="url_expr">string:${portal_url}/password_form</property>
+    <property name="link_target"></property>
+    <property
+       name="icon_expr">string:${portal_url}/preferences_icon.png</property>
+    <property name="available_expr">member</property>
+    <property name="permissions">
+     <element value="Set own password"/>
+    </property>
+    <property name="visible">True</property>
+   </object>
+</object>
+"""
 
 def check_cookie_crumbler(tool):
     """2.2.x to 2.3.0 upgrade step checker
@@ -100,3 +126,23 @@ def upgrade_acl_users(tool):
             users._ofs_migrated = True
             users._p_changed = True
             logger.info("Updated UserFolder class.")
+
+def check_actions_tool(tool):
+    """2.2.x to 2.3.0 upgrade step checker
+    """
+    atool = getToolByName(tool, 'portal_actions')
+    try:
+        atool.user.change_password
+    except AttributeError:
+        return True
+    return False
+
+def upgrade_actions_tool(tool):
+    """2.2.x to 2.3.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    atool = getToolByName(tool, 'portal_actions')
+    environ = SetupEnviron()
+    environ._should_purge = False
+    getMultiAdapter((atool, environ), IBody).body = _ACTIONS_XML
+    logger.info("'change_password' action added.")
