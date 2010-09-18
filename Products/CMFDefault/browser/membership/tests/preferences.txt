@@ -1,0 +1,44 @@
+Preferences form
+----------------
+
+Set up user.
+
+    >>> from urllib import quote
+    >>> uf = app.site.acl_users
+    >>> uf._doAddUser('mbr', 'mbrpw', ['Member'], [])
+    >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
+
+Set up dummy skins vocabulary
+    >>> from zope.schema.interfaces import IVocabularyFactory
+    >>> from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+    >>> terms = [SimpleTerm('default', 'default', 'default'),        SimpleTerm('fancy', 'fancy', 'fancy')]
+    >>> vocab = lambda: SimpleVocabulary(terms)
+    >>> from zope.component import getSiteManager
+    >>> sm = getSiteManager()
+    >>> sm.registerUtility(vocab, IVocabularyFactory, u'cmf.portal_skins')
+    >>> from zope.component import getUtility
+
+Create the browser object we'll be using.
+
+    # BBB for Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Log the user in
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl('[[cmf_default][Member ID]]').value = 'mbr'
+    >>> browser.getControl('[[cmf_default][Password]]').value = 'mbrpw'
+    >>> browser.getControl('[[cmf_default][Login]]').click()
+    >>> '[[cmf_default][Login success]]' in browser.contents
+    True
+    
+Open the preferences form. E-mail field should be visible
+
+    >>> # browser.open("http://localhost/site/@@preferences.html")
+    >>> # browser.contents
+    >>> # browser.getControl(name='email').value == ''
+    True
+    >>> # browser.contents

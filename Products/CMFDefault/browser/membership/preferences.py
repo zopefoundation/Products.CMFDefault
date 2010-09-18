@@ -15,8 +15,7 @@
 
 from zope.schema import Choice, Bool
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
-from zope.schema.interfaces import IVocabulary, IVocabularyFactory
-from zope.interface import Interface, directlyProvides, alsoProvides
+from zope.interface import Interface
 from zope.formlib import form
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -44,7 +43,7 @@ class IPreferencesSchema(Interface):
 
     portal_skin = Choice(
                 title=_(u"Skin"),
-                vocabulary="cmf.portal_skins",
+                vocabulary=u"cmf.portal_skins",
                 required=False)
 
 

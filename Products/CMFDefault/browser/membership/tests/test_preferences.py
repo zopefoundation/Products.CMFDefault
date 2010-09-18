@@ -73,3 +73,15 @@ class DummyActionsTool:
 
 class DummySkinsTool:
     pass
+
+#Doctests
+from Testing import ZopeTestCase
+from Products.CMFDefault.testing import FunctionalLayer
+
+ftest_suite = ZopeTestCase.FunctionalDocFileSuite('preferences.txt')
+ftest_suite.layer = FunctionalLayer
+
+def test_suite():
+    return unittest.TestSuite((
+        ftest_suite,
+    ))
