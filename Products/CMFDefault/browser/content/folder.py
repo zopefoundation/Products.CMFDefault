@@ -297,6 +297,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
 
     def __init__(self, *args, **kw):
         super(ContentsView, self).__init__(*args, **kw)
+        self.form_fields = form.FormFields()
         self.delta_field = form.FormFields(IDeltaItem)
         self.contents = self.context.contentValues()
 
