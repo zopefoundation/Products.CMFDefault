@@ -71,5 +71,13 @@
       class=".password.Password"
       permission="cmf.SetOwnPassword"
       />
+      
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="members.html"
+      class=".members.Manage"
+      permission="cmf.ListPortalMembers"
+      />
   
 </configure>

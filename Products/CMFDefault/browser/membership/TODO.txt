@@ -2,19 +2,19 @@ Converting skins to views:
 
   [x] login:
 
-      login_form_template -> templates/login.pt
+      login_form_template -> login.pt
       loggged_in.py -> LoggedIn
-      logged_in.pt -> templates/logged_in.pt
+      logged_in.pt -> logged_in.pt
 
   [x] logout:
 
       logout.py -> Logout
-      logged_out.pt -> templates/logout.pt
+      logged_out.pt -> logout.pt
 
   [x] mail password:
 
       mail_password_form -> MailPasswordFormView
-      mail_password_form.pt -> templates/mail_password.pt
+      mail_password_form.pt -> mail_password.pt
       mail_password_response.pt -> joined.pt
 
   [x] join:
@@ -24,14 +24,24 @@ Converting skins to views:
       members_add_control.py -> Join
       join_form_template -> templates/join.pt
 
-  [ ] preferences:
+  [x] preferences:
 
       preference_form.pt -> preferences.py
       personalize.py -> preferences.py
 
   [ ] password:
+      
+      password_form.py -> password.py
+      password_form_template -> password.pt
 
   [ ] member roster:
+      
+      members_manage_form.py
+      members_manage_template.pt
+      members_add_control.py
+      members_delete_control.py
+      members_delete_form.py
+      members_delete_template_template.py
 
 
   [ ] complete this todo list
