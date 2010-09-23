@@ -45,34 +45,15 @@ class IMemberItem(Interface):
 
 
 class MemberProxy(object):
-    """Utility class wrapping a member"""
+    """Utility class wrapping a member for display purposes"""
     
     def __init__(self, member):
-        self.context = member
-        
-    def get(self, property):
-        return self.context.getProperty(property)
-
-    @property
-    def login_time(self):
-        login_time = self.get('login_time')
-        return login_time == '2000/01/01' and '---' or login_time.Date()
-        
-    @property
-    def name(self):
-        return self.context.getId()
-        
-    @property
-    def home(self):
-        return self.get('getHomeUrl')
-        
-    @property
-    def email(self):
-        return self.get('email')
-        
-    @property
-    def widget(self):
-        return "%s.select" % self.name
+        login_time = member.getProperty('login_time')
+        self.login_time = '2000/01/01' and '---' or login_time.Date()
+        self.name = member.getId()
+        self.home = member.getProperty('getHomeUrl')
+        self.email = member.getProperty('email')
+        self.widget = "%s.select" % self.name
 
 
 class Manage(BatchViewBase, EditFormBase):
