@@ -12,7 +12,8 @@
 ##############################################################################
 """Browser views for folders.
 """
-
+import logging
+LOG = logging.getLogger("Folder contents views")
 import urllib
 
 from five.formlib.formbase import PageForm
@@ -296,16 +297,17 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
 
     def __init__(self, *args, **kw):
         super(ContentsView, self).__init__(*args, **kw)
-        self.form_fields = form.FormFields()
         self.delta_field = form.FormFields(IDeltaItem)
         self.contents = self.context.contentValues()
 
     def content_fields(self):
         """Create content field objects only for batched items"""
+        f = IFolderItem['select']
+        fields = form.FormFields()
         for item in self._getBatchObj():
-            for name, field in schema.getFieldsInOrder(IFolderItem):
-                field = form.FormField(field, name, item.id)
-                self.form_fields += form.FormFields(field)
+            field = form.FormField(f, 'select', item.id)
+            fields += form.FormFields(field)
+        return fields
 
     @memoize
     @decode
@@ -332,11 +334,9 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         super(ContentsView, self).setUpWidgets(ignore_request)
         data = {}
         self.content_fields()
-        for i in self._getBatchObj():
-            data['%s.name' % i.id] = i.getId()
-        self.widgets = form.setUpDataWidgets(
-                self.form_fields, self.prefix, self.context,
-                self.request, data=data, ignore_request=ignore_request)
+        self.widgets = form.setUpWidgets(
+                self.content_fields(), self.prefix, self.context,
+                self.request, ignore_request=ignore_request)
         self.widgets += form.setUpWidgets(
                 self.delta_field, self.prefix, self.context,
                 self.request, ignore_request=ignore_request)
@@ -394,7 +394,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         for idx, item in enumerate(batch_obj):
             field = {'ModificationDate':item.ModificationDate()}
             field['select'] = self.widgets['%s.select' % item.getId()]
-            field['name'] = self.widgets['%s.name' % item.getId()]
+            field['name'] = item.getId()
             field['url'] = item.absolute_url()
             field['title'] = item.TitleOrId()
             field['icon'] = item.icon
