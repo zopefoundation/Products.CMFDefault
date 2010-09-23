@@ -36,7 +36,7 @@ from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.utils import Message as _
 
 from Products.CMFDefault.browser.utils import decode, memoize, ViewBase
-from interfaces import IDeltaItem, IFolderItem, IHidden
+from interfaces import IDeltaItem, IFolderItem, IBatchForm, ISortForm
 
 def contents_delta_vocabulary(context):
     """Vocabulary for the pulldown for moving objects up and down.
@@ -52,14 +52,14 @@ class BatchViewBase(ViewBase):
     """
 
     _BATCH_SIZE = 25
-    hidden_fields = form.FormFields(IHidden)
+    hidden_fields = form.FormFields(IBatchForm, ISortForm)
     prefix = ''
 
     @memoize
     def setUpWidgets(self, ignore_request=False):
-        self.hidden_widgets = form.setUpWidgets(self.hidden_fields, self.prefix,
-                                                self.context, self.request,
-                                                ignore_request=ignore_request)
+        self.hidden_widgets = form.setUpWidgets(self.hidden_fields,
+                            self.prefix, self.context, self.request,
+                            ignore_request=ignore_request)
 
     @memoize
     def _getBatchStart(self):

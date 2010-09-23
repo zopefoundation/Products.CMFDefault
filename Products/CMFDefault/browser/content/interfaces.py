@@ -42,14 +42,17 @@ class IDeltaItem(Interface):
         default=1)
 
 
-class IHidden(Interface):
-    """Schema for hidden items"""
+class IBatchForm(Interface):
+    """Schema for batch forms"""
 
     b_start = Int(
         title=u"Batch start",
         required=False,
         default=0)
 
+
+class ISortForm(Interface):
+    """Schema for sort keys"""
     sort_key = TextLine(
         title=u"Sort key",
         required=False)
