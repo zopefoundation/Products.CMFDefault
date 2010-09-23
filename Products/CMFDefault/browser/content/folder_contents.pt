@@ -39,7 +39,7 @@
      </tr>
    <tr tal:repeat="item view/listBatchItems"
       tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or None">
-     <td tal:content="structure item/select">Checkbox</td>
+     <td tal:content="structure python:view.widgets[item.widget]()">Checkbox</td>
      <td><a href="" tal:attributes="href item/url"
          tal:condition="item/icon"
       ><img src="" alt="" border="0"

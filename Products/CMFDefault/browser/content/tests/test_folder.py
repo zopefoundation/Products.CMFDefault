@@ -77,7 +77,8 @@ class FolderBrowserViewTests(unittest.TestCase):
 
     def test_list_batch_items(self):
         view = ContentsView(self.folder, TestRequest())
-        self.assertEquals(view.listBatchItems(), [])
+        view.content_fields()
+        self.assertEquals(view.listBatchItems, [])
 
     def test_is_orderable(self):
         view = ContentsView(self.folder, TestRequest())

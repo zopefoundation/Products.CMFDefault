@@ -215,6 +215,19 @@ class BatchViewBase(ViewBase):
         return self.request.form.get('SearchableText')
 
 
+class ContentProxy(object):
+    """Utility wrapping content item for display purposes"""
+    
+    def __init__(self, context):
+        self.name = context.getId()
+        self.title = context.TitleOrId()
+        self.type = context.Type() or None
+        self.icon = context.icon
+        self.url = context.absolute_url()
+        self.ModificationDate = context.ModificationDate()
+        self.widget = "%s.select" % self.name
+
+
 class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     """Folder contents view"""
 
@@ -304,10 +317,20 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     def content_fields(self):
         """Create content field objects only for batched items"""
         f = IFolderItem['select']
+        contents = []
+        b_start = self._getBatchStart()
+        key, reverse = self._get_sorting()
         fields = form.FormFields()
-        for item in self._getBatchObj():
+        for idx, item in enumerate(self._getBatchObj()):
             field = form.FormField(f, 'select', item.id)
             fields += form.FormFields(field)
+            content = ContentProxy(item)
+            if key == 'position':
+                content.position =  b_start + idx + 1
+            else:
+                content.position = '...'
+            contents.append(content)
+        self.listBatchItems = contents
         return fields
 
     @memoize
@@ -333,8 +356,6 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
     def setUpWidgets(self, ignore_request=False):
         """Create widgets for the folder contents."""
         super(ContentsView, self).setUpWidgets(ignore_request)
-        data = {}
-        self.content_fields()
         self.widgets = form.setUpWidgets(
                 self.content_fields(), self.prefix, self.context,
                 self.request, ignore_request=ignore_request)
@@ -383,28 +404,6 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         key, reverse = self._get_sorting()
         items = self.contents
         return sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
-
-    @memoize
-    def listBatchItems(self):
-        """Return the widgets for the form in the interface field order"""
-        batch_obj = self._getBatchObj()
-        b_start = self._getBatchStart()
-        key, reverse = self._get_sorting()
-        fields = []
-
-        for idx, item in enumerate(batch_obj):
-            field = {'ModificationDate':item.ModificationDate()}
-            field['select'] = self.widgets['%s.select' % item.getId()]
-            field['name'] = item.getId()
-            field['url'] = item.absolute_url()
-            field['title'] = item.TitleOrId()
-            field['icon'] = item.icon
-            field['position'] = (key == 'position') \
-                                and str(b_start + idx + 1) \
-                                or '...'
-            field['type'] = item.Type() or None
-            fields.append(field.copy())
-        return fields
 
     def _get_ids(self, data):
         """Identify objects that have been selected"""
