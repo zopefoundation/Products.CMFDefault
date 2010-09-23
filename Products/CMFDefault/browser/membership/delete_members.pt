@@ -14,7 +14,7 @@
  <p><strong tal:content="view/status">MEMBERS</strong></p>
  
  <div class="buttons">
-   <tal:loop tal:repeat="action view/actions"
+   <tal:loop tal:repeat="action view/delete_actions"
     tal:replace="structure action/render" />
  </div>
 

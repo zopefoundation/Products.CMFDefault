@@ -2,7 +2,6 @@
 Forms for managing members
 """
 from logging import getLogger
-
 LOG = getLogger("Manage Members Form")
 
 from zope.interface import Interface
@@ -16,6 +15,7 @@ from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.schema import EmailLine
 from Products.CMFDefault.utils import Message as _
 
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.content.folder import BatchViewBase
 from Products.CMFDefault.browser.content.interfaces import IBatchForm
 
@@ -44,14 +44,47 @@ class IMemberItem(Interface):
         )
 
 
+class MemberProxy(object):
+    """Utility class wrapping a member"""
+    
+    def __init__(self, member):
+        self.context = member
+        
+    def get(self, property):
+        return self.context.getProperty(property)
+
+    @property
+    def login_time(self):
+        login_time = self.get('login_time')
+        return login_time == '2000/01/01' and '---' or login_time.Date()
+        
+    @property
+    def name(self):
+        return self.context.getId()
+        
+    @property
+    def home(self):
+        return self.get('getHomeUrl')
+        
+    @property
+    def email(self):
+        return self.get('email')
+        
+    @property
+    def widget(self):
+        return "%s.select" % self.name
+
+
 class Manage(BatchViewBase, EditFormBase):
     
     label = _(u"Manage Members")
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("delete_members.pt")
     members_selected = False
+    form_fields = form.FormFields()
+    errors = ()
     
-    actions = form.Actions(
+    manage_actions = form.Actions(
         form.Action(
             name='new',
             label=_(u'New...'),
@@ -60,49 +93,56 @@ class Manage(BatchViewBase, EditFormBase):
         form.Action(
             name='select',
             label=_(u'Delete...'),
-            condition="no_members_selected",
-            validator='validate_items',
-            success='handle_select_for_deletion'
-                ),
+            success='handle_select_for_deletion',
+            validator=('validate_items')
+                )
+            )
+            
+    delete_actions = form.Actions(
         form.Action(
             name='delete',
             label=_(u'Delete'),
-            # condition="members_are_selected",
             success='handle_delete',
             failure='handle_failure'),
         form.Action(
             name='cancel',
             label=_(u'Cancel'),
-            condition="members_are_selected",
                 )
             )
+    actions = manage_actions + delete_actions
             
     hidden_fields = form.FormFields(IBatchForm)
     
     def _get_items(self):
         mtool = self._getTool('portal_membership')
         return mtool.listMembers()
+
+    def _get_ids(self, data):
+        """Identify objects that have been selected"""
+        LOG.info(str(data))
+        ids = [k.split(".select")[0] for k, v in data.items()
+                 if v is True]
+        return ids
         
-    def form_fields(self):
-        """Create content field objects only for batched items"""
+    def member_fields(self):
+        """Create content field objects only for batched items
+        Also create pseudo-widget for each item
+        """
+        f = IMemberItem['select']
+        members = []
         fields = form.FormFields()
         for item in self._getBatchObj():
-            for name, field in getFieldsInOrder(IMemberItem):
-                field = form.FormField(field, name, item.id)
-                fields += form.FormFields(field)
+            field = form.FormField(f, 'select', item.id)
+            fields += form.FormFields(field)
+            members.append(MemberProxy(item))
+        self.listBatchItems = members
         return fields
         
     def setUpWidgets(self, ignore_request=False):
         """Create widgets for the members"""
         super(Manage, self).setUpWidgets(ignore_request)
-        self.widgets = form.setUpWidgets(self.form_fields(), self.prefix,
+        self.widgets = form.setUpWidgets(self.member_fields(), self.prefix,
                     self.context, self.request, ignore_request=ignore_request)
-                
-    def no_members_selected(self, action=None):
-        return not self.members_selected
-        
-    def members_are_selected(self, action=None):
-        return self.members_selected
 
     def validate_items(self, action=None, data=None):
         """Check whether any items have been selected for
@@ -129,8 +169,7 @@ class Manage(BatchViewBase, EditFormBase):
         return self.delete_template()
         
     def handle_delete(self, action, data):
+        """Delete selected members"""
         mtool = self._getTool('portal_membership')
         mtool.deleteMembers(self.selected(data))
-        self.members_selected = False
         return self.request.response.redirect(self.request.URL)
-    

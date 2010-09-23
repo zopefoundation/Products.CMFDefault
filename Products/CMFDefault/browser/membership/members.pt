@@ -9,7 +9,8 @@
   tal:condition="exists: request/portal_status_message"
   tal:content="request/portal_status_message"></p>
 
-<form action="." method="post" tal:attributes="action request/ACTUAL_URL">
+<form action="." method="post" 
+      tal:attributes="action request/ACTUAL_URL">
   
   <tal:block repeat="widget view/hidden_widgets"
              replace="structure widget/hidden" />
@@ -23,22 +24,24 @@
    </tr>
   </thead>
      <tbody>
-       <tr tal:repeat="item view/_get_items"
+       <tr tal:repeat="item view/listBatchItems"
            tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or None">
-         <td><input class="checkboxType" 
-           tal:attributes="id string:${item/id}.select;
-                           name string:${item/id}.select"
-                 type="checkbox" value="on"/></td>
-          <td><a href="" tal:content="item/id" tal:attributes="href item/absolute_url"></a>
+         <td tal:content="structure python:view.widgets[item.widget]()"></td>
+          <td><a href="" tal:condition="item/home"
+                         tal:content="item/name" 
+                         tal:attributes="href item/home">User name</a>
+              <tal:block condition="not: item/home" replace="item/name" />
           </td>
-          <td><a href="" tal:content="item/email" tal:attributes="href string:mailto:${item/email}"></a></td>
-          <td tal:content="python: item.login_time == '2000/01/01' and '---' or item.login_time.Date()"></td>         
+          <td><a href="" 
+                 tal:content="item/email" 
+                 tal:attributes="href string:mailto:${item/email}"></a></td>
+          <td tal:content="item/login_time"></td>         
       </tr>
 
      </tbody>
      </table>
   <div class="buttons">
-    <tal:loop tal:repeat="action view/actions"
+    <tal:loop tal:repeat="action view/manage_actions"
      tal:replace="structure action/render" />
   </div>
   
