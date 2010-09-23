@@ -80,8 +80,8 @@ class Manage(BatchViewBase, EditFormBase):
     label = _(u"Manage Members")
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("delete_members.pt")
-    members_selected = False
     form_fields = form.FormFields()
+    hidden_fields = form.FormFields(IBatchForm)
     errors = ()
     
     manage_actions = form.Actions(
@@ -110,16 +110,13 @@ class Manage(BatchViewBase, EditFormBase):
                 )
             )
     actions = manage_actions + delete_actions
-            
-    hidden_fields = form.FormFields(IBatchForm)
-    
+
     def _get_items(self):
         mtool = self._getTool('portal_membership')
         return mtool.listMembers()
 
     def _get_ids(self, data):
         """Identify objects that have been selected"""
-        LOG.info(str(data))
         ids = [k.split(".select")[0] for k, v in data.items()
                  if v is True]
         return ids
@@ -152,11 +149,6 @@ class Manage(BatchViewBase, EditFormBase):
             return [_(u"Please select one or more items first.")]
         else:
             return []
-            
-    def selected(self, data):
-        """Return the id of the selected objects"""
-        return (key.split(".")[0] for key, value in data.items()
-                                  if value is True)
 
     def handle_add(self, action, data):
         """Redirect to the join form where managers can add users"""
@@ -165,11 +157,11 @@ class Manage(BatchViewBase, EditFormBase):
     def handle_select_for_deletion(self, action, data):
         """Identify members to be deleted and redirect to confirmation
         template"""
-        self.status = ", ".join(self.selected(data))
+        self.status = ", ".join(self._get_ids(data))
         return self.delete_template()
         
     def handle_delete(self, action, data):
         """Delete selected members"""
         mtool = self._getTool('portal_membership')
-        mtool.deleteMembers(self.selected(data))
+        mtool.deleteMembers(self._get_ids(data))
         return self.request.response.redirect(self.request.URL)
