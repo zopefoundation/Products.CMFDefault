@@ -77,6 +77,15 @@
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="members.html"
       class=".members.Manage"
+      permission="cmf.ManageUsers"
+      />
+
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="roster.html"
+      class=".members.Roster"
+      template="members_list.pt"
       permission="cmf.ListPortalMembers"
       />
   

@@ -7,6 +7,9 @@ LOG = getLogger("Manage Members Form")
 from zope.interface import Interface
 from zope.formlib import form
 from zope.schema import Bool, TextLine, Date, getFieldsInOrder, List, Choice
+from zope.sequencesort.ssort import sort
+
+from ZTUtils import LazyFilter
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -146,3 +149,38 @@ class Manage(BatchViewBase, EditFormBase):
         mtool = self._getTool('portal_membership')
         mtool.deleteMembers(self._get_ids(data))
         return self.request.response.redirect(self.request.URL)
+
+
+class Roster(BatchViewBase):
+    
+    hidden_fields = form.FormFields(IBatchForm)
+    form_fields = form.FormFields()
+    actions = ()
+    template = ViewPageTemplateFile("members_list.pt")
+    
+    def mtool(self):
+        return self._getTool('portal_membership')
+    
+    def isUserManager(self):
+        return self.mtool().checkPermission('Manage users',
+                          self.mtool().getMembersFolder()
+                                            )
+                                            
+    @memoize
+    def _get_items(self):
+        (key, reverse) = self.context.getDefaultSorting()
+        items = self.mtool().getRoster()
+        items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
+        return items
+        return LazyFilter(items, skip='View')
+                          
+    def listBatchItems(self):
+        members = []
+        for item in self._getBatchObj():
+            member = item
+            member['home'] = self.mtool().getHomeUrl(item['id'],
+                                verifyPermission=1)
+            member['listed'] = member['listed'] and _(u"Yes") or _("No")
+            members.append(member)
+        return members
+             

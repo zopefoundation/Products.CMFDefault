@@ -36,12 +36,15 @@ Converting skins to views:
 
   [ ] member roster:
       
-      members_manage_form.py
-      members_manage_template.pt
+      roster.pt -> members.Roster
+                   members_list.pt
+      
+      members_manage_form.py -> members.Manage
+      members_manage_template.pt -> members.pt
       members_add_control.py
       members_delete_control.py
-      members_delete_form.py
-      members_delete_template_template.py
+      members_delete_form.py -> members.Manage
+      members_delete_template_template.py -> members_delete.pt
 
 
   [ ] complete this todo list
