@@ -66,7 +66,6 @@ class Manage(BatchViewBase, EditFormBase):
     delete_template = ViewPageTemplateFile("members_delete.pt")
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
-    errors = ()
     
     manage_actions = form.Actions(
         form.Action(
@@ -77,7 +76,9 @@ class Manage(BatchViewBase, EditFormBase):
         form.Action(
             name='select',
             label=_(u'Delete...'),
+            condition='members_exist',
             success='handle_select_for_deletion',
+            failure='handle_failure',
             validator=('validate_items')
                 )
             )
@@ -98,6 +99,9 @@ class Manage(BatchViewBase, EditFormBase):
     def _get_items(self):
         mtool = self._getTool('portal_membership')
         return mtool.listMembers()
+        
+    def members_exist(self, action=None):
+        return len(self._getBatchObj()) > 0
 
     def _get_ids(self, data):
         """Identify objects that have been selected"""
@@ -129,7 +133,7 @@ class Manage(BatchViewBase, EditFormBase):
         """Check whether any items have been selected for
         the requested action."""
         super(Manage, self).validate(action, data)
-        if data is None or data == {}:
+        if self._get_ids(data) == []:
             return [_(u"Please select one or more items first.")]
         else:
             return []
