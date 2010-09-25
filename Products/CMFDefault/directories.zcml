@@ -12,8 +12,6 @@
 
   <cmf:registerDirectory name="ursine"/>
 
-  <cmf:registerDirectory name="werebear"/>
-  
   <cmf:registerDirectory name="absolut" recursive="True"/>
   
 </configure>
