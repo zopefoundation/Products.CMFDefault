@@ -8,16 +8,6 @@ Set up user.
     >>> uf._doAddUser('mbr', 'mbrpw', ['Member'], [])
     >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
 
-Set up dummy skins vocabulary
-    >>> from zope.schema.interfaces import IVocabularyFactory
-    >>> from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
-    >>> terms = [SimpleTerm('default', 'default', 'default'),        SimpleTerm('fancy', 'fancy', 'fancy')]
-    >>> vocab = lambda: SimpleVocabulary(terms)
-    >>> from zope.component import getSiteManager
-    >>> sm = getSiteManager()
-    >>> sm.registerUtility(vocab, IVocabularyFactory, u'cmf.portal_skins')
-    >>> from zope.component import getUtility
-
 Create the browser object we'll be using.
 
     # BBB for Zope 2.12
@@ -37,8 +27,6 @@ Log the user in
     
 Open the preferences form. E-mail field should be visible
 
-    >>> # browser.open("http://localhost/site/@@preferences.html")
-    >>> # browser.contents
-    >>> # browser.getControl(name='email').value == ''
+    >>> browser.open("http://localhost/site/@@preferences.html")
+    >>> browser.getControl(name='form.email').value == ''
     True
-    >>> # browser.contents

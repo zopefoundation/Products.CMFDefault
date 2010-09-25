@@ -17,6 +17,9 @@ import unittest
 
 from zope.component.testing import PlacelessSetup
 
+from Products.CMFDefault.browser.content.tests.utils import clearVocabulary
+from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
+
 from Products.CMFDefault.browser.skins.tests.test_ursa import (
                     DummyRequest, DummySite, DummyContext,
                     DummyPropertiesTool, DummyURLTool, DummyActionsTool
@@ -78,7 +81,11 @@ class DummySkinsTool:
 from Testing import ZopeTestCase
 from Products.CMFDefault.testing import FunctionalLayer
 
-ftest_suite = ZopeTestCase.FunctionalDocFileSuite('preferences.txt')
+ftest_suite = ZopeTestCase.FunctionalDocFileSuite('preferences.txt',
+                setUp=setupVocabulary,
+                tearDown=clearVocabulary,
+                            )
+
 ftest_suite.layer = FunctionalLayer
 
 def test_suite():
