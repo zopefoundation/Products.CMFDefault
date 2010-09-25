@@ -159,6 +159,7 @@ class Manage(BatchViewBase, EditFormBase):
         
     def handle_cancel(self, action, data):
         """Don't delete anyone, return to list"""
+        self.status = _(u"Deletion broken off")
         self._setRedirect('portal_actions', "global/manage_members")
 
 

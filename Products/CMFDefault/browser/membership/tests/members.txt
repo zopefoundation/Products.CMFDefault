@@ -1,11 +1,11 @@
 Membership forms
 ----------------
 
-Set up manager.
+Set up Zope manager.
 
     >>> from urllib import quote
-    >>> uf = app.site.acl_users
-    >>> uf._doAddUser('mbr', 'mbrpw', ['Member'], [])
+    >>> uf = app.acl_users
+    >>> uf._doAddUser('mbr', 'mbrpw', ['Manager'], [])
     >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
 
 Create the browser object we'll be using.
@@ -23,4 +23,48 @@ Log the user in
     >>> browser.getControl(name="__ac_password").value = 'mbrpw'
     >>> browser.getControl(name="actions.login").click()
     >>> '[[cmf_default][Login success]]' in browser.contents
+    True
+
+Open the membership form with no members
+    >>> browser.open("http://localhost/site/@@members.html")
+    >>> "[[cmf_default][Currently there are no members registered." in browser.contents
+    True
+
+Add a user
+    >>> mtool = app.site.portal_membership
+    >>> mtool.addMember("Bob", "secret", ("Owner",), ())
+
+Open the membership management form
+    >>> browser.open("http://localhost/site/@@members.html")
+    >>> "[[cmf_default][Manage Members]]" in browser.contents
+    True
+
+Add a new member
+    >>> browser.getControl(name="actions.new").click()
+    >>> "[[cmf_default][Register Member]]" in browser.contents
+    True
+
+Click delete with no member selected
+    >>> browser.open("http://localhost/site/@@members.html")
+    >>> browser.getControl(name="actions.select").click()
+    >>> "[[cmf_default][Please select one or more items first.]]" in browser.contents
+    True
+
+Click delete with member selected
+    >>> browser.getControl(name="Bob.select").value = True
+    >>> browser.getControl(name="actions.select").click()
+    >>> "[[cmf_default][The following members - including all their data, home folders and roles - are selected for deletion" in browser.contents
+    True
+    
+Cancel deletion
+    >>> browser.getControl(name="actions.cancel").click()
+    >>> "[[cmf_default][Deletion broken off]" in browser.contents
+    True
+
+Delete selected member
+    >>> browser.open("http://localhost/site/@@members.html")
+    >>> browser.getControl(name="Bob.select").value = True
+    >>> browser.getControl(name="actions.select").click()
+    >>> browser.getControl(name="actions.delete").click()
+    >>> "[[cmf_default][Selected members deleted]" in browser.contents
     True
