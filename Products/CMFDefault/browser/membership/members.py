@@ -63,7 +63,7 @@ class Manage(BatchViewBase, EditFormBase):
     
     label = _(u"Manage Members")
     template = ViewPageTemplateFile("members.pt")
-    delete_template = ViewPageTemplateFile("delete_members.pt")
+    delete_template = ViewPageTemplateFile("members_delete.pt")
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
     errors = ()
