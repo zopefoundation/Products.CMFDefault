@@ -240,19 +240,22 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             label=_(u'Rename'),
             validator='validate_items',
             condition='has_subobjects',
-            success='handle_rename'),
+            success='handle_rename',
+            failure='handle_failure'),
         form.Action(
             name='cut',
             label=_(u'Cut'),
             condition='has_subobjects',
             validator='validate_items',
-            success='handle_cut'),
+            success='handle_cut',
+            failure='handle_failure'),
         form.Action(
             name='copy',
             label=_(u'Copy'),
             condition='has_subobjects',
             validator='validate_items',
-            success='handle_copy'),
+            success='handle_copy',
+            failure='handle_failure'),
         form.Action(
             name='paste',
             label=_(u'Paste'),
@@ -263,7 +266,8 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             label=_(u'Delete'),
             condition='has_subobjects',
             validator='validate_items',
-            success='handle_delete')
+            success='handle_delete',
+            failure='handle_failure')
             )
 
     delta_actions = form.Actions(
@@ -272,13 +276,15 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             label=_(u'Up'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_up'),
+            success='handle_up',
+            failure='handle_failure'),
         form.Action(
             name='down',
             label=_(u'Down'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_down')
+            success='handle_down',
+            failure='handle_failure')
             )
 
     absolute_actions = form.Actions(
@@ -287,13 +293,15 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             label=_(u'Top'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_top'),
+            success='handle_top',
+            failure='handle_failure'),
         form.Action(
             name='bottom',
             label=_(u'Bottom'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_bottom')
+            success='handle_bottom',
+            failure='handle_failure')
             )
 
     sort_actions = form.Actions(
@@ -302,7 +310,8 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             label=_(u'Set as Default Sort'),
             condition='can_sort_be_changed',
             validator='validate_items',
-            success='handle_top')
+            success='handle_top',
+            failure='handle_failure')
             )
 
     actions = object_actions + delta_actions + absolute_actions + sort_actions
@@ -442,7 +451,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         """Check whether any items have been selected for
         the requested action."""
         super(ContentsView, self).validate(action, data)
-        if data is None or data == {}:
+        if self._get_ids(data) == []:
             return [_(u"Please select one or more items first.")]
         else:
             return []
