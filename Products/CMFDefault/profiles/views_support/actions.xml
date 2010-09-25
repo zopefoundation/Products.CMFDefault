@@ -32,21 +32,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="change_password" meta_type="CMF Action"
-     i18n:domain="cmf_default">
-   <property name="title" i18n:translate="">Change password</property>
-   <property name="description"
-      i18n:translate="">Change your password</property>
-   <property name="url_expr">string:${portal_url}/password_form</property>
-   <property name="link_target"></property>
-   <property
-      name="icon_expr">string:${portal_url}/preferences_icon.png</property>
-   <property name="available_expr">member</property>
-   <property name="permissions">
-    <element value="Set own password"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
   <object name="preferences" meta_type="CMF Action" i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Preferences</property>
    <property name="description"
@@ -133,6 +118,21 @@
    </property>
    <property name="visible">False</property>
   </object>
+  <object name="change_password" meta_type="CMF Action"
+     i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Change password</property>
+   <property name="description"
+      i18n:translate="">Change your password</property>
+   <property name="url_expr">string:${portal_url}/@@password.html</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/preferences_icon.png</property>
+   <property name="available_expr">member</property>
+   <property name="permissions">
+    <element value="Set own password"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
  </object>
  <object name="object" meta_type="CMF Action Category">
   <property name="title"></property>
@@ -201,8 +201,7 @@
    <property name="title" i18n:translate="">Manage members</property>
    <property name="description"
       i18n:translate="">Manage portal members</property>
-   <property
-      name="url_expr">string:${portal_url}/members_manage_form</property>
+   <property name="url_expr">string:${portal_url}/@@members.html</property>
    <property name="link_target"></property>
    <property name="icon_expr">string:${portal_url}/members_icon.png</property>
    <property name="available_expr"></property>
