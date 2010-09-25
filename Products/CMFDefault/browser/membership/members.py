@@ -64,6 +64,7 @@ class Manage(BatchViewBase, EditFormBase):
     label = _(u"Manage Members")
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
+    guillotine = None
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
     
@@ -92,6 +93,7 @@ class Manage(BatchViewBase, EditFormBase):
         form.Action(
             name='cancel',
             label=_(u'Cancel'),
+            success='handle_cancel'
                 )
             )
     actions = manage_actions + delete_actions
@@ -105,8 +107,8 @@ class Manage(BatchViewBase, EditFormBase):
 
     def _get_ids(self, data):
         """Identify objects that have been selected"""
-        ids = [k.split(".select")[0] for k, v in data.items()
-                 if v is True]
+        ids = [k[:-7] for k, v in data.items()
+                 if v is True and k.endswith('.select')]
         return ids
         
     def member_fields(self):
@@ -117,7 +119,7 @@ class Manage(BatchViewBase, EditFormBase):
         members = []
         fields = form.FormFields()
         for item in self._getBatchObj():
-            field = form.FormField(f, 'select', item.id)
+            field = form.FormField(f, 'select', item.getId())
             fields += form.FormFields(field)
             members.append(MemberProxy(item))
         self.listBatchItems = members
@@ -145,14 +147,19 @@ class Manage(BatchViewBase, EditFormBase):
     def handle_select_for_deletion(self, action, data):
         """Identify members to be deleted and redirect to confirmation
         template"""
-        self.status = ", ".join(self._get_ids(data))
+        self.guillotine = ", ".join(self._get_ids(data))
         return self.delete_template()
         
     def handle_delete(self, action, data):
         """Delete selected members"""
         mtool = self._getTool('portal_membership')
         mtool.deleteMembers(self._get_ids(data))
-        return self.request.response.redirect(self.request.URL)
+        self.status = _(u"Selected members deleted")
+        self._setRedirect('portal_actions', "global/manage_members")
+        
+    def handle_cancel(self, action, data):
+        """Don't delete anyone, return to list"""
+        self._setRedirect('portal_actions', "global/manage_members")
 
 
 class Roster(BatchViewBase):

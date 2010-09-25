@@ -1,0 +1,26 @@
+Membership forms
+----------------
+
+Set up manager.
+
+    >>> from urllib import quote
+    >>> uf = app.site.acl_users
+    >>> uf._doAddUser('mbr', 'mbrpw', ['Member'], [])
+    >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
+
+Create the browser object we'll be using.
+
+    # BBB for Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Log the user in
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl(name="__ac_name").value = 'mbr'
+    >>> browser.getControl(name="__ac_password").value = 'mbrpw'
+    >>> browser.getControl(name="actions.login").click()
+    >>> '[[cmf_default][Login success]]' in browser.contents
+    True
