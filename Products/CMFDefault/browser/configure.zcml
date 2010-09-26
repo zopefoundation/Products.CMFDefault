@@ -9,5 +9,7 @@
   <include package=".content" />
 
   <include package=".membership" />
+  
+  <include package=".portal" />
 
 </configure>
