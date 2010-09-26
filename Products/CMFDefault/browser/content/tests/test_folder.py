@@ -38,17 +38,15 @@ class FolderBrowserViewTests(unittest.TestCase):
 
     def setUp(self):
         """Setup a site"""
-        # maybe there is a base class for this?
         self.site = site = DummySite('site')
         self.sm = getSiteManager()
-        mtool = site._setObject('portal_membership', DummyTool())
+        site._setObject('portal_membership', DummyTool())
         ptool = site._setObject('portal_properties', DummyTool())
         self.sm.registerUtility(ptool, IPropertiesTool)
-        ttool = site._setObject('portal_types', DummyTool())
-        utool = site._setObject('portal_url', DummyTool())
+        site._setObject('portal_types', DummyTool())
+        site._setObject('portal_url', DummyTool())
         folder = PortalFolder('test_folder')
         self.folder = site._setObject('test_folder', folder)
-        self.uf = self.site._setObject('acl_users', DummyUserFolder())
 
     def _make_one(self, name="DummyItem"):
         content = DummyContent(name)
@@ -61,10 +59,12 @@ class FolderBrowserViewTests(unittest.TestCase):
         for i in range(batch_size + 2):
             content_id = "Dummy%s" % i
             self._make_one(content_id)
-
-    def site_login(self):
-        newSecurityManager(None,
-                    UnrestrictedUser('god', '', ['Manager'], ''))
+            
+    def test_getNavigationURL(self):
+        url = 'http://example.com/folder_contents'
+        self._make_batch()
+        view = ContentsView(self.folder, TestRequest(ACTUAL_URL=url))
+        self.assertTrue(view._getNavigationURL(25) == url + "?form.b_start=25")
 
     def test_view(self):
         view = ContentsView(self.folder, TestRequest())
