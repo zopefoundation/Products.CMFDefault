@@ -66,7 +66,6 @@ class MembershipViewTests(unittest.TestCase):
         self.mtool = site._setObject('portal_membership', DummyMemberTool())
         site._setObject('portal_actions', DummyTool())
         site._setObject('portal_url', DummyTool())
-        
 
     def _make_one(self, name="DummyUser"):
         user = DummyUser(name)
@@ -79,7 +78,13 @@ class MembershipViewTests(unittest.TestCase):
         for i in range(batch_size + 2):
             user_id = "Dummy%s" % i
             self._make_one(user_id)
-
+            
+    def test_getNavigationURL(self):
+        url = 'http://example.com/members.html'
+        self._make_batch()
+        view = Manage(self.site, TestRequest(ACTUAL_URL=url))
+        self.assertTrue(view._getNavigationURL(25) == url + "?form.b_start=25")
+        
     def test_view(self):
         view = Manage(self.site, TestRequest())
         self.assertTrue(IBrowserPublisher.providedBy(view))

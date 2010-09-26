@@ -65,6 +65,7 @@ class Manage(BatchViewBase, EditFormBase):
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
     guillotine = None
+    prefix = 'form' # required for hidden fields to work
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
     
