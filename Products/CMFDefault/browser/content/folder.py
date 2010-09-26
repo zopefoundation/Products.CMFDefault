@@ -64,7 +64,8 @@ class BatchViewBase(ViewBase):
 
     @memoize
     def _getBatchStart(self):
-        return self._getHiddenVars().get('b_start', 0)
+        b_start = self._getHiddenVars().get('b_start', 0)
+        return int(b_start)
 
     @memoize
     def _getBatchObj(self):
@@ -77,6 +78,8 @@ class BatchViewBase(ViewBase):
         data = {}
         if hasattr(self, 'hidden_widgets'):
             form.getWidgetsData(self.hidden_widgets, self.prefix, data)
+        else:
+            data = self.request.form
         return data
 
     @memoize
@@ -100,8 +103,9 @@ class BatchViewBase(ViewBase):
                 pass
             else:
                 new_key = self.expand_prefix(k)
-                kw[new_key] = v
-            del kw[k]
+                if new_key != k:
+                    kw[new_key] = v
+                    del kw[k]
 
         query = kw and ('?%s' % urllib.urlencode(kw)) or ''
 
