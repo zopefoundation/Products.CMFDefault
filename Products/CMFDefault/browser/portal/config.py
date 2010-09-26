@@ -1,3 +1,15 @@
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 """Portal Configuration Form"""
 
 from zope.component import adapts, getUtility
@@ -35,8 +47,10 @@ class PortalConfig(EditFormBase):
         charset = ptool.getProperty('default_charset', None)
         for name in getFieldNames(IPortalConfig):
             value = ptool.getProperty(name)
-            if hasattr(value, 'decode'):
+            try:
                 value = value.decode(charset)
+            except (AttributeError, UnicodeEncodeError):
+                pass
             data[name] = value
         data['smtp_server'] = ptool.smtp_server()
         self.widgets = form.setUpDataWidgets(
