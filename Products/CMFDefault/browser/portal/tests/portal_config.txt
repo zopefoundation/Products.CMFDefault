@@ -1,0 +1,48 @@
+Portal configuration form
+-------------------------
+
+Set up Zope manager.
+
+    >>> from urllib import quote
+    >>> uf = app.acl_users
+    >>> uf._doAddUser('mbr', 'mbrpw', ['Manager'], [])
+    >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
+
+Create the browser object we'll be using.
+
+    # BBB for Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Log the user in
+    >>> browser.open('http://localhost/site/@@login.html')
+    >>> browser.getControl(name="__ac_name").value = 'mbr'
+    >>> browser.getControl(name="__ac_password").value = 'mbrpw'
+    >>> browser.getControl(name="actions.login").click()
+    >>> '[[cmf_default][Login success]]' in browser.contents
+    True
+    
+Open configuration form
+    >>> browser.open("http://localhost/site/@@configure.html")
+    >>> "[[cmf_default][Portal Configuration]]" in browser.contents
+    True
+    
+    >>> browser.getControl(name="form.email_from_name").value = "The man behind the curtain"
+    >>> browser.getControl(name="form.actions.change").click()
+    >>> "[[cmf_default][Portal settings changed]" in browser.contents
+    True
+
+Make sure we get open the view not the PythonScript reconfig_portal
+    >>> browser.open("http://localhost/site/@@configure.html")
+    >>> browser.getControl(name="form.email_from_name").value == "The man behind the curtain"
+    True
+    
+Test for error handling, default_charset must be ASCII onlye
+    >>> browser.open("http://localhost/site/@@configure.html")
+    >>> browser.getControl(name="form.default_charset").value = "Caché"
+    >>> browser.getControl(name="form.actions.change").click()
+    >>> "[[cmf_default][[[zope][There were errors]" in browser.contents
+    True

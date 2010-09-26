@@ -4,9 +4,10 @@
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
 
-<p class="errors" tal:condition="view/errors"
-                  tal:repeat="error view/errors" 
-                  tal:content="error">Error Message</p>
+<ul class="errors" tal:condition="view/errors">
+ <li tal:repeat="error view/error_views"
+     tal:content="structure error">Error Message</li>
+</ul>
 
 <h1 i18n:translate="">Portal Configuration</h1>
 
@@ -17,6 +18,8 @@
       <label tal:attributes="for widget/name" tal:content="widget/label"></label>
       <tal:block replace="structure widget" />
       <legend tal:content="widget/hint"></legend>
+      <tal:block condition="widget/error"
+          replace="structure widget/error" />
     </fieldset>
 
 

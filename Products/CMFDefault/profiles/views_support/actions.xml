@@ -242,7 +242,7 @@
    <property name="title" i18n:translate="">Reconfigure Portal</property>
    <property name="description"
       i18n:translate="">Reconfigure the portal</property>
-   <property name="url_expr">string:${portal_url}/reconfig_form</property>
+   <property name="url_expr">string:${portal_url}/@@configure.html</property>
    <property name="link_target"></property>
    <property name="icon_expr">string:${portal_url}/tool_icon.png</property>
    <property name="available_expr"></property>
