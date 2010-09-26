@@ -46,3 +46,7 @@ Test for error handling, default_charset must be ASCII onlye
     >>> browser.getControl(name="form.actions.change").click()
     >>> "[[cmf_default][[[zope][There were errors]" in browser.contents
     True
+    >>> browser.getControl(name="form.default_charset").value = "utf-9"
+    >>> browser.getControl(name="form.actions.change").click()
+    >>> "[Constraint not satisfied]" in browser.contents
+    True

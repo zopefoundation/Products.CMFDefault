@@ -1,4 +1,5 @@
 """Schema for portal forms"""
+import codecs
 
 from zope.interface import Interface
 from zope.schema import TextLine, ASCIILine, Bool, Choice
@@ -12,6 +13,14 @@ email_policy = SimpleVocabulary.fromItems(
          (_(u"Allow members to select their initial password"), False)
          ]
          )
+
+def check_encoding(value):
+    encoding = ""
+    try:
+        encoding = codecs.lookup(value)
+    except LookupError:
+        pass
+    return encoding != ""
 
 class IPortalConfig(Interface):
     
@@ -48,14 +57,16 @@ class IPortalConfig(Interface):
 
     default_charset = ASCIILine(
                     title=_(u"Portal default encoding"),
-                    description=_(u"Charset used to decode portal content strings. If empty, 'ascii' is used."),
+                    description=_(u"Charset used to decode portal content strings. If empty, 'utf-8' is used."),
                     required=False,
+                    constraint=check_encoding,
                     default="UTF-8")
                     
     email_charset = ASCIILine(
                     title=_(u"Portal email encoding"),
                     description=_(u"Charset used to encode emails send by the portal. If empty, 'utf-8' is used if necessary."),
                     required=False,
+                    constraint=check_encoding,
                     default="UTF-8")
     
     enable_actionicons = Bool(
