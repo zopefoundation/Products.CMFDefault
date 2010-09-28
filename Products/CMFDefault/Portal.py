@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Portal class
-
-$Id$
 """
 
 from App.class_init import InitializeClass
@@ -25,6 +23,8 @@ from Products.CMFDefault.permissions import ListPortalMembers
 from Products.CMFDefault.permissions import ReplyToItem
 from Products.CMFDefault.permissions import View
 
+from logging import getLogger
+LOG = getLogger("CMF Portal Object")
 
 class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):
 
@@ -41,6 +41,9 @@ class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):
     title = ''
     description = ''
 
+    manage_options = PortalObjectBase.manage_options[:2] + \
+                     PortalObjectBase.manage_options[3:]
+
     __ac_permissions__=( ( AddPortalContent, () )
                        , ( AddPortalFolders, () )
                        , ( ListPortalMembers, () )
@@ -51,6 +54,7 @@ class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):
     def __init__( self, id, title='' ):
         PortalObjectBase.__init__( self, id, title )
         DefaultDublinCoreImpl.__init__( self )
+        LOG.info(str(self.manage_options))
 
     def isEffective( self, date ):
         """
