@@ -172,6 +172,15 @@
    <metal:slot metal:define-slot="main" />
   </metal:slot>
 
+  <div id="Permalink"
+       tal:define="url context/get_permalink | nothing"
+       tal:condition="url">
+   <span i18n:translate="" tal:omit-tag="">Permanent Link:</span>
+   <a href="" tal:content="url" tal:attributes="href url">
+     the permanent link if enabled
+   </a>
+  </div>
+
  </div>
 
 </body>

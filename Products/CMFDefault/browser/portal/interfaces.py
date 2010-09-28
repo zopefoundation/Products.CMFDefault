@@ -73,3 +73,8 @@ class IPortalConfig(Interface):
                     title=_(u"Action icons"),
                     description=_(u"Actions available to the user are shown as                    textual links. With this option enabled, they are also shown as icons if the action definition specifies one."),
                     required=False)
+                    
+    enable_permalink = Bool(
+                    title=_(u"Permalink"),
+                    description=_(u"If permalinks are enabled then a unique identifier is assigned to every item of content independent of it's id or position in a site. This requires the CMFUid tool to be installed."),
+                    required=False)

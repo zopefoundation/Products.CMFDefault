@@ -22,6 +22,7 @@
           replace="structure widget/error" />
     </fieldset>
 
+    <span class="errors" tal:condition="not: globals/uidtool_installed">CMFUId is not installed</span>
 
   <div class="buttons">
     <tal:loop tal:repeat="action view/actions"
