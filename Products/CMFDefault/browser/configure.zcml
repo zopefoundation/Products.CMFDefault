@@ -10,6 +10,6 @@
 
   <include package=".membership" />
   
-  <include package=".portal" />
+  <include package=".admin" />
 
 </configure>
