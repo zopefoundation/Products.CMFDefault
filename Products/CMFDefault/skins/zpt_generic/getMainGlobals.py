@@ -12,6 +12,7 @@ ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 utool = getToolByName(script, 'portal_url')
 wtool = getToolByName(script, 'portal_workflow')
 portal_object = utool.getPortalObject()
+uidtool = getToolByName(script, 'portal_uidhandler', None)
 
 if not 'charset' in (context.REQUEST.RESPONSE.getHeader('content-type') or ''):
     # Some newstyle views set a different charset - don't override it.
@@ -31,6 +32,7 @@ globals = {'utool': utool,
            'atool': atool,
            'wtool': wtool,
            'caltool_installed': caltool is not None,
+           'uidtool_installed': uidtool is not None,
            'portal_object': portal_object,
            'portal_title': portal_object.Title(),
            'object_title': context.Title(),
