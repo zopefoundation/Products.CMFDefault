@@ -54,7 +54,6 @@ class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):
     def __init__( self, id, title='' ):
         PortalObjectBase.__init__( self, id, title )
         DefaultDublinCoreImpl.__init__( self )
-        LOG.info(str(self.manage_options))
 
     def isEffective( self, date ):
         """
