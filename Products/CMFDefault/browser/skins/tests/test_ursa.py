@@ -105,6 +105,34 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         tool = view.context.portal_workflow = DummyWorkflowTool()
         self.failUnless(view.wtool is tool)
 
+    def test_uidtool(self):
+        view = self._makeOne()
+        tool = view.context.portal_uidhandler = DummyTool()
+        self.assertTrue(view.uidtool is tool)
+
+    def test_uidtool_not_installed(self):
+        view = self._makeOne()
+        self.assertFalse(view.uidtool_installed)
+
+    def test_uidtool_installed(self):
+        view = self._makeOne()
+        view.context.portal_uidhandler = DummyTool()
+        self.assertTrue(view.uidtool_installed)
+
+    def test_caltool(self):
+        view = self._makeOne()
+        tool = view.context.portal_calendar = DummyTool()
+        self.assertTrue(view.caltool is tool)
+
+    def test_caltool_not_installed(self):
+        view = self._makeOne()
+        self.assertFalse(view.caltool_installed)
+
+    def test_caltool_installed(self):
+        view = self._makeOne()
+        view.context.portal_calendar = DummyTool()
+        self.assertTrue(view.caltool_installed)
+
     def test_portal_object(self):
         view = self._makeOne()
         tool = view.context.portal_url = DummyURLTool()
@@ -405,6 +433,10 @@ class DummyWorkflowTool:
     def getInfoFor(self, context, key, default):
         if key == 'review_state':
             return self.review_state
+
+class DummyTool(object):
+    
+    pass
 
 class DummyUser:
     pass

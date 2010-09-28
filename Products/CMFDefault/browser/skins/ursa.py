@@ -13,6 +13,7 @@
 """
 """
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.browser.utils import ViewBase
@@ -58,6 +59,26 @@ class UrsineGlobals(ViewBase):
     @memoize
     def wtool(self):
         return self._getTool('portal_workflow')
+        
+    @property
+    @memoize
+    def caltool(self):
+        return getToolByName(self.context, 'portal_calendar', None)
+        
+    @property
+    @memoize
+    def caltool_installed(self):
+        return self.caltool is not None
+        
+    @property
+    @memoize
+    def uidtool(self):
+        return getToolByName(self.context, 'portal_uidhandler', None)
+
+    @property
+    @memoize
+    def uidtool_installed(self):
+        return self.uidtool is not None
 
     @property
     @memoize
