@@ -12,7 +12,6 @@
 ##############################################################################
 """ Configured site factory implementation.
 
-$Id$
 """
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -37,8 +36,13 @@ def addConfiguredSiteForm(dispatcher):
 
     base_profiles = []
     extension_profiles = []
+    
+    def key(value):
+        """Sort function for profiles info"""
+        return value.get('title')
 
-    for info in profile_registry.listProfileInfo(for_=ISiteRoot):
+    profiles = profile_registry.listProfileInfo(for_=ISiteRoot)
+    for info in sorted(profiles, key=key):
         if info.get('type') == EXTENSION:
             extension_profiles.append(info)
         else:

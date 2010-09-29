@@ -31,10 +31,14 @@
   <td>
    <div class="form-label">Optional extensions</div>
   </td>
-  <td><tal:span tal:repeat="info options/extension_profiles">
+  <td><tal:loop tal:repeat="info options/extension_profiles">
    <input type="checkbox" name="extension_ids:list" value="PROFILE_ID"
           tal:attributes="value info/id" />
-   <tal:span tal:content="info/title">PROFILE TITLE</tal:span><br /></tal:span>
+   <span tal:content="info/title">PROFILE TITLE</span>
+   <br />
+   <i tal:content="info/description"></i>
+   <br /><br />
+   </tal:loop>
   </td>
  </tr>
  <tr>
