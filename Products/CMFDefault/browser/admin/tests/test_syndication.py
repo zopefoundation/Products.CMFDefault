@@ -22,13 +22,13 @@ from Products.CMFCore.tests.base.dummy import DummySite, DummyTool
 
 
 class DummySyndicationTool(object):
-    
+
     isAllowed = 0
     updatePeriod = "daily"
     updateFrequency = 1
     updateBase = ""
     max_items = 15
-    
+
     def editProperties(self, **kw):
         for k, v in kw.items():
             setattr(self, k, v)
@@ -41,12 +41,12 @@ class DummyResponse(object):
 
 
 class DummyRequest(TestRequest):
-    
-    
+
+
     def __init__(self, **kw):
         super(DummyRequest, self).__init__(kw)
         self.RESPONSE = DummyResponse()
-    
+
     def getPreferredCharsets(self):
         return ['utf-8']
 
@@ -60,21 +60,21 @@ class SyndicationViewTests(unittest.TestCase):
         site._setObject('portal_actions', DummyTool())
         site._setObject('portal_url', DummyTool())
         site._setObject('portal_membership', DummyTool())
-        
+
     def _getTargetClass(self):
         from Products.CMFDefault.browser.admin.syndication import Manage
         request = DummyRequest(ACTUAL_URL="http://example.com")
         alsoProvides(request, IUserPreferredCharsets)
         return Manage(self.site, request)
-    
+
     def test_enabled(self):
         view = self._getTargetClass()
         self.assertFalse(view.enabled())
-        
+
     def test_disabled(self):
         view = self._getTargetClass()
         self.assertTrue(view.disabled())
-        
+
     def test_handle_enable(self):
         view = self._getTargetClass()
         data = {'frequency':3, 'period':'weekly', 'base':'', 'max_items':10}
@@ -98,7 +98,7 @@ class SyndicationViewTests(unittest.TestCase):
         self.assertTrue(view.syndtool.max_items == 10)
         self.assertTrue(view.status == u"Syndication updated")
         self.assertTrue(view.request.RESPONSE.location == "http://www.foobar.com/bar/site?portal_status_message=Syndication%20updated")
-        
+
     def test_handle_disable(self):
         view = self._getTargetClass()
         view.syndtool.isAllowed = True
