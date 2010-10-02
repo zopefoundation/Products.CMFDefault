@@ -134,19 +134,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
-   <property name="title" i18n:translate="">Syndication</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${folder_url}/synPropertiesForm</property>
-   <property name="link_target"></property>
-   <property
-      name="icon_expr">string:${portal_url}/syndication_icon.png</property>
-   <property name="available_expr">python: folder is object</property>
-   <property name="permissions">
-    <element value="Manage properties"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
   <object name="interfaces" meta_type="CMF Action" i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Interfaces</property>
    <property name="description"
@@ -174,6 +161,19 @@
    <property name="available_expr">python: folder is not object</property>
    <property name="permissions">
     <element value="List folder contents"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Syndication</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${folder_url}/synPropertiesForm</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/syndication_icon.png</property>
+   <property name="available_expr">python: folder is object</property>
+   <property name="permissions">
+    <element value="Manage properties"/>
    </property>
    <property name="visible">True</property>
   </object>
@@ -228,6 +228,20 @@
    <property name="description"
       i18n:translate="">Reconfigure the portal</property>
    <property name="url_expr">string:${portal_url}/reconfig_form</property>
+   <property name="link_target"></property>
+   <property name="icon_expr">string:${portal_url}/tool_icon.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage portal"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Site Syndication</property>
+   <property name="description"
+      i18n:translate="">Enable or  disable syndication</property>
+   <property
+      name="url_expr">string:${portal_url}/@@syndication.html</property>
    <property name="link_target"></property>
    <property name="icon_expr">string:${portal_url}/tool_icon.png</property>
    <property name="available_expr"></property>
