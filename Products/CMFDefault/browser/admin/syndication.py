@@ -58,7 +58,9 @@ class ISyndication(Interface):
                 description=_(u"")
                 )
 
-class Manage(EditFormBase):
+class Site(EditFormBase):
+    """Enable or disable syndication for a site."""
+    
 
     form_fields = form.FormFields(ISyndication)
     actions = form.Actions(
@@ -100,9 +102,10 @@ class Manage(EditFormBase):
                 'period':self.syndtool.syUpdatePeriod,
                 'base':self.syndtool.syUpdateBase,
                 'max_items':self.syndtool.max_items
-                }
+               }
         self.widgets = form.setUpDataWidgets(self.form_fields, self.prefix,
-        self.context, self.request, data=data, ignore_request=ignore_request)
+                       self.context, self.request,data=data,
+                       ignore_request=ignore_request)
 
     def handle_enable(self, action, data):
         self.handle_update(action, data)
@@ -111,10 +114,9 @@ class Manage(EditFormBase):
         self._setRedirect("portal_actions", "global/syndication")
 
     def handle_update(self, action, data):
-        self.syndtool.editProperties(
-                                    updatePeriod=data['period'],
+        self.syndtool.editProperties(updatePeriod=data['period'],
                                     updateFrequency=data['frequency'],
-                                    updateBase=str(data['base']),
+                                    updateBase=data['base'],
                                     max_items=data['max_items']
                                     )
         self.status = _(u"Syndication updated")
