@@ -17,7 +17,9 @@
 <h4>Syndication Tool Overview</h4>
 
     See the online help by clicking the 'Help' link on the Management Forms.
-    To turn on syndication, visit the Properties Tab in the management interface.
+    Syndication can be enabled from the 'Site Syndication' action. Syndication
+    settings can be set on a per folder basis through the 'Syndication' 
+    action.
 
 </body>
 </html>

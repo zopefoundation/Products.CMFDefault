@@ -60,36 +60,12 @@ class SyndicationTool(UniqueObject, SimpleItem):
                          , 'action' : 'overview'
                          , 'help'   : ( 'CMFDefault'
                                       , 'Syndication-Tool_Overview.stx' )
-                         }
-                        ,{ 'label'  : 'Properties'
-                         , 'action' : 'propertiesForm'
-                         , 'help'   : ( 'CMFDefault'
-                                      , 'Syndication-Tool_Properties.stx' )
-                         }
-                        ,{ 'label'  : 'Policies'
-                         , 'action' : 'policiesForm'
-                         , 'help'   : ( 'CMFDefault'
-                                      , 'Syndication-Tool_Policies.stx' )
-                         }
-                        ,{ 'label'  : 'Reports'
-                         , 'action' : 'reportForm'
-                         , 'help'   : ( 'CMFDefault'
-                                      , 'Syndication-Tool_Reporting.stx' )
-                         }
+                         },
                         )
                      )
 
     security.declareProtected(ManagePortal, 'overview')
     overview = HTMLFile('synOverview', _dtmldir)
-
-    security.declareProtected(ManagePortal, 'propertiesForm')
-    propertiesForm = HTMLFile('synProps', _dtmldir)
-
-    security.declareProtected(ManagePortal, 'policiesForm')
-    policiesForm = HTMLFile('synPolicies', _dtmldir)
-
-    security.declareProtected(ManagePortal, 'reportForm')
-    reportForm = HTMLFile('synReports', _dtmldir)
 
     security.declareProtected(ManagePortal, 'editProperties')
     def editProperties( self
@@ -124,7 +100,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
                 pass
 
         if updateBase is not None:
-            if type( updateBase ) is type( '' ):
+            if not hasattr(updateBase, 'ISO'):
                 updateBase = DateTime( updateBase )
             self.syUpdateBase = updateBase
         else:
@@ -140,12 +116,6 @@ class SyndicationTool(UniqueObject, SimpleItem):
                 del self.max_items
             except (AttributeError, KeyError):
                 pass
-
-        if REQUEST is not None:
-            REQUEST['RESPONSE'].redirect( self.absolute_url()
-                                        + '/propertiesForm'
-                                        + '?manage_tabs_message=Tool+Updated.'
-                                        )
 
     security.declarePublic( 'editSyInformationProperties' )
     def editSyInformationProperties( self
@@ -180,7 +150,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
             syInfo.syUpdateFrequency = self.syUpdateFrequency
 
         if updateBase is not None:
-            if type( updateBase ) is type( '' ):
+            if not hasattr(updateBase, 'ISO'):
                 updateBase = DateTime( updateBase )
             syInfo.syUpdateBase = updateBase
         else:
