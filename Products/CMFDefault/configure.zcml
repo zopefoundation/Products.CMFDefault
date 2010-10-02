@@ -18,5 +18,11 @@
   <include file="profiles.zcml"/>
 
   <include file="directories.zcml"/>
+  
+  <adapter
+      factory = ".SyndicationInfo.SyndicationInfo"
+      for = "Products.CMFCore.interfaces.IFolderish"
+      provides = "Products.CMFCore.interfaces.ISyndicationInfo"
+      />
 
 </configure>
