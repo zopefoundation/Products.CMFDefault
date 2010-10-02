@@ -14,7 +14,7 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="syndication.html"
-      class=".syndication.Manage"
+      class=".syndication.Site"
       permission="cmf.ManagePortal"
       />
 
