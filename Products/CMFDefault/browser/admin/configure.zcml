@@ -17,5 +17,13 @@
       class=".syndication.Site"
       permission="cmf.ManagePortal"
       />
+      
+  <browser:page
+      for="Products.CMFCore.interfaces.IFolderish"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="syndicate.html"
+      class=".syndication.Syndicate"
+      permission="cmf.ManagePortal"
+      />
 
 </configure>
