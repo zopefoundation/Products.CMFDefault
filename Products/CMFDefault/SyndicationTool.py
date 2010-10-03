@@ -10,11 +10,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault portal_syndication tool.
+""" 
+CMFDefault portal_syndication tool.
 
 Manage outbound RSS syndication of folder content.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
