@@ -1,3 +1,18 @@
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+""" SyndicationInfo is an adapter for IFolderish objects.
+"""
+
 from OFS.SimpleItem import SimpleItem
 
 from zope.component import adapts
@@ -14,7 +29,7 @@ class SyndicationInformation(SimpleItem):
     Existing implementation creates a full SimpleItem which is not directly
     editable
     """
-    
+
     id='syndication_information'
     meta_type='SyndicationInformation'
 
@@ -26,19 +41,19 @@ class SyndicationInfo(object):
     Local syndication information is stored as a dictionary on the
     _syndication_info attribute of the folder
     """
-    
+
     implements(ISyndicationInfo)
     adapts(IFolderish)
     key = "_syndication_info"
-    
+
     def __init__(self, context):
         self.context = context
-    
+
     @property
     def site_settings(self):
         """Get site syndication tool"""
         return getToolByName(self.context, "portal_syndication")
-    
+
     def get_info(self):
         """
         Return syndication settings for the folder or from global site
@@ -72,14 +87,12 @@ class SyndicationInfo(object):
         """Is syndication available for the site and a folder"""
         return self.site_settings.isAllowed \
                and ISyndicatable.providedBy(self.context)
-    
+
     def enable(self):
         """Enable syndication for a folder"""
         alsoProvides(self.context, ISyndicatable)
-    
+
     def disable(self):
         """Disable syndication for a folder"""
         self.revert()
         noLongerProvides(self.context, ISyndicatable)
-    
-
