@@ -208,6 +208,13 @@
         checker=".to23.check_acl_users"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade acl_users"
+        description="Update UserFolder class."
+        handler=".to23.upgrade_actions_tool"
+        checker=".to23.check_actions_tool"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
