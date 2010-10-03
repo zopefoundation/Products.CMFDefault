@@ -1,8 +1,10 @@
 from OFS.SimpleItem import SimpleItem
 
-from zope.interface import alsoProvides, noLongerProvides
+from zope.component import adapts
+from zope.interface import implements, alsoProvides, noLongerProvides
 
-from Products.CMFCore.interfaces import ISyndicatable
+from Products.CMFCore.interfaces import (ISyndicatable, ISyndicationInfo,
+    IFolderish)
 from Products.CMFCore.utils import getToolByName
 
 
@@ -25,6 +27,8 @@ class SyndicationInfo(object):
     _syndication_info attribute of the folder
     """
     
+    implements(ISyndicationInfo)
+    adapts(IFolderish)
     key = "_syndication_info"
     
     def __init__(self, context):

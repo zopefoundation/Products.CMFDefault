@@ -21,8 +21,6 @@
   
   <adapter
       factory = ".SyndicationInfo.SyndicationInfo"
-      for = "Products.CMFCore.interfaces.IFolderish"
-      provides = "Products.CMFCore.interfaces.ISyndicationInfo"
       />
 
 </configure>
