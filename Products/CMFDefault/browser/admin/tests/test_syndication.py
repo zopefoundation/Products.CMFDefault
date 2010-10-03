@@ -62,10 +62,10 @@ class SyndicationViewTests(unittest.TestCase):
         site._setObject('portal_membership', DummyTool())
 
     def _getTargetClass(self):
-        from Products.CMFDefault.browser.admin.syndication import Manage
+        from Products.CMFDefault.browser.admin.syndication import Site
         request = DummyRequest(ACTUAL_URL="http://example.com")
         alsoProvides(request, IUserPreferredCharsets)
-        return Manage(self.site, request)
+        return Site(self.site, request)
 
     def test_enabled(self):
         view = self._getTargetClass()
