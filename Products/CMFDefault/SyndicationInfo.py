@@ -42,20 +42,26 @@ class SyndicationInfo(object):
         """
         info = getattr(self.context, self.key, None)
         if info is None:
-            values = {'syUpdatePeriod': self.site_settings.syUpdatePeriod,
-                      'syUpdateFrequency':self.site_setting.syUpdateFrequency,
-                      'syUpdateBase': self.site_settings.syUpdateBase,
-                      'max_items': self.site_settings.max_items}
-            return site_settings
+            values = {'period': self.site_settings.syUpdatePeriod,
+                     'frequency':self.site_settings.syUpdateFrequency,
+                     'base': self.site_settings.syUpdateBase,
+                     'max_items': self.site_settings.max_items}
+            return values
         return info
 
-    def set_info(self, period, frequency, base, max_items):
+    def set_info(self, period=None, frequency=None, base=None,
+                max_items=None):
         """Folder has local values"""
-        values = {'syUpdatePeriod': period, 'syUpdateFrequency': frequency,
-                  'syUpdateBase': base, 'max_items': max_items}
+        values = {'period': period, 'frequency': frequency,
+                  'base': base, 'max_items': max_items}
         setattr(self.context, self.key, values)
-    
-    info = property(get_info, set_info)
+
+    def revert(self):
+        """Remove local values"""
+        try:
+            delattr(self.context, self.key)
+        except AttributeError:
+            pass
 
     @property
     def enabled(self):
@@ -69,10 +75,7 @@ class SyndicationInfo(object):
     
     def disable(self):
         """Disable syndication for a folder"""
-        try:
-            delattr(self.context, self.key)
-        except AttributeError:
-            pass
+        self.revert()
         noLongerProvides(self.context, ISyndicatable)
     
 
