@@ -59,6 +59,11 @@ class UrsineGlobals(ViewBase):
     @memoize
     def wtool(self):
         return self._getTool('portal_workflow')
+        
+    @property
+    @memoize
+    def syndtool(self):
+        return self._getTool('portal_syndication')
 
     @property
     @memoize

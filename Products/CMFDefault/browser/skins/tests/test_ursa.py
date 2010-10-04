@@ -105,6 +105,11 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         tool = view.context.portal_workflow = DummyWorkflowTool()
         self.failUnless(view.wtool is tool)
 
+    def test_syndtool(self):
+        view = self._makeOne()
+        tool = view.context.portal_syndication= DummyTool()
+        self.failUnless(view.syndtool is tool)
+
     def test_uidtool(self):
         view = self._makeOne()
         tool = view.context.portal_uidhandler = DummyTool()
@@ -435,7 +440,7 @@ class DummyWorkflowTool:
             return self.review_state
 
 class DummyTool(object):
-    
+
     pass
 
 class DummyUser:

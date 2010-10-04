@@ -13,6 +13,7 @@ utool = getToolByName(script, 'portal_url')
 wtool = getToolByName(script, 'portal_workflow')
 portal_object = utool.getPortalObject()
 uidtool = getToolByName(script, 'portal_uidhandler', None)
+syndtool = getToolByName(script, 'portal_syndication')
 
 if not 'charset' in (context.REQUEST.RESPONSE.getHeader('content-type') or ''):
     # Some newstyle views set a different charset - don't override it.
