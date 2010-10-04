@@ -59,17 +59,17 @@ class UrsineGlobals(ViewBase):
     @memoize
     def wtool(self):
         return self._getTool('portal_workflow')
-        
+
     @property
     @memoize
     def caltool(self):
         return getToolByName(self.context, 'portal_calendar', None)
-        
+
     @property
     @memoize
     def caltool_installed(self):
         return self.caltool is not None
-        
+
     @property
     @memoize
     def uidtool(self):
