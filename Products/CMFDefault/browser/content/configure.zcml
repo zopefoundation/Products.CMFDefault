@@ -25,6 +25,15 @@
       permission="cmf.ListFolderContents"
       />
 
+  <browser:page
+      for="Products.CMFCore.interfaces.ISyndicatable"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="rss.xml"
+      class=".rss.View"
+      template="rss.pt"
+      permission="zope2.View"
+      />
+
   <adapter factory=".metadata.MinimalMetadataSchemaAdapter"/>
 
   <browser:page
