@@ -17,6 +17,8 @@ import unittest
 import Testing
 
 from DateTime.DateTime import DateTime
+from zope.component import getSiteManager
+from zope.interface import alsoProvides
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
@@ -29,6 +31,41 @@ class Dummy:
         return 'dummy'
 
 
+class DummyInfo:
+
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self):
+        pass
+
+    @property
+    def enabled(self):
+        if hasattr(self.context, 'enabled'):
+            return self.context.enabled
+        return False
+
+    def enable(self):
+        self.context.enabled = True
+
+    def disable(self):
+        self.context.enabled = False
+
+    def set_info(self, **kw):
+        for k, v in kw.items():
+            setattr(self.context, k, v)
+
+    def get_info(self):
+        if hasattr(self.context, 'frequency'):
+            # values set on context
+            return {'frequency': self.context.frequency,
+                    'period': self.context.period,
+                    'base': self.context.base,
+                    'max_items': self.context.max_items}
+        #values from syndication tool
+        return {'frequency': '1', 'period': 'daily',
+                'base': DateTime('2010/10/04 12:00:00 GMT'), 'max_items': 15}
+
 class SyndicationToolTests(SecurityTest):
 
     def _getTargetClass(self):
@@ -37,6 +74,14 @@ class SyndicationToolTests(SecurityTest):
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
+
+    def _makeContext(self):
+        from Products.CMFCore.interfaces import IFolderish, ISyndicationInfo
+        self.folder = folder = Dummy()
+        alsoProvides(folder, IFolderish)
+        sm = getSiteManager()
+        sm.registerAdapter(DummyInfo, [IFolderish], ISyndicationInfo)
+        return folder
 
     def tearDown(self):
         cleanUp()
@@ -98,19 +143,28 @@ class SyndicationToolTests(SecurityTest):
         self.failUnless(tool.isAllowed)
         self.assertEqual(tool.max_items, MAX_ITEMS)
 
-    def test_editSyInformationProperties_disabled(self):
-        from zExceptions import Unauthorized
-
+    def test_object_not_syndicatable(self):
+        from Products.CMFDefault.SyndicationTool import SyndicationError
         tool = self._makeOne()
-        dummy = Dummy()
-        try:
-            tool.editSyInformationProperties(object, updateFrequency=1)
-        except Unauthorized:
-            raise
-        except: # WAAA! it raises a string!
-            pass
-        else:
-            assert 0, "Didn't raise"
+        self.assertRaises(SyndicationError, tool._syndication_info, Dummy)
+
+    def test_object_is_syndicatable(self):
+        tool = self._makeOne()
+        context = self._makeContext()
+        tool._syndication_info(context)
+
+    def test_object_syndication_is_disabled(self):
+        tool = self._makeOne()
+        context = self._makeContext()
+        info = tool._syndication_info(context)
+        self.assertFalse(tool.isSyndicationAllowed(context))
+
+    def test_enable_object_syndication(self):
+        tool = self._makeOne()
+        tool.isAllowed = True
+        context = self._makeContext()
+        tool.enableSyndication(context)
+        self.assertTrue(tool.isSyndicationAllowed(context))
 
     def test_editSyInformationProperties_normal(self):
         PERIOD = 'hourly'
@@ -119,20 +173,19 @@ class SyndicationToolTests(SecurityTest):
         MAX_ITEMS = 42
 
         tool = self._makeOne()
-        dummy = Dummy()
-        info = dummy.syndication_information = Dummy()
+        tool.isAllowed = True
+        context = self._makeContext()
+        tool.enableSyndication(context)
 
-        tool.editSyInformationProperties(dummy,
+        tool.editSyInformationProperties(context,
                                          updatePeriod=PERIOD,
                                          updateFrequency=FREQUENCY,
                                          updateBase=NOW,
                                          max_items=MAX_ITEMS,
                                         )
-
-        self.assertEqual(info.syUpdatePeriod, PERIOD)
-        self.assertEqual(info.syUpdateFrequency, FREQUENCY)
-        self.assertEqual(info.syUpdateBase, NOW)
-        self.assertEqual(info.max_items, MAX_ITEMS)
+        self.assertEqual(tool.getSyndicationInfo(context),
+                             {'frequency': FREQUENCY, 'period': PERIOD,
+                              'base': NOW, 'max_items': MAX_ITEMS})
 
     def test_editSyInformationProperties_coercing(self):
         PERIOD = 'hourly'
@@ -141,20 +194,20 @@ class SyndicationToolTests(SecurityTest):
         MAX_ITEMS = 42
 
         tool = self._makeOne()
-        dummy = Dummy()
-        info = dummy.syndication_information = Dummy()
+        tool.isAllowed = True
+        context = self._makeContext()
+        tool.enableSyndication(context)
 
-        tool.editSyInformationProperties(dummy,
+        tool.editSyInformationProperties(context,
                                          updatePeriod=PERIOD,
                                          updateFrequency='%d' % FREQUENCY,
                                          updateBase=NOW.ISO(),
                                          max_items='%d' % MAX_ITEMS,
                                         )
-
-        self.assertEqual(info.syUpdatePeriod, PERIOD)
-        self.assertEqual(info.syUpdateFrequency, FREQUENCY)
-        self.assertEqual(info.syUpdateBase, DateTime(NOW.ISO()))
-        self.assertEqual(info.max_items, MAX_ITEMS)
+        self.assertEqual(tool.getSyndicationInfo(context),
+                             {'frequency': FREQUENCY, 'period': PERIOD,
+                              'base': DateTime(NOW.ISO()),
+                              'max_items': MAX_ITEMS})
 
     def test_editProperties_isAllowedOnly(self):
         # Zope 2.8 crashes if we don't edit all properties.
