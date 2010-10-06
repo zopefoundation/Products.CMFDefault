@@ -194,7 +194,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
             values = obj.synContentValues()
         else:
             values = PortalFolderBase.contentValues(obj)
-            values = (v for v in values if not IFolderish.providedBy(v))
+            values = [v for v in values if not IFolderish.providedBy(v)]
         return values
 
     security.declarePublic('buildUpdatePeriods')
