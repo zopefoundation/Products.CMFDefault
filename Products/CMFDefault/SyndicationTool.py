@@ -28,6 +28,7 @@ from zope.component import getAdapter, queryAdapter
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import ISyndicationTool, ISyndicationInfo
+from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import registerToolInterface
@@ -193,6 +194,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
             values = obj.synContentValues()
         else:
             values = PortalFolderBase.contentValues(obj)
+            values = (v for v in values if not IFolderish.providedBy(v))
         return values
 
     security.declarePublic('buildUpdatePeriods')
