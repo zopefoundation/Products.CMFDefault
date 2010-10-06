@@ -63,6 +63,7 @@ class View(ViewBase):
                 'ttl': ttl,
                 'period': self.synd_info['period'],
                 'title': self.context.Title(),
-                'description': self.context.Description()
+                'description': self.context.Description(),
+                'portal_url': self._getTool('portal_url')()
                 }
         return info
