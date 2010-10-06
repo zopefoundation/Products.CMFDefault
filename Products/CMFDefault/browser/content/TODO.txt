@@ -99,4 +99,10 @@ Converting skins to views:
       image_view.py -> ImageView
       image_view_template.pt -> templates/image.pt
 
+  [x] ISyndicatable @@rss.xml:
+
+      RSS.py -> rss.View
+      RSS_template.pt -> rss.pt
+
+
   [ ] complete this todo list

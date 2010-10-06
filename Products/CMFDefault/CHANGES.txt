@@ -32,7 +32,9 @@ Products.CMFDefault Changelog
 
 - MetadataTool: Replaced write-on-read upgrade for the Dublin Core
   metadata definitions with a set of GenericSetup upgrade steps.
-
+  
+- SyndicationTool: Updated to produce RSS 2.0. Uses an adapter for
+  syndication information.
 
 2.2.0-beta (2009-12-06)
 -----------------------
