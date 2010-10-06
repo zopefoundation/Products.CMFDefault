@@ -5,6 +5,7 @@
                   mtool globals/mtool;
                   atool globals/atool;
                   wtool globals/wtool;
+                  syndtool globals/syndtool;
                   caltool_installed globals/caltool_installed;
                   portal_object globals/portal_object;
                   portal_title globals/portal_title;
@@ -36,6 +37,10 @@
  <link rel="stylesheet" type="text/css" href="calendar.css"
        tal:condition="caltool_installed"
        tal:attributes="href string:${portal_url}/++resource++calendar.css" />
+ <link rel="alternate" type="application/rss+xml"
+       tal:condition="python: syndtool.isSyndicationAllowed(context)"
+       tal:attributes="href string:${context/absolute_url}/@@rss.xml;
+                       title context/Title" />
  <metal:slot define-slot="style_slot" />
 </head>
 
