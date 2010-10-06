@@ -57,7 +57,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
 
     #Default Sitewide Values
-    isAllowed = 0
+    isAllowed = False
     syUpdatePeriod = 'daily'
     syUpdateFrequency = 1
     syUpdateBase = DateTime()
