@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="search.html"
+      class=".search.Search"
+      permission="zope2.View"
+      />
+
+  <utility
+      component=".vocab.subject_vocab"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="cmf.subject"
+      />
+
+  <utility
+      component=".vocab.status_vocab"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="cmf.review state"
+      />
+
+  <utility
+      component=".vocab.date_vocab"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="cmf.date"
+      />
+
+  <utility
+      component=".vocab.type_vocab"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="cmf.type"
+      />
+
+</configure>

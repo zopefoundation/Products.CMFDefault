@@ -1,0 +1,7 @@
+Search Views
+------------
+
+search.py
+search_form.py
+search_form_template.pt
+search_results_template.pt
