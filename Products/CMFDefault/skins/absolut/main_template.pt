@@ -134,7 +134,7 @@
   <a href="#add_action"
       tal:attributes="href action/url;
                       target action/link_target|nothing;
-                      class string:type_icon ${action/id}"
+                      class string:icon ${action/id}"
       tal:content="action/title"
       i18n:translate="">ADD ACTION_TITLE</a>
   </li>
