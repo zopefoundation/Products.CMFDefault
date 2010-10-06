@@ -4,5 +4,22 @@ Portal views
 Portal configuration
 ====================
 
-reconfig_form.py ->
-reconfig_template.pt
+ [X] ISiteRoot @@configure.html
+ 
+     reconfig_form.py
+     reconfig_template-> config.Site
+     
+Portal syndication
+==================
+     
+ [X] ISiteRoot @@syndication.html
+ 
+     SyndicationTool properties form -> syndication.Site
+     
+ [X] IFolderish @@syndicate.html
+ 
+     synPropertiesForm.py
+     disableSyndication.py
+     enableSyndication.py
+     synPropertiesForm_template.pt -> syndication.Syndicate    
+      

@@ -23,7 +23,7 @@ from Products.CMFCore.tests.base.dummy import DummySite, DummyTool, DummyFolder
 
 class DummySyndicationTool(object):
 
-    isAllowed = 0
+    isAllowed = False
     syUpdatePeriod = updatePeriod = "daily"
     syUpdateFrequency = updateFrequency = 1
     syUpdateBase = updateBase = ""
@@ -32,6 +32,9 @@ class DummySyndicationTool(object):
     def editProperties(self, **kw):
         for k, v in kw.items():
             setattr(self, k, v)
+
+    def isSiteSyndicationAllowed(self):
+        return self.isAllowed
 
 
 class DummyResponse(object):
@@ -139,6 +142,10 @@ class FolderSyndicationTests(unittest.TestCase):
         request = DummyRequest(ACTUAL_URL="http://example.com")
         alsoProvides(request, IUserPreferredCharsets)
         return Syndicate(self.site, request)
+
+    def test_allowed(self):
+        view = self._getTargetClass()
+        self.assertFalse(view.allowed())
 
     def test_adapter(self):
         from Products.CMFCore.interfaces import ISyndicationInfo
