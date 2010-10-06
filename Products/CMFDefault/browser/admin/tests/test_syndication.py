@@ -145,7 +145,7 @@ class FolderSyndicationTests(unittest.TestCase):
 
     def test_allowed(self):
         view = self._getTargetClass()
-        self.assertFalse(view.allowed())
+        self.assertFalse(view.allowed)
 
     def test_adapter(self):
         from Products.CMFCore.interfaces import ISyndicationInfo

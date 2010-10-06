@@ -9,7 +9,7 @@
      tal:content="structure error">Error Message</li>
 </ul>
 
-<h1 i18n:translate="">Folder Syndication</h1>
+<h1 tal:content="view/label">Folder Syndication</h1>
 
 <p class="errors" tal:condition="not: view/allowed"
                   i18n:translate="">Portal syndication is currently disabled</p>

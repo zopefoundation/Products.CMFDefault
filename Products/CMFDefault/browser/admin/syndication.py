@@ -64,8 +64,11 @@ class ISyndicationSchema(Interface):
 class Site(EditFormBase):
     """Enable or disable syndication for a site."""
 
-
     form_fields = form.FormFields(ISyndicationSchema)
+    template = ViewPageTemplateFile("syndication.pt")
+    allowed = True
+    label = _(u"Configure Portal Syndication")
+
     actions = form.Actions(
         form.Action(
             name="enable",
@@ -140,6 +143,7 @@ class Syndicate(EditFormBase):
 
     form_fields = form.FormFields(ISyndicationSchema)
     template = ViewPageTemplateFile("syndication.pt")
+    label = _(u"Configure Folder Syndication")
 
     actions = form.Actions(
         form.Action(
@@ -190,6 +194,7 @@ class Syndicate(EditFormBase):
     def disabled(self, action=None):
         return not self.adapter.enabled
 
+    @property
     @memoize
     def allowed(self):
         syndtool = self._getTool('portal_syndication')
