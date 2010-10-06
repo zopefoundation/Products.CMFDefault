@@ -223,7 +223,12 @@ class SyndicationTool(UniqueObject, SimpleItem):
         particular obj is enabled, allowing for turning on only
         specific folders for syndication.
         """
-        info = self._syndication_info(obj)
+        if obj is None:
+            return self.isSiteSyndicationAllowed()
+        try:
+            info = self._syndication_info(obj)
+        except SyndicationError:
+            return False
         return info.enabled
 
     security.declarePublic('getSyndicationInfo')

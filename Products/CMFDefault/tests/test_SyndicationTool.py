@@ -17,7 +17,7 @@ import unittest
 import Testing
 
 from DateTime.DateTime import DateTime
-from zope.component import getSiteManager
+from zope.component import getSiteManager, queryAdapter
 from zope.interface import alsoProvides
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
@@ -146,17 +146,18 @@ class SyndicationToolTests(SecurityTest):
     def test_object_not_syndicatable(self):
         from Products.CMFDefault.SyndicationTool import SyndicationError
         tool = self._makeOne()
-        self.assertRaises(SyndicationError, tool._syndication_info, Dummy)
+        self.assertFalse(tool.isSyndicationAllowed(Dummy))
 
     def test_object_is_syndicatable(self):
+        from Products.CMFCore.interfaces import ISyndicationInfo
         tool = self._makeOne()
         context = self._makeContext()
-        tool._syndication_info(context)
+        adapter = queryAdapter(context, ISyndicationInfo)
+        self.assertTrue(adapter is not None)
 
     def test_object_syndication_is_disabled(self):
         tool = self._makeOne()
         context = self._makeContext()
-        info = tool._syndication_info(context)
         self.assertFalse(tool.isSyndicationAllowed(context))
 
     def test_enable_object_syndication(self):
