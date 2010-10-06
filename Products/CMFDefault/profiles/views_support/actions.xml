@@ -153,7 +153,7 @@
   <object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Syndication</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${folder_url}/synPropertiesForm</property>
+   <property name="url_expr">string:${folder_url}/@@syndicate.html</property>
    <property name="link_target"></property>
    <property
       name="icon_expr">string:${portal_url}/syndication_icon.png</property>
