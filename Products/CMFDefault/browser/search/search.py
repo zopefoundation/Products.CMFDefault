@@ -10,6 +10,18 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+##############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 """Search views"""
 
 from zope.interface import Interface
@@ -25,6 +37,7 @@ from Products.CMFDefault.browser.utils import memoize
 from interfaces import ISearchSchema
 
 class Search(EditFormBase):
+    """Portal Search Form"""
 
     template = ViewPageTemplateFile("search.pt")
     form_fields = form.FormFields(ISearchSchema)
