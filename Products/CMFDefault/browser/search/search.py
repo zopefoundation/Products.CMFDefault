@@ -24,17 +24,16 @@
 ##############################################################################
 """Search views"""
 
-from zope.interface import Interface
 from zope.formlib import form
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from Products.CMFCore.interfaces import ISyndicationInfo
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.browser.utils import memoize
 
 from interfaces import ISearchSchema
+
 
 class Search(EditFormBase):
     """Portal Search Form"""
