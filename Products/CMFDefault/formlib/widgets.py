@@ -10,16 +10,15 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Custom form widgets.
-
-$Id$
-"""
+"""Custom form widgets."""
 
 from zope.app.form import InputWidget
 from zope.app.form.browser import ASCIIWidget
 from zope.app.form.browser import BrowserWidget
 from zope.app.form.browser import FileWidget
+from zope.app.form.browser import MultiCheckBoxWidget
 from zope.app.form.browser import MultiSelectSetWidget
+from zope.app.form.browser import MultiSelectWidget
 from zope.app.form.browser import RadioWidget
 from zope.app.form.browser import TextWidget
 from zope.app.form.browser import TextAreaWidget
@@ -51,6 +50,12 @@ zope_ = MessageFactory("zope")
 
 def ChoiceRadioWidget(field, request):
     return RadioWidget(field, field.vocabulary, request)
+
+def ChoiceMultiSelectWidget(field, request):
+    return MultiSelectWidget(field, field.value_type.vocabulary, request)
+
+def ChoiceCheckBoxWidget(field, request):
+    return MultiCheckBoxWidget(field, field.value_type.vocabulary, request)
 
 
 class EmailInputWidget(TextWidget):
