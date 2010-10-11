@@ -69,13 +69,14 @@
     </li>
     <li>
     <a href="search_form"
-       tal:attributes="href string:${portal_url}/search_form"
+       tal:attributes="href string:${portal_url}/@@search.html"
        i18n:translate="">search</a>
     </li>
      <form action="search" method="get"
-              tal:attributes="action string:${portal_url}/search">
-     <input name="SearchableText" type="search" />
-     <input type="image" name="go" value="go" src="go.gif"
+              tal:attributes="action string:${portal_url}/@@search.html">
+     <input name="form.SearchableText" type="search" />
+     <input type="hidden" name="b_start" value="0" />
+     <input type="image" name="form.actions.search" value="go" src="go.gif"
             align="middle"
             tal:attributes="src string:${portal_url}/go.gif" />
     </form>
