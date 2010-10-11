@@ -1,6 +1,8 @@
 <metal:macro metal:define-macro="master"
 ><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<html tal:define="globals nocall:context/@@ursine_globals"
+<html tal:define="globals nocall:context/@@ursine_globals;
+                  object_title globals/page_title;
+                  object_description globals/object_description"
       i18n:domain="cmf_default">
 <head>
  <title tal:content="globals/page_title">Title goes here</title>
