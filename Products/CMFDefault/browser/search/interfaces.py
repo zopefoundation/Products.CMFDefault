@@ -27,46 +27,48 @@ from Products.CMFDefault.utils import Message as _
 def status_vocab(context):
     """Provides a list of workflow states"""
     catalog = getToolByName(context, 'portal_catalog')
-    values = [(u'--any--', "None")]
-    values += [(v, v) for v in catalog.uniqueValuesFor('review_state')]
-    return SimpleVocabulary.fromItems(values)
+    values = [SimpleTerm(None, None, _(u"--any--"))]
+    values += [SimpleTerm(v, v, v)
+               for v in catalog.uniqueValuesFor('review_state')]
+    return SimpleVocabulary(values)
 directlyProvides(status_vocab, IContextSourceBinder)
 
 def subject_vocab(context):
     """Provides a list of subject keywords"""
     catalog = getToolByName(context, 'portal_catalog')
-    values = [(u'--any--', "None")]
-    values += [(v, v) for v in catalog.uniqueValuesFor('Subject')]
-    return SimpleVocabulary.fromItems(values)
+    values = [SimpleTerm(None, None, _(u"--any--"))]
+    values += [SimpleTerm(v, v, v)
+               for v in catalog.uniqueValuesFor('Subject')]
+    return SimpleVocabulary(values)
 directlyProvides(subject_vocab, IContextSourceBinder)
 
 def date_vocab(context):
     """Provides a list of dates for searching with"""
     mtool = getToolByName(context, 'portal_membership')
-    dates = [SimpleTerm(date(1970, 1, 1), date(1970, 1, 1), 'Ever')]
+    dates = [SimpleTerm(date(1970, 1, 1), date(1970, 1, 1), _(u'Ever'))]
     if not mtool.isAnonymousUser():
         login_time = mtool.getAuthenticatedMember().last_login_time
         if not hasattr(login_time, 'parts'):
             login_time = DateTime(login_time)
         login = date(*login_time.parts()[:3])
         dates.append(SimpleTerm(
-            login, login, 'Last login')
+            login, login, _(u'Last login'))
                      )
 
     today = date.today()
     dates.append(SimpleTerm(today - timedelta(days=1),
                             today - timedelta(days=1),
-                            u'Yesterday'
+                            _(u'Yesterday')
                             )
                  )
     dates.append(SimpleTerm(today - timedelta(days=7),
                             today - timedelta(days=7),
-                            u'Last week'
+                            _(u'Last week')
                             )
                  )
     dates.append(SimpleTerm(today - timedelta(days=31),
                             today - timedelta(days=31),
-                            u'Last month'
+                            _(u'Last month')
                             )
                  )
     return SimpleVocabulary(dates)
@@ -76,7 +78,7 @@ def type_vocab(context):
     """Provides a list of portal types"""
     ttool = getToolByName(context, 'portal_types')
     types = ttool.listTypeInfo()
-    terms = [SimpleTerm("None", "None", u'--any--')]
+    terms = [SimpleTerm(None, None, _(u"--any--"))]
     terms += [SimpleTerm(t.getId(), t.getId(), t.Title()) for t in types]
     return SimpleVocabulary(terms)
 directlyProvides(type_vocab, IContextSourceBinder)
@@ -94,10 +96,10 @@ class ISearchSchema(Interface):
                         value_type=Choice(
                             source=status_vocab
                             ),
-                        required=False
+                        required=False,
                         )
 
-    search_text = TextLine(
+    SearchableText = TextLine(
                     title=_(u"Full Text"),
                     description=_(
                         u"For a simple text search, enter your search term"
@@ -151,7 +153,7 @@ class ISearchSchema(Interface):
                     required=False,
                     )
 
-    creator = ASCIILine(
+    listCreators = ASCIILine(
                 title=_(u"Creator"),
                 description=_(
                     u"To find items by a particular user only, enter their"

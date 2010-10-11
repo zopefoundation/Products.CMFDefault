@@ -52,8 +52,9 @@ class Search(BatchViewBase, EditFormBase):
     form_fields['Subject'].custom_widget = ChoiceMultiSelectWidget
     form_fields['portal_type'].custom_widget = ChoiceMultiSelectWidget
     prefix = 'form'
+    _query = {}
 
-    actions = form.Actions(
+    search = form.Actions(
         form.Action(
             name='search',
             label=_(u"Search"),
@@ -62,42 +63,79 @@ class Search(BatchViewBase, EditFormBase):
             ),
         )
 
-    #def __init__(self, *args):
-        #super(Search, self).__init__(*args)
-        #self.hidden_fields += self.form_fields
+    # for handling searches from the search box
+    image = form.Actions(
+        form.Action(
+            name='search.x',
+            label=_(u"Search"),
+            success='handle_search',
+            failure='handle_failure',
+            ),
+        form.Action(
+            name='search.y',
+            label=_(u"Search"),
+            success='handle_search',
+            failure='handle_failure',
+            ),
+        )
+
+    actions = search + image
 
     @property
+    @memoize
     def catalog(self):
         return self._getTool('portal_catalog')
 
     @property
-    def types(self):
-        return self._getTool('portal_types')
+    @memoize
+    def is_anonymous(self):
+        mtool = self._getTool('portal_membership')
+        return mtool.isAnonymousUser()
+
+    @memoize
+    def _getHiddenVars(self):
+        data = {}
+        if hasattr(self, 'hidden_widgets'):
+            form.getWidgetsData(self.hidden_widgets, self.prefix, data)
+        if hasattr(self, '_query'):
+            data.update(self._query)
+        else:
+            data = self.request.form
+        return data
+
+    @property
+    @memoize
+    def search_fields(self):
+        if self.is_anonymous:
+            return self.form_fields.omit('review_state')
+        else:
+            return self.form_fields
 
     def setUpWidgets(self, ignore_request=False):
-        """Create widgets for the folder contents."""
+        if "form.b_start" in self.request.form \
+        or "b_start" in self.request.form:
+            self.template = self.results
         super(Search, self).setUpWidgets(ignore_request)
         self.widgets = form.setUpWidgets(
-                self.form_fields, self.prefix, self.context,
+                self.search_fields, self.prefix, self.context,
                 self.request, ignore_request=ignore_request)
 
     def handle_search(self, action, data):
         for k, v in data.items():
             if k in ('review_state', 'Title', 'Subject', 'Description',
-                     'portal_type', 'listCreators'):
-                if type(v) == type([]):
-                    v = filter(None, v)
-                if not v:
+                     'portal_type', 'listCreators', 'SearchableText'):
+                if not v or v == u"None":
                     del data[k]
             elif k == 'created' and v == EPOCH:
                 del data[k]
-
-        self._items = self.catalog.searchResults(data)
+        self._query = data
         self.template = self.results
 
+    @memoize
     def _get_items(self):
-        return getattr(self, '_items', ())
+        return self.catalog.searchResults(self._query)
 
+    @memoize
     def listBatchItems(self):
         return( {'description': item.Description,
            'icon': item.getIconURL,

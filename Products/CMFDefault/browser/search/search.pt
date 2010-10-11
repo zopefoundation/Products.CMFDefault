@@ -25,7 +25,7 @@
   </fieldset>
 
   <div class="buttons">
-    <tal:loop tal:repeat="action view/actions"
+    <tal:loop tal:repeat="action view/search"
      tal:replace="structure action/render" />
   </div>
 
