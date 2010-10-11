@@ -117,8 +117,6 @@ class Search(BatchViewBase, EditFormBase):
             elif k == 'created' and v == EPOCH:
                 del data[k]
         self._query = data
-        import pdb
-        pdb.set_trace()
         self.template = self.results
 
     @memoize
