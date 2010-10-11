@@ -9,7 +9,9 @@
   <include package=".content" />
 
   <include package=".membership" />
-  
+
   <include package=".admin" />
+
+  <include package=".search" />
 
 </configure>
