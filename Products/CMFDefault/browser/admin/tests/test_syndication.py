@@ -16,10 +16,9 @@ import unittest
 
 from zope.interface import alsoProvides
 from zope.i18n.interfaces import IUserPreferredCharsets
-from zope.publisher.browser import TestRequest
 
 from Products.CMFCore.tests.base.dummy import DummySite, DummyTool, DummyFolder
-
+from Products.CMFDefault.browser.test_utils import DummyRequest, DummyResponse
 
 class DummySyndicationTool(object):
 
@@ -35,23 +34,6 @@ class DummySyndicationTool(object):
 
     def isSiteSyndicationAllowed(self):
         return self.isAllowed
-
-
-class DummyResponse(object):
-
-    def redirect(self, value):
-        self.location = value
-
-
-class DummyRequest(TestRequest):
-
-
-    def __init__(self, **kw):
-        super(DummyRequest, self).__init__(kw)
-        self.RESPONSE = DummyResponse()
-
-    def getPreferredCharsets(self):
-        return ['utf-8']
 
 
 class SyndicationViewTests(unittest.TestCase):
