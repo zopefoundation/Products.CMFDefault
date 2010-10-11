@@ -53,7 +53,7 @@
    <ul>
     <li>
       <a href="."
-       tal:attributes="href string:${portal_url}/"
+       tal:attributes="href portal_url"
        i18n:translate="">home</a>
     </li>
     <li>
