@@ -1,8 +1,18 @@
-"""
-Forms for managing members
-"""
+##############################################################################
+#
+# Copyright (c) 2008 Zope Foundation and Contributors.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+""" Forms for managing members """
+
 from logging import getLogger
-LOG = getLogger("Manage Members Form")
 
 from zope.interface import Interface
 from zope.formlib import form
@@ -22,6 +32,7 @@ from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.content.folder import BatchViewBase
 from Products.CMFDefault.browser.content.interfaces import IBatchForm
 
+
 class IMemberItem(Interface):
     """Schema for portal members """
 
@@ -33,13 +44,13 @@ class IMemberItem(Interface):
         required=False,
         readonly=True
         )
-        
+
     email = TextLine(
         title=_(u"E-mail Address"),
         required=False,
         readonly=True
         )
-        
+
     last_login = Date(
         title=_(u"Last Login"),
         required=False,
@@ -49,7 +60,7 @@ class IMemberItem(Interface):
 
 class MemberProxy(object):
     """Utility class wrapping a member for display purposes"""
-    
+
     def __init__(self, member):
         login_time = member.getProperty('login_time')
         self.login_time = '2000/01/01' and '---' or login_time.Date()
@@ -60,7 +71,7 @@ class MemberProxy(object):
 
 
 class Manage(BatchViewBase, EditFormBase):
-    
+
     label = _(u"Manage Members")
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
@@ -68,7 +79,7 @@ class Manage(BatchViewBase, EditFormBase):
     prefix = 'form' # required for hidden fields to work
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
-    
+
     manage_actions = form.Actions(
         form.Action(
             name='new',
@@ -84,7 +95,7 @@ class Manage(BatchViewBase, EditFormBase):
             validator=('validate_items')
                 )
             )
-            
+
     delete_actions = form.Actions(
         form.Action(
             name='delete',
@@ -99,10 +110,11 @@ class Manage(BatchViewBase, EditFormBase):
             )
     actions = manage_actions + delete_actions
 
+    @memoize
     def _get_items(self):
         mtool = self._getTool('portal_membership')
         return mtool.listMembers()
-        
+
     def members_exist(self, action=None):
         return len(self._getBatchObj()) > 0
 
@@ -111,7 +123,8 @@ class Manage(BatchViewBase, EditFormBase):
         ids = [k[:-7] for k, v in data.items()
                  if v is True and k.endswith('.select')]
         return ids
-        
+
+    @memoize
     def member_fields(self):
         """Create content field objects only for batched items
         Also create pseudo-widget for each item
@@ -125,7 +138,7 @@ class Manage(BatchViewBase, EditFormBase):
             members.append(MemberProxy(item))
         self.listBatchItems = members
         return fields
-        
+
     def setUpWidgets(self, ignore_request=False):
         """Create widgets for the members"""
         super(Manage, self).setUpWidgets(ignore_request)
@@ -144,20 +157,20 @@ class Manage(BatchViewBase, EditFormBase):
     def handle_add(self, action, data):
         """Redirect to the join form where managers can add users"""
         return self._setRedirect('portal_actions', 'user/join')
-        
+
     def handle_select_for_deletion(self, action, data):
         """Identify members to be deleted and redirect to confirmation
         template"""
         self.guillotine = ", ".join(self._get_ids(data))
         return self.delete_template()
-        
+
     def handle_delete(self, action, data):
         """Delete selected members"""
         mtool = self._getTool('portal_membership')
         mtool.deleteMembers(self._get_ids(data))
         self.status = _(u"Selected members deleted")
         self._setRedirect('portal_actions', "global/manage_members")
-        
+
     def handle_cancel(self, action, data):
         """Don't delete anyone, return to list"""
         self.status = _(u"Deletion broken off")
@@ -165,28 +178,31 @@ class Manage(BatchViewBase, EditFormBase):
 
 
 class Roster(BatchViewBase):
-    
+
     hidden_fields = form.FormFields(IBatchForm)
     form_fields = form.FormFields()
     actions = ()
     template = ViewPageTemplateFile("members_list.pt")
-    
+
+    @property
+    @memoize
     def mtool(self):
         return self._getTool('portal_membership')
-    
+
+    @memoize
     def isUserManager(self):
-        return self.mtool().checkPermission('Manage users',
-                          self.mtool().getMembersFolder()
+        return self.mtool.checkPermission('Manage users',
+                          self.mtool.getMembersFolder()
                                             )
-                                            
+
     @memoize
     def _get_items(self):
         (key, reverse) = self.context.getDefaultSorting()
         items = self.mtool().getRoster()
         items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
-        return items
         return LazyFilter(items, skip='View')
-                          
+
+    @memoize
     def listBatchItems(self):
         members = []
         for item in self._getBatchObj():
@@ -196,4 +212,3 @@ class Roster(BatchViewBase):
             member['listed'] = member['listed'] and _(u"Yes") or _("No")
             members.append(member)
         return members
-             

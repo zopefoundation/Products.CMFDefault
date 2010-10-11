@@ -10,8 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Test Products.CMFDefault.browser.folder
-"""
+""" Tests for membership views """
 
 import unittest
 
@@ -34,26 +33,26 @@ from Products.CMFDefault.testing import FunctionalLayer
 
 
 class DummyUser(DummyUser):
-    
+
     def getProperty(self, attr):
         return None
 
 
 class DummyMemberTool(object):
-    
+
     def __init__(self):
         self.members = {}
-    
+
     def listMembers(self):
         return self.members.values()
-        
+
     def addMember(self, member):
         self.members[member.getId()] = member
-        
+
     def deleteMembers(self, member_ids):
         for i in member_ids:
             del self.members[i]
-            
+
     def isAnonymousUser(self):
         return True
 
@@ -78,13 +77,13 @@ class MembershipViewTests(unittest.TestCase):
         for i in range(batch_size + 2):
             user_id = "Dummy%s" % i
             self._make_one(user_id)
-            
+
     def test_getNavigationURL(self):
         url = 'http://example.com/members.html'
         self._make_batch()
         view = Manage(self.site, TestRequest(ACTUAL_URL=url))
         self.assertTrue(view._getNavigationURL(25) == url + "?form.b_start=25")
-        
+
     def test_view(self):
         view = Manage(self.site, TestRequest())
         self.assertTrue(IBrowserPublisher.providedBy(view))
@@ -114,7 +113,7 @@ class MembershipViewTests(unittest.TestCase):
                         view._get_ids({'stupid.name.select.select':True}),
                         ['stupid.name.select']
         )
-        
+
     def test_handle_select_for_deletion(self):
         view = Manage(self.site, TestRequest())
         self.assertTrue(view.guillotine == None)
