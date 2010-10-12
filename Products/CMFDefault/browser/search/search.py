@@ -40,7 +40,6 @@ class Search(BatchViewBase, EditFormBase):
     form_fields['Subject'].custom_widget = ChoiceMultiSelectWidget
     form_fields['portal_type'].custom_widget = ChoiceMultiSelectWidget
     prefix = 'form'
-    _query = {}
 
     search = form.Actions(
         form.Action(
