@@ -39,21 +39,25 @@ class SearchFormTests(unittest.TestCase):
         self.assertFalse(view.is_anonymous)
         self.assertNotEqual(view.search_fields.get('review_state'), None)
 
+    def test_strip_unused_paramaters(self):
+        view = self._getTargetClass()
+        data = {'portal_type': ['Document'], 'review_state':u"None",
+                'Subject':u"None"}
+        view.handle_search('search', data)
+        self.assertEqual(view._query, {'portal_type':['Document']})
+
     def test_add_search_vars_to_hidden(self):
         view = self._getTargetClass()
-        self.assertEqual(view._query, {})
+        self.assertFalse(hasattr(view, '_query'))
         data = {'portal_type': ['Document']}
         view.handle_search('search', data)
-        self.assertEqual(view._query, data)
+        self.assertEqual(view._getHiddenVars(), data)
 
     def test_search_returns_results(self):
         view = self._getTargetClass()
         self.assertNotEqual(view.template, view.results)
         view.handle_search('search', {})
         self.assertEqual(view.template.filename, view.results.filename)
-
-    def results(self):
-        pass
 
 def test_suite():
     suite = unittest.TestSuite()
