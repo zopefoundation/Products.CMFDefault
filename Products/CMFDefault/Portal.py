@@ -15,6 +15,11 @@
 
 from App.class_init import InitializeClass
 
+from OFS.FindSupport import FindSupport
+from OFS.ObjectManager import ObjectManager
+from OFS.role import RoleManager
+from OFS.SimpleItem import Item
+
 from Products.CMFCore.PortalObject import PortalObjectBase
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.permissions import AddPortalContent
@@ -23,8 +28,6 @@ from Products.CMFDefault.permissions import ListPortalMembers
 from Products.CMFDefault.permissions import ReplyToItem
 from Products.CMFDefault.permissions import View
 
-from logging import getLogger
-LOG = getLogger("CMF Portal Object")
 
 class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):
 
@@ -41,8 +44,14 @@ class CMFSite(PortalObjectBase, DefaultDublinCoreImpl):
     title = ''
     description = ''
 
-    manage_options = PortalObjectBase.manage_options[:2] + \
-                     PortalObjectBase.manage_options[3:]
+    manage_options = ObjectManager.manage_options +\
+                     ({'label': 'Components', 'action': 'manage_components'},
+                      {'label': 'Components Folder',
+                       'action': '++etc++site/manage_main'},
+                      {'label': 'View', 'action': ''}) +\
+                     RoleManager.manage_options +\
+                     Item.manage_options +\
+                     FindSupport.manage_options
 
     __ac_permissions__=( ( AddPortalContent, () )
                        , ( AddPortalFolders, () )
