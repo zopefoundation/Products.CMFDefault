@@ -46,10 +46,12 @@ setup(name='Products.%s' % NAME,
                      ],
       install_requires=[
           'setuptools',
+          'Zope2 >= 2.12.11',
           'five.formlib >= 1.0.2',
-          'Zope2 >= 2.12.11dev',
           'Products.CMFCore',
           'Products.GenericSetup',
+#          'Products.MailHost', # BBB: disabled for Zope 2.12
+#          'Products.PythonScripts', # BBB: disabled for Zope 2.12
           ],
       tests_require=[
           'zope.testing >= 3.7.0',
