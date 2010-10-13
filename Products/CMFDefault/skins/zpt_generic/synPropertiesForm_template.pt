@@ -79,26 +79,26 @@
           <td>
            <input type="text" name="updateFrequency:int" size="3" value=""
                   tal:attributes="value python:s_tool.getUpdateFrequency(context)"
-           >
+           />
           </td>
          </tr>
          <tr>
           <td i18n:translate="">UpdateBase</td>
           <td>
            <input type="text" name="updateBase:date" value="" size="25"
-                  tal:attributes="value python:s_tool.getUpdateBase(context)">
+                  tal:attributes="value python:s_tool.getUpdateBase(context)"/>
           </td>
          </tr>
          <tr>
           <td i18n:translate="">Max Syndicated Items</td>
           <td>
            <input type="text" name="max_items:int" value=""  size="3"
-                  tal:attributes="value python:s_tool.getMaxItems(context)">
+                  tal:attributes="value python:s_tool.getMaxItems(context)"/>
           </td>
          </tr>
          <tr>
           <td colspan="2"><input type="submit" name="edit" value="Save"
-                                 i18n:attributes="value"></td>
+                                 i18n:attributes="value"/></td>
          </tr>
         </table>
 
@@ -115,16 +115,16 @@
 
 <form action="disableSyndication" method="post"
    tal:attributes="action string:${context/absolute_url}/disableSyndication">
- <input type="submit" value="Disable Syndication" i18n:attributes="value">
- <input type="hidden" name="isAllowed:int" value="0">
+ <input type="submit" value="Disable Syndication" i18n:attributes="value"/>
+ <input type="hidden" name="isAllowed:int" value="0"/>
 </form>
 </tal:case><!-- s_allowed -->
 
 <tal:case tal:condition="python: options['s_site_allowed'] and not options['s_here_allowed']"
 ><form action="enableSyndication" method="post"
    tal:attributes="action string:${context/absolute_url}/enableSyndication">
- <input type="hidden" name="isAllowed:int" value="1">
- <input type="submit" value="Enable Syndication" i18n:attributes="value">
+ <input type="hidden" name="isAllowed:int" value="1"/>
+ <input type="submit" value="Enable Syndication" i18n:attributes="value"/>
 </form>
 </tal:case><!-- s_site_allowed and not s_here_allowed -->
 

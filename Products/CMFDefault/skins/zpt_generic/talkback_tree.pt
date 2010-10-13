@@ -11,7 +11,7 @@
       tal:condition="item/tree_url"
       tal:attributes="name item/tree_id;
                       href item/tree_url"
-      tal:content="structure item/tree_icon"><img src="/p_/pl"></a>
+      tal:content="structure item/tree_icon"><img src="/p_/pl"/></a>
   </td>
   <td colspan="1" tal:attributes="colspan item/tree_colspan">
    <a href="" tal:attributes="href item/url"

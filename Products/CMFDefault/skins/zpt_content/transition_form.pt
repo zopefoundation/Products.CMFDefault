@@ -63,6 +63,7 @@
    <span tal:define="rhComments items/comments"
          tal:replace="rhComments">Comments</span>
  </tal:loop>
+ </p>
 </tal:case>
 </metal:slot>
 
