@@ -16,7 +16,7 @@
                b_fmt2 string:first_transaction:int=%s;
                b_fmt3 string:last_transaction:int=%s;
                b_fmt4 string:PrincipiaUndoBatchSize:int=%s;
-               b_fmt string:${b_fmt1}?${b_fmt2}&${b_fmt3}&${b_fmt4};
+               b_fmt string:${b_fmt1}?${b_fmt2}&amp;${b_fmt3}&amp;${b_fmt4};
                e_start python:( b_first * 2 - b_last );
                e_end b_first;
                l_start b_last;

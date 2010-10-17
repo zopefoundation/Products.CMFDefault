@@ -1,5 +1,8 @@
 <metal:macro metal:define-macro="master"
-><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+><tal:doctype tal:replace="structure string:&lt;!DOCTYPE html PUBLIC
+  &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;" />
+
 <html tal:define="globals nocall:context/@@ursine_globals;
                   object_title globals/page_title;
                   object_description globals/object_description"
