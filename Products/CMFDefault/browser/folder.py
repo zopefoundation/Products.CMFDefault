@@ -84,6 +84,8 @@ class BatchViewBase(ViewBase):
         data = {}
         if hasattr(self, 'hidden_widgets'):
             form.getWidgetsData(self.hidden_widgets, self.prefix, data)
+        else:
+            data = self.request.form
         return data
 
     @memoize
@@ -107,8 +109,9 @@ class BatchViewBase(ViewBase):
                 pass
             else:
                 new_key = self.expand_prefix(k)
-                kw[new_key] = v
-            del kw[k]
+                if new_key != k:
+                    kw[new_key] = v
+                    del kw[k]
 
         query = kw and ('?%s' % urllib.urlencode(kw)) or ''
 
@@ -451,7 +454,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         """Check whether any items have been selected for 
         the requested action."""
         super(ContentsView, self).validate(action, data)
-        if data is None or data == {}:
+        if self._get_ids(data) == []:
             return [_(u"Please select one or more items first.")]
         else:
             return []
@@ -479,7 +482,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             self.status = _(u'CopyError: Cut failed.')
         except zExceptions_Unauthorized:
             self.status = _(u'Unauthorized: Cut failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')    
+        return self._setRedirect('portal_types', 'object/contents')    
 
     def handle_copy(self, action, data):
         """Copy the selected objects to the clipboard"""
@@ -492,7 +495,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Items copied.')
         except CopyError:
             self.status = _(u'CopyError: Copy failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
     
     def handle_paste(self, action, data):
         """Paste the objects from the clipboard into the folder"""
@@ -509,7 +512,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
 
         except zExceptions_Unauthorized:
             self.status = _(u'Unauthorized: Paste failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
 
     def handle_delete(self, action, data):
         """Delete the selected objects"""
@@ -519,7 +522,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
             self.status = _(u'Item deleted.')
         else:
             self.status = _(u'Items deleted.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
     
     def handle_up(self, action, data):
         """Move the selected objects up the selected number of places"""
@@ -538,7 +541,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
 
     def handle_down(self, action, data):
         """Move the selected objects down the selected number of places"""
@@ -557,7 +560,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
             
     def handle_top(self, action, data):
         """Move the selected objects to the top of the page"""
@@ -575,7 +578,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
 
     def handle_bottom(self, action, data):
         """Move the selected objects to the bottom of the page"""
@@ -593,7 +596,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
         
     def handle_sort_order(self, action, data):
         """Set the sort options for the folder."""
@@ -601,7 +604,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
         reverse = data.get('reverse', 0)
         self.context.setDefaultSorting(key, reverse)
         self.status = _(u"Sort order changed")
-        return self._setRedirect('portal_types', 'object/new_contents')
+        return self._setRedirect('portal_types', 'object/contents')
         
 
 class FolderView(BatchViewBase):

@@ -29,7 +29,7 @@
    tal:attributes="action request/ACTUAL_URL">
    <tal:block repeat="widget view/hidden_widgets"
               replace="structure widget/hidden" />
-   <table tal:condition="view/has_subobjects">
+   <table class="BatchTable" tal:condition="view/has_subobjects">
      <tr>
        <th tal:repeat="column view/column_headings"
             tal:attributes="colspan column/colspan | nothing"><a href="column"
