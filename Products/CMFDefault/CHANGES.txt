@@ -4,6 +4,15 @@ Products.CMFDefault Changelog
 2.2.2 (unreleased)
 ------------------
 
+- Content-type setting was incorrectly transcribed from getMailGlobals 
+  which meant that content-type=' ;charset-utf-8' was set on browser 
+  views which is incorrect (backport from trunk).
+
+- Utility class used for wrapping items for display (backport from 
+  trunk).
+
+- Fixed Chameleon incompatibilities in some templates.
+
 
 2.2.1 (2010-07-04)
 ------------------
