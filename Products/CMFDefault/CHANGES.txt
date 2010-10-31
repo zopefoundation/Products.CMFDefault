@@ -1,7 +1,7 @@
 Products.CMFDefault Changelog
 =============================
 
-2.2.2 (unreleased)
+2.2.2 (2010-10-31)
 ------------------
 
 - Content-type setting was incorrectly transcribed from getMailGlobals 
