@@ -209,8 +209,9 @@
         />
 
     <genericsetup:upgradeStep
-        title="Upgrade acl_users"
-        description="Update UserFolder class."
+        title="Upgrade actions tool"
+        description="Add 'change_password' and 'syndication' action if
+                     missing."
         handler=".to23.upgrade_actions_tool"
         checker=".to23.check_actions_tool"
         />
