@@ -113,6 +113,10 @@ def check_actions_tool(tool):
         atool.user.change_password
     except AttributeError:
         return True
+    try:
+        atool.user.syndication
+    except AttributeError:
+        return True
     return False
 
 def upgrade_actions_tool(tool):
@@ -126,50 +130,49 @@ def upgrade_actions_tool(tool):
     logger.info("'change_password' action added.")
     getMultiAdapter((atool, environ), IBody).body = _ACTIONS_SYNDICATION_XML
     logger.info("'portal syndication settings' action added.")
-    
 
 _ACTIONS_PASSWORD_XML = """\
 <?xml version="1.0"?>
 <object name="portal_actions" meta_type="CMF Actions Tool"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-   <object name="user" meta_type="CMF Action Category">
-   <object insert-after="join" name="change_password" meta_type="CMF Action"
-      i18n:domain="cmf_default">
-    <property name="title" i18n:translate="">Change password</property>
-    <property name="description"
-       i18n:translate="">Change your password</property>
-    <property name="url_expr">string:${portal_url}/password_form</property>
-    <property name="link_target"></property>
-    <property
-       name="icon_expr">string:${portal_url}/preferences_icon.png</property>
-    <property name="available_expr">member</property>
-    <property name="permissions">
-     <element value="Set own password"/>
-    </property>
-    <property name="visible">True</property>
-   </object>
-   </object>
+ <object name="user" meta_type="CMF Action Category">
+  <object insert-after="join" name="change_password" meta_type="CMF Action"
+     i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Change password</property>
+   <property name="description"
+      i18n:translate="">Change your password</property>
+   <property name="url_expr">string:${portal_url}/password_form</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/preferences_icon.png</property>
+   <property name="available_expr">member</property>
+   <property name="permissions">
+    <element value="Set own password"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
 </object>
 """
 
-_ACTIONS_SYNDICATION_XML = """
+_ACTIONS_SYNDICATION_XML = """\
 <object name="portal_actions" meta_type="CMF Actions Tool"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-   <object name="global" meta_type="CMF Action Category">
-<object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
-     <property name="title" i18n:translate="">Site Syndication</property>
-     <property name="description"
-        i18n:translate="">Enable or  disable syndication</property>
-     <property
-        name="url_expr">string:${portal_url}/@@syndication.html</property>
-     <property name="link_target"></property>
-     <property name="icon_expr">string:${portal_url}/tool_icon.png</property>
-     <property name="available_expr"></property>
-     <property name="permissions">
-      <element value="Manage portal"/>
-     </property>
-     <property name="visible">True</property>
-</object>
-</object>
+ <object name="global" meta_type="CMF Action Category">
+  <object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Site Syndication</property>
+   <property name="description"
+      i18n:translate="">Enable or  disable syndication</property>
+   <property
+      name="url_expr">string:${portal_url}/@@syndication.html</property>
+   <property name="link_target"></property>
+   <property name="icon_expr">string:${portal_url}/tool_icon.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage portal"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
 </object>
 """
