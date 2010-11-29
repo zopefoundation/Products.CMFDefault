@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Makers for z3c.recipe.i18n.
-
-$Id$
 """
 import os
 
@@ -34,7 +32,7 @@ def manual_pot(path, domain, **kw):
     if os.path.exists(manual_file):
         manual = file(manual_file, 'r')
         for i, line in enumerate(manual):
-           if line.startswith('msgid'):
-               catalog[line[5:].strip().strip('"')] = [(manual_file, i+1)]
+            if line.startswith('msgid'):
+                catalog[line[5:].strip().strip('"')] = [(manual_file, i+1)]
         manual.close()
     return catalog
