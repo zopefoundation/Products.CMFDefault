@@ -32,7 +32,7 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object insert-after="join" name="change_password" meta_type="CMF Action"
+  <object name="change_password" meta_type="CMF Action"
      i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Change password</property>
    <property name="description"
