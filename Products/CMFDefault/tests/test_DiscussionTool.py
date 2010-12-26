@@ -16,25 +16,44 @@
 import unittest
 import Testing
 
+from AccessControl.SecurityManagement import newSecurityManager
 from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
-from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFCore.tests.base.dummy import DummyUserFolder
 from Products.CMFCore.tests.base.testcase import SecurityTest
 
 
-class DiscussionToolTests(SecurityTest):
+class DiscussionToolTests(unittest.TestCase):
 
-    def _makeOne(self, *args, **kw):
+    def _getTargetClass(self):
         from Products.CMFDefault.DiscussionTool import DiscussionTool
 
-        return DiscussionTool(*args, **kw)
+        return DiscussionTool
+
+    def test_interfaces(self):
+        from Products.CMFCore.interfaces import IDiscussionTool
+
+        verifyClass(IDiscussionTool, self._getTargetClass())
+
+
+class DiscussionToolSecurityTests(SecurityTest):
+
+    def _getTargetClass(self):
+        from Products.CMFDefault.DiscussionTool import DiscussionTool
+
+        return DiscussionTool
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
 
     def setUp(self):
+        from Products.CMFCore.interfaces import IDiscussionTool
+
         SecurityTest.setUp(self)
         self.site = DummySite('site')
         sm = getSiteManager()
@@ -46,13 +65,9 @@ class DiscussionToolTests(SecurityTest):
         cleanUp()
         SecurityTest.tearDown(self)
 
-    def test_interfaces(self):
-        from Products.CMFCore.interfaces import IDiscussionTool
-        from Products.CMFDefault.DiscussionTool import DiscussionTool
-
-        verifyClass(IDiscussionTool, DiscussionTool)
-
     def test_overrideDiscussionFor(self):
+        acl_users = self.site._setObject('acl_users', DummyUserFolder())
+        newSecurityManager(None, acl_users.all_powerful_Oz)
         dtool = self.site.portal_discussion
         foo = self.site._setObject( 'foo', DummyFolder() )
         baz = foo._setObject( 'baz', DummyFolder() )
@@ -82,6 +97,8 @@ class DiscussionToolTests(SecurityTest):
     def test_isDiscussionAllowedFor(self):
         # Test for Collector issue #398 (allow_discussion wrongly
         # acquired and used from parent)
+        acl_users = self.site._setObject('acl_users', DummyUserFolder())
+        newSecurityManager(None, acl_users.all_powerful_Oz)
         dtool = self.site.portal_discussion
         foo = self.site._setObject( 'foo', DummyFolder() )
         baz = foo._setObject( 'baz', DummyFolder() )
@@ -113,4 +130,5 @@ class DiscussionToolTests(SecurityTest):
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(DiscussionToolTests),
+        unittest.makeSuite(DiscussionToolSecurityTests),
         ))
