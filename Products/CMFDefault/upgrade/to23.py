@@ -114,8 +114,8 @@ def check_actions_tool(tool):
     except AttributeError:
         return True
     try:
-        atool.user.syndication
-    except AttributeError:
+        atool['global'].syndication # 'global' is a reserved word in Python
+    except (KeyError, AttributeError):
         return True
     return False
 
