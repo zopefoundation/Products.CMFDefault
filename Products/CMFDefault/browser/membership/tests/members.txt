@@ -5,7 +5,7 @@ Set up Zope manager.
 
     >>> from urllib import quote
     >>> uf = app.acl_users
-    >>> uf._doAddUser('mbr', 'mbrpw', ['Manager'], [])
+    >>> _ignored = uf._doAddUser('mbr', 'mbrpw', ['Manager'], [])
     >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
 
 Create the browser object we'll be using.
