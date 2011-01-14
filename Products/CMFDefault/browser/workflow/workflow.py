@@ -10,27 +10,27 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Workflow forms"""
+"""Workflow forms.
+"""
 
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.formlib import form
 from zope.interface import Interface
 from zope.schema import Text
 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.exceptions import WorkflowException
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.browser.utils import memoize
 
-
-STATUS = {'submit': _(u"Item submitted for review"),
-          'publish': _(u"Item was published"),
-          'retract': _(u"Item was retracted"),
-          'reject': _(u"Item was rejected"),
-          'hide': _("Item was hidden"),
-          'show': _("Item is now visible")
+STATUS = {'submit': _(u"Item submitted for review."),
+          'publish': _(u"Item was published."),
+          'retract': _(u"Item was retracted."),
+          'reject': _(u"Item was rejected."),
+          'hide': _("Item was hidden."),
+          'show': _("Item is now visible.")
          }
+
 
 class IWorkflowSchema(Interface):
 
@@ -41,6 +41,7 @@ class IWorkflowSchema(Interface):
 
 
 class Submit(EditFormBase):
+
     """Submit an item for review"""
 
     template = ViewPageTemplateFile("submit.pt")
@@ -63,7 +64,7 @@ class Submit(EditFormBase):
         try:
             self.workflow.doActionFor(self.context, action.name,
                                       comment=data['comment'])
-            self.status = STATUS.get(action.name, _(u"Status changed"))
+            self.status = STATUS.get(action.name, _(u"Status changed."))
             self._setRedirect('portal_types', 'object/view')
         except WorkflowException, errmsg:
             self.status = errmsg
@@ -71,6 +72,7 @@ class Submit(EditFormBase):
 
 
 class Publish(Submit):
+
     """Publish an item"""
 
     template = ViewPageTemplateFile("publish.pt")
@@ -86,6 +88,7 @@ class Publish(Submit):
 
 
 class Retract(Submit):
+
     """Remove a published object"""
 
     template = ViewPageTemplateFile("retract.pt")
@@ -101,6 +104,7 @@ class Retract(Submit):
 
 
 class Reject(Submit):
+
     """Reject an item submitted for publication"""
 
     template = ViewPageTemplateFile("reject.pt")
@@ -115,6 +119,7 @@ class Reject(Submit):
         )
 
 class Hide(Submit):
+
     """Hide a published item"""
 
     template = ViewPageTemplateFile("hide.pt")
@@ -129,6 +134,7 @@ class Hide(Submit):
         )
 
 class Show(Submit):
+
     """Reveal a hidden item"""
 
     template = ViewPageTemplateFile("show.pt")
