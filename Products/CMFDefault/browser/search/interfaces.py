@@ -10,16 +10,22 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Search Form Schema"""
+"""Search Form Schema.
+"""
 
-from datetime import date, timedelta
+from datetime import date
+from datetime import timedelta
 
 from DateTime import DateTime
-
-from zope.interface import Interface, directlyProvides
+from zope.interface import directlyProvides
+from zope.interface import Interface
+from zope.schema import ASCIILine
+from zope.schema import Choice
+from zope.schema import List
+from zope.schema import TextLine
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema import Choice, Int, Datetime, List, TextLine, ASCIILine
-from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
+from zope.schema.vocabulary import  SimpleVocabulary
+from zope.schema.vocabulary import SimpleTerm
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import Message as _
@@ -27,7 +33,7 @@ from Products.CMFDefault.utils import Message as _
 def status_vocab(context):
     """Provides a list of workflow states"""
     catalog = getToolByName(context, 'portal_catalog')
-    values = [SimpleTerm(None, None, _(u"--any--"))]
+    values = [SimpleTerm(None, None, _(u"-- any --"))]
     values += [SimpleTerm(v, v, v)
                for v in catalog.uniqueValuesFor('review_state')]
     return SimpleVocabulary(values)
@@ -36,7 +42,7 @@ directlyProvides(status_vocab, IContextSourceBinder)
 def subject_vocab(context):
     """Provides a list of subject keywords"""
     catalog = getToolByName(context, 'portal_catalog')
-    values = [SimpleTerm(None, None, _(u"--any--"))]
+    values = [SimpleTerm(None, None, _(u"-- any --"))]
     values += [SimpleTerm(v, v, v)
                for v in catalog.uniqueValuesFor('Subject')]
     return SimpleVocabulary(values)
@@ -78,7 +84,7 @@ def type_vocab(context):
     """Provides a list of portal types"""
     ttool = getToolByName(context, 'portal_types')
     types = ttool.listTypeInfo()
-    terms = [SimpleTerm(None, None, _(u"--any--"))]
+    terms = [SimpleTerm(None, None, _(u"-- any --"))]
     terms += [SimpleTerm(t.getId(), t.getId(), t.Title()) for t in types]
     return SimpleVocabulary(terms)
 directlyProvides(type_vocab, IContextSourceBinder)
