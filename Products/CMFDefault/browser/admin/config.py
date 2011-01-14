@@ -10,28 +10,25 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Portal Configuration Form"""
-
-from zope.component import adapts, getUtility
-from zope.interface import implements
-from zope.schema import getFieldsInOrder, getFieldNames
-from zope.formlib import form
+"""Portal Configuration Form.
+"""
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.formlib import form
+from zope.schema import getFieldNames
 
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
-from Products.CMFDefault.formlib.form import EditFormBase, ContentEditFormBase
+from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceRadioWidget
+from Products.CMFDefault.utils import Message as _
 
-from interfaces import IPortalConfig
+from .interfaces import IPortalConfig
+
 
 class PortalConfig(EditFormBase):
-    
+
     form_fields = form.FormFields(IPortalConfig)
     form_fields['validate_email'].custom_widget = ChoiceRadioWidget
-    
+
     actions = form.Actions(
         form.Action(
             name='change',
@@ -40,7 +37,7 @@ class PortalConfig(EditFormBase):
             failure='handle_failure'),
     )
     template = ViewPageTemplateFile("config.pt")
-    
+
     def setUpWidgets(self, ignore_request=False):
         data = {}
         ptool = self._getTool('portal_properties')
@@ -57,9 +54,9 @@ class PortalConfig(EditFormBase):
                     self.form_fields, self.prefix,
                     self.context, self.request, data=data,
                     ignore_request=ignore_request)
-    
+
     def handle_success(self, action, data):
         ptool = self._getTool('portal_properties')
         ptool.editProperties(data)
-        self.status = _(u"Portal settings changed")
+        self.status = _(u"Portal settings changed.")
         self._setRedirect('portal_actions', 'global/configPortal')

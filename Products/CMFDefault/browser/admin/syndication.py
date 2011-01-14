@@ -10,21 +10,22 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Syndication configuration views"""
-
-from zope.component import getAdapter
-from zope.interface import Interface
-from zope.formlib import form
-from zope.schema import Choice, Int, Datetime
-from zope.schema.vocabulary import SimpleVocabulary
+"""Syndication configuration views.
+"""
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getAdapter
+from zope.formlib import form
+from zope.interface import Interface
+from zope.schema import Choice
+from zope.schema import Datetime
+from zope.schema import Int
+from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.browser.utils import memoize
-
 
 frequency_vocab = SimpleVocabulary.fromItems(
     [(_(u'Hourly'), 'hourly'),
@@ -36,6 +37,7 @@ frequency_vocab = SimpleVocabulary.fromItems(
 
 
 class ISyndicationSchema(Interface):
+
     """Syndication form schema"""
 
     period = Choice(
@@ -61,7 +63,9 @@ class ISyndicationSchema(Interface):
         description=_(u"")
     )
 
+
 class Site(EditFormBase):
+
     """Enable or disable syndication for a site."""
 
     form_fields = form.FormFields(ISyndicationSchema)
@@ -112,13 +116,13 @@ class Site(EditFormBase):
                 'base':self.syndtool.syUpdateBase,
                 'max_items':self.syndtool.max_items
                 }
-        self.widgets = form.setUpDataWidgets(fields, self.prefix,
-                                             self.context, self.request,data=data,
+        self.widgets = form.setUpDataWidgets(fields, self.prefix, self.context,
+                                             self.request, data=data,
                                              ignore_request=ignore_request)
 
     def handle_enable(self, action, data):
         self.syndtool.isAllowed = True
-        self.status = _(u"Syndication enabled")
+        self.status = _(u"Syndication enabled.")
         self._setRedirect("portal_actions", "global/syndication")
 
     def handle_update(self, action, data):
@@ -127,18 +131,18 @@ class Site(EditFormBase):
                                      updateBase=data['base'],
                                      max_items=data['max_items']
                                      )
-        self.status = _(u"Syndication updated")
+        self.status = _(u"Syndication settings updated.")
         self._setRedirect("portal_actions", "global/syndication")
 
     def handle_disable(self, action, data):
         self.syndtool.isAllowed = False
-        self.status = _(u"Syndication disabled")
+        self.status = _(u"Syndication disabled.")
         self._setRedirect("portal_actions", "global/syndication")
 
 
 class Syndicate(EditFormBase):
-    """
-    Enable, disable and customise syndication settings for a folder
+
+    """Enable, disable and customise syndication settings for a folder.
     """
 
     form_fields = form.FormFields(ISyndicationSchema)
@@ -202,20 +206,20 @@ class Syndicate(EditFormBase):
 
     def handle_enable(self, action, data):
         self.adapter.enable()
-        self.status = _(u"Syndication enabled")
+        self.status = _(u"Syndication enabled.")
         self._setRedirect("portal_actions", "folder/syndication")
 
     def handle_disable(self, action, data):
         self.adapter.disable()
-        self.status = _(u"Syndication disabled")
+        self.status = _(u"Syndication disabled.")
         self._setRedirect("portal_actions", "folder/syndication")
 
     def handle_update(self, action, data):
         self.adapter.set_info(**data)
-        self.status = _(u"Syndication updated")
+        self.status = _(u"Syndication settings updated.")
         self._setRedirect("portal_actions", "folder/syndication")
 
     def handle_revert(self, action, data):
         self.adapter.revert()
-        self.status = _(u"Syndication reset to site default")
+        self.status = _(u"Syndication reset to site default.")
         self._setRedirect("portal_actions", "folder/syndication")

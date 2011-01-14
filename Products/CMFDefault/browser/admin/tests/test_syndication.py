@@ -10,15 +10,22 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Tests for portal syndication form"""
+"""Tests for portal syndication form.
+"""
 
 import unittest
 
-from zope.interface import alsoProvides
+from zope.component import getSiteManager
 from zope.i18n.interfaces import IUserPreferredCharsets
+from zope.interface import alsoProvides
 
-from Products.CMFCore.tests.base.dummy import DummySite, DummyTool, DummyFolder
-from Products.CMFDefault.browser.test_utils import DummyRequest, DummyResponse
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.tests.base.dummy import DummyFolder
+from Products.CMFCore.tests.base.dummy import DummySite
+from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFDefault.browser.test_utils import DummyRequest
+
 
 class DummySyndicationTool(object):
 
@@ -65,15 +72,15 @@ class SyndicationViewTests(unittest.TestCase):
         data = {'frequency':3, 'period':'weekly', 'base':'', 'max_items':10}
         view.handle_enable("enable", data)
         self.assertTrue(view.enabled())
-        self.assertEqual(view.status, u"Syndication enabled")
+        self.assertEqual(view.status, u"Syndication enabled.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20enabled")
+            "Syndication%20enabled.")
 
     def test_handle_update(self):
         view = self._getTargetClass()
         self.assertEqual(view.syndtool.updatePeriod, 'daily')
-        self.assertEqual(view.syndtool.updateFrequency,  1)
+        self.assertEqual(view.syndtool.updateFrequency, 1)
         self.assertEqual(view.syndtool.updateBase, "")
         self.assertEqual(view.syndtool.max_items, 15)
         data = {'frequency':3, 'period':'weekly', 'base':'active',
@@ -83,10 +90,10 @@ class SyndicationViewTests(unittest.TestCase):
         self.assertEqual(view.syndtool.updateFrequency, 3)
         self.assertEqual(view.syndtool.updateBase, "active")
         self.assertEqual(view.syndtool.max_items, 10)
-        self.assertEqual(view.status, u"Syndication updated")
+        self.assertEqual(view.status, u"Syndication settings updated.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20updated")
+            "Syndication%20settings%20updated.")
 
     def test_handle_disable(self):
         view = self._getTargetClass()
@@ -94,20 +101,18 @@ class SyndicationViewTests(unittest.TestCase):
         self.assertTrue(view.enabled)
         view.handle_disable("disable", {})
         self.assertTrue(view.disabled)
-        self.assertEqual(view.status, u"Syndication disabled")
+        self.assertEqual(view.status, u"Syndication disabled.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20disabled")
+            "Syndication%20disabled.")
 
-
-from Products.CMFCore.interfaces import ISyndicationInfo, IFolderish
-from Products.CMFDefault.SyndicationInfo import SyndicationInfo
 
 class FolderSyndicationTests(unittest.TestCase):
 
     def setUp(self):
         """Setup a site"""
-        from zope.component import getSiteManager
+        from Products.CMFDefault.SyndicationInfo import SyndicationInfo
+
         self.site = site = DummySite('site')
         sm = getSiteManager()
         info = SyndicationInfo
@@ -130,7 +135,6 @@ class FolderSyndicationTests(unittest.TestCase):
         self.assertFalse(view.allowed)
 
     def test_adapter(self):
-        from Products.CMFCore.interfaces import ISyndicationInfo
         view = self._getTargetClass()
         self.assertTrue(ISyndicationInfo.providedBy(view.adapter))
 
@@ -147,10 +151,10 @@ class FolderSyndicationTests(unittest.TestCase):
         view = self._getTargetClass()
         view.handle_enable("enable", {})
         self.assertTrue(view.enabled())
-        self.assertEqual(view.status, u"Syndication enabled")
+        self.assertEqual(view.status, u"Syndication enabled.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20enabled")
+            "Syndication%20enabled.")
 
     def test_handle_disable(self):
         self.site.portal_syndication.isAllowed = 1
@@ -158,10 +162,10 @@ class FolderSyndicationTests(unittest.TestCase):
         view.adapter.enable()
         view.handle_disable("disable", {})
         self.assertFalse(view.enabled())
-        self.assertEqual(view.status, u"Syndication disabled")
+        self.assertEqual(view.status, u"Syndication disabled.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20disabled")
+            "Syndication%20disabled.")
 
     def test_handle_update(self):
         view = self._getTargetClass()
@@ -169,10 +173,10 @@ class FolderSyndicationTests(unittest.TestCase):
                   'max_items': 25}
         view.handle_update("update", values)
         self.assertEqual(view.adapter.get_info(), values)
-        self.assertEqual(view.status, u"Syndication updated")
+        self.assertEqual(view.status, u"Syndication settings updated.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20updated")
+            "Syndication%20settings%20updated.")
 
     def test_handle_revert(self):
         view = self._getTargetClass()
@@ -181,10 +185,10 @@ class FolderSyndicationTests(unittest.TestCase):
         view.handle_update("update", values)
         view.handle_revert("", values)
         self.assertNotEqual(view.adapter.get_info(), values)
-        self.assertEqual(view.status, u"Syndication reset to site default")
+        self.assertEqual(view.status, u"Syndication reset to site default.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
-            "Syndication%20reset%20to%20site%20default")
+            "Syndication%20reset%20to%20site%20default.")
 
 
 def test_suite():

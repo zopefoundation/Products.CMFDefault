@@ -24,22 +24,22 @@ Log the user in
     >>> browser.getControl(name="actions.login").click()
     >>> '[[cmf_default][Login success]]' in browser.contents
     True
-    
+
 Open configuration form
     >>> browser.open("http://localhost/site/@@configure.html")
     >>> "[[cmf_default][Portal Configuration]]" in browser.contents
     True
-    
+
     >>> browser.getControl(name="form.email_from_name").value = "The man behind the curtain"
     >>> browser.getControl(name="form.actions.change").click()
-    >>> "[[cmf_default][Portal settings changed]" in browser.contents
+    >>> "[[cmf_default][Portal settings changed.]" in browser.contents
     True
 
 Make sure we get open the view not the PythonScript reconfig_portal
     >>> browser.open("http://localhost/site/@@configure.html")
     >>> browser.getControl(name="form.email_from_name").value == "The man behind the curtain"
     True
-    
+
 Test for error handling, default_charset must be ASCII onlye
     >>> browser.open("http://localhost/site/@@configure.html")
     >>> browser.getControl(name="form.default_charset").value = "Caché"
