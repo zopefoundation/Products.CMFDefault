@@ -162,7 +162,7 @@ _ACTIONS_SYNDICATION_XML = """\
   <object name="syndication" meta_type="CMF Action" i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Site Syndication</property>
    <property name="description"
-      i18n:translate="">Enable or  disable syndication</property>
+      i18n:translate="">Enable or disable syndication</property>
    <property
       name="url_expr">string:${portal_url}/@@syndication.html</property>
    <property name="link_target"></property>
