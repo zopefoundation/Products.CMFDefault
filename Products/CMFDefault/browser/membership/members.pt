@@ -21,7 +21,7 @@
    <tr class="list-header">
     <td>&nbsp;</td>
     <th i18n:translate="">Member</th>
-    <th i18n:translate="">E-mail Address</th>
+    <th i18n:translate="">Email Address</th>
     <th i18n:translate="">Last Login</th>
    </tr>
   </thead>

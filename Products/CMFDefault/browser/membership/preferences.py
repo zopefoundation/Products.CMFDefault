@@ -13,16 +13,17 @@
 """Change user preferences.
 """
 
-from zope.schema import Choice, Bool
-from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
-from zope.interface import Interface
-from zope.formlib import form
-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import Message as _
+from zope.formlib import form
+from zope.interface import Interface
+from zope.schema import Bool
+from zope.schema import Choice
+from zope.schema.vocabulary import SimpleVocabulary
+
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import EmailLine
 from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.formlib.schema import EmailLine
+from Products.CMFDefault.utils import Message as _
 
 
 def portal_skins(context):
@@ -33,18 +34,16 @@ def portal_skins(context):
 class IPreferencesSchema(Interface):
 
     email = EmailLine(
-                title=_(u"E-mail address")
-                )
+        title=_(u"Email Address"))
 
     listed = Bool(
-                title=_(u"Listed status"),
-                description=_(u"Select to be listed on the public membership roster.")
-                )
+        title=_(u"Listed status"),
+        description=_(u"Select to be listed on the public membership roster."))
 
     portal_skin = Choice(
-                title=_(u"Skin"),
-                vocabulary=u"cmf.portal_skins",
-                required=False)
+        title=_(u"Skin"),
+        vocabulary=u"cmf.portal_skins",
+        required=False)
 
 
 class Preferences(EditFormBase):

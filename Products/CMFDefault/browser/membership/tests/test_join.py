@@ -76,7 +76,7 @@ class JoinFormTests(unittest.TestCase, PlacelessSetup):
         pass
 
     def test_successful_registration_validation_required(self):
-        # note that password will be sent by e-mail
+        # note that password will be sent by email
         pass
 
 

@@ -10,30 +10,27 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Forms for managing members """
-
-from logging import getLogger
-
-from zope.interface import Interface
-from zope.formlib import form
-from zope.schema import Bool, TextLine, Date, getFieldsInOrder, List, Choice
-from zope.sequencesort.ssort import sort
-
-from ZTUtils import LazyFilter
+"""Forms for managing members.
+"""
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.formlib import form
+from zope.interface import Interface
+from zope.schema import Bool
+from zope.schema import Date
+from zope.schema import TextLine
+from zope.sequencesort.ssort import sort
+from ZTUtils import LazyFilter
 
-from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.form import EditFormBase
-from Products.CMFDefault.formlib.schema import EmailLine
-from Products.CMFDefault.utils import Message as _
-
-from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.content.folder import BatchViewBase
 from Products.CMFDefault.browser.content.interfaces import IBatchForm
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.utils import Message as _
 
 
 class IMemberItem(Interface):
+
     """Schema for portal members """
 
     select = Bool(
@@ -46,7 +43,7 @@ class IMemberItem(Interface):
         )
 
     email = TextLine(
-        title=_(u"E-mail Address"),
+        title=_(u"Email Address"),
         required=False,
         readonly=True
         )
@@ -59,6 +56,7 @@ class IMemberItem(Interface):
 
 
 class MemberProxy(object):
+
     """Utility class wrapping a member for display purposes"""
 
     def __init__(self, member):
@@ -168,12 +166,12 @@ class Manage(BatchViewBase, EditFormBase):
         """Delete selected members"""
         mtool = self._getTool('portal_membership')
         mtool.deleteMembers(self._get_ids(data))
-        self.status = _(u"Selected members deleted")
+        self.status = _(u"Selected members deleted.")
         self._setRedirect('portal_actions', "global/manage_members")
 
     def handle_cancel(self, action, data):
         """Don't delete anyone, return to list"""
-        self.status = _(u"Deletion broken off")
+        self.status = _(u"Deletion broken off.")
         self._setRedirect('portal_actions', "global/manage_members")
 
 

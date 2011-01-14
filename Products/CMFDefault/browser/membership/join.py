@@ -13,43 +13,42 @@
 """Join form.
 """
 
-from zope.interface import Interface, invariant, Invalid
-from zope.schema import ASCIILine, Password, Bool
-from zope.formlib import form
-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.formlib import form
+from zope.interface import Interface
+from zope.interface import Invalid
+from zope.interface import invariant
+from zope.schema import ASCIILine
+from zope.schema import Bool
+from zope.schema import Password
+
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.schema import EmailLine
 from Products.CMFDefault.permissions import ManageUsers
-
 from Products.CMFDefault.utils import Message as _
 
 
 class IJoinSchema(Interface):
 
-    """Zope generates password and sends it by e-mail"""
+    """Zope generates password and sends it by email"""
 
     member_id = ASCIILine(
-                    title=_(u"Member ID")
-                    )
+        title=_(u"Member ID"))
 
     email = EmailLine(
-                    title=_(u"E-mail address")
-                    )
+        title=_(u"Email Address"))
 
     password = Password(
-                    title=_(u"Password"),
-                    min_length=5
-                    )
+        title=_(u"Password"),
+        min_length=5)
 
     confirmation = Password(
-                    title=_(u"Password (confirm)"),
-                    min_length=5
-                    )
+        title=_(u"Password (confirm)"),
+        min_length=5)
 
     send_password = Bool(
-                    title=_(u"Mail Password?"),
-                    description=_(u"Check this box to have the password mailed."))
+        title=_(u"Mail Password?"),
+        description=_(u"Check this box to have the password mailed."))
 
     @invariant
     def check_passwords_match(schema):
@@ -107,7 +106,7 @@ class Join(EditFormBase):
             return _(u'Become a Member')
 
     def setUpWidgets(self, ignore_request=False):
-        """If e-mail validation is in effect, users cannot select passwords"""
+        """If email validation is in effect, users cannot select passwords"""
         super(Join, self).setUpWidgets(ignore_request)
 
     def personalize(self):
@@ -119,7 +118,8 @@ class Join(EditFormBase):
         errors = super(Join, self).validate(action, data)
         member = self.mtool.getMemberById(data.get('member_id', None))
         if member is not None:
-            errors.append(_(u"The login name you selected is already in use or is not valid. Please choose another."))
+            errors.append(_(u"The login name you selected is already in use "
+                            u"or is not valid. Please choose another."))
         return errors
 
     def add_member(self, data):

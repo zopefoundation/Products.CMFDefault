@@ -2,7 +2,7 @@ Joining the portal
 ------------------
 
 Anonymous users can join the portal
-If the portal requires e-mail validation then the portal assigns the password and sends it by e-mail
+If the portal requires email validation then the portal assigns the password and sends it by email
 User names cannot be duplicates
 Passwords must be at least 5 characters long
 A password confirmation must be supplied

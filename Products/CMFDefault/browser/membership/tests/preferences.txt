@@ -24,8 +24,8 @@ Log the user in
     >>> browser.getControl('[[cmf_default][Login]]').click()
     >>> '[[cmf_default][Login success]]' in browser.contents
     True
-    
-Open the preferences form. E-mail field should be visible
+
+Open the preferences form. Email field should be visible
 
     >>> browser.open("http://localhost/site/@@preferences.html")
     >>> browser.getControl(name='form.email').value == ''
