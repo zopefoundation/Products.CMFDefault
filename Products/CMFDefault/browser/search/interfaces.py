@@ -24,7 +24,7 @@ from zope.schema import Choice
 from zope.schema import List
 from zope.schema import TextLine
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import  SimpleVocabulary
+from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 
 from Products.CMFCore.utils import getToolByName
