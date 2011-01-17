@@ -20,20 +20,19 @@ from zope.interface import Interface
 from zope.schema import Choice
 from zope.schema import Datetime
 from zope.schema import Int
-from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.interfaces import ISyndicationInfo
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.formlib.vocabulary import SimpleVocabulary
 from Products.CMFDefault.utils import Message as _
 
-frequency_vocab = SimpleVocabulary.fromItems(
-    [(_(u'Hourly'), 'hourly'),
-     (_(u'Daily'), 'daily'),
-     (_(u'Weekly'), 'weekly'),
-     (_(u'Monthly'), 'monthly'),
-     (_(u'Yearly'), 'yearly')
-     ])
+available_periods = (
+    (u'hourly', 'hourly', _(u'Hourly')),
+    (u'daily', 'daily', _(u'Daily')),
+    (u'weekly', 'weekly', _(u'Weekly')),
+    (u'monthly', 'monthly', _(u'Monthly')),
+    (u'yearly', 'yearly', _(u'Yearly')))
 
 
 class ISyndicationSchema(Interface):
@@ -42,7 +41,7 @@ class ISyndicationSchema(Interface):
 
     period = Choice(
         title=_(u"Update period"),
-        vocabulary=frequency_vocab,
+        vocabulary=SimpleVocabulary.fromTitleItems(available_periods),
         default="daily"
     )
 

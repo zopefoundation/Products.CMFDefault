@@ -20,13 +20,13 @@ from zope.schema import ASCIILine
 from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import TextLine
-from zope.schema.vocabulary import SimpleVocabulary
 
+from Products.CMFDefault.formlib.vocabulary import SimpleVocabulary
 from Products.CMFDefault.utils import Message as _
 
-email_policy = SimpleVocabulary.fromItems([
-    (_(u"Generate and email members' initial password"), True),
-    (_(u"Allow members to select their initial password"), False)])
+available_policies = (
+    (u'email', True, _(u"Generate and email members' initial password")),
+    (u'select', False, _(u"Allow members to select their initial password")))
 
 def check_encoding(value):
     encoding = ""
@@ -74,7 +74,7 @@ class IPortalConfig(Interface):
 
     validate_email = Choice(
         title=_(u"Password policy"),
-        vocabulary=email_policy,
+        vocabulary=SimpleVocabulary.fromTitleItems(available_policies),
         default=False)
 
     default_charset = ASCIILine(
