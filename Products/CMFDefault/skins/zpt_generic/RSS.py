@@ -18,10 +18,10 @@ if not stool.isSyndicationAllowed(context):
 options = {}
 
 syndication_info = stool.getSyndicationInfo(context)
-converter = {'daily':1, 'weekly':7, 'monthly': 30, 'yearly': 365}
-ttl = 60 * 24 * (syndication_info['frequency'] *
-                    converter[syndication_info['period']]
-                )
+converter = {'hourly': 1, 'daily': 24, 'weekly': 7 * 24, 'monthly': 30 * 24,
+             'yearly': 365 * 24}
+ttl = 60 * (syndication_info['frequency'] *
+            converter[syndication_info['period']])
 
 syndication_info.update({'description': context.Description(),
                          'title': context.Title(),

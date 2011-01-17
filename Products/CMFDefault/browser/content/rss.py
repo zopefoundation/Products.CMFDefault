@@ -12,15 +12,15 @@
 ##############################################################################
 """RSS view for syndicatable items"""
 
-from ZTUtils import LazyFilter
-
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getAdapter
 from zope.sequencesort.ssort import sort
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from ZTUtils import LazyFilter
 
 from Products.CMFCore.interfaces import ISyndicationInfo
-from Products.CMFDefault.browser.utils import ViewBase, memoize, decode
+from Products.CMFDefault.browser.utils import decode
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import ViewBase
 
 
 class View(ViewBase):
@@ -36,7 +36,6 @@ class View(ViewBase):
     @decode
     def items(self):
         """Return items according to policy"""
-
         stool = self._getTool("portal_syndication")
         key, reverse = self.context.getDefaultSorting()
         items = stool.getSyndicatableContent(self.context)
@@ -55,9 +54,10 @@ class View(ViewBase):
     @decode
     def channel(self):
         """Provide infomation about the channel"""
-        converter = {'daily':1, 'weekly':7, 'monthly': 30, 'yearly': 365}
-        ttl = 60 * 24 *(self.synd_info['frequency'] *
-                            converter[self.synd_info['period']])
+        converter = {'hourly': 1, 'daily': 24, 'weekly': 7 * 24,
+                     'monthly': 30 * 24, 'yearly': 365 * 24}
+        ttl = 60 * (self.synd_info['frequency'] *
+                    converter[self.synd_info['period']])
 
         info = {'base': self.synd_info['base'].rfc822(),
                 'ttl': ttl,
