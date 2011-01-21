@@ -13,7 +13,6 @@
 """Change user preferences.
 """
 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.formlib import form
 from zope.interface import Interface
 from zope.schema import Bool
@@ -94,4 +93,5 @@ class Preferences(EditFormBase):
         if 'portal_skin' in data:
             self.stool.portal_skins.updateSkinCookie()
         self.member.setProperties(data)
-        self.label = _(u"Member changed.")
+        self.status = _(u"Member preferences changed.")
+        self._setRedirect('portal_actions', 'user/preferences')
