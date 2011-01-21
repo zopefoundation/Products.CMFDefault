@@ -26,7 +26,7 @@ msgstr ""
 
 #: Products/CMFCore/RegistrationTool.py:146
 #: Products/CMFDefault/RegistrationTool.py:92
-#: Products/CMFDefault/browser/membership/join.py:121
+#: Products/CMFDefault/browser/membership/join.py:122
 msgid "The login name you selected is already in use or is not valid. Please choose another."
 msgstr ""
 
@@ -278,6 +278,8 @@ msgid "Your password must contain at least 5 characters."
 msgstr ""
 
 #: Products/CMFDefault/RegistrationTool.py:72
+#: Products/CMFDefault/browser/membership/join.py:57
+#: Products/CMFDefault/browser/membership/password.py:45
 msgid "Your password and confirmation did not match. Please try again."
 msgstr ""
 
@@ -294,7 +296,10 @@ msgid "Portal Configuration"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/config.py:35
+#: Products/CMFDefault/browser/admin/syndication.py:85
+#: Products/CMFDefault/browser/admin/syndication.py:162
 #: Products/CMFDefault/browser/content/metadata.py:222
+#: Products/CMFDefault/browser/membership/password.py:56
 #: Products/CMFDefault/formlib/form.py:217
 #: Products/CMFDefault/skins/zpt_content/document_edit_form.py:34
 #: Products/CMFDefault/skins/zpt_content/file_edit_form.py:25
@@ -306,11 +311,13 @@ msgstr ""
 #: Products/CMFDefault/skins/zpt_generic/password_form.py:37
 #: Products/CMFDefault/skins/zpt_generic/reconfig_form.py:23
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:82
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:96
 #: Products/CMFTopic/skins/zpt_topic/topic_edit_form.py:26
 msgid "Change"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/config.py:61
+#: Products/CMFDefault/skins/zpt_control/portal_config_control.py:15
 msgid "Portal settings changed."
 msgstr ""
 
@@ -423,29 +430,29 @@ msgid "Portal syndication is currently disabled"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:125
-#: Products/CMFDefault/browser/admin/syndication.py:209
+#: Products/CMFDefault/browser/admin/syndication.py:210
 msgid "Syndication enabled."
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:134
-#: Products/CMFDefault/browser/admin/syndication.py:219
-msgid "Syndication settings updated."
+#: Products/CMFDefault/browser/admin/syndication.py:220
+msgid "Syndication settings changed."
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:139
-#: Products/CMFDefault/browser/admin/syndication.py:214
+#: Products/CMFDefault/browser/admin/syndication.py:215
 msgid "Syndication disabled."
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:150
+#: Products/CMFDefault/browser/admin/syndication.py:151
 msgid "Configure Folder Syndication"
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:167
-msgid "Revert to site default"
+#: Products/CMFDefault/browser/admin/syndication.py:168
+msgid "Revert to Site Default"
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:224
+#: Products/CMFDefault/browser/admin/syndication.py:225
 msgid "Syndication reset to site default."
 msgstr ""
 
@@ -469,23 +476,27 @@ msgstr ""
 msgid "Yearly"
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:44
+#: Products/CMFDefault/browser/admin/syndication.py:43
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:59
 msgid "Update period"
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:50
+#: Products/CMFDefault/browser/admin/syndication.py:49
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:74
 msgid "Update frequency"
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:51
+#: Products/CMFDefault/browser/admin/syndication.py:50
 msgid "This is a multiple of the update period. An update frequency of '3' and an update period of 'Monthly' will mean an update every three months."
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:57
+#: Products/CMFDefault/browser/admin/syndication.py:56
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:82
 msgid "Update base"
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:62
+#: Products/CMFDefault/browser/admin/syndication.py:61
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:89
 msgid "Maximum number of items"
 msgstr ""
 
@@ -494,18 +505,15 @@ msgid "Configure Portal Syndication"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:79
-#: Products/CMFDefault/browser/admin/syndication.py:155
-msgid "Enable syndication"
-msgstr ""
-
-#: Products/CMFDefault/browser/admin/syndication.py:85
-#: Products/CMFDefault/browser/admin/syndication.py:161
-msgid "Update syndication"
+#: Products/CMFDefault/browser/admin/syndication.py:156
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:123
+msgid "Enable Syndication"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:91
-#: Products/CMFDefault/browser/admin/syndication.py:173
-msgid "Disable syndication"
+#: Products/CMFDefault/browser/admin/syndication.py:174
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:114
+msgid "Disable Syndication"
 msgstr ""
 
 #: Products/CMFDefault/browser/content/document.py:147
@@ -1113,20 +1121,21 @@ msgstr ""
 msgid "Becoming a member gives you the ability to personalize the site and participate in the community."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:104
-msgid "Register a new member"
+#: Products/CMFDefault/browser/membership/join.py:105
+#: Products/CMFDefault/skins/zpt_generic/join_form.py:37
+msgid "Register a New Member"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:106
+#: Products/CMFDefault/browser/membership/join.py:107
 #: Products/CMFDefault/skins/zpt_generic/join_form.py:38
 msgid "Become a Member"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:138
+#: Products/CMFDefault/browser/membership/join.py:139
 msgid "Success"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:145
+#: Products/CMFDefault/browser/membership/join.py:146
 #: Products/CMFDefault/browser/membership/join.pt:20
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:17
 msgid "You have been registered as a member."
@@ -1134,7 +1143,7 @@ msgstr ""
 
 #: Products/CMFDefault/browser/membership/join.py:39
 #: Products/CMFDefault/browser/membership/members.py:46
-#: Products/CMFDefault/browser/membership/preferences.py:37
+#: Products/CMFDefault/browser/membership/preferences.py:36
 #: Products/CMFDefault/browser/membership/members.pt:24
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:23
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:64
@@ -1157,17 +1166,12 @@ msgstr ""
 msgid "Check this box to have the password mailed."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:57
-#: Products/CMFDefault/browser/membership/password.py:45
-msgid "Passwords do not match"
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/join.py:70
+#: Products/CMFDefault/browser/membership/join.py:71
 #: Products/CMFDefault/skins/zpt_generic/join_form.py:56
 msgid "Register"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:76
+#: Products/CMFDefault/browser/membership/join.py:77
 #: Products/CMFDefault/browser/membership/members.py:105
 #: Products/CMFDefault/formlib/form.py:106
 #: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:42
@@ -1293,36 +1297,31 @@ msgstr ""
 msgid "Confirm new password"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/password.py:55
-#: Products/CMFDefault/profiles/default/actions.xml:37
-#: Products/CMFDefault/profiles/views_support/actions.xml:123
-msgid "Change password"
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/password.py:82
+#: Products/CMFDefault/browser/membership/password.py:83
 msgid "Your password has been changed."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:40
+#: Products/CMFDefault/browser/membership/preferences.py:39
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:39
 msgid "Listed status"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:41
+#: Products/CMFDefault/browser/membership/preferences.py:40
 msgid "Select to be listed on the public membership roster."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:44
+#: Products/CMFDefault/browser/membership/preferences.py:43
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:64
 msgid "Skin"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:61
-msgid "Member preferences"
+#: Products/CMFDefault/browser/membership/preferences.py:60
+#: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:16
+msgid "Member Preferences"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:97
-msgid "Member changed."
+#: Products/CMFDefault/browser/membership/preferences.py:96
+msgid "Member preferences changed."
 msgstr ""
 
 #: Products/CMFDefault/browser/search/interfaces.py:109
@@ -1871,6 +1870,11 @@ msgstr ""
 msgid "Enable or disable syndication"
 msgstr ""
 
+#: Products/CMFDefault/profiles/default/actions.xml:37
+#: Products/CMFDefault/profiles/views_support/actions.xml:123
+msgid "Change password"
+msgstr ""
+
 #: Products/CMFDefault/profiles/default/actions.xml:38
 #: Products/CMFDefault/profiles/views_support/actions.xml:124
 msgid "Change your password"
@@ -2164,10 +2168,6 @@ msgstr ""
 msgid "Selected member deleted."
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_control/portal_config_control.py:15
-msgid "CMF Settings changed."
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_control/undo.py:11
 msgid "Transaction(s) undone."
 msgstr ""
@@ -2348,10 +2348,6 @@ msgstr ""
 msgid "Related Resources"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/join_form.py:37
-msgid "Register Member"
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:11
 msgid "You are already a member. You may use the <a href=\"personalize_form\">personalization form</a> to change your membership information."
 msgstr ""
@@ -2508,10 +2504,6 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/password_form.py:33
 msgid "Change your Password"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:16
-msgid "Member Preferences"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:22
@@ -2691,19 +2683,7 @@ msgstr ""
 msgid "Site Error"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:100
-msgid "Save"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:118
-msgid "Disable Syndication"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:127
-msgid "Enable Syndication"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:132
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:128
 msgid "Syndication is Disabled"
 msgstr ""
 
@@ -2723,32 +2703,8 @@ msgstr ""
 msgid "Syndication Module Properties"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:59
-msgid "Element"
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:6
-msgid "Default Syndication Properties"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:60
-msgid "Default Value"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:63
-msgid "UpdatePeriod"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:78
-msgid "UpdateFrequency"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:86
-msgid "UpdateBase"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:93
-msgid "Max Syndicated Items"
+msgid "Syndication Properties"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/talkback_tree.pt:26
