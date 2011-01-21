@@ -12,4 +12,4 @@ kw.setdefault('enable_actionicons', False)
 
 ptool.editProperties(kw)
 
-return context.setStatus(True, _(u'CMF Settings changed.'))
+return context.setStatus(True, _(u'Portal settings changed.'))

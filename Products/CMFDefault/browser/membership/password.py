@@ -14,16 +14,16 @@
 """
 
 from DateTime import DateTime
-
-from zope.formlib import form
-from zope.interface import Interface, invariant, Invalid
-from zope.schema import ASCIILine, Password, List, TextLine
-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.formlib import form
+from zope.interface import Interface
+from zope.interface import Invalid
+from zope.interface import invariant
+from zope.schema import Password
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.utils import Message as _
 
 
 class IPasswordSchema(Interface):
@@ -42,7 +42,8 @@ class IPasswordSchema(Interface):
     def check_passwords_match(schema):
         """Password and confirmation must match"""
         if schema.password != schema.confirmation:
-            raise Invalid(_(u"Passwords do not match"))
+            raise Invalid(_(u"Your password and confirmation did not match. "
+                            u"Please try again."))
 
 
 class Password(EditFormBase):
@@ -52,7 +53,7 @@ class Password(EditFormBase):
     actions = form.Actions(
                     form.Action(
                         name="change",
-                        label=_(u"Change password"),
+                        label=_(u"Change"),
                         success="handle_success",
                         failure="handle_failure"
                         )

@@ -63,6 +63,7 @@ class ISyndicationSchema(Interface):
     )
 
 
+# XXX: Don't use this form, it might corrupt your settings!
 class Site(EditFormBase):
 
     """Enable or disable syndication for a site."""
@@ -75,19 +76,19 @@ class Site(EditFormBase):
     actions = form.Actions(
         form.Action(
             name="enable",
-            label=_(u"Enable syndication"),
+            label=_(u"Enable Syndication"),
             condition="disabled",
             success="handle_enable",
             ),
         form.Action(
-            name="update",
-            label=_(u"Update syndication"),
+            name="change",
+            label=_(u"Change"),
             condition="enabled",
-            success="handle_update",
+            success="handle_change",
             ),
         form.Action(
             name="disable",
-            label=_(u"Disable syndication"),
+            label=_(u"Disable Syndication"),
             condition="enabled",
             success="handle_disable"
         )
@@ -124,13 +125,13 @@ class Site(EditFormBase):
         self.status = _(u"Syndication enabled.")
         self._setRedirect("portal_actions", "global/syndication")
 
-    def handle_update(self, action, data):
+    def handle_change(self, action, data):
         self.syndtool.editProperties(updatePeriod=data['period'],
                                      updateFrequency=data['frequency'],
                                      updateBase=data['base'],
                                      max_items=data['max_items']
                                      )
-        self.status = _(u"Syndication settings updated.")
+        self.status = _(u"Syndication settings changed.")
         self._setRedirect("portal_actions", "global/syndication")
 
     def handle_disable(self, action, data):
@@ -139,6 +140,7 @@ class Site(EditFormBase):
         self._setRedirect("portal_actions", "global/syndication")
 
 
+# XXX: Don't use this form, it might corrupt your settings!
 class Syndicate(EditFormBase):
 
     """Enable, disable and customise syndication settings for a folder.
@@ -151,25 +153,25 @@ class Syndicate(EditFormBase):
     actions = form.Actions(
         form.Action(
             name="enable",
-            label=_(u"Enable syndication"),
+            label=_(u"Enable Syndication"),
             condition="disabled",
             success="handle_enable",
             ),
         form.Action(
-            name="update",
-            label=_(u"Update syndication"),
+            name="change",
+            label=_(u"Change"),
             condition="enabled",
-            success="handle_update",
+            success="handle_change",
             ),
         form.Action(
             name="revert",
-            label=_(u"Revert to site default"),
+            label=_(u"Revert to Site Default"),
             condition="enabled",
             success="handle_revert",
             ),
         form.Action(
             name="disable",
-            label=_(u"Disable syndication"),
+            label=_(u"Disable Syndication"),
             condition="enabled",
             success="handle_disable",
         )
@@ -213,9 +215,9 @@ class Syndicate(EditFormBase):
         self.status = _(u"Syndication disabled.")
         self._setRedirect("portal_actions", "object/syndication")
 
-    def handle_update(self, action, data):
+    def handle_change(self, action, data):
         self.adapter.set_info(**data)
-        self.status = _(u"Syndication settings updated.")
+        self.status = _(u"Syndication settings changed.")
         self._setRedirect("portal_actions", "object/syndication")
 
     def handle_revert(self, action, data):

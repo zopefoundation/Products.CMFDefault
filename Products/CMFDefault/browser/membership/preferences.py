@@ -39,9 +39,9 @@ class IPreferencesSchema(Interface):
         title=_(u"Listed status"),
         description=_(u"Select to be listed on the public membership roster."))
 
-    portal_skin = Choice(
+    skin = Choice(
         title=_(u"Skin"),
-        vocabulary=u"cmf.portal_skins",
+        vocabulary=u"cmf.AvailableSkins",
         required=False)
 
 
@@ -57,7 +57,7 @@ class Preferences(EditFormBase):
                 failure="handle_failure"
                     )
                 )
-    label = _(u"Member preferences")
+    label = _(u"Member Preferences")
 
     def __init__(self, context, request):
         super(Preferences, self).__init__(context, request)
@@ -80,7 +80,7 @@ class Preferences(EditFormBase):
         data = {}
         data['email'] = self.member.email
         data['listed'] = getattr(self.member, 'listed', None)
-        data['portal_skin'] = self.get_skin_cookie()
+        data['skin'] = self.get_skin_cookie()
 
         self.widgets = form.setUpDataWidgets(self.form_fields,
                                         self.prefix,
@@ -90,7 +90,7 @@ class Preferences(EditFormBase):
                                         ignore_request=False)
 
     def handle_success(self, action, data):
-        if 'portal_skin' in data:
+        if 'skin' in data:
             self.stool.portal_skins.updateSkinCookie()
         self.member.setProperties(data)
         self.status = _(u"Member preferences changed.")

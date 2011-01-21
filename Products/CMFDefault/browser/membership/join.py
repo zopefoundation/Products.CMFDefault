@@ -54,7 +54,8 @@ class IJoinSchema(Interface):
     def check_passwords_match(schema):
         """Password and confirmation must match"""
         if schema.password != schema.confirmation:
-            raise Invalid(_(u"Passwords do not match"))
+            raise Invalid(_(u"Your password and confirmation did not match. "
+                            u"Please try again."))
 
 
 class Join(EditFormBase):
@@ -101,7 +102,7 @@ class Join(EditFormBase):
     @property
     def title(self):
         if self.isManager:
-            return _(u"Register a new member")
+            return _(u"Register a New Member")
         else:
             return _(u'Become a Member')
 

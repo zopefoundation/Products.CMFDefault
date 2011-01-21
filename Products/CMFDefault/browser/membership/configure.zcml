@@ -61,7 +61,7 @@
   <utility
       component=".preferences.portal_skins"
       provides="zope.schema.interfaces.IVocabularyFactory"
-      name="cmf.portal_skins"
+      name="cmf.AvailableSkins"
       />
 
   <browser:page

@@ -3,7 +3,7 @@
 
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default"
    tal:define="s_tool options/s_tool">
-<h2 i18n:translate="">Default Syndication Properties</h2>
+<h2 i18n:translate="">Syndication Properties</h2>
 
 <tal:case tal:condition="options/s_allowed"
 ><form action="editSynProperties" method="post"
@@ -56,11 +56,7 @@
 
         <table>
          <tr>
-          <th align="left" i18n:translate="">Element</th>
-          <th align="left" i18n:translate="">Default Value</th>
-         </tr>
-         <tr>
-          <td i18n:translate="">UpdatePeriod</td>
+          <td i18n:translate="">Update period</td>
           <td>
            <select name="updatePeriod">
             <option value="hourly"
@@ -75,7 +71,7 @@
            </td>
          </tr>
          <tr>
-          <td i18n:translate="">UpdateFrequency</td>
+          <td i18n:translate="">Update frequency</td>
           <td>
            <input type="text" name="updateFrequency:int" size="3" value=""
                   tal:attributes="value python:s_tool.getUpdateFrequency(context)"
@@ -83,21 +79,21 @@
           </td>
          </tr>
          <tr>
-          <td i18n:translate="">UpdateBase</td>
+          <td i18n:translate="">Update base</td>
           <td>
            <input type="text" name="updateBase:date" value="" size="25"
                   tal:attributes="value python:s_tool.getUpdateBase(context)"/>
           </td>
          </tr>
          <tr>
-          <td i18n:translate="">Max Syndicated Items</td>
+          <td i18n:translate="">Maximum number of items</td>
           <td>
            <input type="text" name="max_items:int" value=""  size="3"
                   tal:attributes="value python:s_tool.getMaxItems(context)"/>
           </td>
          </tr>
          <tr>
-          <td colspan="2"><input type="submit" name="edit" value="Save"
+          <td colspan="2"><input type="submit" name="edit" value="Change"
                                  i18n:attributes="value"/></td>
          </tr>
         </table>

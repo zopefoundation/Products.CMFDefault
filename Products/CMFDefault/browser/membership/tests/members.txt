@@ -41,7 +41,7 @@ Open the membership management form
 
 Add a new member
     >>> browser.getControl(name="form.actions.new").click()
-    >>> "[[cmf_default][Register Member]]" in browser.contents
+    >>> "[[cmf_default][Register a New Member]]" in browser.contents
     True
 
 Click delete with no member selected

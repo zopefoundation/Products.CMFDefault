@@ -34,7 +34,7 @@ if context.REQUEST.get('is_newmember', False) == True:
     is_anon = False
     is_newmember = True
 
-options['title'] = is_usermanager and _(u'Register Member') \
+options['title'] = is_usermanager and _(u'Register a New Member') \
                                   or _(u'Become a Member')
 options['member_id'] = member_id
 options['member_email'] = member_email
