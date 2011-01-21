@@ -206,19 +206,19 @@ class Syndicate(EditFormBase):
     def handle_enable(self, action, data):
         self.adapter.enable()
         self.status = _(u"Syndication enabled.")
-        self._setRedirect("portal_actions", "folder/syndication")
+        self._setRedirect("portal_actions", "object/syndication")
 
     def handle_disable(self, action, data):
         self.adapter.disable()
         self.status = _(u"Syndication disabled.")
-        self._setRedirect("portal_actions", "folder/syndication")
+        self._setRedirect("portal_actions", "object/syndication")
 
     def handle_update(self, action, data):
         self.adapter.set_info(**data)
         self.status = _(u"Syndication settings updated.")
-        self._setRedirect("portal_actions", "folder/syndication")
+        self._setRedirect("portal_actions", "object/syndication")
 
     def handle_revert(self, action, data):
         self.adapter.revert()
         self.status = _(u"Syndication reset to site default.")
-        self._setRedirect("portal_actions", "folder/syndication")
+        self._setRedirect("portal_actions", "object/syndication")
