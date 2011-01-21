@@ -7,7 +7,7 @@ Set up Document and user.
     >>> id = app.site._setObject('myDocument', Document('myDocument'))
 
     >>> uf = app.site.acl_users
-    >>> uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
+    >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
     >>> from zope.site.hooks import setSite
     >>> setSite(app.site)
 

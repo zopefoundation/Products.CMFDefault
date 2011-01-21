@@ -8,7 +8,7 @@ Set up content and user.
     >>> app.site.myContent._setPortalTypeName('Document')
 
     >>> uf = app.site.acl_users
-    >>> uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
+    >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
 
 Create the browser object we'll be using.
 
