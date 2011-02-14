@@ -107,7 +107,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_syndtool(self):
         view = self._makeOne()
-        tool = view.context.portal_syndication= DummyTool()
+        tool = view.context.portal_syndication = DummyTool()
         self.failUnless(view.syndtool is tool)
 
     def test_uidtool(self):
@@ -179,7 +179,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         view.context.getId = lambda: 'X' * 20
         self.assertEqual(view.trunc_id, 'X' * 15 + '...')
 
-    def test_icon_wo_getIconURL_w_icon(self):
+    def test_icon_w_getIconURL_w_icon(self):
         view = self._makeOne()
         view.context.getIconURL = lambda: 'ICON'
         view.context.icon = 'ICON2'
@@ -313,7 +313,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         view.request.form = {}
         self.assertEqual(view.status_message, None)
 
-    def test_status_message_missing(self):
+    def test_status_message(self):
         view = self._makeOne()
         view.request.form = {'portal_status_message': 'FOO'}
         self.assertEqual(view.status_message, 'FOO')
