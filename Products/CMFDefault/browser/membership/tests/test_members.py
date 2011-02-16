@@ -14,21 +14,18 @@
 
 import unittest
 
-from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.User import UnrestrictedUser
 from Testing import ZopeTestCase
 
 from zope.component import getSiteManager
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
-from Products.CMFCore.PortalFolder import PortalFolder
-from Products.CMFCore.tests.base.dummy import DummySite, DummyTool
-from Products.CMFCore.tests.base.dummy import (
-            DummyUserFolder, DummyUser
-            )
+from Products.CMFCore.tests.base.dummy import DummySite
+from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFCore.tests.base.dummy import DummyUser
 
-from Products.CMFDefault.browser.membership.members import Manage, MemberProxy
+from Products.CMFDefault.browser.membership.members import Manage
+from Products.CMFDefault.browser.membership.members import MemberProxy
 from Products.CMFDefault.testing import FunctionalLayer
 
 
@@ -55,6 +52,7 @@ class DummyMemberTool(object):
 
     def isAnonymousUser(self):
         return True
+
 
 class MembershipViewTests(unittest.TestCase):
 
@@ -89,12 +87,12 @@ class MembershipViewTests(unittest.TestCase):
         self.assertTrue(IBrowserPublisher.providedBy(view))
 
     def test_list_batch_items(self):
-        user = self._make_one("Bob")
+        self._make_one("Bob")
         view = Manage(self.site, TestRequest())
         view.member_fields()
         members = view.listBatchItems
         self.assertTrue(isinstance(members[0], MemberProxy))
-        self.assertEquals(members[0].name, "Bob")
+        self.assertEqual(members[0].name, "Bob")
 
     def test_get_ids(self):
         view = Manage(self.site, TestRequest())
@@ -119,7 +117,7 @@ class MembershipViewTests(unittest.TestCase):
         self.assertTrue(view.guillotine == None)
         # Catch exception raised when template tries to render
         self.assertRaises(AttributeError,
-                view.handle_select_for_deletion, None, {"Alice.select":True} )
+                view.handle_select_for_deletion, None, {"Alice.select":True})
         self.assertTrue(view.guillotine == "Alice")
 
     def test_handle_delete(self):
@@ -133,10 +131,7 @@ class MembershipViewTests(unittest.TestCase):
         self.assertTrue(self.mtool.listMembers() == [])
 
 
-ftest_suite = ZopeTestCase.FunctionalDocFileSuite('members.txt',
-                        )
-
-
+ftest_suite = ZopeTestCase.FunctionalDocFileSuite('members.txt')
 ftest_suite.layer = FunctionalLayer
 
 def test_suite():
