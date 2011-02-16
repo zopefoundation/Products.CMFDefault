@@ -53,6 +53,9 @@ class DummyMemberTool(object):
     def isAnonymousUser(self):
         return True
 
+    def getHomeUrl(self, id=None, verifyPermission=0):
+        return 'HOME_URL/%s' % id
+
 
 class MembershipViewTests(unittest.TestCase):
 
@@ -93,6 +96,7 @@ class MembershipViewTests(unittest.TestCase):
         members = view.listBatchItems
         self.assertTrue(isinstance(members[0], MemberProxy))
         self.assertEqual(members[0].name, "Bob")
+        self.assertEqual(members[0].home, "HOME_URL/Bob")
 
     def test_get_ids(self):
         view = Manage(self.site, TestRequest())

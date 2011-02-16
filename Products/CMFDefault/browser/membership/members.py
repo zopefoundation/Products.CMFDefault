@@ -59,11 +59,11 @@ class MemberProxy(object):
 
     """Utility class wrapping a member for display purposes"""
 
-    def __init__(self, member):
+    def __init__(self, member, mtool):
         login_time = member.getProperty('login_time')
         self.login_time = '2000/01/01' and '---' or login_time.Date()
         self.name = member.getId()
-        self.home = member.getProperty('getHomeUrl')
+        self.home = mtool.getHomeUrl(self.name, verifyPermission=0)
         self.email = member.getProperty('email')
         self.widget = "%s.select" % self.name
 
@@ -127,13 +127,14 @@ class Manage(BatchViewBase, EditFormBase):
         """Create content field objects only for batched items
         Also create pseudo-widget for each item
         """
+        mtool = self._getTool('portal_membership')
         f = IMemberItem['select']
         members = []
         fields = form.FormFields()
         for item in self._getBatchObj():
             field = form.FormField(f, 'select', item.getId())
             fields += form.FormFields(field)
-            members.append(MemberProxy(item))
+            members.append(MemberProxy(item, mtool))
         self.listBatchItems = members
         return fields
 
