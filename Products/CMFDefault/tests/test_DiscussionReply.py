@@ -20,6 +20,8 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import getSecurityManager
 from zope.site.hooks import setSite
 
+from Products.CMFDefault.permissions import AccessContentsInformation
+from Products.CMFDefault.permissions import View
 from Products.CMFDefault.testing import FunctionalLayer
 
 
@@ -59,10 +61,9 @@ class DiscussionReplyTest(ZopeTestCase.FunctionalTestCase):
         # https://bugs.launchpad.net/zope-cmf/+bug/161720
         state = self.portal.portal_workflow.getInfoFor(reply, 'review_state')
         self.assertEqual(state, 'published')
-        member = self.portal.portal_membership.getAuthenticatedMember()
-        self.failUnless(member.has_permission('View', reply))
-        self.failUnless(member.has_permission('Access contents information',
-                         reply))
+        sm = getSecurityManager()
+        self.assertTrue(sm.checkPermission(View, reply))
+        self.assertTrue(sm.checkPermission(AccessContentsInformation, reply))
 
 
 class DiscussionReplyTestMember(DiscussionReplyTest):
