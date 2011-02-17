@@ -11,11 +11,10 @@
 #
 ##############################################################################
 """ CMFDefault portal_membership tool.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
+from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -25,7 +24,6 @@ from zope.interface import implements
 
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFDefault.Document import addDocument
 from Products.CMFDefault.interfaces import IMembershipTool
 from Products.CMFDefault.permissions import ListPortalMembers
@@ -125,7 +123,7 @@ class MembershipTool(BaseTool):
             return None
         # Note: We can't use getAuthenticatedMember() and getMemberById()
         # because they might be wrapped by MemberDataTool.
-        user = _getAuthenticatedUser(self)
+        user = getSecurityManager().getUser()
         user_id = user.getId()
         if member_id in ('', user_id):
             member = user
