@@ -31,28 +31,26 @@
      <tr>
       <th i18n:translate="">Email address</th>
       <td><input type="text" name="email" value=""
-                 tal:attributes="value member/email|nothing" />
+                 tal:attributes="value python: member.getProperty('email')" />
       </td>
      </tr>
 
      <tr>
       <th valign="top" i18n:translate="">Listed status</th>
-      <td tal:define="listed member/listed|nothing">
+      <td tal:define="listed python: member.getProperty('listed')">
         <input type="radio" name="listed"
                tal:attributes="checked listed"
                value="on" id="cb_listed" />
         <label for="cb_listed" i18n:translate="">Listed</label>
-
         <dl class="FieldHelp">
           <dd i18n:translate="">You will show up on the public membership
             roster.</dd>
         </dl>
 
         <input type="radio" name="listed"
-               tal:attributes="checked python:( hasattr(member,'listed')
-                                  and not(member.getProperty( 'listed' ) ) )"
+               tal:attributes="checked not: listed"
                value="" id="cb_unlisted" />
-       <label for="cb_unlisted" i18n:translate="">Unlisted</label>
+        <label for="cb_unlisted" i18n:translate="">Unlisted</label>
         <dl class="FieldHelp">
           <dd i18n:translate="">You will <i>not</i> show up on the public
             membership roster.</dd>
