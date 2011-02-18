@@ -78,7 +78,7 @@ class MembershipTool(BaseTool):
     #
     #   'portal_membership' interface methods
     #
-    security.declareProtected( ListPortalMembers, 'getRoster' )
+    security.declareProtected(ListPortalMembers, 'getRoster')
     def getRoster(self):
         """ Return a list of mappings for 'listed' members.
 
@@ -88,9 +88,10 @@ class MembershipTool(BaseTool):
         isUserManager = _checkPermission(ManageUsers, self)
         roster = []
         for member in self.listMembers():
-            if isUserManager or member.listed:
-                roster.append({'id':member.getId(),
-                               'listed':member.listed})
+            listed = member.getProperty('listed')
+            if isUserManager or listed:
+                roster.append({'id': member.getId(),
+                               'listed': listed})
         return roster
 
     security.declareProtected(ManagePortal, 'setMembersFolderById')
