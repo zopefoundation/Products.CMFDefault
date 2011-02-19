@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Unit test layers.
-
-$Id$
 """
 
 from Testing import ZopeTestCase
@@ -20,15 +18,10 @@ ZopeTestCase.installProduct('ZCTextIndex', 1)
 ZopeTestCase.installProduct('CMFCore', 1)
 
 import transaction
+from Zope2.App import zcml
 
 from Products.CMFCore.testing import FunctionalZCMLLayer
 from Products.CMFDefault.factory import addConfiguredSite
-
-# BBB for Zope 2.12
-try:
-    from Zope2.App import zcml
-except ImportError:
-    from Products.Five import zcml
 
 
 class FunctionalLayer(FunctionalZCMLLayer):
@@ -53,4 +46,3 @@ class FunctionalLayer(FunctionalZCMLLayer):
         app._delObject('site')
         transaction.commit()
         ZopeTestCase.close(app)
-

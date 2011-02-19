@@ -3,11 +3,7 @@ Join views
 
 Create the browser object we'll be using.
 
-    # BBB for Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
 
 Set properties to validation not required.

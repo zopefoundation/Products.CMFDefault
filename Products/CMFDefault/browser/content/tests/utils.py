@@ -13,11 +13,7 @@
 """ Shared utility functions for browser view tests
 """
 
-try:
-    from Zope2.App.schema import Zope2VocabularyRegistry
-except ImportError:  # Zope2 <= 2.12
-    from Products.Five.schema import Zope2VocabularyRegistry
-
+from Zope2.App.schema import Zope2VocabularyRegistry
 
 def setupVocabulary(testcase):
     from zope.schema.vocabulary import setVocabularyRegistry

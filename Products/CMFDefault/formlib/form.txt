@@ -8,12 +8,7 @@ Set up user.
 
 Create the browser object we'll be using.
 
-    # BBB for Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
-
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
     >>> browser.handleErrors = False
     >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
@@ -21,13 +16,7 @@ Create the browser object we'll be using.
 Register the content class and factory.
 
     >>> from Products.CMFDefault.formlib.tests import CONTENT_ZCML
-
-    # BBB for Zope 2.12
-    >>> try:
-    ...     from Zope2.App import zcml
-    ... except ImportError:
-    ...     from Products.Five import zcml
-
+    >>> from Zope2.App import zcml
     >>> zcml.load_string(CONTENT_ZCML)
 
 Create the type info object.
@@ -121,4 +110,3 @@ The customized add form has the ID field and the fields defined in IFoo.
     True
     >>> 'MY_ID2' in app.site.contentIds()
     True
-

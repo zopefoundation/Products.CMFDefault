@@ -4,7 +4,7 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
-- Require at least Zope 2.12.11.
+- Require at least Zope 2.13.4.
 
 - profiles and upgrade: Added support for using the new OFS UserFolder class.
 
