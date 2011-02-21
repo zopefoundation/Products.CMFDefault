@@ -13,20 +13,24 @@
 """Change user preferences.
 """
 
+from zope.component import adapts
 from zope.formlib import form
+from zope.interface import implements
 from zope.interface import Interface
 from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema.vocabulary import SimpleVocabulary
 
+from Products.CMFCore.interfaces import IMember
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.formlib.form import SettingsEditFormBase
 from Products.CMFDefault.formlib.schema import EmailLine
 from Products.CMFDefault.utils import Message as _
 
 
 def portal_skins(context):
-    stool = getToolByName(context, 'portal_skins')
+    stool = getToolByName(context.context, 'portal_skins')
     return SimpleVocabulary.fromValues(stool.getSkinSelections())
 
 
@@ -39,59 +43,54 @@ class IPreferencesSchema(Interface):
         title=_(u"Listed status"),
         description=_(u"Select to be listed on the public membership roster."))
 
-    skin = Choice(
+    portal_skin = Choice(
         title=_(u"Skin"),
         vocabulary=u"cmf.AvailableSkins",
-        required=False)
+        required=False,
+        missing_value='')
 
 
-class Preferences(EditFormBase):
+class PreferencesSchemaAdapter(object):
+
+    """Adapter for IMember.
+    """
+
+    adapts(IMember)
+    implements(IPreferencesSchema)
+
+    def __init__(self, context):
+        self.context = context
+
+    def __getattr__(self, name):
+        return self.context.getProperty(name)
+
+    def __setattr__(self, name, value):
+        if name in ('email', 'listed', 'portal_skin'):
+            self.context.setMemberProperties({name: value})
+        else:
+            object.__setattr__(self, name, value)
+
+
+class Preferences(SettingsEditFormBase):
+
+    label = _(u"Member Preferences")
+    successMessage = _(u"Member preferences changed.")
 
     form_fields = form.FormFields(IPreferencesSchema)
 
-    actions = form.Actions(
-                form.Action(
-                name="change",
-                label=u"Change",
-                success="handle_success",
-                failure="handle_failure"
-                    )
-                )
-    label = _(u"Member Preferences")
+    @memoize
+    def getContent(self):
+        mtool = self._getTool('portal_membership')
+        member = mtool.getAuthenticatedMember()
+        return PreferencesSchemaAdapter(member)
 
-    def __init__(self, context, request):
-        super(Preferences, self).__init__(context, request)
-        self.mtool = self._getTool('portal_membership')
-        self.stool = self._getTool('portal_skins')
-        self.atool = self._getTool('portal_actions')
+    def applyChanges(self, data):
+        changes = super(Preferences, self).applyChanges(data)
+        if any('portal_skin' in v for v in changes.itervalues()):
+            stool = self._getTool('portal_skins')
+            stool.updateSkinCookie()
+        return changes
 
-    def get_skin_cookie(self):
-        """Check for user cookie"""
-        cookies = self.request.cookies
-        return cookies.get('portal_skin')
-
-    @property
-    def member(self):
-        """Get the current user"""
-        return self.mtool.getAuthenticatedMember()
-
-    def setUpWidgets(self, ignore_request=False):
-        """Populate form with member preferences"""
-        data = {}
-        data['email'] = self.member.email
-        data['listed'] = getattr(self.member, 'listed', None)
-        data['skin'] = self.get_skin_cookie()
-
-        self.widgets = form.setUpDataWidgets(self.form_fields,
-                                        self.prefix,
-                                        self.context,
-                                        self.request,
-                                        data=data,
-                                        ignore_request=False)
-
-    def handle_success(self, action, data):
-        if 'skin' in data:
-            self.stool.portal_skins.updateSkinCookie()
-        self.member.setProperties(data)
-        self.status = _(u"Member preferences changed.")
-        self._setRedirect('portal_actions', 'user/preferences')
+    def handle_change_success(self, action, data):
+        self._handle_success(action, data)
+        return self._setRedirect('portal_actions', 'user/preferences')
