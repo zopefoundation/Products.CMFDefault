@@ -15,17 +15,13 @@
 SchemaAdapterBase and ProxyFieldProperty are legacy code. They should only be
 used to adapt old content types that can't handle unicode and datetime
 correctly.
-
-$Id$
 """
 
 from datetime import datetime
 
 from DateTime.DateTime import DateTime
 from OFS.Image import Pdata
-
 from zope.component import getUtility
-from zope.datetime import parseDatetimetz
 from zope.interface import implements
 from zope.schema import BytesLine
 from zope.schema import Field
@@ -83,7 +79,7 @@ class ProxyFieldProperty(object):
         if isinstance(attribute, str) and inst.encoding:
             return attribute.decode(inst.encoding)
         if isinstance(attribute, DateTime):
-            return parseDatetimetz(attribute.ISO8601())
+            return attribute.asdatetime().replace(tzinfo=None)
         if isinstance(attribute, (tuple, list)):
             if inst.encoding:
                 attribute = [ isinstance(v, str)
@@ -104,7 +100,7 @@ class ProxyFieldProperty(object):
         if isinstance(value, unicode) and inst.encoding:
             value = value.encode(inst.encoding)
         elif isinstance(value, datetime):
-            value = DateTime(value.isoformat())
+            value = DateTime(value)
         elif isinstance(value, (set, tuple, list)):
             if inst.encoding:
                 value = [ isinstance(v, unicode)

@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Formlib form base classes.
-
-$Id$
 """
 
 from datetime import datetime
@@ -20,16 +18,14 @@ from sets import Set
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
 from five.formlib.formbase import PageAddForm
 from five.formlib.formbase import PageDisplayForm
 from five.formlib.formbase import PageForm
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
 from zope.component import getUtility
 from zope.component.interfaces import IFactory
 from zope.container.interfaces import INameChooser
-from zope.datetime import parseDatetimetz
 from zope.formlib import form
 from zope.formlib.interfaces import IPageForm
 from zope.interface import implementsOnly
@@ -70,8 +66,8 @@ class _EditFormMixin(ViewBase):
             if v:
                 kw[k] = v
 
-        query = kw and ( '?%s' % make_query(kw) ) or ''
-        self.request.RESPONSE.redirect( '%s%s' % (target, query) )
+        query = kw and ('?%s' % make_query(kw)) or ''
+        self.request.RESPONSE.redirect('%s%s' % (target, query))
 
         return ''
 
@@ -153,7 +149,7 @@ class ContentAddFormBase(_EditFormMixin, PageAddForm):
                                  ('object/folderContents', 'object/view'))
 
     def create(self, data):
-        id =  data.pop('id', '') or ''
+        id = data.pop('id', '') or ''
         factory = getUtility(IFactory, self.ti.factory)
         obj = factory(id=id, **data)
         obj._setPortalTypeName(self.ti.getId())
@@ -265,8 +261,9 @@ class ContentEditFormBase(_EditFormMixin, PageForm):
         for k, v in data.iteritems():
             if isinstance(v, Set):
                 data[k] = set(v)
-            elif isinstance(v, datetime) and v.tzname() is None:
-                data[k] = parseDatetimetz(str(v))
+            elif isinstance(v, datetime) and v.tzinfo:
+                # DatetimeWidget returns offset-aware datetime objects
+                data[k] = v.replace(tzinfo=None)
         changes = self.applyChanges(data)
         if changes:
             self.status = self.successMessage

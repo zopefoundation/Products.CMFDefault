@@ -103,8 +103,7 @@ Utilities
 
       >>> from datetime import datetime
       >>> from DateTime.DateTime import DateTime
-      >>> from Products.PluginIndexes.DateIndex.DateIndex import Local
-      >>> foo_datetime = datetime(2002, 2, 2, 2, 2, 2, tzinfo=Local)
+      >>> foo_datetime = datetime(2002, 2, 2, 2, 2, 2)
       >>> adapter.foo_datetime = foo_datetime
       >>> isinstance(content.foo_datetime, DateTime)
       True
