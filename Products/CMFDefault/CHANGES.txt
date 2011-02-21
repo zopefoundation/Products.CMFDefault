@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- browser views: Added SettingsEditFormBase.
+  This can be used for edit forms for global settings.
+
 - Require at least Zope 2.13.4.
 
 - profiles and upgrade: Added support for using the new OFS UserFolder class.

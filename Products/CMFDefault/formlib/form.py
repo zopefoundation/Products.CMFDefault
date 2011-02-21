@@ -82,6 +82,51 @@ class EditFormBase(_EditFormMixin, PageForm):
     pass
 
 
+class SettingsEditFormBase(_EditFormMixin, PageForm):
+
+    """Base class for editing global settings.
+    """
+
+    actions = form.Actions(
+        form.Action(
+            name='change',
+            label=_(u'Change'),
+            success='handle_change_success',
+            failure='handle_failure'))
+
+    description = u''
+    successMessage = _(u"Settings changed.")
+    noChangesMessage = _(u'Nothing to change.')
+
+    def getContent(self):
+        return self.context
+
+    def setUpWidgets(self, ignore_request=False):
+        self.adapters = {}
+        self.widgets = form.setUpEditWidgets(
+            self.form_fields, self.prefix, self.getContent(), self.request,
+            adapters=self.adapters, ignore_request=ignore_request
+            )
+
+    def applyChanges(self, data):
+        return form.applyData(self.getContent(), self.form_fields, data)
+
+    def _handle_success(self, action, data):
+        # normalize set and datetime
+        for k, v in data.iteritems():
+            if isinstance(v, Set):
+                data[k] = set(v)
+            elif isinstance(v, datetime) and v.tzinfo:
+                # DatetimeWidget returns offset-aware datetime objects
+                data[k] = v.replace(tzinfo=None)
+        changes = self.applyChanges(data)
+        if changes:
+            self.status = self.successMessage
+        else:
+            self.status = self.noChangesMessage
+        return changes
+
+
 class ContentAddFormBase(_EditFormMixin, PageAddForm):
 
     adapts(IFolderish, ICMFDefaultSkin, ITypeInformation)
@@ -205,7 +250,7 @@ class FallbackAddView(ContentAddFormBase):
         return obj
 
 
-class ContentEditFormBase(_EditFormMixin, PageForm):
+class ContentEditFormBase(SettingsEditFormBase):
 
     actions = form.Actions(
         form.Action(
@@ -221,15 +266,6 @@ class ContentEditFormBase(_EditFormMixin, PageForm):
             success='handle_change_and_view_success',
             failure='handle_failure'))
 
-    description = u''
-
-    def setUpWidgets(self, ignore_request=False):
-        self.adapters = {}
-        self.widgets = form.setUpEditWidgets(
-            self.form_fields, self.prefix, self.context, self.request,
-            adapters=self.adapters, ignore_request=ignore_request
-            )
-
     @property
     def label(self):
         obj_type = translate(self.context.Type(), self.context)
@@ -240,35 +276,16 @@ class ContentEditFormBase(_EditFormMixin, PageForm):
         obj_type = translate(self.context.Type(), self.context)
         return _(u'${obj_type} changed.', mapping={'obj_type': obj_type})
 
-    noChangesMessage = _(u'Nothing to change.')
-
     def handle_validate(self, action, data):
         if self.context.wl_isLocked():
             return (_(u'This resource is locked via webDAV.'),)
         return None
 
     def applyChanges(self, data):
-        content = self.context
-        changes = form.applyData(content, self.form_fields, data,
-                                 self.adapters)
+        changes = super(ContentEditFormBase, self).applyChanges(data)
         # ``changes`` is a dictionary; if empty, there were no changes
         if changes:
-            content.reindexObject()
-        return changes
-
-    def _handle_success(self, action, data):
-        # normalize set and datetime
-        for k, v in data.iteritems():
-            if isinstance(v, Set):
-                data[k] = set(v)
-            elif isinstance(v, datetime) and v.tzinfo:
-                # DatetimeWidget returns offset-aware datetime objects
-                data[k] = v.replace(tzinfo=None)
-        changes = self.applyChanges(data)
-        if changes:
-            self.status = self.successMessage
-        else:
-            self.status = self.noChangesMessage
+            self.getContent().reindexObject()
         return changes
 
     def handle_change_success(self, action, data):
