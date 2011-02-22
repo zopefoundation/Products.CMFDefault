@@ -5,21 +5,14 @@ Set up Zope manager.
 
     >>> from urllib import quote
     >>> uf = app.acl_users
-    >>> _ignored = uf._doAddUser('mbr', 'mbrpw', ['Manager'], [])
-    >>> mbr_credentials = quote('mbr:mbrpw'.encode('base64').rstrip())
+    >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
 
 Create the browser object we'll be using.
 
     >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
-
-Log the user in
-    >>> browser.open('http://localhost/site/@@login.html')
-    >>> browser.getControl(name="__ac_name").value = 'mbr'
-    >>> browser.getControl(name="__ac_password").value = 'mbrpw'
-    >>> browser.getControl(name="actions.login").click()
-    >>> '[[cmf_default][Login success]]' in browser.contents
-    True
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
 Open the membership form with no members
     >>> browser.open("http://localhost/site/@@members.html")
