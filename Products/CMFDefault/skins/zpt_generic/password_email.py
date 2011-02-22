@@ -20,7 +20,8 @@ headers['Subject'] = _(u'${portal_title}: Membership reminder',
                       mapping={'portal_title': decode(ptool.title(), script)})
 headers['From'] = '%s <%s>' % (ptool.getProperty('email_from_name'),
                                ptool.getProperty('email_from_address'))
-headers['To'] = '<%s>' % (member and member.email or 'foo@example.org')
+headers['To'] = '<%s>' % (member and member.getProperty('email') or
+                          'foo@example.org')
 
 mtext = context.password_email_template(**decode(options, script))
 return makeEmail(mtext, script, headers)
