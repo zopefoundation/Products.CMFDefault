@@ -122,22 +122,15 @@ class MembershipTool(BaseTool):
             return None
         if self.isAnonymousUser():
             return None
-        # Note: We can't use getAuthenticatedMember() and getMemberById()
-        # because they might be wrapped by MemberDataTool.
-        user = getSecurityManager().getUser()
-        user_id = user.getId()
-        if member_id in ('', user_id):
-            member = user
-            member_id = user_id
-        else:
-            if _checkPermission(ManageUsers, self):
-                member = self.acl_users.getUserById(member_id, None)
-                if member:
-                    member = member.__of__(self.acl_users)
-                else:
-                    raise ValueError, 'Member %s does not exist' % member_id
-            else:
+        if member_id:
+            if not self.isMemberAccessAllowed(member_id):
                 return None
+            member = self.getMemberById(member_id)
+            if member is None:
+                return None
+        else:
+            member = self.getAuthenticatedMember()
+            member_id = member.getId()
         if hasattr( aq_base(members), member_id ):
             return None
 
