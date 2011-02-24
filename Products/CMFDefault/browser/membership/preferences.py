@@ -30,7 +30,7 @@ from Products.CMFDefault.utils import Message as _
 
 
 def portal_skins(context):
-    stool = getToolByName(context.context, 'portal_skins')
+    stool = getToolByName(context.context._tool, 'portal_skins')
     return SimpleVocabulary.fromValues(stool.getSkinSelections())
 
 
