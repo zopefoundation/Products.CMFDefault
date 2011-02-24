@@ -223,10 +223,9 @@ class LoggedIn(ViewBase):
         member = mtool.getAuthenticatedMember()
         now = DateTime()
         last_login = member.getProperty('login_time', None)
+        never_logged_in = str(last_login).startswith('2000/01/01')
         ptool = self._getTool('portal_properties')
-        is_first_login = (last_login == '2000/01/01' and
-                          ptool.getProperty('validate_email'))
-        if is_first_login:
+        if never_logged_in and ptool.getProperty('validate_email'):
             return self.first_login(member)
         else:
             member.setProperties(last_login_time=last_login, login_time=now)

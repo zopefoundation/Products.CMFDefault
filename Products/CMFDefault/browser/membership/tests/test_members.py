@@ -19,6 +19,7 @@ from Testing import ZopeTestCase
 from zope.component import getSiteManager
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
+from DateTime.DateTime import DateTime
 
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
@@ -32,6 +33,8 @@ from Products.CMFDefault.testing import FunctionalLayer
 class DummyUser(DummyUser):
 
     def getProperty(self, attr):
+        if attr == 'login_time':
+            return DateTime('2000/01/01 00:00:00')
         return None
 
 

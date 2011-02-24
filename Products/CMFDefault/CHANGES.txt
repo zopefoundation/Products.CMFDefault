@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Skins and browser views: Fixed 'login_time' handling.
+  Should be working with string and DateTime values because the MemberDataTool
+  settings might be inconsistent.
+
 - browser views: Added SettingsEditFormBase.
   This can be used for edit forms for global settings.
 

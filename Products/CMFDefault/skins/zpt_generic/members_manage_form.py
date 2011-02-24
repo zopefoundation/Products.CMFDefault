@@ -30,8 +30,9 @@ batch_obj = Batch(members, 25, b_start, orphan=0)
 items = []
 for member in batch_obj:
     member_id = member.getId()
-    login_time = member.getProperty('login_time')
-    member_login = login_time == '2000/01/01' and '---' or login_time.Date()
+    last_login = member.getProperty('login_time')
+    never_logged_in = str(last_login).startswith('2000/01/01')
+    member_login = never_logged_in and '---' or last_login.Date()
     member_home = mtool.getHomeUrl(member_id, verifyPermission=0)
     items.append( {'checkbox': 'cb_%s' % member_id,
                    'email': member.getProperty('email'),

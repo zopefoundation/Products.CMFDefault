@@ -30,10 +30,8 @@ else:
     member = mtool.getAuthenticatedMember()
     now = context.ZopeTime()
     last_login = member.getProperty('login_time', None)
-    member.setProperties(last_login_time=last_login, login_time=now)
-    is_first_login = (last_login == '2000/01/01' and
-                      ptool.getProperty('validate_email'))
-    if is_first_login:
+    never_logged_in = str(last_login).startswith('2000/01/01')
+    if never_logged_in and ptool.getProperty('validate_email'):
         member.setProperties(last_login_time='1999/01/01', login_time=now)
         target = '%s/password_form' % portal_url
         context.REQUEST.RESPONSE.redirect(target)

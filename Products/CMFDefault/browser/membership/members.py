@@ -60,8 +60,9 @@ class MemberProxy(object):
     """Utility class wrapping a member for display purposes"""
 
     def __init__(self, member, mtool):
-        login_time = member.getProperty('login_time')
-        self.login_time = '2000/01/01' and '---' or login_time.Date()
+        last_login = member.getProperty('login_time')
+        never_logged_in = str(last_login).startswith('2000/01/01')
+        self.login_time = never_logged_in and '---' or last_login.Date()
         self.name = member.getId()
         self.home = mtool.getHomeUrl(self.name, verifyPermission=0)
         self.email = member.getProperty('email')
