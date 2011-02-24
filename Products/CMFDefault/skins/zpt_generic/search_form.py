@@ -23,7 +23,8 @@ created = []
 today = context.ZopeTime().earliestTime()
 created.append({'value': '1970/01/01 00:00:01 GMT', 'title': _(u'Ever')})
 if not mtool.isAnonymousUser():
-    created.append({'value': mtool.getAuthenticatedMember().last_login_time,
+    member = mtool.getAuthenticatedMember()
+    created.append({'value': member.getProperty('last_login_time'),
                     'title': _(u'Last login')})
 created.append({'value': (today-1).Date(), 'title': _(u'Yesterday')})
 created.append({'value': (today-7).Date(), 'title': _(u'Last week')})

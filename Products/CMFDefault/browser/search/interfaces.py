@@ -53,7 +53,8 @@ def date_vocab(context):
     mtool = getToolByName(context, 'portal_membership')
     dates = [SimpleTerm(date(1970, 1, 1), date(1970, 1, 1), _(u'Ever'))]
     if not mtool.isAnonymousUser():
-        login_time = mtool.getAuthenticatedMember().last_login_time
+        member = mtool.getAuthenticatedMember()
+        login_time = member.getProperty('last_login_time')
         if not hasattr(login_time, 'parts'):
             login_time = DateTime(login_time)
         login = date(*login_time.parts()[:3])
