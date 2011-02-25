@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- profiles: Added default settings for the member data tool.
+
 - upgrade: Added upgrade step for member data tool settings.
 
 - Skins and browser views: Fixed 'login_time' handling.
