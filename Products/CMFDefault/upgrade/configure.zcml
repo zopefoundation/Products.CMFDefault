@@ -216,6 +216,14 @@
         checker=".to23.check_actions_tool"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade member data tool"
+        description="Fix default 'listed', 'login_time' and 'last_login_time'
+                     values."
+        handler=".to23.upgrade_member_data_tool"
+        checker=".to23.check_member_data_tool"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

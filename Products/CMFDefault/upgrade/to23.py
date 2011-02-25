@@ -176,3 +176,36 @@ _ACTIONS_SYNDICATION_XML = """\
  </object>
 </object>
 """
+
+def check_member_data_tool(tool):
+    """2.2.x to 2.3.0 upgrade step checker
+    """
+    mdtool = getToolByName(tool, 'portal_memberdata')
+    listed = mdtool.getProperty('listed')
+    if listed == '':
+        return True
+    login_time = mdtool.getProperty('login_time')
+    if login_time == '2000/01/01':
+        return True
+    last_login_time = mdtool.getProperty('last_login_time')
+    if last_login_time == '2000/01/01':
+        return True
+    return False
+
+def upgrade_member_data_tool(tool):
+    """2.2.x to 2.3.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    mdtool = getToolByName(tool, 'portal_memberdata')
+    listed = mdtool.getProperty('listed')
+    if listed == '':
+        mdtool._updateProperty('listed', '')
+        logger.info("Member data tool property 'listed' fixed.")
+    login_time = mdtool.getProperty('login_time')
+    if login_time == '2000/01/01':
+        mdtool._updateProperty('login_time', '2000/01/01')
+        logger.info("Member data tool property 'login_time' fixed.")
+    last_login_time = mdtool.getProperty('last_login_time')
+    if last_login_time == '2000/01/01':
+        mdtool._updateProperty('last_login_time', '2000/01/01')
+        logger.info("Member data tool property 'last_login_time' fixed.")
