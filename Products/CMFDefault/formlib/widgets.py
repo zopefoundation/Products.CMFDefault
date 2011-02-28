@@ -12,21 +12,21 @@
 ##############################################################################
 """Custom form widgets."""
 
-from zope.app.form import InputWidget
-from zope.app.form.browser import ASCIIWidget
-from zope.app.form.browser import BrowserWidget
-from zope.app.form.browser import FileWidget
-from zope.app.form.browser import MultiCheckBoxWidget
-from zope.app.form.browser import MultiSelectSetWidget
-from zope.app.form.browser import MultiSelectWidget
-from zope.app.form.browser import RadioWidget
-from zope.app.form.browser import TextWidget
-from zope.app.form.browser import TextAreaWidget
-from zope.app.form.interfaces import ConversionError
-from zope.app.form.interfaces import IInputWidget
-from zope.app.form.interfaces import WidgetInputError
 from zope.component import adapts
 from zope.component import getUtility
+from zope.formlib.interfaces import ConversionError
+from zope.formlib.interfaces import IInputWidget
+from zope.formlib.interfaces import WidgetInputError
+from zope.formlib.widget import InputWidget
+from zope.formlib.widgets import ASCIIWidget
+from zope.formlib.widgets import BrowserWidget
+from zope.formlib.widgets import FileWidget
+from zope.formlib.widgets import MultiCheckBoxWidget
+from zope.formlib.widgets import MultiSelectSetWidget
+from zope.formlib.widgets import MultiSelectWidget
+from zope.formlib.widgets import RadioWidget
+from zope.formlib.widgets import TextAreaWidget
+from zope.formlib.widgets import TextWidget
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implementsOnly
 from zope.publisher.interfaces.browser import IBrowserRequest

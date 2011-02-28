@@ -15,9 +15,9 @@
 
 import urlparse
 
-from zope.app.form.browser import BytesWidget
 from zope.component import adapts
 from zope.formlib import form
+from zope.formlib.widgets import BytesWidget
 from zope.interface import implements
 from zope.interface import Interface
 from zope.schema import ASCIILine

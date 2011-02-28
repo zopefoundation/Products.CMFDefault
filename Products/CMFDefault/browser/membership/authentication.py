@@ -20,8 +20,8 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import Forbidden
 from zExceptions import Redirect
-from zope.app.form.browser import TextWidget
 from zope.formlib import form
+from zope.formlib.widgets import TextWidget
 from zope.interface import implements
 from zope.interface import Interface
 from zope.schema import Bool

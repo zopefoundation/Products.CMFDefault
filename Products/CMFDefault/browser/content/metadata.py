@@ -14,10 +14,10 @@
 """
 
 from Acquisition import aq_self
-from zope.app.form.browser import DatetimeI18nWidget
 from zope.component import adapts
 from zope.component import getUtility
 from zope.formlib import form
+from zope.formlib.widgets import DatetimeI18nWidget
 from zope.interface import implements
 from zope.interface import Interface
 from zope.schema import Choice
