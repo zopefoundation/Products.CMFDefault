@@ -4,11 +4,13 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Removed ``five.formlib`` dependency. ``zope.formlib`` is now used directly.
+
 - profiles: Added default settings for the member data tool.
 
 - upgrade: Added upgrade step for member data tool settings.
 
-- Skins and browser views: Fixed 'login_time' handling.
+- skins and browser views: Fixed 'login_time' handling.
   Should be working with string and DateTime values because the MemberDataTool
   settings might be inconsistent.
 
@@ -27,8 +29,6 @@ Products.CMFDefault Changelog
 - Use the standard libraries doctest module.
 
 - skins: Removed unused styles from css.
-
-- Use the optional five.formlib extension in favor of Products.Five.formlib.
 
 - Removed testing dependency on zope.app.testing.
 

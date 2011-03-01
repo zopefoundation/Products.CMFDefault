@@ -18,9 +18,8 @@ from sets import Set
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass
-from five.formlib.formbase import PageAddForm
-from five.formlib.formbase import PageDisplayForm
-from five.formlib.formbase import PageForm
+from Products.Five.browser.decode import processInputs
+from Products.Five.browser.decode import setPageEncoding
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
 from zope.component import getUtility
@@ -71,18 +70,23 @@ class _EditFormMixin(ViewBase):
 
         return ''
 
+    def update(self):
+        processInputs(self.request)
+        setPageEncoding(self.request)
+        super(_EditFormMixin, self).update()
+
     def handle_failure(self, action, data, errors):
         if self.status:
             message = translate(self.status, self.context)
             self.request.other['portal_status_message'] = message
 
 
-class EditFormBase(_EditFormMixin, PageForm):
+class EditFormBase(_EditFormMixin, form.PageForm):
 
     pass
 
 
-class SettingsEditFormBase(_EditFormMixin, PageForm):
+class SettingsEditFormBase(_EditFormMixin, form.PageForm):
 
     """Base class for editing global settings.
     """
@@ -127,7 +131,7 @@ class SettingsEditFormBase(_EditFormMixin, PageForm):
         return changes
 
 
-class ContentAddFormBase(_EditFormMixin, PageAddForm):
+class ContentAddFormBase(_EditFormMixin, form.PageAddForm):
 
     adapts(IFolderish, ICMFDefaultSkin, ITypeInformation)
     implementsOnly(IPageForm)
@@ -297,9 +301,14 @@ class ContentEditFormBase(SettingsEditFormBase):
         return self._setRedirect('portal_types', 'object/view')
 
 
-class DisplayFormBase(PageDisplayForm, ViewBase):
+class DisplayFormBase(form.PageDisplayForm, ViewBase):
 
     template = ViewPageTemplateFile('viewform.pt')
+
+    def update(self):
+        processInputs(self.request)
+        setPageEncoding(self.request)
+        super(DisplayFormBase, self).update()
 
     @property
     def label(self):

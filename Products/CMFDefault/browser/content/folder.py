@@ -16,19 +16,18 @@ import logging
 LOG = logging.getLogger("Folder contents views")
 import urllib
 
-from five.formlib.formbase import PageForm
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.formlib import form
-from zope import schema
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.sequencesort.ssort import sort
 from ZTUtils import Batch
 from ZTUtils import LazyFilter
 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
 from Products.CMFCore.interfaces import IDynamicType
-
+from Products.CMFDefault.browser.utils import decode
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.formlib.form import _EditFormMixin
@@ -36,8 +35,7 @@ from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.utils import Message as _
 
-from Products.CMFDefault.browser.utils import decode, memoize, ViewBase
-from interfaces import IDeltaItem, IFolderItem, IBatchForm, ISortForm
+from .interfaces import IDeltaItem, IFolderItem, IBatchForm, ISortForm
 
 def contents_delta_vocabulary(context):
     """Vocabulary for the pulldown for moving objects up and down.
@@ -232,7 +230,7 @@ class ContentProxy(object):
         self.widget = "%s.select" % self.name
 
 
-class ContentsView(BatchViewBase, _EditFormMixin, PageForm):
+class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     """Folder contents view"""
 
     template = ViewPageTemplateFile('folder_contents.pt')
