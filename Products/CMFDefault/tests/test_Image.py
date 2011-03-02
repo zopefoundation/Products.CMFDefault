@@ -22,6 +22,7 @@ from cStringIO import StringIO
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
+from App.Common import rfc1123_date
 from zope.interface.verify import verifyClass
 from zope.site.hooks import setSite
 from zope.testing.cleanup import cleanUp
@@ -31,11 +32,12 @@ from Products.CMFCore.tests.base.dummy import DummyCachingManager
 from Products.CMFCore.tests.base.dummy import DummyCachingManagerWithPolicy
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFCore.tests.base.dummy import FAKE_ETAG
 from Products.CMFCore.tests.base.testcase import RequestTest
 from Products.CMFDefault import tests
 from Products.CMFDefault.testing import FunctionalLayer
 
-from test_File import LMDummyCachingManager
+from .test_File import LMDummyCachingManager
 
 TESTS_HOME = tests.__path__[0]
 TEST_JPG = path_join(TESTS_HOME, 'TestImage.jpg')
@@ -217,10 +219,6 @@ class TestCaching(RequestTest):
     def test_index_html_with_304_from_cpm( self ):
         self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
         path, ref = self._extractFile()
-
-        from webdav.common import rfc1123_date
-        from Products.CMFCore.tests.base.dummy import FAKE_ETAG
-
         self.root.file = self._makeOne('test_file', 'test_image.jpg', file=ref)
         file = self.root.file
 
@@ -256,9 +254,6 @@ class TestCaching(RequestTest):
     def test_index_html_200_with_cpm( self ):
         self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
         path, ref = self._extractFile()
-
-        from webdav.common import rfc1123_date
-
         file = self._makeOne( 'test_file', 'test_image.jpg', file=ref )
         file = file.__of__( self.root )
 
@@ -278,14 +273,10 @@ class TestCaching(RequestTest):
                         , rfc1123_date( mod_time ) )
 
     def test_index_html_with_304_and_caching( self ):
-
         # See collector #355
         self._setupCachingPolicyManager(DummyCachingManager())
         original_len = len(self.RESPONSE.headers)
         path, ref = self._extractFile()
-
-        from webdav.common import rfc1123_date
-
         self.root.image = self._makeOne( 'test_image', 'test_image.gif' )
         image = self.root.image
         transaction.savepoint(optimistic=True)

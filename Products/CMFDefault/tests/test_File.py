@@ -15,17 +15,18 @@
 
 import unittest
 import Testing
-import transaction
-import DateTime
 
 from os.path import join as path_join
 
+import transaction
+from App.Common import rfc1123_date
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.testing import ConformsToContent
 from Products.CMFCore.tests.base.dummy import DummyCachingManager
 from Products.CMFCore.tests.base.dummy import DummyCachingManagerWithPolicy
+from Products.CMFCore.tests.base.dummy import FAKE_ETAG
 from Products.CMFCore.tests.base.testcase import RequestTest
 from Products.CMFDefault import tests
 
@@ -113,10 +114,6 @@ class CachingTests(RequestTest):
     def test_index_html_with_304_from_cpm( self ):
         self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
         path, ref = self._extractFile()
-
-        from webdav.common import rfc1123_date
-        from Products.CMFCore.tests.base.dummy import FAKE_ETAG
-
         file = self._makeOne( 'test_file', 'test_file.swf', file=ref )
         file = file.__of__( self.root )
 
@@ -135,9 +132,6 @@ class CachingTests(RequestTest):
         # should behave the same as without cpm installed
         self._setupCachingPolicyManager(DummyCachingManager())
         path, ref = self._extractFile()
-
-        from webdav.common import rfc1123_date
-
         file = self._makeOne( 'test_file', 'test_file.swf', file=ref )
         file = file.__of__( self.root )
 
