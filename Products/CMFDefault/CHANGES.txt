@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Document: Improved 'manage_FTPget' method.
+  HTML responses can now be rendered by a view.
+
 - Removed ``five.formlib`` dependency. ``zope.formlib`` is now used directly.
 
 - profiles: Added default settings for the member data tool.

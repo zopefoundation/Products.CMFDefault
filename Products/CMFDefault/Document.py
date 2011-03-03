@@ -11,23 +11,22 @@
 #
 ##############################################################################
 """ Basic textual content object, supporting HTML, STX and plain text.
-
-$Id$
 """
+
 try:
     from reStructuredText import HTML as ReST
     REST_AVAILABLE = True
 except ImportError:
     REST_AVAILABLE = False
 
+import transaction
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
-from App.config import getConfiguration
 from App.class_init import InitializeClass
+from App.config import getConfiguration
 from App.special_dtml import DTMLFile
 from DocumentTemplate.DT_Util import html_quote
-import transaction
 from zope.component import queryUtility
 from zope.component.factory import Factory
 from zope.interface import implements
@@ -428,7 +427,7 @@ class Document(PortalContent, DefaultDublinCoreImpl):
             ti = self.getTypeInfo()
             method_id = ti and ti.queryMethodID('gethtml', context=self)
             if method_id:
-                method = getattr(self, method_id)
+                method = self.unrestrictedTraverse(method_id)
                 if getattr(aq_base(method), 'isDocTemp', 0):
                     bodytext = method(self, self.REQUEST)
                 else:

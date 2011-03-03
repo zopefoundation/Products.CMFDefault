@@ -1,15 +1,20 @@
 Document Views
 --------------
 
-Set up Document and user.
+Set up site, method alias, user and Document.
 
-    >>> from Products.CMFDefault.Document import Document
-    >>> id = app.site._setObject('myDocument', Document('myDocument'))
-
-    >>> uf = app.site.acl_users
-    >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
     >>> from zope.site.hooks import setSite
     >>> setSite(app.site)
+    >>> ti = app.site.portal_types.Document
+    >>> dummy = ti.setMethodAliases({'gethtml': '@@source.html'})
+    >>> uf = app.site.acl_users
+    >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
+    >>> from Products.CMFDefault.Document import Document
+    >>> obj_id = app.site._setObject('myDocument', Document('myDocument'))
+    >>> obj = app.site[obj_id]
+    >>> obj.portal_type = 'Document'
+    >>> obj.setTitle('TITLE')
+    >>> obj.setDescription('DESCRIPTION')
 
 Create the browser object we'll be using.
 
@@ -69,31 +74,66 @@ Changes can't be saved if the document is locked.
     >>> '[[cmf_default][This resource is locked ' in browser.contents
     True
 
-Test source view.
-Unlock document first.
-
     >>> app.site.myDocument.wl_clearLocks()
     >>> app.site.myDocument.wl_isLocked()
     0
-    >>> browser.open('http://localhoste/site/myDocument/@@edit.html')
 
+Structured Text will be formatted as HTML in the view.
+
+    >>> browser.open('http://localhost/site/myDocument/@@edit.html')
     >>> browser.getControl(name='form.text_format').value == ['structured-text']
     True
     >>> browser.getControl('[[cmf_default][Body]]').value = '*spam and eggs*'
     >>> browser.getControl('[[cmf_default][Change]]').click()
 
-Structured Text will be formatted as HTML in the view
-
-    >>> browser.open('http://localhoste/site/myDocument/@@view.html')
+    >>> browser.open('http://localhost/site/myDocument/@@view.html')
     >>> '*spam and eggs*' in browser.contents
     False
     >>> '<em>spam and eggs</em>' in browser.contents
     True
 
-Structured Text markup will be visible in the source view
+The source view is not used in 'structured-text' mode.
 
-    >>> browser.open('http://localhoste/site/myDocument/@@source.html')
-    >>> '*spam and eggs*' in browser.contents
-    True
-    >>> '<meta name="Description" content="" />' in browser.contents
-    True
+    >>> browser.open('http://localhost/site/myDocument/manage_FTPget')
+    >>> print browser.contents
+    Title: TITLE
+    Subject:
+    Publisher:
+    Description: DESCRIPTION
+    Contributors:
+    Effective_date: None
+    Expiration_date: None
+    Type: Document
+    Format: text/plain
+    Language:
+    Rights:
+    SafetyBelt: ...
+    <BLANKLINE>
+    *spam and eggs*
+
+The source view is only used in 'html' mode.
+
+    >>> browser.open('http://localhost/site/myDocument/@@edit.html')
+    >>> browser.getControl(name='form.text_format').value = ['html']
+    >>> browser.getControl('[[cmf_default][Body]]').value = '<b>spam</b>'
+    >>> browser.getControl('[[cmf_default][Change]]').click()
+
+    >>> browser.open('http://localhost/site/myDocument/manage_FTPget')
+    >>> print browser.contents
+    <html>
+     <head>
+     <title>TITLE</title>
+     <meta name="Subject" content="" />
+     <meta name="Publisher" content="" />
+     <meta name="Description" content="DESCRIPTION" />
+     <meta name="Contributors" content="" />
+     <meta name="Effective_date" content="None" />
+     <meta name="Expiration_date" content="None" />
+     <meta name="Type" content="[[cmf_default][Document]]" />
+     <meta name="Format" content="text/html" />
+     <meta name="Language" content="" />
+     <meta name="Rights" content="" />
+     <meta name="SafetyBelt" content="..." />
+     </head>
+     <body><b>spam</b></body>
+    </html>
