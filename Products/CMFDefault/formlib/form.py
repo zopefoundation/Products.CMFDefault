@@ -19,7 +19,6 @@ from sets import Set
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.Five.browser.decode import processInputs
-from Products.Five.browser.decode import setPageEncoding
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
 from zope.component import getUtility
@@ -29,6 +28,7 @@ from zope.formlib import form
 from zope.formlib.interfaces import IPageForm
 from zope.interface import implementsOnly
 from zope.schema import ASCIILine
+from ZPublisher import HTTPRequest
 from ZTUtils import make_query
 
 from Products.CMFCore.interfaces import IFolderish
@@ -71,8 +71,9 @@ class _EditFormMixin(ViewBase):
         return ''
 
     def update(self):
-        processInputs(self.request)
-        setPageEncoding(self.request)
+        # BBB: for Zope < 2.14
+        if not getattr(self.request, 'postProcessInputs', False):
+            processInputs(self.request, [HTTPRequest.default_encoding])
         super(_EditFormMixin, self).update()
 
     def handle_failure(self, action, data, errors):
@@ -306,8 +307,9 @@ class DisplayFormBase(form.PageDisplayForm, ViewBase):
     template = ViewPageTemplateFile('viewform.pt')
 
     def update(self):
-        processInputs(self.request)
-        setPageEncoding(self.request)
+        # BBB: for Zope < 2.14
+        if not getattr(self.request, 'postProcessInputs', False):
+            processInputs(self.request, [HTTPRequest.default_encoding])
         super(DisplayFormBase, self).update()
 
     @property
