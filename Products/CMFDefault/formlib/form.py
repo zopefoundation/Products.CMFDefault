@@ -71,6 +71,10 @@ class _EditFormMixin(ViewBase):
         return ''
 
     def update(self):
+        # XXX: if we don't set default_encoding explicitly, main_template might
+        #      set a different charset
+        self.request.RESPONSE.setHeader('Content-Type',
+            'text/html; charset=%s' % HTTPRequest.default_encoding)
         # BBB: for Zope < 2.14
         if not getattr(self.request, 'postProcessInputs', False):
             processInputs(self.request, [HTTPRequest.default_encoding])
@@ -307,6 +311,10 @@ class DisplayFormBase(form.PageDisplayForm, ViewBase):
     template = ViewPageTemplateFile('viewform.pt')
 
     def update(self):
+        # XXX: if we don't set default_encoding explicitly, main_template might
+        #      set a different charset
+        self.request.RESPONSE.setHeader('Content-Type',
+            'text/html; charset=%s' % HTTPRequest.default_encoding)
         # BBB: for Zope < 2.14
         if not getattr(self.request, 'postProcessInputs', False):
             processInputs(self.request, [HTTPRequest.default_encoding])
