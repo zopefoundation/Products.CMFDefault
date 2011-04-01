@@ -110,7 +110,7 @@ Utilities
       >>> adapter.foo_datetime == foo_datetime
       True
 
-      >>> foo_zope_datetime = DateTime(1970, 0)
+      >>> foo_zope_datetime = DateTime('1970/01/01 00:00:00')
       >>> content.foo_datetime = foo_zope_datetime
       >>> foo_python_datetime = adapter.foo_datetime
       >>> adapter.foo_datetime = foo_python_datetime
