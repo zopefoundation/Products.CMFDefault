@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Removed tests for upgrades from very old versions.
+
 - Document: Improved 'manage_FTPget' method.
   HTML responses can now be rendered by a view.
 
