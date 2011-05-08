@@ -82,6 +82,16 @@ class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase,
         self.assertEqual(diff, '', diff)
 
 
+class UpgradeFrom20Tests(FunctionalUpgradeTestCase):
+
+    _SITE_ID = 'cmf20Site'
+
+
+class UpgradeFrom21Tests(FunctionalUpgradeTestCase):
+
+    _SITE_ID = 'cmf21Site'
+
+
 class UpgradeFrom22Tests(FunctionalUpgradeTestCase):
 
     _SITE_ID = 'cmf22Site'
@@ -89,5 +99,7 @@ class UpgradeFrom22Tests(FunctionalUpgradeTestCase):
 
 def test_suite():
     return unittest.TestSuite((
+        unittest.makeSuite(UpgradeFrom20Tests),
+        unittest.makeSuite(UpgradeFrom21Tests),
         unittest.makeSuite(UpgradeFrom22Tests),
         ))
