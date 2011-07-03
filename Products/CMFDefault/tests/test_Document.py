@@ -279,6 +279,9 @@ class DocumentTests(ConformsToContent, RequestTestBase):
         self.failUnless( d.CookedBody().find('<h2') >= 0 )
 
     def test_ReStructuredText(self):
+        from Products.CMFDefault.Document import REST_AVAILABLE
+        if not REST_AVAILABLE:
+            return
         self.REQUEST['BODY'] = BASIC_ReST
         d = self._makeOne('foo')
         d.PUT(self.REQUEST, self.RESPONSE)
@@ -314,6 +317,9 @@ class DocumentTests(ConformsToContent, RequestTestBase):
                                 ] )
 
     def test_EditReStructuredTextWithHTML(self):
+        from Products.CMFDefault.Document import REST_AVAILABLE
+        if not REST_AVAILABLE:
+            return
         d = self._makeOne('foo')
         d.edit(text_format='restructured-text', text=ReST_WITH_HTML)
 
@@ -321,6 +327,9 @@ class DocumentTests(ConformsToContent, RequestTestBase):
         self.assertEqual(d.get_size(), len(ReST_WITH_HTML))
 
     def test_ReST_Levels(self):
+        from Products.CMFDefault.Document import REST_AVAILABLE
+        if not REST_AVAILABLE:
+            return
         d = self._makeOne('foo')
         d.edit(text_format='restructured-text', text=BASIC_ReST)
         d.CookedBody(rest_level=0, setlevel=True)
@@ -402,6 +411,9 @@ class DocumentTests(ConformsToContent, RequestTestBase):
         self.failUnless( 'STX' in d.Subject() )
 
     def test_ReST_NoHeaders( self ):
+        from Products.CMFDefault.Document import REST_AVAILABLE
+        if not REST_AVAILABLE:
+            return
         self.REQUEST['BODY'] = ReST_NO_HEADERS
         d = self._makeOne('foo')
         d.editMetadata( title="Plain ReST"
@@ -435,6 +447,9 @@ class DocumentTests(ConformsToContent, RequestTestBase):
         self.assertEqual( d.EditableBody(), STX_NO_HEADERS_BUT_COLON )
 
     def test_ReST_NoHeaders_but_colon( self ):
+        from Products.CMFDefault.Document import REST_AVAILABLE
+        if not REST_AVAILABLE:
+            return
         d = self._makeOne('foo')
         d.editMetadata( title="Plain ReST"
                        , description="Look, Ma, no headers!"
@@ -469,11 +484,13 @@ class DocumentTests(ConformsToContent, RequestTestBase):
         d.setFormat( d.Format() )
         self.assertEqual( d.text_format, 'structured-text' )
 
-        d.setFormat('restructured-text')
-        self.assertEqual( d.text_format, 'restructured-text' )
-        self.assertEqual( d.Format(), 'text/plain' )
-        d.setFormat( d.Format() )
-        self.assertEqual( d.text_format, 'restructured-text' )
+        from Products.CMFDefault.Document import REST_AVAILABLE
+        if REST_AVAILABLE:
+            d.setFormat('restructured-text')
+            self.assertEqual( d.text_format, 'restructured-text' )
+            self.assertEqual( d.Format(), 'text/plain' )
+            d.setFormat( d.Format() )
+            self.assertEqual( d.text_format, 'restructured-text' )
 
         d.setFormat('html')
         self.assertEqual( d.text_format, 'html' )

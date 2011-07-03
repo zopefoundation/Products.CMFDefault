@@ -72,7 +72,8 @@ class Document(PortalContent, DefaultDublinCoreImpl):
     _size = 0
 
     _stx_level = 1                      # Structured text level
-    _rest_level = getConfiguration().rest_header_level # comes from zope.conf
+    # comes from zope.conf
+    _rest_level = getattr(getConfiguration(), 'rest_header_level', 3)
     rest_available = REST_AVAILABLE
 
     _last_safety_belt_editor = ''
