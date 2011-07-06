@@ -118,7 +118,8 @@ class SettingsEditFormBase(_EditFormMixin, form.PageForm):
             )
 
     def applyChanges(self, data):
-        return form.applyData(self.getContent(), self.form_fields, data)
+        return form.applyData(self.getContent(), self.form_fields, data,
+                              self.adapters)
 
     def _handle_success(self, action, data):
         # normalize set and datetime
@@ -294,7 +295,7 @@ class ContentEditFormBase(SettingsEditFormBase):
         changes = super(ContentEditFormBase, self).applyChanges(data)
         # ``changes`` is a dictionary; if empty, there were no changes
         if changes:
-            self.getContent().reindexObject()
+            self.context.reindexObject()
         return changes
 
     def handle_change_success(self, action, data):
