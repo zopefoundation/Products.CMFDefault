@@ -66,6 +66,11 @@ class UnauthorizedView(BrowserView):
             raise self.context
 
         req = self.request
+        if (not req['REQUEST_METHOD'] in ('HEAD', 'GET', 'PUT', 'POST')
+            or req.environ.has_key('WEBDAV_SOURCE_PORT')):
+            # re-raise the unhandled exception
+            raise self.context
+
         attempt = getattr(req, '_cookie_auth', ATTEMPT_NONE)
         if attempt not in (ATTEMPT_NONE, ATTEMPT_LOGIN):
             # An authenticated user was denied access to something.
