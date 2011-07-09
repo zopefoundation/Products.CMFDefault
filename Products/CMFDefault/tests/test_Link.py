@@ -52,13 +52,13 @@ class LinkTests(ConformsToContent, unittest.TestCase):
         verifyClass(ILink, self._getTargetClass())
         verifyClass(IMutableLink, self._getTargetClass())
 
-    def test_Empty( self ):
+    def test_Empty(self):
         d = self._makeOne('foo')
-        self.assertEqual( d.Title(), '' )
-        self.assertEqual( d.Description(), '' )
-        self.assertEqual( d.getRemoteUrl(), '' )
-        self.assertEqual( d.format, 'text/url' )
-        self.assertEqual( d.URL_FORMAT, 'text/url')
+        self.assertEqual(d.Title(), '')
+        self.assertEqual(d.Description(), '')
+        self.assertEqual(d.getRemoteUrl(), '')
+        self.assertEqual(d.format, 'text/url')
+        self.assertEqual(d.URL_FORMAT, 'text/url')
 
         d = self._makeOne('foo', remote_url='bar')
         d.edit('')
@@ -69,43 +69,6 @@ class LinkTests(ConformsToContent, unittest.TestCase):
 
         d = self._makeOne('foo', remote_url='http:')
         self.assertEqual(d.getRemoteUrl(), '')
-
-    def test_RFC822(self):
-        d = self._makeOne('foo')
-        d._writeFromPUT( body=BASIC_RFC822 )
-
-        self.assertEqual( d.Title(), 'Zope Community' )
-        self.assertEqual( d.Description()
-                        , 'Link to the Zope Community website.' )
-        self.assertEqual( len(d.Subject()), 3 )
-        self.assertEqual( d.getRemoteUrl(), 'http://www.zope.org' )
-
-    def test_RFC822_w_Continuation(self):
-        d = self._makeOne('foo')
-        d._writeFromPUT( body=RFC822_W_CONTINUATION )
-        rnlinesplit = compile( r'\r?\n?' )
-        desc_lines = rnlinesplit.split( d.Description() )
-
-        self.assertEqual( d.Title(), 'Zope Community' )
-        self.assertEqual( desc_lines[0]
-                        , 'Link to the Zope Community website,' )
-        self.assertEqual( desc_lines[1]
-                        , ' including hundreds of contributed Zope products.' )
-        self.assertEqual( len(d.Subject()), 3 )
-        self.assertEqual( d.getRemoteUrl(), 'http://www.zope.org' )
-
-    def test_PutWithoutMetadata(self):
-        d = self._makeOne('foo')
-        d._writeFromPUT( body='' )
-        self.assertEqual( d.Title(), '' )
-        self.assertEqual( d.Format(), 'text/url' )
-        self.assertEqual( d.Description(), '' )
-        self.assertEqual( d.Subject(), () )
-        self.assertEqual( d.Contributors(), () )
-        self.assertEqual( d.EffectiveDate(), 'None' )
-        self.assertEqual( d.ExpirationDate(), 'None' )
-        self.assertEqual( d.Language(), '' )
-        self.assertEqual( d.Rights(), '' )
 
     def test_fixupMissingScheme(self):
         table = {
@@ -139,7 +102,56 @@ class LinkTests(ConformsToContent, unittest.TestCase):
         self.canonTest(table)
 
 
+class LinkPUTTests(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from Products.CMFDefault.Link import Link
+
+        return Link
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_RFC822(self):
+        d = self._makeOne('foo')
+        d._writeFromPUT(body=BASIC_RFC822)
+
+        self.assertEqual(d.Title(), 'Zope Community')
+        self.assertEqual(d.Description()
+                        , 'Link to the Zope Community website.')
+        self.assertEqual(len(d.Subject()), 3)
+        self.assertEqual(d.getRemoteUrl(), 'http://www.zope.org')
+
+    def test_RFC822_w_Continuation(self):
+        d = self._makeOne('foo')
+        d._writeFromPUT(body=RFC822_W_CONTINUATION)
+        rnlinesplit = compile(r'\r?\n?')
+        desc_lines = rnlinesplit.split(d.Description())
+
+        self.assertEqual(d.Title(), 'Zope Community')
+        self.assertEqual(desc_lines[0]
+                        , 'Link to the Zope Community website,')
+        self.assertEqual(desc_lines[1]
+                        , ' including hundreds of contributed Zope products.')
+        self.assertEqual(len(d.Subject()), 3)
+        self.assertEqual(d.getRemoteUrl(), 'http://www.zope.org')
+
+    def test_PutWithoutMetadata(self):
+        d = self._makeOne('foo')
+        d._writeFromPUT(body='')
+        self.assertEqual(d.Title(), '')
+        self.assertEqual(d.Format(), 'text/url')
+        self.assertEqual(d.Description(), '')
+        self.assertEqual(d.Subject(), ())
+        self.assertEqual(d.Contributors(), ())
+        self.assertEqual(d.EffectiveDate(), 'None')
+        self.assertEqual(d.ExpirationDate(), 'None')
+        self.assertEqual(d.Language(), '')
+        self.assertEqual(d.Rights(), '')
+
+
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(LinkTests),
+        unittest.makeSuite(LinkPUTTests),
         ))
