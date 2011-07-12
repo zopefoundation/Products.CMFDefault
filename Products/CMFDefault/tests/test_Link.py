@@ -102,6 +102,36 @@ class LinkTests(ConformsToContent, unittest.TestCase):
         self.canonTest(table)
 
 
+class LinkGETTests(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from Products.CMFDefault.Link import Link
+
+        return Link
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_manage_FTPget_empty(self):
+        LINES = ['Title: ', 'Subject: ', 'Publisher: No publisher',
+                 'Description: ', 'Contributors: ', 'Effective_date: None',
+                 'Expiration_date: None', 'Type: Unknown',
+                 'Format: text/url', 'Language: ', 'Rights: ', '']
+        d = self._makeOne('foo')
+        self.assertEqual(d.manage_FTPget().splitlines(), LINES)
+
+    def test_manage_FTPget_nonascii(self):
+        NONASCII = u'B\xe4r'.encode('utf-8')
+        LINES = ['Title: %s' % NONASCII, 'Subject: ',
+                 'Publisher: No publisher', 'Description: ', 'Contributors: ',
+                 'Effective_date: None', 'Expiration_date: None',
+                 'Type: Unknown', 'Format: text/url', 'Language: ', 'Rights: ',
+                 '']
+        d = self._makeOne('foo')
+        d.setTitle(NONASCII)
+        self.assertEqual(d.manage_FTPget().splitlines(), LINES)
+
+
 class LinkPUTTests(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -153,5 +183,6 @@ class LinkPUTTests(unittest.TestCase):
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(LinkTests),
+        unittest.makeSuite(LinkGETTests),
         unittest.makeSuite(LinkPUTTests),
         ))

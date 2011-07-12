@@ -129,7 +129,7 @@ The source view is only used in 'html' mode.
      <meta name="Contributors" content="" />
      <meta name="Effective_date" content="None" />
      <meta name="Expiration_date" content="None" />
-     <meta name="Type" content="[[cmf_default][Document]]" />
+     <meta name="Type" content="Document" />
      <meta name="Format" content="text/html" />
      <meta name="Language" content="" />
      <meta name="Rights" content="" />

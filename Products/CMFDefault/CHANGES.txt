@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- DublinCore: 'getMetadataHeaders' now returns the Type ID, not the Type title.
+  This avoids conflicts between unicode messages and encoded non-ASCII strings.
+
 - Only test reStructuredText functionality under Zope 2.13 and before.
 
 - Document: Improved 'manage_FTPget' method.

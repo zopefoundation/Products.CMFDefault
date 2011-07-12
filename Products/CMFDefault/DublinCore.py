@@ -334,7 +334,7 @@ class DefaultDublinCoreImpl( PropertyManager ):
         hdrlist.append( ( 'Contributors', '; '.join( self.Contributors() ) ) )
         hdrlist.append( ( 'Effective_date', self.EffectiveDate() ) )
         hdrlist.append( ( 'Expiration_date', self.ExpirationDate() ) )
-        hdrlist.append( ( 'Type', self.Type() ) )
+        hdrlist.append( ( 'Type', self.getPortalTypeName() or 'Unknown' ) )
         hdrlist.append( ( 'Format', self.Format() ) )
         hdrlist.append( ( 'Language', self.Language() ) )
         hdrlist.append( ( 'Rights', self.Rights() ) )
