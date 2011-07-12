@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Dublin Core support for content types.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -416,21 +414,20 @@ class DefaultDublinCoreImpl( PropertyManager ):
         self.rights = rights
 
     #
-    #  Management tab methods
+    #   Utility methods
     #
-
-    security.declarePrivate( '_editMetadata' )
-    def _editMetadata( self
-                     , title=_marker
-                     , subject=_marker
-                     , description=_marker
-                     , contributors=_marker
-                     , effective_date=_marker
-                     , expiration_date=_marker
-                     , format=_marker
-                     , language=_marker
-                     , rights=_marker
-                     ):
+    security.declarePrivate('_editMetadata')
+    def _editMetadata(self,
+                      title=_marker,
+                      subject=_marker,
+                      description=_marker,
+                      contributors=_marker,
+                      effective_date=_marker,
+                      expiration_date=_marker,
+                      format=_marker,
+                      language=_marker,
+                      rights=_marker,
+                      **kw):
         """ Update the editable metadata for this resource.
         """
         if title is not _marker:
@@ -452,6 +449,9 @@ class DefaultDublinCoreImpl( PropertyManager ):
         if rights is not _marker:
             self.setRights( rights )
 
+    #
+    #   ZMI methods
+    #
     security.declareProtected(ModifyPortalContent, 'manage_metadata')
     manage_metadata = DTMLFile( 'zmi_metadata', _dtmldir )
 

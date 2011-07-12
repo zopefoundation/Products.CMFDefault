@@ -169,19 +169,8 @@ class Document(PortalContent, DefaultDublinCoreImpl):
         headers['Subject'] = new_subject or self.Subject()
         new_contrib = contributorsplitter(headers)
         headers['Contributors'] = new_contrib or self.Contributors()
-        for key, value in self.getMetadataHeaders():
-            if not key in headers:
-                headers[key] = value
-        self._editMetadata(title=headers['Title'],
-                          subject=headers['Subject'],
-                          description=headers['Description'],
-                          contributors=headers['Contributors'],
-                          effective_date=headers['Effective_date'],
-                          expiration_date=headers['Expiration_date'],
-                          format=headers['Format'],
-                          language=headers['Language'],
-                          rights=headers['Rights'],
-                          )
+        headers = dict((k.lower(), v) for k, v in headers.iteritems())
+        self._editMetadata(**headers)
 
     security.declarePrivate('guessFormat')
     def guessFormat(self, text):

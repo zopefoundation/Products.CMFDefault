@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Link instances represent explicit links-as-content.
-
-$Id$
 """
 
 import urlparse
@@ -133,32 +131,18 @@ class Link(PortalContent, DefaultDublinCoreImpl):
         """
         return self.remote_url
 
-    security.declarePrivate( '_writeFromPUT' )
-    def _writeFromPUT( self, body ):
-        headers = {}
-        headers, body = parseHeadersBody(body, headers)
+    security.declarePrivate('_writeFromPUT')
+    def _writeFromPUT(self, body):
+        headers, body = parseHeadersBody(body)
         lines = body.split('\n')
-        self.edit( lines[0] )
+        self.edit(lines[0])
         headers['Format'] = self.URL_FORMAT
         new_subject = keywordsplitter(headers)
         headers['Subject'] = new_subject or self.Subject()
         new_contrib = contributorsplitter(headers)
         headers['Contributors'] = new_contrib or self.Contributors()
-        haveheader = headers.has_key
-        for key, value in self.getMetadataHeaders():
-            if not haveheader(key):
-                headers[key] = value
-
-        self._editMetadata(title=headers['Title'],
-                          subject=headers['Subject'],
-                          description=headers['Description'],
-                          contributors=headers['Contributors'],
-                          effective_date=headers['Effective_date'],
-                          expiration_date=headers['Expiration_date'],
-                          format=headers['Format'],
-                          language=headers['Language'],
-                          rights=headers['Rights'],
-                          )
+        headers = dict((k.lower(), v) for k, v in headers.iteritems())
+        self._editMetadata(**headers)
 
     ## FTP handlers
     security.declareProtected(ModifyPortalContent, 'PUT')
