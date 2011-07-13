@@ -24,6 +24,7 @@ from StringIO import StringIO
 
 from DocumentTemplate.DT_Util import html_quote
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+from Products.PythonScripts.PythonScript import PythonScript
 from zope.component import getSiteManager
 from zope.interface import implements
 from zope.interface.verify import verifyClass
@@ -572,10 +573,16 @@ class DocumentFTPGetTests(TransactionalTestBase):
         del fti['id']
         ttool._setObject('Document', FTI('Document', **fti))
 
+        ps = self.site._setObject('source_html',
+                                  PythonScript('source_html'))
         zpt = self.site._setObject('source_html',
-                                    ZopePageTemplate('source_html'))
+                                   ZopePageTemplate('source_html_template'))
         dir = abspath(dirname(utils.__file__))
-        _file = path_join(dir, 'skins', 'zpt_content', 'source_html.pt')
+        _file = path_join(dir, 'skins', 'zpt_content', 'source_html.py')
+        data = open(_file, 'r').read()
+        ps.write(data)
+        _file = path_join(dir, 'skins', 'zpt_content',
+                          'source_html_template.pt')
         data = open(_file, 'r').read()
         zpt.write(data)
 

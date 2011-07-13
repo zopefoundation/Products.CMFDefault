@@ -157,5 +157,12 @@ class SourceView(ViewBase):
 
     @decode
     @memoize
+    def listMetadataFields(self):
+        return [ {'name': field[0], 'body': field[1]}
+                 for field in self.context.getMetadataHeaders()
+                 if field[0].lower() != 'title' ]
+
+    @decode
+    @memoize
     def editable_body(self):
         return self.context.EditableBody()
