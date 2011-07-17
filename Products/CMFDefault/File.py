@@ -98,6 +98,7 @@ class File(PortalContent, OFS.Image.File, DefaultDublinCoreImpl):
 
     effective_date = expiration_date = None
     icon = PortalContent.icon
+    id = None
 
     manage_options = manage_options
 
@@ -133,12 +134,6 @@ class File(PortalContent, OFS.Image.File, DefaultDublinCoreImpl):
         DefaultDublinCoreImpl.__init__( self, title, subject, description
                                , contributors, effective_date, expiration_date
                                , format, language, rights )
-
-    # For old instances where bases had OFS.Image.File first,
-    # the id was actually stored in __name__.
-    # getId() will do the correct thing here, as id() is callable
-    def id(self):
-        return self.__name__
 
     security.declareProtected(View, 'SearchableText')
     def SearchableText(self):

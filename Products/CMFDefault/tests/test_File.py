@@ -55,12 +55,10 @@ class FileTests(ConformsToContent, unittest.TestCase):
     def test_getId_on_old_File_instance(self):
         file = self._makeOne('testfile')
         self.assertEqual(file.getId(), 'testfile')
-        self.assertEqual(file.id, 'testfile')
         # Mimick old instance when base classes had OFS.Image.File first
         file.__name__ = 'testfile'
         delattr(file, 'id')
         self.assertEqual(file.getId(), 'testfile')
-        self.assertEqual(file.id(), 'testfile')
 
     def test_File_setFormat(self):
         # Setting the DC.format must also set the content_type property

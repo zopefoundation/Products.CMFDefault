@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Make sure `id` is always an attribute and not a method.
+
 - DublinCore: 'getMetadataHeaders' now returns the Type ID, not the Type title.
   This avoids conflicts between unicode messages and encoded non-ASCII strings.
 

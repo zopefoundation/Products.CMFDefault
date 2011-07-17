@@ -71,12 +71,10 @@ class TestImageElement(ConformsToContent, unittest.TestCase):
     def test_getId_on_old_Image_instance(self):
         image = self.site._setObject('testimage', self._makeOne('testimage'))
         self.assertEqual(image.getId(), 'testimage')
-        self.assertEqual(image.id, 'testimage')
         # Mimick old instance when base classes had OFS.Image.Image first
         image.__name__ = 'testimage'
         delattr(image, 'id')
         self.assertEqual(image.getId(), 'testimage')
-        self.assertEqual(image.id(), 'testimage')
 
     def test_EditWithEmptyFile(self):
         # Test handling of empty file uploads
