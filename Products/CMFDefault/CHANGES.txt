@@ -4,7 +4,9 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
-- Make sure `id` is always an attribute and not a method.
+- File and Image: Made sure `id` is always an attribute and not a method.
+  Some old instances use `__name__` instead of `id`. Use getId() to get always
+  the correct ID.
 
 - DublinCore: 'getMetadataHeaders' now returns the Type ID, not the Type title.
   This avoids conflicts between unicode messages and encoded non-ASCII strings.
