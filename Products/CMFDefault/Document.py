@@ -371,13 +371,6 @@ class Document(PortalContent, DefaultDublinCoreImpl):
         self.dav__init(REQUEST, RESPONSE)
         self.dav__simpleifhandler(REQUEST, RESPONSE, refresh=1)
 
-        try:
-            self.failIfLocked()
-        except ResourceLockedError, msg:
-            transaction.abort()
-            RESPONSE.setStatus(423)
-            return RESPONSE
-
         body = REQUEST.get('BODY', '')
         if REQUEST.get_header('Content-Type', '') == 'text/html':
             format = 'html'
