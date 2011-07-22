@@ -402,8 +402,8 @@ class DummySite:
         raise ValueError('Unknown path: %s' % path)
 
 class DummyPropertiesTool:
-    def getProperty(self, key, default):
-        return getattr(self, key, default)
+    def getProperty(self, id, d=None):
+        return getattr(self, id, d)
 
 class DummyURLTool:
     def __init__(self, site=None, paths_to_contexts=()):
