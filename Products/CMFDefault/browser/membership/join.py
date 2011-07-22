@@ -67,7 +67,6 @@ class JoinFormView(EditFormBase):
     base_template = EditFormBase.template
     template = ViewPageTemplateFile("join.pt")
     registered = False
-    form_fields = form.FormFields(IJoinSchema)
 
     actions = form.Actions(
         form.Action(
@@ -83,12 +82,12 @@ class JoinFormView(EditFormBase):
             success='handle_cancel_success',
             failure='handle_cancel_failure'))
 
-    def __init__(self, context, request):
-        super(JoinFormView, self).__init__(context, request)
+    @property
+    def form_fields(self):
+        form_fields = form.FormFields(IJoinSchema)
         if self.validate_email:
-            self.form_fields = self.form_fields.select('member_id', 'email')
-        self.rtool = self._getTool('portal_registration')
-        self.mtool = self._getTool('portal_membership')
+            form_fields = form_fields.select('member_id', 'email')
+        return form_fields
 
     @property
     @memoize
@@ -99,12 +98,14 @@ class JoinFormView(EditFormBase):
     @property
     @memoize
     def isAnon(self):
-        return self.mtool.isAnonymousUser()
+        mtool = self._getTool('portal_membership')
+        return mtool.isAnonymousUser()
 
     @property
     @memoize
     def isManager(self):
-        return self.mtool.checkPermission(ManageUsers, self.mtool)
+        mtool = self._getTool('portal_membership')
+        return mtool.checkPermission(ManageUsers, mtool)
 
     @property
     @memoize
@@ -118,10 +119,6 @@ class JoinFormView(EditFormBase):
         else:
             return _(u'Become a Member')
 
-    def setUpWidgets(self, ignore_request=False):
-        """If email validation is in effect, users cannot select passwords"""
-        super(JoinFormView, self).setUpWidgets(ignore_request)
-
     def personalize(self):
         atool = self._getTool('portal_actions')
         return atool.getActionInfo("user/preferences")['url']
@@ -130,7 +127,7 @@ class JoinFormView(EditFormBase):
         errors = self.validate(action, data)
         if errors:
             return errors
-        rtool = self.rtool
+        rtool = self._getTool('portal_registration')
         if self.validate_email:
             data['password'] = rtool.generatePassword()
         else:
@@ -145,7 +142,8 @@ class JoinFormView(EditFormBase):
 
     def add_member(self, data):
         """Add new member and notify if requested or required"""
-        self.rtool.addMember(
+        rtool = self._getTool('portal_registration')
+        rtool.addMember(
                         id=data['member_id'],
                         password=data['password'],
                              properties={
@@ -154,7 +152,7 @@ class JoinFormView(EditFormBase):
                                         }
                         )
         if self.validate_email or data['send_password']:
-            self.rtool.registeredNotify(data['member_id'])
+            rtool.registeredNotify(data['member_id'])
         self.registered = True
         self.label = _(u'Success')
 
