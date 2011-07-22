@@ -14,6 +14,7 @@
 """
 
 import unittest
+from Testing import ZopeTestCase
 
 from zope.component.testing import PlacelessSetup
 
@@ -21,6 +22,8 @@ from Products.CMFDefault.browser.skins.tests.test_ursa import (
                     DummyRequest, DummyContext,
                     DummyPropertiesTool, DummyURLTool, DummyActionsTool
                     )
+from Products.CMFDefault.testing import FunctionalLayer
+
 
 class JoinFormViewTests(unittest.TestCase, PlacelessSetup):
 
@@ -89,3 +92,12 @@ class DummyMembershipTool:
 
 class DummyActionsTool:
     pass
+
+
+def test_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(JoinFormViewTests))
+    s = ZopeTestCase.FunctionalDocFileSuite('join.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
+    return suite
