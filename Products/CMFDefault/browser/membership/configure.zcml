@@ -46,7 +46,7 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="join.html"
-      class=".join.Join"
+      class=".join.JoinFormView"
       permission="zope.Public"
       />
 

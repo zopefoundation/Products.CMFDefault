@@ -14,6 +14,7 @@
 """
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import Interface
 from zope.interface import Invalid
@@ -22,6 +23,8 @@ from zope.schema import ASCIILine
 from zope.schema import Bool
 from zope.schema import Password
 
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.schema import EmailLine
 from Products.CMFDefault.permissions import ManageUsers
@@ -30,7 +33,8 @@ from Products.CMFDefault.utils import Message as _
 
 class IJoinSchema(Interface):
 
-    """Zope generates password and sends it by email"""
+    """Schema for join form.
+    """
 
     member_id = ASCIILine(
         title=_(u"Member ID"))
@@ -58,7 +62,7 @@ class IJoinSchema(Interface):
                             u"Please try again."))
 
 
-class Join(EditFormBase):
+class JoinFormView(EditFormBase):
 
     base_template = EditFormBase.template
     template = ViewPageTemplateFile("join.pt")
@@ -69,7 +73,7 @@ class Join(EditFormBase):
         form.Action(
             name='register',
             label=_(u'Register'),
-            validator="validate_username",
+            validator='handle_register_validate',
             success='handle_register_success',
             failure='handle_failure'),
         form.Action(
@@ -79,44 +83,51 @@ class Join(EditFormBase):
             )
 
     def __init__(self, context, request):
-        super(Join, self).__init__(context, request)
-        ptool = self._getTool("portal_properties")
-        self.validate_email = ptool.getProperty('validate_email', None)
+        super(JoinFormView, self).__init__(context, request)
         if self.validate_email:
             self.form_fields = self.form_fields.select('member_id', 'email')
         self.rtool = self._getTool('portal_registration')
         self.mtool = self._getTool('portal_membership')
 
     @property
+    @memoize
+    def validate_email(self):
+        ptool = getUtility(IPropertiesTool)
+        return ptool.getProperty('validate_email')
+
+    @property
+    @memoize
     def isAnon(self):
         return self.mtool.isAnonymousUser()
 
     @property
+    @memoize
     def isManager(self):
         return self.mtool.checkPermission(ManageUsers, self.mtool)
 
     @property
+    @memoize
     def isOrdinaryMember(self):
         return not (self.registered or self.isManager or self.isAnon)
 
     @property
     def title(self):
         if self.isManager:
-            return _(u"Register a New Member")
+            return _(u'Register a New Member')
         else:
             return _(u'Become a Member')
 
     def setUpWidgets(self, ignore_request=False):
         """If email validation is in effect, users cannot select passwords"""
-        super(Join, self).setUpWidgets(ignore_request)
+        super(JoinFormView, self).setUpWidgets(ignore_request)
 
     def personalize(self):
         atool = self._getTool('portal_actions')
         return atool.getActionInfo("user/preferences")['url']
 
-    def validate_username(self, action, data):
+    def handle_register_validate(self, action, data):
         """Avoid duplicate registration"""
-        errors = super(Join, self).validate(action, data)
+        errors = self.validate(action, data)
         member = self.mtool.getMemberById(data.get('member_id', None))
         if member is not None:
             errors.append(_(u"The login name you selected is already in use "

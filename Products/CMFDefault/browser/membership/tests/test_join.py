@@ -18,11 +18,11 @@ import unittest
 from zope.component.testing import PlacelessSetup
 
 from Products.CMFDefault.browser.skins.tests.test_ursa import (
-                    DummyRequest, DummySite, DummyContext,
+                    DummyRequest, DummyContext,
                     DummyPropertiesTool, DummyURLTool, DummyActionsTool
                     )
 
-class JoinFormTests(unittest.TestCase, PlacelessSetup):
+class JoinFormViewTests(unittest.TestCase, PlacelessSetup):
 
     def setUp(self):
         PlacelessSetup.setUp(self)
@@ -31,8 +31,9 @@ class JoinFormTests(unittest.TestCase, PlacelessSetup):
         PlacelessSetup.tearDown(self)
 
     def _getTargetClass(self):
-        from Products.CMFDefault.browser.membership.join import Join
-        return Join
+        from Products.CMFDefault.browser.membership.join import JoinFormView
+
+        return JoinFormView
 
     def _makeOne(self, site=None):
         if site is None:
