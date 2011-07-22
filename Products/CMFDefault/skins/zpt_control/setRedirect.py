@@ -2,6 +2,7 @@
 ##
 from ZTUtils import make_query
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.utils import getBrowserCharset
 
 utool = getToolByName(script, 'portal_url')
@@ -10,7 +11,7 @@ portal_url = utool()
 
 try:
     target = provider.getActionInfo(action_path)['url']
-except ValueError:
+except (ValueError, zExceptions_Unauthorized):
     target = portal_url
 
 message = context.REQUEST.other.get('portal_status_message', '')
@@ -22,7 +23,7 @@ for k, v in kw.items():
     if not v:
         del kw[k]
 
-query = kw and ( '?%s' % make_query(kw) ) or ''
-context.REQUEST.RESPONSE.redirect( '%s%s' % (target, query) )
+query = kw and ('?%s' % make_query(kw)) or ''
+context.REQUEST.RESPONSE.redirect('%s%s' % (target, query))
 
 return True

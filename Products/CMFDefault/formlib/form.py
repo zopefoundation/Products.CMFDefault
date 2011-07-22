@@ -35,6 +35,7 @@ from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ITypeInformation
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
+from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.formlib.widgets import IDInputWidget
 from Products.CMFDefault.interfaces import ICMFDefaultSkin
 from Products.CMFDefault.permissions import AddPortalContent
@@ -50,7 +51,7 @@ class _EditFormMixin(ViewBase):
         provider = self._getTool(provider_id)
         try:
             target = provider.getActionInfo(action_path, self.context)['url']
-        except ValueError:
+        except (ValueError, zExceptions_Unauthorized):
             target = self._getPortalURL()
 
         kw = {}
