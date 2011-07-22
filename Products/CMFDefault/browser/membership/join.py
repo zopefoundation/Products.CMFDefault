@@ -127,10 +127,18 @@ class JoinFormView(EditFormBase):
         return atool.getActionInfo("user/preferences")['url']
 
     def handle_register_validate(self, action, data):
-        """Avoid duplicate registration"""
         errors = self.validate(action, data)
-        member = self.mtool.getMemberById(data.get('member_id', None))
-        if member is not None:
+        if errors:
+            return errors
+        rtool = self.rtool
+        if self.validate_email:
+            data['password'] = rtool.generatePassword()
+        else:
+            result = rtool.testPasswordValidity(data['password'],
+                                                data['confirmation'])
+            if result is not None:
+                errors.append(result)
+        if not rtool.isMemberIdAllowed(data['member_id']):
             errors.append(_(u"The login name you selected is already in use "
                             u"or is not valid. Please choose another."))
         return errors
@@ -152,8 +160,6 @@ class JoinFormView(EditFormBase):
 
     def handle_register_success(self, action, data):
         """Register user and inform they have been registered"""
-        if self.validate_email:
-            data['password'] = self.rtool.generatePassword()
         self.add_member(data)
         self.status = _(u'You have been registered as a member.')
         if not self.validate_email:
