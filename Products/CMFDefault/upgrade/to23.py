@@ -229,4 +229,5 @@ def upgrade_member_data_tool(tool):
                 prop_map['mode'] = 'w'
                 changed = True
         if changed:
+            mdtool._p_changed = True
             logger.info("Member data tool property modes fixed.")
