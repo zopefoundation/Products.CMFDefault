@@ -190,6 +190,13 @@ def check_member_data_tool(tool):
     last_login_time = mdtool.getProperty('last_login_time')
     if last_login_time == '2000/01/01':
         return True
+    if not mdtool.hasProperty('fullname'):
+        return True
+    for prop_map in mdtool._propertyMap():
+        if prop_map['id'] in ('email', 'fullname', 'last_login_time',
+                              'listed', 'login_time', 'portal_skin'):
+            if 'd' in prop_map.get('mode', 'wd'):
+                return True
     return False
 
 def upgrade_member_data_tool(tool):
@@ -209,3 +216,17 @@ def upgrade_member_data_tool(tool):
     if last_login_time == '2000/01/01':
         mdtool._updateProperty('last_login_time', '2000/01/01')
         logger.info("Member data tool property 'last_login_time' fixed.")
+    if not mdtool.hasProperty('fullname'):
+        prop_map = list(mdtool._properties)
+        prop_map.insert(5, {'id': 'fullname', 'type': 'string', 'mode': 'w'})
+        mdtool._properties = prop_map
+        logger.info("Member data tool property 'fullname' added.")
+    for prop_map in mdtool._propertyMap():
+        changed = False
+        if prop_map['id'] in ('email', 'fullname', 'last_login_time',
+                              'listed', 'login_time', 'portal_skin'):
+            if 'd' in prop_map.get('mode', 'wd'):
+                prop_map['mode'] = 'w'
+                changed = True
+        if changed:
+            logger.info("Member data tool property modes fixed.")

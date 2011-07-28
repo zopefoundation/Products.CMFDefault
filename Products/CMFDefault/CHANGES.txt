@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- MemberDataTool: Changed property modes to 'w' and added 'fullname' property.
+
 - File and Image: Made sure `id` is always an attribute and not a method.
   Some old instances use `__name__` instead of `id`. Use getId() to get always
   the correct ID.

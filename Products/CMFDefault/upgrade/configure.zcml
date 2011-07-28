@@ -218,8 +218,8 @@
 
     <genericsetup:upgradeStep
         title="Upgrade member data tool"
-        description="Fix default 'listed', 'login_time' and 'last_login_time'
-                     values."
+        description="Fix default property modes and values. Add 'fullname'
+                     property if missing."
         handler=".to23.upgrade_member_data_tool"
         checker=".to23.check_member_data_tool"
         />
