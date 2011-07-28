@@ -227,7 +227,7 @@ class LoggedIn(ViewBase):
         mtool.createMemberArea()
         member = mtool.getAuthenticatedMember()
         now = DateTime()
-        last_login = member.getProperty('login_time', None)
+        last_login = member.getProperty('login_time')
         never_logged_in = str(last_login).startswith('2000/01/01')
         ptool = self._getTool('portal_properties')
         if never_logged_in and ptool.getProperty('validate_email'):

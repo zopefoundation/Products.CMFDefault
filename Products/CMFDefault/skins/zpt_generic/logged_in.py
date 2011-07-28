@@ -29,7 +29,7 @@ else:
     mtool.createMemberArea()
     member = mtool.getAuthenticatedMember()
     now = context.ZopeTime()
-    last_login = member.getProperty('login_time', None)
+    last_login = member.getProperty('login_time')
     never_logged_in = str(last_login).startswith('2000/01/01')
     if never_logged_in and ptool.getProperty('validate_email'):
         member.setProperties(last_login_time='1999/01/01', login_time=now)
