@@ -50,7 +50,8 @@ class _EditFormMixin(ViewBase):
     def _setRedirect(self, provider_id, action_path, keys=''):
         provider = self._getTool(provider_id)
         try:
-            target = provider.getActionInfo(action_path, self.context)['url']
+            target = provider.getActionInfo(action_path, self.context,
+                                            check_condition=1)['url']
         except (ValueError, zExceptions_Unauthorized):
             target = self._getPortalURL()
 

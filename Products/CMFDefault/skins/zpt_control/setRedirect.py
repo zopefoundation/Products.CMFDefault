@@ -10,7 +10,7 @@ portal_url = utool()
 
 
 try:
-    target = provider.getActionInfo(action_path)['url']
+    target = provider.getActionInfo(action_path, check_condition=1)['url']
 except (ValueError, zExceptions_Unauthorized):
     target = portal_url
 
