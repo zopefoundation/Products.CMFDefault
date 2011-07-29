@@ -79,8 +79,7 @@ class JoinFormView(EditFormBase):
             name='cancel',
             label=_(u'Cancel'),
             validator='handle_cancel_validate',
-            success='handle_cancel_success',
-            failure='handle_cancel_failure'))
+            success='handle_cancel_success'))
 
     @property
     def form_fields(self):
@@ -163,14 +162,6 @@ class JoinFormView(EditFormBase):
         if not self.validate_email:
             self._setRedirect('portal_actions', 'user/login')
 
-    def handle_cancel_validate(self, action, data):
-        return []
-
     def handle_cancel_success(self, action, data):
-        return self._setRedirect('portal_actions', 'global/manage_members',
-                                 keys='b_start')
-
-    def handle_cancel_failure(self, action, data, errors):
-        self.status = None
         return self._setRedirect('portal_actions', 'global/manage_members',
                                  keys='b_start')

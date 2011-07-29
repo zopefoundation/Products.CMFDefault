@@ -15,10 +15,10 @@ portal_url = utool()
 form = context.REQUEST.form
 if change and \
         context.change_password(**form) and \
-        context.setRedirect(atool, 'user/preferences'):
+        context.setRedirect(atool, 'user/mystuff'):
     return
 elif cancel and \
-        context.setRedirect(atool, 'user/preferences'):
+        context.setRedirect(atool, 'user/mystuff'):
     return
 
 

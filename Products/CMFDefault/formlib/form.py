@@ -82,6 +82,9 @@ class _EditFormMixin(ViewBase):
             processInputs(self.request, [HTTPRequest.default_encoding])
         super(_EditFormMixin, self).update()
 
+    def handle_cancel_validate(self, action, data):
+        return []
+
     def handle_failure(self, action, data, errors):
         if self.status:
             message = translate(self.status, self.context)
@@ -103,7 +106,12 @@ class SettingsEditFormBase(_EditFormMixin, form.PageForm):
             name='change',
             label=_(u'Change'),
             success='handle_change_success',
-            failure='handle_failure'))
+            failure='handle_failure'),
+        form.Action(
+            name='cancel',
+            label=_(u'Cancel'),
+            validator='handle_cancel_validate',
+            success='handle_cancel_success'))
 
     description = u''
     successMessage = _(u"Settings changed.")
@@ -157,8 +165,8 @@ class ContentAddFormBase(_EditFormMixin, form.PageAddForm):
         form.Action(
             name='cancel',
             label=_(u'Cancel'),
-            success='handle_cancel_success',
-            failure='handle_cancel_failure'))
+            validator='handle_cancel_validate',
+            success='handle_cancel_success'))
 
     def __init__(self, context, request, ti):
         self.context = context
@@ -197,11 +205,6 @@ class ContentAddFormBase(_EditFormMixin, form.PageAddForm):
         self.createAndAdd(data)
 
     def handle_cancel_success(self, action, data):
-        return self._setRedirect('portal_types',
-                                 ('object/folderContents', 'object/view'))
-
-    def handle_cancel_failure(self, action, data, errors):
-        self.status = None
         return self._setRedirect('portal_types',
                                  ('object/folderContents', 'object/view'))
 

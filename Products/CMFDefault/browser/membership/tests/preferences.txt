@@ -59,3 +59,10 @@ Use the preferences form again without input.
     >>> browser.getControl('[[cmf_default][Change]]').click()
     >>> '[[cmf_default][Nothing to change.]]' in browser.contents
     True
+
+Cancel redirects users to the site root if no member area exists.
+
+    >>> browser.open('http://localhost/site/@@preferences.html')
+    >>> browser.getControl('[[cmf_default][Cancel]]').click()
+    >>> browser.url
+    'http://localhost/site'

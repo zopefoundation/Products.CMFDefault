@@ -215,10 +215,10 @@ class LoggedIn(ViewBase):
 
     def first_login(self, member):
         """First time login, reset password"""
-        utool = self._getTool('portal_url')
+        atool = self._getTool('portal_actions')
         now = DateTime()
         member.setProperties(last_login_time='1999/01/01', login_time=now)
-        target = '%s/password_form' % utool()
+        target = atool.getActionInfo('user/change_password')['url']
         return self.request.response.redirect(target)
 
     def __call__(self):

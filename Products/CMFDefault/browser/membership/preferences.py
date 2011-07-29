@@ -71,7 +71,7 @@ class PreferencesSchemaAdapter(object):
             object.__setattr__(self, name, value)
 
 
-class Preferences(SettingsEditFormBase):
+class PreferencesFormView(SettingsEditFormBase):
 
     label = _(u"Member Preferences")
     successMessage = _(u"Member preferences changed.")
@@ -85,7 +85,7 @@ class Preferences(SettingsEditFormBase):
         return PreferencesSchemaAdapter(member)
 
     def applyChanges(self, data):
-        changes = super(Preferences, self).applyChanges(data)
+        changes = super(PreferencesFormView, self).applyChanges(data)
         if any('portal_skin' in v for v in changes.itervalues()):
             stool = self._getTool('portal_skins')
             stool.updateSkinCookie()
@@ -94,3 +94,6 @@ class Preferences(SettingsEditFormBase):
     def handle_change_success(self, action, data):
         self._handle_success(action, data)
         return self._setRedirect('portal_actions', 'user/preferences')
+
+    def handle_cancel_success(self, action, data):
+        return self._setRedirect('portal_actions', 'user/mystuff')

@@ -5,11 +5,10 @@ from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
+atool = getToolByName(script, 'portal_actions')
 mtool = getToolByName(script, 'portal_membership')
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 stool = getToolByName(script, 'portal_skins')
-utool = getToolByName(script, 'portal_url')
-portal_url = utool()
 
 
 if stool.updateSkinCookie():
@@ -33,7 +32,7 @@ else:
     never_logged_in = str(last_login).startswith('2000/01/01')
     if never_logged_in and ptool.getProperty('validate_email'):
         member.setProperties(last_login_time='1999/01/01', login_time=now)
-        target = '%s/password_form' % portal_url
+        target = atool.getActionInfo('user/change_password')['url']
         context.REQUEST.RESPONSE.redirect(target)
         return
     else:

@@ -54,7 +54,7 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="preferences.html"
-      class=".preferences.Preferences"
+      class=".preferences.PreferencesFormView"
       permission="cmf.SetOwnProperties"
       />
 
@@ -68,7 +68,7 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="password.html"
-      class=".password.Password"
+      class=".password.PasswordFormView"
       permission="cmf.SetOwnPassword"
       />
 

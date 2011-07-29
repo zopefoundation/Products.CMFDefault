@@ -6,5 +6,3 @@ User can change the following preferences:
 Email address
 Listed or unlisted
 User's chosen skin if set
-
-The preferences form contains a link to password change form
