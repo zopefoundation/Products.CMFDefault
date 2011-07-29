@@ -210,6 +210,20 @@
    </property>
    <property name="visible">True</property>
   </object>
+  <object name="members_register" meta_type="CMF Action"
+     i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Register a new member</property>
+   <property name="description"
+      i18n:translate="">Register a new portal member</property>
+   <property name="url_expr">string:${portal_url}/join_form</property>
+   <property name="link_target"></property>
+   <property name="icon_expr">string:${portal_url}/join_icon.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage users"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
   <object name="members_delete" meta_type="CMF Action"
      i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Delete members</property>

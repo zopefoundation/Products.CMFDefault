@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- Actions: Added 'global/members_register' Action for redirects.
+  It is similar to 'user/join', but adjusted for user managers.
+
 - MemberDataTool: Changed property modes to 'w' and added 'fullname' property.
 
 - File and Image: Made sure `id` is always an attribute and not a method.

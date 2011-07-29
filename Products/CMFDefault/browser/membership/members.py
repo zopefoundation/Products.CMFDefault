@@ -156,7 +156,7 @@ class Manage(BatchViewBase, EditFormBase):
 
     def handle_add(self, action, data):
         """Redirect to the join form where managers can add users"""
-        return self._setRedirect('portal_actions', 'user/join')
+        return self._setRedirect('portal_actions', 'global/members_register')
 
     def handle_select_for_deletion(self, action, data):
         """Identify members to be deleted and redirect to confirmation

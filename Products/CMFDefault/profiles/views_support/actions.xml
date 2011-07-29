@@ -30,6 +30,9 @@
   <object name="manage_members" meta_type="CMF Action">
    <property name="url_expr">string:${portal_url}/@@members.html</property>
   </object>
+  <object name="members_register" meta_type="CMF Action">
+   <property name="url_expr">string:${portal_url}/@@join.html</property>
+  </object>
   <object name="configPortal" meta_type="CMF Action">
    <property name="url_expr">string:${portal_url}/@@configure.html</property>
   </object>

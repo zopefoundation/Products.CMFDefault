@@ -17,7 +17,7 @@ if members_delete and \
                             ids=ids):
     return
 elif members_new and \
-        context.setRedirect(atool, 'user/join', b_start=b_start):
+        context.setRedirect(atool, 'global/members_register', b_start=b_start):
     return
 
 

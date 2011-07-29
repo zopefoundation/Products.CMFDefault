@@ -210,8 +210,8 @@
 
     <genericsetup:upgradeStep
         title="Upgrade actions tool"
-        description="Add 'change_password' and 'syndication' action if
-                     missing."
+        description="Add 'change_password', 'members_register' and
+                    'syndication' action if missing."
         handler=".to23.upgrade_actions_tool"
         checker=".to23.check_actions_tool"
         />

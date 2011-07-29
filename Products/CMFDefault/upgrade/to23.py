@@ -114,6 +114,10 @@ def check_actions_tool(tool):
     except AttributeError:
         return True
     try:
+        atool['global'].members_register # 'global' is a reserved word in Python
+    except (KeyError, AttributeError):
+        return True
+    try:
         atool['global'].syndication # 'global' is a reserved word in Python
     except (KeyError, AttributeError):
         return True
@@ -128,6 +132,8 @@ def upgrade_actions_tool(tool):
     environ._should_purge = False
     getMultiAdapter((atool, environ), IBody).body = _ACTIONS_PASSWORD_XML
     logger.info("'change_password' action added.")
+    getMultiAdapter((atool, environ), IBody).body = _ACTIONS_REGISTER_XML
+    logger.info("'members_register' action added.")
     getMultiAdapter((atool, environ), IBody).body = _ACTIONS_SYNDICATION_XML
     logger.info("'portal syndication settings' action added.")
 
@@ -150,6 +156,28 @@ _ACTIONS_PASSWORD_XML = """\
     <element value="Set own password"/>
    </property>
    <property name="visible">True</property>
+  </object>
+ </object>
+</object>
+"""
+
+_ACTIONS_REGISTER_XML = """\
+<object name="portal_actions" meta_type="CMF Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="global" meta_type="CMF Action Category">
+  <object name="members_register" meta_type="CMF Action"
+     insert-after="manage_members" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Register a new member</property>
+   <property name="description"
+      i18n:translate="">Register a new portal member</property>
+   <property name="url_expr">string:${portal_url}/join_form</property>
+   <property name="link_target"></property>
+   <property name="icon_expr">string:${portal_url}/join_icon.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage users"/>
+   </property>
+   <property name="visible">False</property>
   </object>
  </object>
 </object>

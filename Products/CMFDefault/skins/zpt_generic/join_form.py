@@ -21,7 +21,8 @@ form = context.REQUEST.form
 if add and \
         context.validatePassword(**form) and \
         context.members_add_control(**form) and \
-        context.setRedirect(atool, 'user/join', b_start=b_start):
+        context.setRedirect(atool, ('global/members_register', 'user/join'),
+                            b_start=b_start):
     return
 elif cancel and \
         context.setRedirect(atool, 'global/manage_members', b_start=b_start):
@@ -52,7 +53,8 @@ if is_newmember:
     target = atool.getActionInfo('user/logged_in')['url']
     buttons.append( {'name': 'login', 'value': _(u'Log in')} )
 else:
-    target = atool.getActionInfo('user/join')['url']
+    target = atool.getActionInfo(('global/members_register',
+                                  'user/join'))['url']
     buttons.append( {'name': 'add', 'value': _(u'Register')} )
     buttons.append( {'name': 'cancel', 'value': _(u'Cancel')} )
 options['form'] = { 'action': target,
