@@ -21,7 +21,7 @@ form = context.REQUEST.form
 if add and \
         context.validatePassword(**form) and \
         context.members_add_control(**form) and \
-        context.setRedirect(atool, ('global/members_register', 'user/join'),
+        context.setRedirect(atool, ('global/members_register', 'user/login'),
                             b_start=b_start):
     return
 elif cancel and \
