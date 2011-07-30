@@ -16,7 +16,7 @@
   <thead>
    <tr class="list-header">
     <td width="20">&nbsp;</td>
-    <th width="120" i18n:translate="">Member</th>
+    <th width="260" i18n:translate="">Member</th>
     <th width="260" i18n:translate="">Email Address</th>
     <th width="100" i18n:translate="">Last Login</th>
    </tr>
@@ -31,7 +31,7 @@
     <td
     ><a href="" tal:attributes="href member/home"
         tal:omit-tag="not:member/home"
-        tal:content="member/id">ID</a></td>
+        tal:content="member/name">NAME (ID)</a></td>
     <td
     ><a href="" tal:attributes="href string:mailto:${member/email}"
         tal:omit-tag="not:member/email"

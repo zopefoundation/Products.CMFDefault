@@ -35,6 +35,8 @@ class DummyUser(DummyUser):
     def getProperty(self, attr):
         if attr == 'login_time':
             return DateTime('2000/01/01 00:00:00')
+        elif attr == 'fullname':
+            return 'FULL NAME'
         return None
 
 
@@ -98,7 +100,7 @@ class MembershipViewTests(unittest.TestCase):
         view.member_fields()
         members = view.listBatchItems
         self.assertTrue(isinstance(members[0], MemberProxy))
-        self.assertEqual(members[0].name, "Bob")
+        self.assertEqual(members[0].name, 'FULL NAME (Bob)')
         self.assertEqual(members[0].home, "HOME_URL/Bob")
 
     def test_get_ids(self):

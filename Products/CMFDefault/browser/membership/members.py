@@ -60,13 +60,15 @@ class MemberProxy(object):
     """Utility class wrapping a member for display purposes"""
 
     def __init__(self, member, mtool):
+        member_id = member.getId()
+        fullname = member.getProperty('fullname')
         last_login = member.getProperty('login_time')
         never_logged_in = str(last_login).startswith('2000/01/01')
         self.login_time = never_logged_in and '---' or last_login.Date()
-        self.name = member.getId()
-        self.home = mtool.getHomeUrl(self.name, verifyPermission=0)
+        self.name = '%s (%s)' % (fullname, member_id)
+        self.home = mtool.getHomeUrl(member_id, verifyPermission=0)
         self.email = member.getProperty('email')
-        self.widget = "%s.select" % self.name
+        self.widget = "%s.select" % member_id
 
 
 class Manage(BatchViewBase, EditFormBase):

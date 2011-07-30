@@ -30,6 +30,7 @@ batch_obj = Batch(members, 25, b_start, orphan=0)
 items = []
 for member in batch_obj:
     member_id = member.getId()
+    fullname = member.getProperty('fullname')
     last_login = member.getProperty('login_time')
     never_logged_in = str(last_login).startswith('2000/01/01')
     member_login = never_logged_in and '---' or last_login.Date()
@@ -38,6 +39,7 @@ for member in batch_obj:
                    'email': member.getProperty('email'),
                    'login': member_login,
                    'id': member_id,
+                   'name': '%s (%s)' % (fullname, member_id),
                    'home': member_home } )
 navigation = context.getBatchNavigation(batch_obj, target,
                                         'member', 'members')
