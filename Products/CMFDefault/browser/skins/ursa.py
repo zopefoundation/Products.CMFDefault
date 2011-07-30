@@ -175,7 +175,8 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def membername(self):
-        return self.isAnon and 'Guest' or self.member.getUserName()
+        return self.isAnon and 'Guest' or (self.member.getProperty('fullname')
+                                           or self.member.getId())
 
     @property
     @memoize
@@ -186,11 +187,6 @@ class UrsineGlobals(ViewBase):
     @memoize
     def isAnon(self):
         return self.mtool.isAnonymousUser()
-
-    @property
-    @memoize
-    def uname(self):
-        return self.isAnon and 'Guest' or self.member.getUserName()
 
     @property
     @memoize

@@ -11,9 +11,11 @@ mtool = getToolByName(script, 'portal_membership')
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 utool = getToolByName(script, 'portal_url')
 wtool = getToolByName(script, 'portal_workflow')
-portal_object = utool.getPortalObject()
 uidtool = getToolByName(script, 'portal_uidhandler', None)
 syndtool = getToolByName(script, 'portal_syndication')
+portal_object = utool.getPortalObject()
+isAnon = mtool.isAnonymousUser()
+member = mtool.getAuthenticatedMember()
 
 if not 'charset' in (context.REQUEST.RESPONSE.getHeader('content-type') or ''):
     # Some newstyle views set a different charset - don't override it.
@@ -40,9 +42,11 @@ globals = {'utool': utool,
            'object_title': context.Title(),
            'object_description': context.Description(),
            'portal_url': utool(),
-           'member': mtool.getAuthenticatedMember(),
+           'member': member,
+           'membername': isAnon and 'Guest' or (member.getProperty('fullname')
+                                                or member.getId()),
            'membersfolder': mtool.getMembersFolder(),
-           'isAnon': mtool.isAnonymousUser(),
+           'isAnon': isAnon,
            'wf_state': wtool.getInfoFor(context, 'review_state', ''),
            'show_actionicons': ptool.getProperty('enable_actionicons'),
            'status_message': message}

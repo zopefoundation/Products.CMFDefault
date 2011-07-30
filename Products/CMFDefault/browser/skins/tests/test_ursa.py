@@ -293,20 +293,30 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         tool.isAnonymousUser = lambda: False
         self.failIf(view.isAnon)
 
-    def test_uname_anonymous(self):
+    def test_membername_anonymous(self):
         view = self._makeOne()
         tool = view.context.portal_membership = DummyMembershipTool()
         tool.isAnonymousUser = lambda: True
-        self.assertEqual(view.uname, 'Guest')
+        self.assertEqual(view.membername, u'Guest')
 
-    def test_uname_not_anonymous(self):
+    def test_membername_not_anonymous(self):
         view = self._makeOne()
         tool = view.context.portal_membership = DummyMembershipTool()
         tool.isAnonymousUser = lambda: False
         member = DummyUser()
-        member.getUserName = lambda: 'luser'
+        member.getProperty = lambda x: 'John Smith'
         tool.getAuthenticatedMember = lambda: member
-        self.assertEqual(view.uname, 'luser')
+        self.assertEqual(view.membername, u'John Smith')
+
+    def test_membername_not_anonymous_wo_fullname(self):
+        view = self._makeOne()
+        tool = view.context.portal_membership = DummyMembershipTool()
+        tool.isAnonymousUser = lambda: False
+        member = DummyUser()
+        member.getId = lambda: 'luser'
+        member.getProperty = lambda x: ''
+        tool.getAuthenticatedMember = lambda: member
+        self.assertEqual(view.membername, u'luser')
 
     def test_status_message_missing(self):
         view = self._makeOne()

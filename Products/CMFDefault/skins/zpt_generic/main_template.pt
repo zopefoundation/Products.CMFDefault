@@ -100,15 +100,14 @@
 <!-- end top_bar-->
 </div>
 
-<div metal:define-macro="user_menu_bar"
-     tal:define="uname python: isAnon and 'Guest' or member.getUserName()" >
+<div metal:define-macro="user_menu_bar">
 
  <!-- user_menu_bar -->
  <table id="MemberActionsBox"
         width="100%" border="0" cellpadding="0" cellspacing="0"
         i18n:domain="cmf_default">
   <tr>
-   <td class="ActionTitle" tal:content="uname">Guest</td>
+   <td class="ActionTitle" tal:content="globals/membername">Guest</td>
    <td class="ActionLink" align="right">
     <tal:span tal:repeat="action user_actions"
     ><img src="" alt="" title=""
