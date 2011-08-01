@@ -37,14 +37,14 @@
  <tr>
   <th i18n:translate="">Lead-in</th>
   <td>
-   <textarea name="description:text" rows="8" cols="80" wrap="soft"
+   <textarea name="description:text" rows="8" cols="80"
       tal:content="options/description"></textarea>
   </td>
  </tr>
  <tr>
   <th i18n:translate="">Body</th>
   <td>
-   <textarea name="text:text" rows="16" cols="80" wrap="soft"
+   <textarea name="text:text" rows="16" cols="80"
       tal:content="options/text"></textarea>
   </td>
  </tr>

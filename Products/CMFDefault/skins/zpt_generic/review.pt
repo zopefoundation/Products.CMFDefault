@@ -78,7 +78,7 @@
   <td colspan="4">
    <strong i18n:translate="">Comment:</strong>
    <br />
-   <textarea name="comment:text" rows="3" cols="65" wrap="soft"></textarea>
+   <textarea name="comment:text" rows="3" cols="65"></textarea>
   </td>
  </tr>
  <tr>

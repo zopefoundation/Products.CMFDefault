@@ -43,7 +43,7 @@
  <tr>
   <th i18n:translate="">Description</th>
   <td colspan="3">
-   <textarea name="description:text" rows="3" cols="80" wrap="soft"
+   <textarea name="description:text" rows="3" cols="80"
       tal:content="options/description"></textarea>
   </td>
  </tr>

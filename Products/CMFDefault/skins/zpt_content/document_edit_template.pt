@@ -48,7 +48,7 @@
  <tr>
   <th i18n:translate="">Edit</th>
   <td>
-   <textarea name="text:text" rows="20" cols="80" wrap="soft"
+   <textarea name="text:text" rows="20" cols="80"
       tal:content="options/text"></textarea>
   </td>
  </tr>

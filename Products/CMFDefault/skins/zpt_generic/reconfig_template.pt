@@ -60,7 +60,7 @@
  <tr>
   <th i18n:translate="">Portal description</th>
   <td>
-   <textarea name="description:text" rows="3" cols="80" wrap="soft"
+   <textarea name="description:text" rows="3" cols="80"
        tal:content="form/description"></textarea>
    <dl class="FieldHelp">
     <dd i18n:translate="">This description is made available via syndicated

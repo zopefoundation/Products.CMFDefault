@@ -22,7 +22,7 @@
  <tr tal:condition="not:options/is_preview">
   <th i18n:translate="">Reply body</th>
   <td>
-   <textarea name="text" cols="80" rows="10" wrap="soft"
+   <textarea name="text" cols="80" rows="10"
       tal:content="options/text"></textarea>
   </td>
  </tr>
