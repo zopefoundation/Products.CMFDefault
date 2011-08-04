@@ -6,6 +6,7 @@ from Products.CMFDefault.utils import html_marshal
 from Products.CMFDefault.utils import Message as _
 
 atool = getToolByName(script, 'portal_actions')
+mtool = getToolByName(script, 'portal_membership')
 
 
 form = context.REQUEST.form
@@ -21,6 +22,10 @@ elif cancel and \
 options = {}
 
 target = atool.getActionInfo('global/members_delete')['url']
+members = []
+for member_id in ids:
+    member = mtool.getMemberById(member_id)
+    members.append('%s (%s)' % (member.getProperty('fullname'), member_id))
 hidden_vars = []
 for name, value in html_marshal(b_start=b_start, ids=ids):
     hidden_vars.append( {'name': name, 'value': value} )
@@ -28,7 +33,7 @@ buttons = []
 buttons.append( {'name': 'delete', 'value': _(u'Delete')} )
 buttons.append( {'name': 'cancel', 'value': _(u'Cancel')} )
 options['form'] = { 'action': target,
-                    'members': ', '.join(ids),
+                    'members': ', '.join(members),
                     'listHiddenVarInfos': tuple(hidden_vars),
                     'listButtonInfos': tuple(buttons) }
 
