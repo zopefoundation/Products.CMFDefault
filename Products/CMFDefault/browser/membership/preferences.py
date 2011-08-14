@@ -14,14 +14,17 @@
 """
 
 from zope.component import adapts
+from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import implements
 from zope.interface import Interface
 from zope.schema import Bool
 from zope.schema import Choice
+from zope.schema import TextLine
 from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.interfaces import IMember
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import SettingsEditFormBase
@@ -36,15 +39,25 @@ def portal_skins(context):
 
 class IPreferencesSchema(Interface):
 
+    """Schema for member views.
+    """
+
+    fullname = TextLine(
+        title=_(u'Full Name'),
+        description=_(u'given names and surname'),
+        required=False,
+        missing_value=u'')
+
     email = EmailLine(
-        title=_(u"Email Address"))
+        title=_(u'Email Address'),
+        description=_(u'info@example.org'))
 
     listed = Bool(
-        title=_(u"Listed status"),
+        title=_(u'Listed status'),
         description=_(u"Select to be listed on the public membership roster."))
 
     portal_skin = Choice(
-        title=_(u"Skin"),
+        title=_(u'Skin'),
         vocabulary=u"cmf.AvailableSkins",
         required=False,
         missing_value='')
@@ -70,8 +83,30 @@ class PreferencesSchemaAdapter(object):
         else:
             object.__setattr__(self, name, value)
 
+    def _getFullName(self):
+        ptool = getUtility(IPropertiesTool)
+        encoding = ptool.getProperty('default_charset', None)
+        return self.context.getProperty('fullname').decode(encoding)
+
+    def _setFullName(self, value):
+        ptool = getUtility(IPropertiesTool)
+        encoding = ptool.getProperty('default_charset', None)
+        self.context.setMemberProperties({'fullname': value.encode(encoding)})
+
+    fullname = property(_getFullName, _setFullName)
+
 
 class PreferencesFormView(SettingsEditFormBase):
+
+    """Edit view for IPreferencesSchema.
+
+    Only user can change his own preference.
+    User can change the following preferences:
+    Full name
+    Email address
+    Listed or unlisted
+    User's chosen skin if set
+    """
 
     label = _(u"Member Preferences")
     successMessage = _(u"Member preferences changed.")

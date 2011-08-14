@@ -28,6 +28,7 @@ Use the preferences form without input.
 Use the preferences form with valid input. Keep skin unselected.
 
     >>> browser.open("http://localhost/site/@@preferences.html")
+    >>> browser.getControl(name='form.fullname').value = 'MY NAME'
     >>> browser.getControl(name='form.email').value = 'ME@EXAMPLE.ORG'
     >>> browser.getControl('[[cmf_default][Change]]').click()
     >>> '[[cmf_default][Member preferences changed.]]' in browser.contents
