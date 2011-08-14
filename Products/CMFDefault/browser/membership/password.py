@@ -81,6 +81,12 @@ class PasswordSchemaAdapter(object):
 
 class PasswordFormView(SettingsEditFormBase):
 
+    """Edit view for IPasswordSchema.
+
+    Apply same constraints as when joining. Users that have been sent a
+    password must change it using this form the first time they log in.
+    """
+
     successMessage = _(u"Your password has been changed.")
     form_fields = form.FormFields(IPasswordSchema)
 
