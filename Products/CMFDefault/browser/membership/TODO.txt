@@ -24,15 +24,16 @@ Converting skins to views:
       members_add_control.py -> Join
       join_form_template -> templates/join.pt
 
-  [x] preferences:
+  [x] preferences @@preferences.html:
 
-      preference_form.pt -> preferences.py
-      personalize.py -> preferences.py
+      personalize_form.pt -> PreferencesFormView
+      personalize.py -> formlib based
 
-  [ ] password:
-      
-      password_form.py -> password.py
-      password_form_template -> password.pt
+  [x] password @@password.html:
+
+      password_form.py -> PasswordFormView
+      password_form_template.pt -> formlib based
+      change_password.py -> formlib based
 
   [ ] member roster:
       
