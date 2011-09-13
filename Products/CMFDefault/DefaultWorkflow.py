@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ A simple submit/review/publish workflow.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -21,8 +19,10 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.class_init import InitializeClass
 from DateTime.DateTime import DateTime
+from zope.component import getUtility
 from zope.interface import implements
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IWorkflowDefinition
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _modifyPermissionMappings
@@ -94,8 +94,8 @@ class DefaultWorkflowDefinition(SimpleItemWithProperties):
         content = info.object
         content_url = info.object_url
         content_creator = content.Creator()
-        pm = getToolByName(self, 'portal_membership')
-        current_user = pm.getAuthenticatedMember().getId()
+        mtool = getUtility(IMembershipTool)
+        current_user = mtool.getAuthenticatedMember().getId()
         review_state = self.getReviewStateOf(content)
         actions = []
 
@@ -198,8 +198,8 @@ class DefaultWorkflowDefinition(SimpleItemWithProperties):
             elif review_state == 'private':
                 raise AccessControl_Unauthorized('Already private')
             content_creator = ob.Creator()
-            pm = getToolByName(self, 'portal_membership')
-            current_user = pm.getAuthenticatedMember().getId()
+            mtool = getUtility(IMembershipTool)
+            current_user = mtool.getAuthenticatedMember().getId()
             if (content_creator != current_user) and not allow_review:
                 raise AccessControl_Unauthorized('Not creator or reviewer')
             self.setReviewStateOf(ob, 'private', action, comment)
@@ -245,8 +245,8 @@ class DefaultWorkflowDefinition(SimpleItemWithProperties):
     security.declarePrivate('setReviewStateOf')
     def setReviewStateOf(self, ob, review_state, action, comment):
         tool = aq_parent(aq_inner(self))
-        pm = getToolByName(self, 'portal_membership')
-        current_user = pm.getAuthenticatedMember().getId()
+        mtool = getUtility(IMembershipTool)
+        current_user = mtool.getAuthenticatedMember().getId()
         status = {
             'actor': current_user,
             'action': action,

@@ -1,10 +1,10 @@
 ##parameters=ids, **kw
 ##title=Delete members
 ##
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.utils import Message as _
 
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 
 mtool.deleteMembers(ids, REQUEST=context.REQUEST)
 

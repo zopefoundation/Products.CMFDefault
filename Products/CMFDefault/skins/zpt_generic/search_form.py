@@ -1,12 +1,13 @@
 ##parameters=search=''
 ##
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.permissions import ReviewPortalContent
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
 ctool = getToolByName(script, 'portal_catalog')
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 ttool = getToolByName(script, 'portal_types')
 utool = getToolByName(script, 'portal_url')
 portal_url = utool()

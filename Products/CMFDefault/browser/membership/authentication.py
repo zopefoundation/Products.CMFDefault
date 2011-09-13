@@ -20,6 +20,8 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import Forbidden
 from zExceptions import Redirect
+from zope.component import getUtility
+from zope.component import queryUtility
 from zope.formlib import form
 from zope.formlib.widgets import TextWidget
 from zope.interface import implements
@@ -30,23 +32,25 @@ from zope.schema import Password
 from zope.schema import TextLine
 from zope.schema import URI
 from zope.schema.interfaces import ISource
-from zope.site.hooks import getSite
 
 from Products.CMFCore.CookieCrumbler import ATTEMPT_LOGIN
 from Products.CMFCore.CookieCrumbler import ATTEMPT_NONE
+from Products.CMFCore.interfaces import ICookieCrumbler
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDefault.browser.utils import ViewBase, memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.browser.utils import ViewBase, memoize
 
 
 def _expireAuthCookie(view):
-    try:
-        cctool = getToolByName(view, 'cookie_authentication')
+    cctool = queryUtility(ICookieCrumbler)
+    if cctool is not None:
         method = cctool.getCookieMethod('expireAuthCookie',
                                         cctool.defaultExpireAuthCookie)
         method(view.request.response, cctool.auth_cookie)
-    except AttributeError:
+    else:
         view.request.response.expireCookie('__ac', path='/')
 
 
@@ -98,8 +102,7 @@ class NameSource(object):
     implements(ISource)
 
     def __contains__(self, value):
-        rich_context = getSite()
-        mtool = getToolByName(rich_context, 'portal_membership')
+        mtool = getUtility(IMembershipTool)
         if mtool.getMemberById(value):
             return True
         candidates = mtool.searchMembers('email', value)
@@ -165,12 +168,12 @@ class LoginFormView(EditFormBase):
             failure='handle_failure'))
 
     def setUpWidgets(self, ignore_request=False):
-        try:
-            cctool = self._getTool('cookie_authentication')
+        cctool = queryUtility(ICookieCrumbler)
+        if cctool is not None:
             ac_name_id = cctool.name_cookie
             ac_password_id = cctool.pw_cookie
             ac_persistent_id = cctool.persist_cookie
-        except AttributeError:
+        else:
             ac_name_id = '__ac_name'
             ac_password_id = '__ac_password'
             ac_persistent_id = '__ac_persistent'
@@ -192,7 +195,7 @@ class LoginFormView(EditFormBase):
         self.widgets['persistent'].name = ac_persistent_id
 
     def handle_login_validate(self, action, data):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         if mtool.isAnonymousUser():
             _expireAuthCookie(self)
             return (_(u'Login failure'),)
@@ -223,7 +226,7 @@ class LoggedIn(ViewBase):
 
     def __call__(self):
         self.set_skin_cookie()
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         mtool.createMemberArea()
         member = mtool.getAuthenticatedMember()
         now = DateTime()
@@ -263,10 +266,10 @@ class MailPasswordFormView(EditFormBase):
             failure='handle_failure'))
 
     def setUpWidgets(self, ignore_request=False):
-        try:
-            cctool = self._getTool('cookie_authentication')
+        cctool = queryUtility(ICookieCrumbler)
+        if cctool is not None:
             ac_name_id = cctool.name_cookie
-        except AttributeError:
+        else:
             ac_name_id = '__ac_name'
         ac_name = self.request.get(ac_name_id)
         if ac_name and not self.request.has_key('%s.name' % self.prefix):
@@ -275,14 +278,14 @@ class MailPasswordFormView(EditFormBase):
               self).setUpWidgets(ignore_request=ignore_request)
 
     def handle_send_success(self, action, data):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         if not mtool.getMemberById(data['name']):
             candidates = mtool.searchMembers('email', data['name'])
             for candidate in candidates:
                 if candidate['email'].lower() == data['name'].lower():
                     data['name'] = candidate['username']
                     break
-        rtool = self._getTool('portal_registration')
+        rtool = getUtility(IRegistrationTool)
         rtool.mailPassword(data['name'], self.request)
         self.status = _(u'Your password has been mailed to you.')
         return self._setRedirect('portal_actions', 'user/login')
@@ -296,7 +299,7 @@ class Logout(ViewBase):
     @memoize
     def logged_in(self):
         """Check whether the user is (still logged in)"""
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         return not mtool.isAnonymousUser()
 
     @memoize

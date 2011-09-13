@@ -18,8 +18,10 @@ import unittest
 from zope.component import getSiteManager
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.interface import alsoProvides
+from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISyndicationInfo
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
@@ -51,7 +53,10 @@ class SyndicationViewTests(unittest.TestCase):
         site.portal_syndication = DummySyndicationTool()
         site._setObject('portal_actions', DummyTool())
         site._setObject('portal_url', DummyTool())
-        site._setObject('portal_membership', DummyTool())
+        getSiteManager().registerUtility(DummyTool(), IMembershipTool)
+
+    def tearDown(self):
+        cleanUp()
 
     def _getTargetClass(self):
         from Products.CMFDefault.browser.admin.syndication import Site
@@ -115,12 +120,14 @@ class FolderSyndicationTests(unittest.TestCase):
 
         self.site = site = DummySite('site')
         sm = getSiteManager()
-        info = SyndicationInfo
-        sm.registerAdapter(info, [IFolderish], ISyndicationInfo)
+        sm.registerAdapter(SyndicationInfo, [IFolderish], ISyndicationInfo)
         site.portal_syndication = DummySyndicationTool()
         site._setObject('portal_actions', DummyTool())
         site._setObject('portal_url', DummyTool())
-        site._setObject('portal_membership', DummyTool())
+        sm.registerUtility(DummyTool(), IMembershipTool)
+
+    def tearDown(self):
+        cleanUp()
 
     def _getTargetClass(self):
         from Products.CMFDefault.browser.admin.syndication import Syndicate

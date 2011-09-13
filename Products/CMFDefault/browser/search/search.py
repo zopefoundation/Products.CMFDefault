@@ -11,20 +11,21 @@
 #
 ##############################################################################
 """Search views"""
+
 import datetime
 
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.formlib import form
 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from .interfaces import ISearchSchema
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFDefault.browser.content.folder import BatchViewBase
+from Products.CMFDefault.browser.content.interfaces import IBatchForm
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceMultiSelectWidget
 from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.browser.utils import memoize
-from Products.CMFDefault.browser.content.interfaces import IBatchForm
-from Products.CMFDefault.browser.content.folder import BatchViewBase
-
-from interfaces import ISearchSchema
 
 EPOCH = datetime.date(1970, 1, 1)
 
@@ -76,7 +77,7 @@ class Search(BatchViewBase, EditFormBase):
     @property
     @memoize
     def is_anonymous(self):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         return mtool.isAnonymousUser()
 
     @memoize

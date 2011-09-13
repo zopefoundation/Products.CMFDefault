@@ -16,10 +16,13 @@
 import unittest
 from zope.component.testing import PlacelessSetup
 
-from test_ursa import (
-                    DummyRequest, DummySite, DummyContext,
-                    DummyPropertiesTool, DummyURLTool, DummyActionsTool
-                    )
+from .test_ursa import DummyActionsTool
+from .test_ursa import DummyContext
+from .test_ursa import DummyPropertiesTool
+from .test_ursa import DummyRequest
+from .test_ursa import DummyURLTool
+from Products.CMFCore.interfaces import IMembershipTool
+
 
 class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
 
@@ -49,7 +52,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         if types is not None:
             site.portal_types = DummyTypesTool(types)
             site.portal_url = DummyURLTool(site)
-            site.portal_membership = DummyMembershipTool()
+            sm.registerUtility(DummyMembershipTool(), IMembershipTool)
         if actions is not None:
             site.portal_actions = DummyActionsTool(actions)
         site.absolute_url = lambda: 'http://example.com'

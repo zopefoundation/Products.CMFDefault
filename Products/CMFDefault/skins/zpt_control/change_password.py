@@ -1,11 +1,11 @@
 ##parameters=password, confirm, domains=None, **kw
 ##title=Action to change password
 ##
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.utils import Message as _
 
-mtool = getToolByName(script, 'portal_membership')
-rtool = getToolByName(script, 'portal_registration')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
+rtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IRegistrationTool')
 
 result = rtool.testPasswordValidity(password, confirm)
 if result:

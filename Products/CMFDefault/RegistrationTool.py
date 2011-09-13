@@ -21,9 +21,9 @@ from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.schema import ValidationError
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.permissions import ManagePortal
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.utils import Message as _
@@ -124,10 +124,8 @@ class RegistrationTool(BaseTool):
 
         o Raise an exception if user ID is not found.
         """
-        # XXX: this method violates the rules for tools/utilities:
-        # it depends on a non-utility tool
-        membership = getToolByName(self, 'portal_membership')
-        member = membership.getMemberById(forgotten_userid)
+        mtool = getUtility(IMembershipTool)
+        member = mtool.getMemberById(forgotten_userid)
 
         if member is None:
             raise ValueError(_(u'The username you entered could not be '
@@ -158,8 +156,8 @@ class RegistrationTool(BaseTool):
         if REQUEST is None:
             raise ValueError(u"'REQUEST' argument is missing.")
 
-        membership = getToolByName( self, 'portal_membership' )
-        member = membership.getMemberById( new_member_id )
+        mtool = getUtility(IMembershipTool)
+        member = mtool.getMemberById(new_member_id)
 
         if member is None:
             raise ValueError(_(u'The username you entered could not be '
@@ -193,12 +191,10 @@ class RegistrationTool(BaseTool):
         o Checks should be done before this method is called using
           testPropertiesValidity and testPasswordValidity
         """
-        # XXX: this method violates the rules for tools/utilities:
-        # it depends on a non-utility tool
-        mtool = getToolByName(self, 'portal_membership')
+        mtool = getUtility(IMembershipTool)
         member = mtool.getMemberById(member_id)
         member.setMemberProperties(properties)
-        member.setSecurityProfile(password,roles,domains)
+        member.setSecurityProfile(password, roles, domains)
 
         return member
 

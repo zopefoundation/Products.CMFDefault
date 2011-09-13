@@ -29,13 +29,14 @@ RegistrationTool
     >>> from zope.component import getSiteManager
     >>> from zope.component import getUtility
     >>> from zope.site.hooks import setSite
+    >>> from Products.CMFCore.interfaces import IMembershipTool
     >>> from Products.MailHost.interfaces import IMailHost
     >>> setSite(app.site)
     >>> app.site.setupCurrentSkin(app.REQUEST)
     >>> sm = getSiteManager()
     >>> sm.registerUtility(MailHost(), IMailHost)
+    >>> sm.registerUtility(MembershipTool(), IMembershipTool)
     >>> rtool = app.site.portal_registration
-    >>> rtool.portal_membership = MembershipTool()
     >>> rtool.password_email = password_email
     >>> rtool.mail_password_response = mail_password_response
     >>> rtool.registered_email = registered_email
@@ -57,7 +58,7 @@ RegistrationTool
 
   Now we have to restore the normal MembershipTool::
 
-    >>> del rtool.portal_membership
+    >>> sm.registerUtility(app.site.portal_membership, IMembershipTool)
 
 password_email and registered_email
 -----------------------------------

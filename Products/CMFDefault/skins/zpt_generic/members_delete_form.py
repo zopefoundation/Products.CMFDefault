@@ -1,12 +1,13 @@
 ##parameters=ids, b_start=0, delete='', cancel=''
 ##
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import html_marshal
 from Products.CMFDefault.utils import Message as _
 
 atool = getToolByName(script, 'portal_actions')
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 
 
 form = context.REQUEST.form

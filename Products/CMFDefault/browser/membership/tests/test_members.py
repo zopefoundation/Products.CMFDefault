@@ -13,18 +13,18 @@
 """ Tests for membership views """
 
 import unittest
-
 from Testing import ZopeTestCase
 
+from DateTime.DateTime import DateTime
 from zope.component import getSiteManager
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from DateTime.DateTime import DateTime
+from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFCore.tests.base.dummy import DummyUser
-
 from Products.CMFDefault.browser.membership.members import Manage
 from Products.CMFDefault.browser.membership.members import MemberProxy
 from Products.CMFDefault.testing import FunctionalLayer
@@ -67,10 +67,13 @@ class MembershipViewTests(unittest.TestCase):
     def setUp(self):
         """Setup a site"""
         self.site = site = DummySite('site')
-        self.sm = getSiteManager()
-        self.mtool = site._setObject('portal_membership', DummyMemberTool())
+        self.mtool = DummyMemberTool()
+        getSiteManager().registerUtility(self.mtool, IMembershipTool)
         site._setObject('portal_actions', DummyTool())
         site._setObject('portal_url', DummyTool())
+
+    def tearDown(self):
+        cleanUp()
 
     def _make_one(self, name="DummyUser"):
         user = DummyUser(name)

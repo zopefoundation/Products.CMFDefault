@@ -17,6 +17,7 @@ from datetime import date
 from datetime import timedelta
 
 from DateTime import DateTime
+from zope.component import getUtility
 from zope.interface import directlyProvides
 from zope.interface import Interface
 from zope.schema import ASCIILine
@@ -24,9 +25,10 @@ from zope.schema import Choice
 from zope.schema import List
 from zope.schema import TextLine
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import Message as _
 
@@ -50,7 +52,7 @@ directlyProvides(subject_vocab, IContextSourceBinder)
 
 def date_vocab(context):
     """Provides a list of dates for searching with"""
-    mtool = getToolByName(context, 'portal_membership')
+    mtool = getUtility(IMembershipTool)
     dates = [SimpleTerm(date(1970, 1, 1), date(1970, 1, 1), _(u'Ever'))]
     if not mtool.isAnonymousUser():
         member = mtool.getAuthenticatedMember()

@@ -17,6 +17,7 @@ LOG = logging.getLogger("Folder contents views")
 import urllib
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.formlib import form
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
@@ -25,6 +26,7 @@ from ZTUtils import Batch
 from ZTUtils import LazyFilter
 
 from Products.CMFCore.interfaces import IDynamicType
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
@@ -349,7 +351,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     def up_info(self):
         """Link to the contens view of the parent object"""
         up_obj = self.context.aq_inner.aq_parent
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         allowed = mtool.checkPermission(ListFolderContents, up_obj)
         if allowed:
             if IDynamicType.providedBy(up_obj):

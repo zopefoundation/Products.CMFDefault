@@ -14,15 +14,23 @@
 
 import unittest
 
-from Products.CMFCore.tests.base.dummy import DummySite, DummyTool
-from Products.CMFDefault.browser.test_utils import DummyRequest, DummyResponse
+from zope.component import getSiteManager
+from zope.testing.cleanup import cleanUp
+
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.tests.base.dummy import DummySite
+from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFDefault.browser.test_utils import DummyRequest
 
 
 class SearchFormTests(unittest.TestCase):
 
     def setUp(self):
-        self.site = site = DummySite('site')
-        site._setObject('portal_membership', DummyTool())
+        self.site = DummySite('site')
+        getSiteManager().registerUtility(DummyTool(), IMembershipTool)
+
+    def tearDown(self):
+        cleanUp()
 
     def _getTargetClass(self):
         from Products.CMFDefault.browser.search.search import Search
@@ -35,7 +43,7 @@ class SearchFormTests(unittest.TestCase):
 
     def test_is_not_anonymous(self):
         view = self._getTargetClass()
-        self.site.portal_membership.anon = 0
+        getSiteManager().getUtility(IMembershipTool).anon = 0
         self.assertFalse(view.is_anonymous)
         self.assertNotEqual(view.search_fields.get('review_state'), None)
 
@@ -58,6 +66,7 @@ class SearchFormTests(unittest.TestCase):
         self.assertNotEqual(view.template, view.results)
         view.handle_search('search', {})
         self.assertEqual(view.template.filename, view.results.filename)
+
 
 def test_suite():
     suite = unittest.TestSuite()

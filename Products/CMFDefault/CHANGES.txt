@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.3.0-alpha (unreleased)
 ------------------------
 
+- tools: Converted several tools into utilities.
+  CookieCrumbler, MemberDataTool, MembershipTool and RegistrationTool are now
+  local utilities.
+
 - skins and browser views: setRedirect now checks Action conditions.
 
 - Actions: Added 'global/members_register' Action for redirects.

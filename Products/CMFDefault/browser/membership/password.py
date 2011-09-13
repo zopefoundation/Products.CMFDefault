@@ -24,6 +24,7 @@ from zope.interface import invariant
 from zope.schema import Password
 
 from Products.CMFCore.interfaces import IMember
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault.browser.utils import decode
@@ -116,7 +117,7 @@ class PasswordFormView(SettingsEditFormBase):
 
     @memoize
     def getContent(self):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         member = mtool.getAuthenticatedMember()
         return PasswordSchemaAdapter(member)
 
@@ -128,7 +129,7 @@ class PasswordFormView(SettingsEditFormBase):
         changes = super(PasswordFormView, self).applyChanges(data)
         if self.getContent().last_login_time == DateTime('1999/01/01'):
             self.getContent().last_login_time = DateTime('2000/01/01')
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         mtool.credentialsChanged(self.getContent().context.getPassword(),
                                  self.request)
         return changes

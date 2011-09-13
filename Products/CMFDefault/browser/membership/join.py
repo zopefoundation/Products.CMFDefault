@@ -23,7 +23,9 @@ from zope.schema import ASCIILine
 from zope.schema import Bool
 from zope.schema import Password
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.schema import EmailLine
@@ -97,13 +99,13 @@ class JoinFormView(EditFormBase):
     @property
     @memoize
     def isAnon(self):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         return mtool.isAnonymousUser()
 
     @property
     @memoize
     def isManager(self):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         return mtool.checkPermission(ManageUsers, mtool)
 
     @property
@@ -126,7 +128,7 @@ class JoinFormView(EditFormBase):
         errors = self.validate(action, data)
         if errors:
             return errors
-        rtool = self._getTool('portal_registration')
+        rtool = getUtility(IRegistrationTool)
         if self.validate_email:
             data['password'] = rtool.generatePassword()
         else:
@@ -141,7 +143,7 @@ class JoinFormView(EditFormBase):
 
     def add_member(self, data):
         """Add new member and notify if requested or required"""
-        rtool = self._getTool('portal_registration')
+        rtool = getUtility(IRegistrationTool)
         rtool.addMember(
                         id=data['member_id'],
                         password=data['password'],

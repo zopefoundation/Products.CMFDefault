@@ -24,6 +24,7 @@ from zope.schema import TextLine
 from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.interfaces import IMember
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.browser.utils import memoize
@@ -115,7 +116,7 @@ class PreferencesFormView(SettingsEditFormBase):
 
     @memoize
     def getContent(self):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         member = mtool.getAuthenticatedMember()
         return PreferencesSchemaAdapter(member)
 

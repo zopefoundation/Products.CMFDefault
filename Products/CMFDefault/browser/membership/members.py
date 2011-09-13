@@ -14,6 +14,7 @@
 """
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import Interface
 from zope.schema import Bool
@@ -22,6 +23,7 @@ from zope.schema import TextLine
 from zope.sequencesort.ssort import sort
 from ZTUtils import LazyFilter
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.content.folder import BatchViewBase
 from Products.CMFDefault.browser.content.interfaces import IBatchForm
 from Products.CMFDefault.browser.utils import memoize
@@ -113,7 +115,7 @@ class Manage(BatchViewBase, EditFormBase):
 
     @memoize
     def _get_items(self):
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         return mtool.listMembers()
 
     def members_exist(self, action=None):
@@ -130,7 +132,7 @@ class Manage(BatchViewBase, EditFormBase):
         """Create content field objects only for batched items
         Also create pseudo-widget for each item
         """
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         f = IMemberItem['select']
         members = []
         fields = form.FormFields()
@@ -168,7 +170,7 @@ class Manage(BatchViewBase, EditFormBase):
 
     def handle_delete(self, action, data):
         """Delete selected members"""
-        mtool = self._getTool('portal_membership')
+        mtool = getUtility(IMembershipTool)
         mtool.deleteMembers(self._get_ids(data))
         self.status = _(u"Selected members deleted.")
         self._setRedirect('portal_actions', "global/manage_members")
@@ -189,7 +191,7 @@ class Roster(BatchViewBase):
     @property
     @memoize
     def mtool(self):
-        return self._getTool('portal_membership')
+        return getUtility(IMembershipTool)
 
     @memoize
     def isUserManager(self):

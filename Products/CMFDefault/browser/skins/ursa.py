@@ -13,11 +13,16 @@
 """
 """
 
+from zope.component import getUtility
+
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.utils import decode
-from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import ViewBase
+from Products.CMFDefault.utils import decode
+from Products.CMFDefault.utils import Message as _
+
 
 class UrsineGlobals(ViewBase):
     """ Provide lazy / efficient template-level globals.
@@ -38,7 +43,7 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def ptool(self):
-        return self._getTool('portal_properties')
+        return getUtility(IPropertiesTool)
 
     @property
     @memoize
@@ -48,7 +53,7 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def mtool(self):
-        return self._getTool('portal_membership')
+        return getUtility(IMembershipTool)
 
     @property
     @memoize

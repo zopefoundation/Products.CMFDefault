@@ -14,7 +14,12 @@
 """
 
 import unittest
+
+from zope.component import getSiteManager
 from zope.component.testing import PlacelessSetup
+
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
 
 
 class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
@@ -37,12 +42,12 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         return self._getTargetClass()(context, request)
 
     def _makeContext(self):
-        from zope.component import getSiteManager
-        from Products.CMFCore.interfaces import IPropertiesTool
         context = DummyContext()
-        tool = context.portal_properties = DummyPropertiesTool()
         sm = getSiteManager()
+        tool = context.portal_properties = DummyPropertiesTool()
         sm.registerUtility(tool, IPropertiesTool)
+        tool = context.portal_membership = DummyMembershipTool()
+        sm.registerUtility(tool, IMembershipTool)
         return context
 
     def test_ctor_wo_def_charset_doesnt_set_content_type(self):
@@ -92,7 +97,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_mtool(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         self.failUnless(view.mtool is tool)
 
     def test_atool(self):
@@ -225,7 +230,9 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
     def test_breadcrumbs_at_root(self):
         PATHS_TO_CONTEXTS = []
         site = DummySite(PATHS_TO_CONTEXTS)
+        sm = getSiteManager()
         ptool = site.portal_properties = DummyPropertiesTool()
+        sm.registerUtility(ptool, IPropertiesTool)
         ptool.title = lambda: 'SITE'
         utool = site.portal_url = DummyURLTool(site, PATHS_TO_CONTEXTS)
         utool.__call__ = lambda: 'http://example.com/'
@@ -247,7 +254,9 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                              (('parent', 'child'), context),
                             ]
         site = DummySite(PATHS_TO_CONTEXTS)
+        sm = getSiteManager()
         ptool = context.portal_properties = DummyPropertiesTool()
+        sm.registerUtility(ptool, IPropertiesTool)
         ptool.title = lambda: 'SITE'
         utool = context.portal_url = DummyURLTool(site, PATHS_TO_CONTEXTS)
         utool.__call__ = lambda: 'http://example.com/'
@@ -269,39 +278,39 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_member(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         member = DummyUser()
         tool.getAuthenticatedMember = lambda: member
         self.failUnless(view.member is member)
 
     def test_membersfolder(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         membersfolder = object()
         tool.getMembersFolder = lambda: membersfolder
         self.failUnless(view.membersfolder is membersfolder)
 
     def test_isAnon_tool_returns_True(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: True
         self.failUnless(view.isAnon)
 
     def test_isAnon_tool_returns_False(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: False
         self.failIf(view.isAnon)
 
     def test_membername_anonymous(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: True
         self.assertEqual(view.membername, u'Guest')
 
     def test_membername_not_anonymous(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: False
         member = DummyUser()
         member.getProperty = lambda x: 'John Smith'
@@ -310,7 +319,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_membername_not_anonymous_wo_fullname(self):
         view = self._makeOne()
-        tool = view.context.portal_membership = DummyMembershipTool()
+        tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: False
         member = DummyUser()
         member.getId = lambda: 'luser'
@@ -394,6 +403,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
         self.assertEqual(view.workflow_actions, ACTIONS['workflow'])
 
+
 class DummyContext:
     pass
 
@@ -470,6 +480,7 @@ class DummyResponse:
 class DummyRequest:
     def __init__(self):
         self.RESPONSE = DummyResponse()
+
 
 def test_suite():
     return unittest.TestSuite((

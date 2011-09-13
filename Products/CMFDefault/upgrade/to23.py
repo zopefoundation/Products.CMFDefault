@@ -15,12 +15,14 @@
 
 import logging
 
-from zope.component import getMultiAdapter
-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from OFS.userfolder import UserFolder
+from zope.component import getMultiAdapter
+from zope.component.interfaces import ComponentLookupError
+from zope.dottedname.resolve import resolve
+
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.context import SetupEnviron
 from Products.GenericSetup.interfaces import IBody
@@ -259,3 +261,54 @@ def upgrade_member_data_tool(tool):
         if changed:
             mdtool._p_changed = True
             logger.info("Member data tool property modes fixed.")
+
+_TOOL_UTILITIES = (
+    ('cookie_authentication', 'Products.CMFCore.interfaces.ICookieCrumbler'),
+    ('portal_memberdata', 'Products.CMFCore.interfaces.IMemberDataTool'),
+    ('portal_membership', 'Products.CMFCore.interfaces.IMembershipTool'),
+    ('portal_registration', 'Products.CMFCore.interfaces.IRegistrationTool'),
+)
+
+def check_root_site_manager(tool):
+    """2.2.x to 2.3.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    try:
+        sm = portal.getSiteManager()
+    except ComponentLookupError:
+        return True
+
+    for tool_id, tool_interface in _TOOL_UTILITIES:
+        tool_obj = getToolByName(portal, tool_id, default=None)
+        try:
+            iface = resolve(tool_interface)
+        except ImportError:
+            continue
+
+        if tool_obj is not None and sm.queryUtility(iface) is None:
+            return True
+
+    return False
+
+def upgrade_root_site_manager(tool):
+    """2.2.x to 2.3.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    try:
+        sm = portal.getSiteManager()
+    except ComponentLookupError:
+        logger.warning("Site manager missing.")
+        return
+
+    for tool_id, tool_interface in _TOOL_UTILITIES:
+        tool_obj = getToolByName(portal, tool_id, default=None)
+        try:
+            iface = resolve(tool_interface)
+        except ImportError:
+            continue
+
+        if tool_obj is not None and sm.queryUtility(iface) is None:
+            sm.registerUtility(tool_obj, iface)
+            logger.info('Registered %s for interface %s' % (tool_id,
+                                                            tool_interface))

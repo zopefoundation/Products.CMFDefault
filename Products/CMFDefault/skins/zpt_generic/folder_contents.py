@@ -3,6 +3,7 @@
 from ZTUtils import Batch
 from ZTUtils import make_query
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.permissions import DeleteObjects
 from Products.CMFDefault.permissions import ListFolderContents
@@ -12,7 +13,7 @@ from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import html_marshal
 from Products.CMFDefault.utils import Message as _
 
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 utool = getToolByName(script, 'portal_url')
 portal_url = utool()
 

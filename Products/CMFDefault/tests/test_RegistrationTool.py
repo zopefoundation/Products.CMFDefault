@@ -17,10 +17,12 @@ import unittest
 from Testing import ZopeTestCase
 
 from Acquisition import Implicit
+from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
-from Products.CMFCore.tests.base.testcase import RequestTest
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.tests.base.testcase import TransactionalTest
 from Products.CMFDefault.testing import FunctionalLayer
 
 
@@ -30,7 +32,7 @@ class FauxMembershipTool(Implicit):
         return None
 
 
-class RegistrationToolTests(RequestTest):
+class RegistrationToolTests(TransactionalTest):
 
     def _getTargetClass(self):
         from Products.CMFDefault.RegistrationTool import RegistrationTool
@@ -42,14 +44,14 @@ class RegistrationToolTests(RequestTest):
 
     def tearDown(self):
         cleanUp()
-        RequestTest.tearDown(self)
+        TransactionalTest.tearDown(self)
 
     def test_interfaces(self):
         from Products.CMFCore.interfaces import IRegistrationTool
 
         verifyClass(IRegistrationTool, self._getTargetClass())
 
-    def test_spamcannon_collector_243( self ):
+    def test_spamcannon_collector_243(self):
 
         INJECTED_HEADERS = """
 To:someone@example.com
@@ -61,7 +63,7 @@ Spam, spam, spam
 """
 
         rtool = self._makeOne().__of__(self.app)
-        self.app.portal_membership = FauxMembershipTool()
+        getSiteManager().registerUtility(FauxMembershipTool(), IMembershipTool)
 
         props = { 'email' : INJECTED_HEADERS
                 , 'username' : 'username'

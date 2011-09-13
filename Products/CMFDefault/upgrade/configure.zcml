@@ -224,6 +224,13 @@
         checker=".to23.check_member_data_tool"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade root site manager"
+        description="Add utility registrations if missing."
+        handler=".to23.upgrade_root_site_manager"
+        checker=".to23.check_root_site_manager"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

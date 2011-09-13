@@ -14,23 +14,21 @@
 """
 
 import unittest
-
-from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.User import UnrestrictedUser
 from Testing import ZopeTestCase
 
 from zope.component import getSiteManager
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
+from zope.testing.cleanup import cleanUp
 
-from Products.CMFCore.PortalFolder import PortalFolder
-from Products.CMFCore.tests.base.dummy import DummySite, DummyTool
-from Products.CMFCore.tests.base.dummy import DummyUserFolder, DummyContent
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
-
-from Products.CMFDefault.browser.content.folder import (
-                ContentsView, FolderView
-                )
+from Products.CMFCore.PortalFolder import PortalFolder
+from Products.CMFCore.tests.base.dummy import DummyContent
+from Products.CMFCore.tests.base.dummy import DummySite
+from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFDefault.browser.content.folder import ContentsView
+from Products.CMFDefault.browser.content.folder import FolderView
 from Products.CMFDefault.browser.content.tests.utils import clearVocabulary
 from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
@@ -41,14 +39,16 @@ class FolderContentsViewTests(unittest.TestCase):
     def setUp(self):
         """Setup a site"""
         self.site = site = DummySite('site')
-        self.sm = getSiteManager()
-        site._setObject('portal_membership', DummyTool())
-        ptool = site._setObject('portal_properties', DummyTool())
-        self.sm.registerUtility(ptool, IPropertiesTool)
+        sm = getSiteManager()
+        sm.registerUtility(DummyTool(), IMembershipTool)
+        sm.registerUtility(DummyTool().__of__(site), IPropertiesTool)
         site._setObject('portal_types', DummyTool())
         site._setObject('portal_url', DummyTool())
         folder = PortalFolder('test_folder')
         self.folder = site._setObject('test_folder', folder)
+
+    def tearDown(self):
+        cleanUp()
 
     def _make_one(self, name="DummyItem"):
         content = DummyContent(name)

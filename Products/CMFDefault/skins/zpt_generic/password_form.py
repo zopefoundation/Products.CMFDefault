@@ -6,7 +6,7 @@ from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
 atool = getToolByName(script, 'portal_actions')
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 utool = getToolByName(script, 'portal_url')
 member = mtool.getAuthenticatedMember()

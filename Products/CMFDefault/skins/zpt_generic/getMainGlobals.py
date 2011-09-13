@@ -7,7 +7,7 @@ from Products.CMFDefault.utils import getBrowserCharset
 
 atool = getToolByName(script, 'portal_actions')
 caltool = getToolByName(script, 'portal_calendar', None)
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 utool = getToolByName(script, 'portal_url')
 wtool = getToolByName(script, 'portal_workflow')

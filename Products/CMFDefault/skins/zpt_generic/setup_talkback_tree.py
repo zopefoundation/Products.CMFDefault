@@ -2,11 +2,11 @@
 ##title=Standard Tree
 ##
 from ZTUtils import SimpleTreeMaker
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.permissions import ManagePortal
 from Products.CMFDefault.utils import decode
 
-mtool = getToolByName(script, 'portal_membership')
+mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 
 tm = SimpleTreeMaker('tb_tree')
 def getKids(object):

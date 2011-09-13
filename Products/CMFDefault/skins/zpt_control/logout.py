@@ -2,6 +2,7 @@
 ##title=Logout handler
 ##parameters=
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 
 stool = getToolByName(context, 'portal_skins')
 utool = getToolByName(context, 'portal_url')
@@ -9,7 +10,7 @@ REQUEST = context.REQUEST
 
 stool.clearSkinCookie()
 try:
-    cctool = getToolByName(context, 'cookie_authentication')
+    cctool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ICookieCrumbler')
     cctool.logout(REQUEST.RESPONSE)
 except AttributeError:
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
