@@ -28,10 +28,12 @@ RegistrationTool
 
     >>> from zope.component import getSiteManager
     >>> from zope.component import getUtility
+    >>> from zope.globalrequest import setRequest
     >>> from zope.site.hooks import setSite
     >>> from Products.CMFCore.interfaces import IMembershipTool
     >>> from Products.MailHost.interfaces import IMailHost
     >>> setSite(app.site)
+    >>> setRequest(app.REQUEST)
     >>> app.site.setupCurrentSkin(app.REQUEST)
     >>> sm = getSiteManager()
     >>> sm.registerUtility(MailHost(), IMailHost)

@@ -17,15 +17,14 @@ from logging import getLogger
 
 LOG = getLogger("Action Icons CSS")
 
+from Products.Five import BrowserView
 from zope.component import getUtility
 
-from Products.Five.browser import BrowserView
-
-from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.Expression import getExprContext
-from Products.CMFCore.utils import getToolByName
-
+from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.browser.utils import memoize, ViewBase
+
 
 class View(ViewBase):
     """
@@ -44,7 +43,7 @@ class View(ViewBase):
     @memoize
     def _show_icons(self):
         """Are action icons enabled?"""
-        ptool = self._getTool('portal_properties')
+        ptool = getUtility(IPropertiesTool)
         show = ptool.getProperty('enable_actionicons', False)
         if show:
             self.icon = ".icon {padding-left: 1.5em;}\n\n"
@@ -64,7 +63,7 @@ class View(ViewBase):
     @memoize
     def actions(self):
         """List all action icons"""
-        atool = self._getTool('portal_actions')
+        atool = getUtility(IActionsTool)
         all_actions = atool.listFilteredActionsFor(self.context)
         icons = []
         for cat in ['user', 'object', 'folder', 'workflow', 'global']:

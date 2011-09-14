@@ -23,6 +23,7 @@ from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.PortalFolder import PortalFolder
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
@@ -42,8 +43,8 @@ class FolderContentsViewTests(unittest.TestCase):
         sm = getSiteManager()
         sm.registerUtility(DummyTool(), IMembershipTool)
         sm.registerUtility(DummyTool().__of__(site), IPropertiesTool)
+        sm.registerUtility(DummyTool().__of__(site), IURLTool)
         site._setObject('portal_types', DummyTool())
-        site._setObject('portal_url', DummyTool())
         folder = PortalFolder('test_folder')
         self.folder = site._setObject('test_folder', folder)
 

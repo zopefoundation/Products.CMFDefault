@@ -20,6 +20,7 @@ from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.permissions import View
 from Products.CMFDefault.utils import getBrowserCharset
@@ -75,7 +76,7 @@ class ViewBase(BrowserView):
 
     @memoize
     def _getPortalURL(self):
-        utool = self._getTool('portal_url')
+        utool = getUtility(IURLTool)
         return utool()
 
     @memoize

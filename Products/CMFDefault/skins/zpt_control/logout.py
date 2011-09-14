@@ -5,7 +5,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import getUtilityByInterfaceName
 
 stool = getToolByName(context, 'portal_skins')
-utool = getToolByName(context, 'portal_url')
+utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
 REQUEST = context.REQUEST
 
 stool.clearSkinCookie()

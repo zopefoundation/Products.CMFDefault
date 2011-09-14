@@ -12,12 +12,13 @@
 ##############################################################################
 """RSS view for syndicatable items"""
 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getAdapter
+from zope.component import getUtility
 from zope.sequencesort.ssort import sort
 from ZTUtils import LazyFilter
 
 from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
@@ -64,6 +65,6 @@ class View(ViewBase):
                 'period': self.synd_info['period'],
                 'title': self.context.Title(),
                 'description': self.context.Description(),
-                'portal_url': self._getTool('portal_url')()
+                'portal_url': getUtility(IURLTool)()
                 }
         return info

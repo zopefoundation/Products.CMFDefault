@@ -3,11 +3,10 @@
 from ZTUtils import Batch
 from ZTUtils import LazyFilter
 from Products.CMFCore.utils import getUtilityByInterfaceName
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import decode
 
-utool = getToolByName(script, 'portal_url')
 stool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ISyndicationTool')
+utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
 
 
 if not stool.isSyndicationAllowed(context):

@@ -23,6 +23,7 @@ from zope.schema import ASCIILine
 from zope.schema import Bool
 from zope.schema import Password
 
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IRegistrationTool
@@ -121,7 +122,7 @@ class JoinFormView(EditFormBase):
             return _(u'Become a Member')
 
     def personalize(self):
-        atool = self._getTool('portal_actions')
+        atool = getUtility(IActionsTool)
         return atool.getActionInfo("user/preferences")['url']
 
     def handle_register_validate(self, action, data):

@@ -1,11 +1,11 @@
 ##parameters=provider, action_path, **kw
 ##
 from ZTUtils import make_query
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.utils import getBrowserCharset
 
-utool = getToolByName(script, 'portal_url')
+utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
 portal_url = utool()
 
 

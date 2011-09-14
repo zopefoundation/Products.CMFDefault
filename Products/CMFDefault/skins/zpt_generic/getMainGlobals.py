@@ -5,13 +5,17 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import getBrowserCharset
 
-atool = getToolByName(script, 'portal_actions')
+atool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IActionsTool',
+                                  # BBB: fallback for CMF 2.2 instances
+                                  getToolByName(script, 'portal_actions'))
 caltool = getToolByName(script, 'portal_calendar', None)
-# BBB: fallback for CMF 2.2 instances
 mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool',
+                                  # BBB: fallback for CMF 2.2 instances
                                   getToolByName(script, 'portal_membership'))
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
-utool = getToolByName(script, 'portal_url')
+utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool',
+                                  # BBB: fallback for CMF 2.2 instances
+                                  getToolByName(script, 'portal_url'))
 wtool = getToolByName(script, 'portal_workflow')
 uidtool = getToolByName(script, 'portal_uidhandler', None)
 syndtool = getToolByName(script, 'portal_syndication', None)

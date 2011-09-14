@@ -20,7 +20,9 @@ from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.testing import ConformsToContent
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
@@ -38,11 +40,11 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def setUp(self):
-        sm = getSiteManager()
         self.site = DummySite('site')
+        sm = getSiteManager()
         sm.registerUtility(self.site, ISiteRoot)
-        self.site._setObject( 'portal_membership', DummyTool() )
-        self.site._setObject( 'portal_url', DummyTool() )
+        sm.registerUtility(DummyTool(), IMembershipTool)
+        sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
         self.site._setObject( 'target', DummyContent() )
 
     def tearDown(self):
@@ -60,7 +62,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         verifyClass(IMutableLink, self._getTargetClass())
 
     def test_Empty( self ):
-        utool = self.site.portal_url
+        utool = getSiteManager().getUtility(IURLTool)
         f = self.site._setObject('foo', self._makeOne('foo'))
 
         self.assertEqual( f.getId(), 'foo' )
@@ -72,7 +74,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         self.assertEqual( f.icon(), self.site.icon() )
 
     def test_CtorArgs( self ):
-        utool = self.site.portal_url
+        utool = getSiteManager().getUtility(IURLTool)
         target = self.site.target
         self.assertEqual( self._makeOne( 'foo'
                                        , title='Title'
@@ -90,7 +92,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         self.assertEqual( baz.icon(), target.icon() )
 
     def test_edit( self ):
-        utool = self.site.portal_url
+        utool = getSiteManager().getUtility(IURLTool)
         target = self.site.target
         f = self.site._setObject('foo', self._makeOne('foo'))
         f.edit( 'target' )
@@ -100,7 +102,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         self.assertEqual( f.icon(), target.icon() )
 
     def test_editEmpty( self ):
-        utool = self.site.portal_url
+        utool = getSiteManager().getUtility(IURLTool)
         f = self.site._setObject('gnnn', self._makeOne('gnnn'))
         f.edit( '' )
         self.assertEqual( f.getObject(), self.site )

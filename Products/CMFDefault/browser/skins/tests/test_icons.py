@@ -14,13 +14,16 @@
 """
 
 import unittest
+
+from Acquisition import Implicit
 from zope.component.testing import PlacelessSetup
+from zope.globalrequest import setRequest
 
 from .test_ursa import DummyActionsTool
-from .test_ursa import DummyContext
 from .test_ursa import DummyPropertiesTool
-from .test_ursa import DummyRequest
+from .test_ursa import DummyResponse
 from .test_ursa import DummyURLTool
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 
 
@@ -40,6 +43,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         if site is None:
             site = self._makeSite()
         request = DummyRequest()
+        setRequest(request)
         return self._getTargetClass()(site, request)
 
     def _makeSite(self, types=None, actions=None):
@@ -54,7 +58,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
             site.portal_url = DummyURLTool(site)
             sm.registerUtility(DummyMembershipTool(), IMembershipTool)
         if actions is not None:
-            site.portal_actions = DummyActionsTool(actions)
+            sm.registerUtility(DummyActionsTool(actions), IActionsTool)
         site.absolute_url = lambda: 'http://example.com'
         return site
 
@@ -160,6 +164,20 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
 /* global actions */
 
 .Undo {background: url(Undo.png) no-repeat 0.1em}""")
+
+
+class DummyContext(Implicit):
+
+    pass
+
+
+class DummyRequest:
+
+    def __init__(self):
+        self.RESPONSE = DummyResponse()
+
+    def get(self, key, default=None):
+        return {}
 
 
 class DummyType:

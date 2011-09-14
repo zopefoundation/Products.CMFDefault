@@ -1,14 +1,13 @@
 ##parameters=change='', cancel=''
 ##
 from Products.CMFCore.utils import getUtilityByInterfaceName
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
-atool = getToolByName(script, 'portal_actions')
+atool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IActionsTool')
 mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
-utool = getToolByName(script, 'portal_url')
+utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
 member = mtool.getAuthenticatedMember()
 portal_url = utool()
 

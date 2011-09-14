@@ -18,8 +18,10 @@ import unittest
 from zope.component import getSiteManager
 from zope.component.testing import PlacelessSetup
 
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
 
 
 class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
@@ -54,7 +56,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         context = self._makeContext()
         request = DummyRequest()
         response = request.RESPONSE
-        view = self._makeOne(context, request)
+        self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 0)
 
     def test_ctor_w_resp_charset_doesnt_set_content_type(self):
@@ -62,7 +64,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         request = DummyRequest()
         response = request.RESPONSE
         response._orig_headers['content-type'] = 'text/html; charset=UTF-8'
-        view = self._makeOne(context, request)
+        self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 0)
 
     def test_ctor_w_resp_charset_w_def_charset_doesnt_override_charset(self):
@@ -71,7 +73,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         request = DummyRequest()
         response = request.RESPONSE
         response._orig_headers['content-type'] = 'text/html; charset=UTF-8'
-        view = self._makeOne(context, request)
+        self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 0)
 
     def test_ctor_wo_resp_charst_w_def_charset_sets_charset(self):
@@ -80,7 +82,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         request = DummyRequest()
         response = request.RESPONSE
         response._orig_headers['content-type'] = 'text/html'
-        view = self._makeOne(context, request)
+        self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 1)
         self.assertEqual(response._set_headers[0],
                          ('content-type', 'text/html; charset=latin1'))
@@ -92,7 +94,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_utool(self):
         view = self._makeOne()
-        tool = view.context.portal_url = DummyURLTool()
+        tool = DummyURLTool()
+        getSiteManager().registerUtility(tool, IURLTool)
         self.failUnless(view.utool is tool)
 
     def test_mtool(self):
@@ -102,7 +105,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_atool(self):
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool()
+        tool = DummyActionsTool()
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.failUnless(view.atool is tool)
 
     def test_wtool(self):
@@ -145,23 +149,26 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_portal_object(self):
         view = self._makeOne()
-        tool = view.context.portal_url = DummyURLTool()
         portal = DummyContext()
+        tool = DummyURLTool()
         tool.getPortalObject = lambda: portal
+        getSiteManager().registerUtility(tool, IURLTool)
         self.failUnless(view.portal_object is portal)
 
     def test_portal_url(self):
         view = self._makeOne()
-        tool = view.context.portal_url = DummyURLTool()
+        tool = DummyURLTool()
         tool.__call__ = lambda: 'http://example.com/'
+        getSiteManager().registerUtility(tool, IURLTool)
         self.assertEqual(view.portal_url, 'http://example.com/')
 
     def test_portal_title(self):
         view = self._makeOne()
-        tool = view.context.portal_url = DummyURLTool()
         portal = DummyContext()
         portal.Title = lambda: 'TITLE'
+        tool = DummyURLTool()
         tool.getPortalObject = lambda: portal
+        getSiteManager().registerUtility(tool, IURLTool)
         self.assertEqual(view.portal_title, 'TITLE')
 
     def test_object_title(self):
@@ -212,19 +219,21 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
     def test_page_title_wo_match(self):
         view = self._makeOne()
         view.context.Title = lambda: 'CONTEXT'
-        tool = view.context.portal_url = DummyURLTool()
         portal = DummyContext()
         portal.Title = lambda: 'SITE'
+        tool = DummyURLTool()
         tool.getPortalObject = lambda: portal
+        getSiteManager().registerUtility(tool, IURLTool)
         self.assertEqual(view.page_title, 'SITE: CONTEXT')
 
     def test_page_title_w_match(self):
         view = self._makeOne()
         view.context.Title = lambda: 'MATCH'
-        tool = view.context.portal_url = DummyURLTool()
         portal = DummyContext()
         portal.Title = lambda: 'MATCH'
+        tool = DummyURLTool()
         tool.getPortalObject = lambda: portal
+        getSiteManager().registerUtility(tool, IURLTool)
         self.assertEqual(view.page_title, 'MATCH')
 
     def test_breadcrumbs_at_root(self):
@@ -236,6 +245,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         ptool.title = lambda: 'SITE'
         utool = site.portal_url = DummyURLTool(site, PATHS_TO_CONTEXTS)
         utool.__call__ = lambda: 'http://example.com/'
+        sm.registerUtility(utool, IURLTool)
         view = self._makeOne(context=site)
         crumbs = view.breadcrumbs
         self.assertEqual(len(crumbs), 1)
@@ -260,6 +270,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         ptool.title = lambda: 'SITE'
         utool = context.portal_url = DummyURLTool(site, PATHS_TO_CONTEXTS)
         utool.__call__ = lambda: 'http://example.com/'
+        sm.registerUtility(utool, IURLTool)
 
         view = self._makeOne(context=context)
 
@@ -345,7 +356,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                    'workflow': [],
                   }
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
+        tool = DummyActionsTool(ACTIONS)
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.actions, ACTIONS)
 
     def test_global_actions(self):
@@ -356,7 +368,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                    'workflow': [],
                   }
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
+        tool = DummyActionsTool(ACTIONS)
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.global_actions, ACTIONS['global'])
 
     def test_user_actions(self):
@@ -367,7 +380,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                    'workflow': [],
                   }
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
+        tool = DummyActionsTool(ACTIONS)
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.user_actions, ACTIONS['user'])
 
     def test_object_actions(self):
@@ -378,7 +392,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                    'workflow': [],
                   }
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
+        tool = DummyActionsTool(ACTIONS)
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.object_actions, ACTIONS['object'])
 
     def test_folder_actions(self):
@@ -389,7 +404,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                    'workflow': [],
                   }
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
+        tool = DummyActionsTool(ACTIONS)
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.folder_actions, ACTIONS['folder'])
 
     def test_workflow_actions(self):
@@ -400,7 +416,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
                    'workflow': [DummyAction('a'), DummyAction('b')],
                   }
         view = self._makeOne()
-        tool = view.context.portal_actions = DummyActionsTool(ACTIONS)
+        tool = DummyActionsTool(ACTIONS)
+        getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.workflow_actions, ACTIONS['workflow'])
 
 

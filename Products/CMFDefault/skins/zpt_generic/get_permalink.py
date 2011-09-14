@@ -1,9 +1,3 @@
-## Script (Python) "get_permalink"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
 ##parameters=
 ##title=Returns the permalink url or None
 ##
@@ -17,10 +11,10 @@ if uidtool is not None:
     ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
     showPermalink = getattr(ptool, 'enable_permalink', None)
     isFolderish = getattr(context.aq_explicit, 'isPrincipiaFolderish', None)
-    
+
     if showPermalink and not isFolderish:
         # returns the uid (generates one if necessary)
-        utool = getToolByName(context, 'portal_url')
+        utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
         uid = uidtool.register(context)
         url = "%s/permalink/%s" % (utool(), uid)
         return url

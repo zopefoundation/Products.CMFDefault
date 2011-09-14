@@ -20,9 +20,11 @@ from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.interface import alsoProvides
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
@@ -51,9 +53,10 @@ class SyndicationViewTests(unittest.TestCase):
         """Setup a site"""
         self.site = site = DummySite('site')
         site.portal_syndication = DummySyndicationTool()
-        site._setObject('portal_actions', DummyTool())
-        site._setObject('portal_url', DummyTool())
-        getSiteManager().registerUtility(DummyTool(), IMembershipTool)
+        sm = getSiteManager()
+        sm.registerUtility(DummyTool(), IActionsTool)
+        sm.registerUtility(DummyTool(), IMembershipTool)
+        sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
 
     def tearDown(self):
         cleanUp()
@@ -118,13 +121,13 @@ class FolderSyndicationTests(unittest.TestCase):
         """Setup a site"""
         from Products.CMFDefault.SyndicationInfo import SyndicationInfo
 
-        self.site = site = DummySite('site')
+        self.site = DummySite('site')
+        self.site.portal_syndication = DummySyndicationTool()
         sm = getSiteManager()
         sm.registerAdapter(SyndicationInfo, [IFolderish], ISyndicationInfo)
-        site.portal_syndication = DummySyndicationTool()
-        site._setObject('portal_actions', DummyTool())
-        site._setObject('portal_url', DummyTool())
+        sm.registerUtility(DummyTool(), IActionsTool)
         sm.registerUtility(DummyTool(), IMembershipTool)
+        sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
 
     def tearDown(self):
         cleanUp()

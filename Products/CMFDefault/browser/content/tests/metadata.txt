@@ -1,7 +1,10 @@
 Metadata Views
 --------------
 
-Set up content and user.
+Set up site, content and user.
+
+    >>> from zope.site.hooks import setSite
+    >>> setSite(app.site)
 
     >>> from Products.CMFDefault.Document import Document
     >>> id = app.site._setObject('myContent', Document('myContent'))

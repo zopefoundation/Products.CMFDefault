@@ -35,10 +35,10 @@ from zope.schema.interfaces import ISource
 
 from Products.CMFCore.CookieCrumbler import ATTEMPT_LOGIN
 from Products.CMFCore.CookieCrumbler import ATTEMPT_NONE
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICookieCrumbler
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IRegistrationTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.browser.utils import ViewBase, memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
@@ -62,10 +62,14 @@ class UnauthorizedView(BrowserView):
     forbidden_template = ViewPageTemplateFile('forbidden.pt')
 
     def __call__(self):
+        atool = queryUtility(IActionsTool)
+        if atool is None:
+            # re-raise the unhandled exception
+            raise self.context
+
         try:
-            atool = getToolByName(self, 'portal_actions')
             target = atool.getActionInfo('user/login')['url']
-        except (AttributeError, ValueError):
+        except ValueError:
             # re-raise the unhandled exception
             raise self.context
 
@@ -218,7 +222,7 @@ class LoggedIn(ViewBase):
 
     def first_login(self, member):
         """First time login, reset password"""
-        atool = self._getTool('portal_actions')
+        atool = getUtility(IActionsTool)
         now = DateTime()
         member.setProperties(last_login_time='1999/01/01', login_time=now)
         target = atool.getActionInfo('user/change_password')['url']

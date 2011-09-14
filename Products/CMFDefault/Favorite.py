@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Favorites are references to other objects within the same CMF site.
-
-$Id$
 """
 
 import urlparse
@@ -27,6 +25,7 @@ from zope.container.interfaces import IObjectAddedEvent
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.interfaces import IFavorite
@@ -111,11 +110,11 @@ class Favorite(Link):
     def _getRemoteUrlTheOldWay(self):
         """Build the url without having taking the uid into account
         """
-        portal_url = getToolByName(self, 'portal_url')
+        utool = getUtility(IURLTool)
         if self.remote_url:
-            return portal_url() + '/' + self.remote_url
+            return utool() + '/' + self.remote_url
         else:
-            return portal_url()
+            return utool()
 
     security.declareProtected(View, 'getIconURL')
     def getIconURL(self):
@@ -126,7 +125,7 @@ class Favorite(Link):
         try:
             return self.getObject().getIconURL()
         except KeyError:
-            utool = getToolByName(self, 'portal_url')
+            utool = getUtility(IURLTool)
             return '%s/p_/broken' % utool()
 
     security.declareProtected(View, 'getObject')
@@ -138,9 +137,8 @@ class Favorite(Link):
         if remote_obj is not None:
             return remote_obj
 
-        # XXX: can't use ISiteRoot because absolute_url() depends on REQUEST
-        portal_url = getToolByName(self, 'portal_url')
-        return portal_url.getPortalObject().restrictedTraverse(self.remote_url)
+        utool = getUtility(IURLTool)
+        return utool.getPortalObject().restrictedTraverse(self.remote_url)
 
     security.declarePrivate('_edit')
     def _edit( self, remote_url ):
@@ -155,7 +153,7 @@ class Favorite(Link):
             t=('', '') + tokens[2:]
             remote_url=urlparse.urlunparse(t)
         # if URL begins with site URL, remove site URL
-        portal_url = getToolByName(self, 'portal_url').getPortalPath()
+        portal_url = getUtility(IURLTool).getPortalPath()
         i = remote_url.find(portal_url)
         if i==0:
             remote_url=remote_url[len(portal_url):]

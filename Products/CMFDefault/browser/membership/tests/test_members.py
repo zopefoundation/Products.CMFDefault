@@ -21,7 +21,9 @@ from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFCore.tests.base.dummy import DummyUser
@@ -66,11 +68,12 @@ class MembershipViewTests(unittest.TestCase):
 
     def setUp(self):
         """Setup a site"""
-        self.site = site = DummySite('site')
+        self.site = DummySite('site')
         self.mtool = DummyMemberTool()
-        getSiteManager().registerUtility(self.mtool, IMembershipTool)
-        site._setObject('portal_actions', DummyTool())
-        site._setObject('portal_url', DummyTool())
+        sm = getSiteManager()
+        sm.registerUtility(DummyTool(), IActionsTool)
+        sm.registerUtility(self.mtool, IMembershipTool)
+        sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
 
     def tearDown(self):
         cleanUp()
