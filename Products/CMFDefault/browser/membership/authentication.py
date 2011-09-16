@@ -39,6 +39,7 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICookieCrumbler
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IRegistrationTool
+from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFDefault.browser.utils import ViewBase, memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
@@ -215,7 +216,7 @@ class LoggedIn(ViewBase):
     template = ViewPageTemplateFile("logged_in.pt")
 
     def set_skin_cookie(self):
-        stool = self._getTool('portal_skins')
+        stool = getUtility(ISkinsTool)
         if stool.updateSkinCookie():
             skinname = stool.getSkinNameFromRequest(self.request)
             stool.changeSkin(skinname, self.request)
@@ -314,7 +315,7 @@ class Logout(ViewBase):
     @memoize
     def clear_skin_cookie(self):
         """Remove skin cookie"""
-        stool = self._getTool('portal_skins')
+        stool = getUtility(ISkinsTool)
         stool.clearSkinCookie()
 
     def __call__(self):

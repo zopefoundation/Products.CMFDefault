@@ -1,10 +1,9 @@
 ## Script (Python) "logout"
 ##title=Logout handler
 ##parameters=
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import getUtilityByInterfaceName
 
-stool = getToolByName(context, 'portal_skins')
+stool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ISkinsTool')
 utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
 REQUEST = context.REQUEST
 

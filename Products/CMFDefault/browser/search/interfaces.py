@@ -28,25 +28,26 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
+from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import Message as _
 
 def status_vocab(context):
     """Provides a list of workflow states"""
-    catalog = getToolByName(context, 'portal_catalog')
+    ctool = getUtility(ICatalogTool)
     values = [SimpleTerm(None, None, _(u"-- any --"))]
     values += [SimpleTerm(v, v, v)
-               for v in catalog.uniqueValuesFor('review_state')]
+               for v in ctool.uniqueValuesFor('review_state')]
     return SimpleVocabulary(values)
 directlyProvides(status_vocab, IContextSourceBinder)
 
 def subject_vocab(context):
     """Provides a list of subject keywords"""
-    catalog = getToolByName(context, 'portal_catalog')
+    ctool = getUtility(ICatalogTool)
     values = [SimpleTerm(None, None, _(u"-- any --"))]
     values += [SimpleTerm(v, v, v)
-               for v in catalog.uniqueValuesFor('Subject')]
+               for v in ctool.uniqueValuesFor('Subject')]
     return SimpleVocabulary(values)
 directlyProvides(subject_vocab, IContextSourceBinder)
 

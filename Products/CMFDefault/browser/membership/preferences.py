@@ -26,7 +26,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 from Products.CMFCore.interfaces import IMember
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import SettingsEditFormBase
 from Products.CMFDefault.formlib.schema import EmailLine
@@ -34,7 +34,7 @@ from Products.CMFDefault.utils import Message as _
 
 
 def portal_skins(context):
-    stool = getToolByName(context.context._tool, 'portal_skins')
+    stool = getUtility(ISkinsTool)
     return SimpleVocabulary.fromValues(stool.getSkinSelections())
 
 
@@ -123,7 +123,7 @@ class PreferencesFormView(SettingsEditFormBase):
     def applyChanges(self, data):
         changes = super(PreferencesFormView, self).applyChanges(data)
         if any('portal_skin' in v for v in changes.itervalues()):
-            stool = self._getTool('portal_skins')
+            stool = getUtility(ISkinsTool)
             stool.updateSkinCookie()
         return changes
 

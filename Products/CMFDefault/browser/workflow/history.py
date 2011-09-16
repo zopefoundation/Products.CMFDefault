@@ -12,9 +12,12 @@
 ##############################################################################
 """Workflow history view"""
 
-from Products.CMFDefault.utils import Message as _
+from zope.component import getUtility
+
+from Products.CMFCore.interfaces import IWorkflowTool
+from Products.CMFDefault.browser.utils import decode
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
-from Products.CMFDefault.browser.utils import memoize, decode
 
 
 class View(ViewBase):
@@ -22,7 +25,7 @@ class View(ViewBase):
     @property
     @memoize
     def workflow(self):
-        return self._getTool('portal_workflow')
+        return getUtility(IWorkflowTool)
 
     @decode
     @memoize

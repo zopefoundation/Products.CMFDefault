@@ -22,6 +22,7 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.interfaces import IWorkflowTool
 
 
 class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
@@ -112,6 +113,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
     def test_wtool(self):
         view = self._makeOne()
         tool = view.context.portal_workflow = DummyWorkflowTool()
+        getSiteManager().registerUtility(tool, IWorkflowTool)
         self.failUnless(view.wtool is tool)
 
     def test_syndtool(self):
@@ -213,7 +215,8 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_wf_state(self):
         view = self._makeOne()
-        view.context.portal_workflow = DummyWorkflowTool()
+        tool = view.context.portal_workflow = DummyWorkflowTool()
+        getSiteManager().registerUtility(tool, IWorkflowTool)
         self.assertEqual(view.wf_state, 'DUMMY')
 
     def test_page_title_wo_match(self):

@@ -14,10 +14,12 @@
 """
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import Interface
 from zope.schema import Text
 
+from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.exceptions import WorkflowException
 from Products.CMFDefault.formlib.form import EditFormBase
@@ -58,7 +60,7 @@ class Submit(EditFormBase):
     @property
     @memoize
     def workflow(self):
-        return self._getTool('portal_workflow')
+        return getUtility(IWorkflowTool)
 
     def handle_workflow(self, action, data):
         try:

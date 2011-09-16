@@ -19,6 +19,7 @@ from zope.component import getUtility
 from zope.formlib import form
 
 from .interfaces import ISearchSchema
+from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.content.folder import BatchViewBase
 from Products.CMFDefault.browser.content.interfaces import IBatchForm
@@ -72,7 +73,7 @@ class Search(BatchViewBase, EditFormBase):
     @property
     @memoize
     def catalog(self):
-        return self._getTool('portal_catalog')
+        return getUtility(ICatalogTool)
 
     @property
     @memoize

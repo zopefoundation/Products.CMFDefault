@@ -16,8 +16,11 @@
 import unittest
 import Testing
 
+from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
+from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
@@ -32,13 +35,16 @@ class DefaultWorkflowDefinitionTests(unittest.TestCase):
                 import DefaultWorkflowDefinition
         self.site = DummySite('site')
         self.site._setObject('portal_types', DummyTool())
-        self.site._setObject('portal_workflow', WorkflowTool())
         self.site._setObject('portal_membership', DummyTool())
         self.site._setObject('acl_users', DummyUserFolder())
 
-        wftool = self.site.portal_workflow
-        wftool._setObject('wf', DefaultWorkflowDefinition('wf'))
-        wftool.setDefaultChain('wf')
+        self.wtool = WorkflowTool()
+        self.wtool._setObject('wf', DefaultWorkflowDefinition('wf'))
+        self.wtool.setDefaultChain('wf')
+        getSiteManager().registerUtility(self.wtool, IWorkflowTool)
+
+    def tearDown(self):
+        cleanUp()
 
     def test_interfaces(self):
         from Products.CMFCore.interfaces import IWorkflowDefinition
@@ -48,8 +54,7 @@ class DefaultWorkflowDefinitionTests(unittest.TestCase):
         verifyClass(IWorkflowDefinition, DefaultWorkflowDefinition)
 
     def _getDummyWorkflow(self):
-        wftool = self.site.portal_workflow
-        return wftool.wf
+        return self.wtool.wf
 
     def test_isActionSupported(self):
 

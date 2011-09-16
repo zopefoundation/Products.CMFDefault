@@ -16,7 +16,9 @@ ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool',
                                   # BBB: fallback for CMF 2.2 instances
                                   getToolByName(script, 'portal_url'))
-wtool = getToolByName(script, 'portal_workflow')
+wtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IWorkflowTool',
+                                  # BBB: fallback for CMF 2.2 instances
+                                  getToolByName(script, 'portal_workflow'))
 uidtool = getToolByName(script, 'portal_uidhandler', None)
 syndtool = getToolByName(script, 'portal_syndication', None)
 portal_object = utool.getPortalObject()

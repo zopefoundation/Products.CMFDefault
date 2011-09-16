@@ -1,15 +1,8 @@
-## Script (Python) "rejectItems"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
 ##parameters=items, comment=''
-##title=
 ##
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getUtilityByInterfaceName
 
-wtool = getToolByName(script, 'portal_workflow')
+wtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IWorkflowTool')
 for path in items:
     object = context.restrictedTraverse( path )
     wtool.doActionFor( object, 'reject', comment=comment )

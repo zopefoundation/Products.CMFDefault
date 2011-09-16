@@ -6,7 +6,7 @@ from Products.CMFDefault.permissions import ReviewPortalContent
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
-ctool = getToolByName(script, 'portal_catalog')
+ctool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ICatalogTool')
 mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 ttool = getToolByName(script, 'portal_types')
 utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')

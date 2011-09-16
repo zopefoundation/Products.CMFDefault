@@ -19,6 +19,7 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
@@ -65,7 +66,7 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def wtool(self):
-        return self._getTool('portal_workflow')
+        return getUtility(IWorkflowTool)
         
     @property
     @memoize

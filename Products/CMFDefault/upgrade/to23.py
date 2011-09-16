@@ -265,10 +265,13 @@ def upgrade_member_data_tool(tool):
 _TOOL_UTILITIES = (
     ('cookie_authentication', 'Products.CMFCore.interfaces.ICookieCrumbler'),
     ('portal_actions', 'Products.CMFCore.interfaces.IActionsTool'),
+    ('portal_catalog', 'Products.CMFCore.interfaces.ICatalogTool'),
     ('portal_memberdata', 'Products.CMFCore.interfaces.IMemberDataTool'),
     ('portal_membership', 'Products.CMFCore.interfaces.IMembershipTool'),
     ('portal_registration', 'Products.CMFCore.interfaces.IRegistrationTool'),
+    ('portal_skins', 'Products.CMFCore.interfaces.ISkinsTool'),
     ('portal_url', 'Products.CMFCore.interfaces.IURLTool'),
+    ('portal_workflow', 'Products.CMFCore.interfaces.IWorkflowTool'),
 )
 
 def check_root_site_manager(tool):

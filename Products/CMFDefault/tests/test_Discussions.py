@@ -21,6 +21,7 @@ from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 
 from Products.CMFCore.CatalogTool import CatalogTool
+from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.testing import EventZCMLLayer
 from Products.CMFCore.tests.base.dummy import DummyContent
@@ -172,9 +173,10 @@ class DiscussionTests(SecurityTest):
         assert len( parents ) == 1
         assert parents[ 0 ] == reply1
 
-    def test_itemCataloguing( self ):
-        ctool = self.site._setObject( 'portal_catalog', CatalogTool() )
+    def test_itemCataloguing(self):
+        ctool = CatalogTool()
         ctool.addColumn('in_reply_to')
+        getSiteManager().registerUtility(ctool, ICatalogTool)
         dtool = self.site.portal_discussion
         test = self._makeDummyContent('test', catalog=1)
         test.allow_discussion = 1
@@ -233,7 +235,7 @@ class DiscussionTests(SecurityTest):
         DiscussionItem.test_wf_notified = 0
 
         try:
-            reply_id = talkback.createReply(title='test', text='blah')
+            talkback.createReply(title='test', text='blah')
             reply = talkback.getReplies()[0]
             self.assertEqual(reply.test_wf_notified, 1)
         finally:
@@ -244,7 +246,8 @@ class DiscussionTests(SecurityTest):
                 DiscussionItem.notifyWorkflowCreated = old_method
 
     def test_deletePropagation( self ):
-        ctool = self.site._setObject( 'portal_catalog', CatalogTool() )
+        ctool = CatalogTool()
+        getSiteManager().registerUtility(ctool, ICatalogTool)
         dtool = self.site.portal_discussion
         test = self._makeDummyContent('test', catalog=1)
         test.allow_discussion = 1
@@ -259,7 +262,8 @@ class DiscussionTests(SecurityTest):
 
     def test_deleteReplies(self):
         dtool = self.site.portal_discussion
-        ctool = self.site._setObject( 'portal_catalog', CatalogTool() )
+        ctool = CatalogTool()
+        getSiteManager().registerUtility(ctool, ICatalogTool)
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
 
@@ -317,7 +321,7 @@ class DiscussionTests(SecurityTest):
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
         dtool = self.site.portal_discussion
-        talkback = dtool.getDiscussionFor(test)
+        dtool.getDiscussionFor(test)
         talkback = dtool.getDiscussionFor(test)
         self.failUnless(hasattr(talkback, 'aq_base'))
         # Acquire a portal tool

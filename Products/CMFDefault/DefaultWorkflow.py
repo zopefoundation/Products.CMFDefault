@@ -20,13 +20,14 @@ from Acquisition import aq_parent
 from App.class_init import InitializeClass
 from DateTime.DateTime import DateTime
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.interface import implements
 
+from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IWorkflowDefinition
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _modifyPermissionMappings
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import SimpleItemWithProperties
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
 from Products.CMFDefault.permissions import ModifyPortalContent
@@ -151,17 +152,17 @@ class DefaultWorkflowDefinition(SimpleItemWithProperties):
             return None
 
         actions = []
-        catalog = getToolByName(self, 'portal_catalog', None)
-        if catalog is None:
+        ctool = queryUtility(ICatalogTool)
+        if ctool is None:
             return actions
 
-        pending = len(catalog.searchResults(review_state='pending'))
+        pending = len(ctool.searchResults(review_state='pending'))
         if pending > 0:
             actions.append(
                 {'name': 'Pending review (%d)' % pending,
                  'url': info.portal_url +
                  '/search?review_state=pending',
-                 'permissions': (ReviewPortalContent, ),
+                 'permissions': (ReviewPortalContent,),
                  'category': 'global'}
                 )
 
