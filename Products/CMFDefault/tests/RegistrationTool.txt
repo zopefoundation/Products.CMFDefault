@@ -152,3 +152,10 @@ password_email and registered_email
     <BLANKLINE>
     ...
     <BLANKLINE>
+
+Clean up
+--------
+
+    >>> from zope.globalrequest import clearRequest
+    >>> clearRequest()
+    

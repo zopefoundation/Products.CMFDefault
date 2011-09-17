@@ -17,6 +17,7 @@ import unittest
 
 from Acquisition import Implicit
 from zope.component.testing import PlacelessSetup
+from zope.globalrequest import clearRequest
 from zope.globalrequest import setRequest
 
 from .test_ursa import DummyActionsTool
@@ -33,6 +34,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         PlacelessSetup.setUp(self)
 
     def tearDown(self):
+        clearRequest()
         PlacelessSetup.tearDown(self)
 
     def _getTargetClass(self):
