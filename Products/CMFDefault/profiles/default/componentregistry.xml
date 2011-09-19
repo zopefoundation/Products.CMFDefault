@@ -26,10 +26,10 @@
      object="portal_skins"/>
   <utility interface="Products.CMFCore.interfaces.ISyndicationTool"
      object="portal_syndication"/>
-  <utility interface="Products.CMFCore.interfaces.IUndoTool"
-     object="portal_undo"/>
   <utility interface="Products.CMFCore.interfaces.IURLTool"
      object="portal_url"/>
+  <utility interface="Products.CMFCore.interfaces.IUndoTool"
+     object="portal_undo"/>
   <utility interface="Products.CMFCore.interfaces.IWorkflowTool"
      object="portal_workflow"/>
   <utility interface="Products.GenericSetup.interfaces.ISetupTool"
