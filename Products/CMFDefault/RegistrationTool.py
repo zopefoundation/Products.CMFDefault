@@ -120,7 +120,7 @@ class RegistrationTool(BaseTool):
 
         return None
 
-    security.declarePublic( 'mailPassword' )
+    security.declarePublic('mailPassword')
     def mailPassword(self, forgotten_userid, REQUEST):
         """ Email a forgotten password to a member.
 
@@ -153,11 +153,11 @@ class RegistrationTool(BaseTool):
             mail_text = method(**kw)
 
         host = getUtility(IMailHost)
-        host.send( mail_text )
+        host.send(mail_text)
 
-        return self.mail_password_response( self, REQUEST )
+        return context.mail_password_response(self, REQUEST)
 
-    security.declarePublic( 'registeredNotify' )
+    security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id, password=None, REQUEST=None):
         """ Handle mailing the registration / welcome message.
         """
@@ -194,7 +194,7 @@ class RegistrationTool(BaseTool):
             mail_text = method(**kw)
 
         host = getUtility(IMailHost)
-        host.send( mail_text )
+        host.send(mail_text)
 
     security.declareProtected(ManagePortal, 'editMember')
     @postonly
