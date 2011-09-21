@@ -16,10 +16,12 @@
 from AccessControl.requestmethod import postonly
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
+from Acquisition import aq_chain
 from App.class_init import InitializeClass
 from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.schema import ValidationError
+from ZPublisher.BaseRequest import RequestContainer
 
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
@@ -136,7 +138,13 @@ class RegistrationTool(BaseTool):
         # Rather than have the template try to use the mailhost, we will
         # render the message ourselves and send it from here (where we
         # don't need to worry about 'UseMailHost' permissions).
-        method = self.password_email
+        if getattr(self, 'REQUEST', None) is None:
+            context = RequestContainer(REQUEST=REQUEST)
+            for item in reversed(aq_chain(self)):
+                context = aq_base(item).__of__(context)
+        else:
+            context = self
+        method = context.password_email
         kw = {'member': member, 'password': member.getPassword()}
 
         if getattr(aq_base(method), 'isDocTemp', 0):
@@ -171,7 +179,13 @@ class RegistrationTool(BaseTool):
         # Rather than have the template try to use the mailhost, we will
         # render the message ourselves and send it from here (where we
         # don't need to worry about 'UseMailHost' permissions).
-        method = self.registered_email
+        if getattr(self, 'REQUEST', None) is None:
+            context = RequestContainer(REQUEST=REQUEST)
+            for item in reversed(aq_chain(self)):
+                context = aq_base(item).__of__(context)
+        else:
+            context = self
+        method = context.registered_email
         kw = {'member': member, 'password': password, 'email': email}
 
         if getattr(aq_base(method), 'isDocTemp', 0):
