@@ -6,8 +6,8 @@ Products.CMFDefault Changelog
 
 - tools: Converted several tools into utilities.
   ActionsTool, CatalogTool, CookieCrumbler, MemberDataTool, MembershipTool,
-  RegistrationTool, SkinsTool, URLTool and WorkflowTool are now local
-  utilities.
+  RegistrationTool, SkinsTool, TypesTool, URLTool and WorkflowTool are now
+  local utilities.
 
 - skins and browser views: setRedirect now checks Action conditions.
 

@@ -23,6 +23,7 @@ from zope.interface.verify import verifyClass
 from Products.CMFCore.CatalogTool import CatalogTool
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IDiscussionTool
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.testing import EventZCMLLayer
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
@@ -82,18 +83,19 @@ class DiscussionTests(SecurityTest):
     def setUp(self):
         SecurityTest.setUp(self)
         newSecurityManager(None, DummyUser().__of__(self.app.acl_users))
-        self.site = DummySite('site').__of__(self.root)
+        self.site = DummySite('site').__of__(self.app)
+        self.dtool = DiscussionTool()
+        self.ttool = TypesTool()
         sm = getSiteManager()
-        self.site._setObject( 'portal_discussion', DiscussionTool() )
-        sm.registerUtility(self.site.portal_discussion, IDiscussionTool)
-        self.site._setObject( 'portal_types', TypesTool() )
+        sm.registerUtility(self.dtool, IDiscussionTool)
+        sm.registerUtility(self.ttool, ITypesTool)
 
     def _makeDummyContent(self, id, *args, **kw):
-        return self.site._setObject( id, DummyContent(id, *args, **kw) )
+        return self.site._setObject(id, DummyContent(id, *args, **kw))
 
     def test_policy( self ):
-        dtool = self.site.portal_discussion
-        ttool = self.site.portal_types
+        dtool = self.dtool
+        ttool = self.ttool
         test = self._makeDummyContent('test')
         self.assertRaises(DiscussionNotAllowed, dtool.getDiscussionFor, test)
         assert getattr( test, 'talkback', None ) is None
@@ -124,7 +126,7 @@ class DiscussionTests(SecurityTest):
         assert test.talkback
 
     def test_nestedReplies( self ):
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
         talkback = dtool.getDiscussionFor(test)
@@ -177,7 +179,7 @@ class DiscussionTests(SecurityTest):
         ctool = CatalogTool()
         ctool.addColumn('in_reply_to')
         getSiteManager().registerUtility(ctool, ICatalogTool)
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         test = self._makeDummyContent('test', catalog=1)
         test.allow_discussion = 1
 
@@ -221,7 +223,7 @@ class DiscussionTests(SecurityTest):
     def test_itemWorkflowNotification(self):
         from Products.CMFDefault.DiscussionItem import DiscussionItem
 
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
         talkback = dtool.getDiscussionFor(test)
@@ -248,7 +250,7 @@ class DiscussionTests(SecurityTest):
     def test_deletePropagation( self ):
         ctool = CatalogTool()
         getSiteManager().registerUtility(ctool, ICatalogTool)
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         test = self._makeDummyContent('test', catalog=1)
         test.allow_discussion = 1
 
@@ -261,7 +263,7 @@ class DiscussionTests(SecurityTest):
         self.assertEqual( len(ctool), 0 )
 
     def test_deleteReplies(self):
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         ctool = CatalogTool()
         getSiteManager().registerUtility(ctool, ICatalogTool)
         test = self._makeDummyContent('test')
@@ -311,7 +313,7 @@ class DiscussionTests(SecurityTest):
     def test_newTalkbackIsWrapped(self):
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         talkback = dtool.getDiscussionFor(test)
         self.failUnless(hasattr(talkback, 'aq_base'))
         # Acquire a portal tool
@@ -320,7 +322,7 @@ class DiscussionTests(SecurityTest):
     def test_existingTalkbackIsWrapped(self):
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         dtool.getDiscussionFor(test)
         talkback = dtool.getDiscussionFor(test)
         self.failUnless(hasattr(talkback, 'aq_base'))

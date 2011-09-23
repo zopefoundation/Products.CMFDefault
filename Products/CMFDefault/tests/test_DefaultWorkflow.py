@@ -20,6 +20,8 @@ from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.tests.base.dummy import DummySite
@@ -34,14 +36,15 @@ class DefaultWorkflowDefinitionTests(unittest.TestCase):
         from Products.CMFDefault.DefaultWorkflow \
                 import DefaultWorkflowDefinition
         self.site = DummySite('site')
-        self.site._setObject('portal_types', DummyTool())
-        self.site._setObject('portal_membership', DummyTool())
         self.site._setObject('acl_users', DummyUserFolder())
 
         self.wtool = WorkflowTool()
         self.wtool._setObject('wf', DefaultWorkflowDefinition('wf'))
         self.wtool.setDefaultChain('wf')
-        getSiteManager().registerUtility(self.wtool, IWorkflowTool)
+        sm = getSiteManager()
+        sm.registerUtility(self.wtool, IWorkflowTool)
+        sm.registerUtility(DummyTool(), IMembershipTool)
+        sm.registerUtility(DummyTool(), ITypesTool)
 
     def tearDown(self):
         cleanUp()

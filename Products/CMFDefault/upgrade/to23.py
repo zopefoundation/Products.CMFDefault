@@ -270,6 +270,7 @@ _TOOL_UTILITIES = (
     ('portal_membership', 'Products.CMFCore.interfaces.IMembershipTool'),
     ('portal_registration', 'Products.CMFCore.interfaces.IRegistrationTool'),
     ('portal_skins', 'Products.CMFCore.interfaces.ISkinsTool'),
+    ('portal_types', 'Products.CMFCore.interfaces.ITypesTool'),
     ('portal_url', 'Products.CMFCore.interfaces.IURLTool'),
     ('portal_workflow', 'Products.CMFCore.interfaces.IWorkflowTool'),
 )

@@ -563,12 +563,12 @@ class DocumentFTPGetTests(TransactionalTestBase):
 
     def setUp(self):
         TransactionalTest.setUp(self)
-        self.site = DummySite('site').__of__(self.root)
+        self.site = DummySite('site').__of__(self.app)
 
     def testHTML(self):
         self.REQUEST['BODY'] = BASIC_HTML
 
-        ttool = self.site._setObject('portal_types', TypesTool())
+        ttool = TypesTool()
         fti = FTIDATA_CMF[0].copy()
         del fti['id']
         ttool._setObject('Document', FTI('Document', **fti))

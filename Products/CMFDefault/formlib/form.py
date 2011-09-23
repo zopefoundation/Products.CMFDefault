@@ -33,6 +33,7 @@ from ZTUtils import make_query
 
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ITypeInformation
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
@@ -183,7 +184,7 @@ class ContentAddFormBase(_EditFormMixin, form.PageAddForm):
             raise AccessControl_Unauthorized('Cannot create %s' % portal_type)
 
         # check container constraints
-        ttool = self._getTool('portal_types')
+        ttool = getUtility(ITypesTool)
         container_ti = ttool.getTypeInfo(container)
         if container_ti is not None and \
                 not container_ti.allowType(portal_type):

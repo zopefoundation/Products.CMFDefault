@@ -21,6 +21,7 @@ from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
@@ -56,10 +57,11 @@ class DiscussionToolSecurityTests(SecurityTest):
 
         SecurityTest.setUp(self)
         self.site = DummySite('site')
+        self.dtool = self._makeOne()
+        self.ttool = DummyTool()
         sm = getSiteManager()
-        self.site._setObject( 'portal_discussion', self._makeOne() )
-        sm.registerUtility(self.site.portal_discussion, IDiscussionTool)
-        self.site._setObject( 'portal_types', DummyTool() )
+        sm.registerUtility(self.dtool, IDiscussionTool)
+        sm.registerUtility(self.ttool, ITypesTool)
 
     def tearDown(self):
         cleanUp()
@@ -68,7 +70,7 @@ class DiscussionToolSecurityTests(SecurityTest):
     def test_overrideDiscussionFor(self):
         acl_users = self.site._setObject('acl_users', DummyUserFolder())
         newSecurityManager(None, acl_users.all_powerful_Oz)
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         foo = self.site._setObject( 'foo', DummyFolder() )
         baz = foo._setObject( 'baz', DummyFolder() )
 
@@ -99,7 +101,7 @@ class DiscussionToolSecurityTests(SecurityTest):
         # acquired and used from parent)
         acl_users = self.site._setObject('acl_users', DummyUserFolder())
         newSecurityManager(None, acl_users.all_powerful_Oz)
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         foo = self.site._setObject( 'foo', DummyFolder() )
         baz = foo._setObject( 'baz', DummyFolder() )
         dtool.overrideDiscussionFor(foo, 1)
@@ -108,20 +110,20 @@ class DiscussionToolSecurityTests(SecurityTest):
 
         # Make sure isDiscussionAllowedFor does not blow up on items
         # that aren't content and/or discussable at all.
-        self.failIf(dtool.isDiscussionAllowedFor(self.site.portal_types))
+        self.failIf(dtool.isDiscussionAllowedFor(self.ttool))
 
     def test_getDiscussionFor(self):
-        dtool = self.site.portal_discussion
+        dtool = self.dtool
         foo = self.site._setObject( 'foo', DummyFolder() )
         foo.allow_discussion = 1
         baz = foo._setObject( 'baz', DummyFolder() )
         baz.allow_discussion = 1
 
         self.failIf( hasattr(foo.aq_base, 'talkback') )
-        talkback = dtool.getDiscussionFor(foo)
+        dtool.getDiscussionFor(foo)
         self.failUnless( hasattr(foo.aq_base, 'talkback') )
         self.failIf( hasattr(baz.aq_base, 'talkback') )
-        talkback = dtool.getDiscussionFor(baz)
+        dtool.getDiscussionFor(baz)
         self.failUnless( hasattr(baz.aq_base, 'talkback'),
                          'CMF Collector issue #119 (acquisition bug): '
                          'talkback not created' )

@@ -26,6 +26,8 @@
      object="portal_skins"/>
   <utility interface="Products.CMFCore.interfaces.ISyndicationTool"
      object="portal_syndication"/>
+  <utility interface="Products.CMFCore.interfaces.ITypesTool"
+     object="portal_types"/>
   <utility interface="Products.CMFCore.interfaces.IURLTool"
      object="portal_url"/>
   <utility interface="Products.CMFCore.interfaces.IUndoTool"

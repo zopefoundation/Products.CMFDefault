@@ -23,10 +23,11 @@ from zope.component import getUtility
 from Products.CMFCore.Expression import getExprContext
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFDefault.browser.utils import memoize, ViewBase
+from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFDefault.browser.utils import memoize
 
 
-class View(ViewBase):
+class View(BrowserView):
     """
     CSS that dynamically checks whether Action Icons are can be used.
     Type Icons can always be used.
@@ -77,7 +78,7 @@ class View(ViewBase):
     def types(self):
         """List all type icons
         Type actions are always visible"""
-        ttool = self._getTool('portal_types')
+        ttool = getUtility(ITypesTool)
         types = ttool.listTypeInfo()
         econtext = getExprContext(self.context)
         icons = [self.icon_style %  (t.id,

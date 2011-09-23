@@ -17,11 +17,13 @@ import unittest
 import Testing
 
 from DateTime.DateTime import DateTime
-from zope.component import getSiteManager, queryAdapter
+from zope.component import getSiteManager
+from zope.component import queryAdapter
 from zope.interface import alsoProvides
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.tests.base.testcase import SecurityTest
 
 
@@ -144,13 +146,12 @@ class SyndicationToolTests(SecurityTest):
         self.assertEqual(tool.max_items, MAX_ITEMS)
 
     def test_object_not_syndicatable(self):
-        from Products.CMFDefault.SyndicationTool import SyndicationError
         tool = self._makeOne()
         self.assertFalse(tool.isSyndicationAllowed(Dummy))
 
     def test_object_is_syndicatable(self):
         from Products.CMFCore.interfaces import ISyndicationInfo
-        tool = self._makeOne()
+        self._makeOne()
         context = self._makeContext()
         adapter = queryAdapter(context, ISyndicationInfo)
         self.assertTrue(adapter is not None)
@@ -232,11 +233,11 @@ class SyndicationToolTests(SecurityTest):
         NOW = DateTime()
         MAX_ITEMS = 42
 
-        self.root._setObject( 'portal_types', TypesTool() )
-        self.root._setObject('pf', PortalFolder('pf'))
-        self.root._setObject('bf', CMFBTreeFolder('bf'))
-        self.root._setObject('portal_syndication', self._makeOne())
-        tool = self.root.portal_syndication
+        getSiteManager().registerUtility(TypesTool(), ITypesTool)
+        self.app._setObject('pf', PortalFolder('pf'))
+        self.app._setObject('bf', CMFBTreeFolder('bf'))
+        self.app._setObject('portal_syndication', self._makeOne())
+        tool = self.app.portal_syndication
         tool.editProperties(updatePeriod=PERIOD,
                             updateFrequency=FREQUENCY,
                             updateBase=NOW,
@@ -244,8 +245,8 @@ class SyndicationToolTests(SecurityTest):
                             max_items=MAX_ITEMS,
                            )
 
-        self.assertEqual(len(tool.getSyndicatableContent(self.root.pf)), 0)
-        self.assertEqual(len(tool.getSyndicatableContent(self.root.bf)), 0)
+        self.assertEqual(len(tool.getSyndicatableContent(self.app.pf)), 0)
+        self.assertEqual(len(tool.getSyndicatableContent(self.app.bf)), 0)
 
 
 def test_suite():

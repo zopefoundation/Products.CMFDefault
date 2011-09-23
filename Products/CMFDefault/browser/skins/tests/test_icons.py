@@ -26,6 +26,7 @@ from .test_ursa import DummyResponse
 from .test_ursa import DummyURLTool
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import ITypesTool
 
 
 class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
@@ -56,8 +57,8 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         sm = getSiteManager()
         sm.registerUtility(tool, IPropertiesTool)
         if types is not None:
-            site.portal_types = DummyTypesTool(types)
             site.portal_url = DummyURLTool(site)
+            sm.registerUtility(DummyTypesTool(types), ITypesTool)
             sm.registerUtility(DummyMembershipTool(), IMembershipTool)
         if actions is not None:
             sm.registerUtility(DummyActionsTool(actions), IActionsTool)

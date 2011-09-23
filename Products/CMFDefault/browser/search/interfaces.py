@@ -30,7 +30,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFDefault.utils import Message as _
 
 def status_vocab(context):
@@ -86,7 +86,7 @@ directlyProvides(date_vocab, IContextSourceBinder)
 
 def type_vocab(context):
     """Provides a list of portal types"""
-    ttool = getToolByName(context, 'portal_types')
+    ttool =  getUtility(ITypesTool)
     types = ttool.listTypeInfo()
     terms = [SimpleTerm(None, None, _(u"-- any --"))]
     terms += [SimpleTerm(t.getId(), t.getId(), t.Title()) for t in types]

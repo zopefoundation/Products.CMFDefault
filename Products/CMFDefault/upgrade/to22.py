@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Upgrade steps to CMFDefault 2.2.
-
-$Id$
 """
 import logging
 from urllib import quote
@@ -379,6 +377,5 @@ def upgrade_discussionitem_workflow(tool):
     """2.1.x to 2.2.0 upgrade step handler
     """
     wf_tool = getToolByName(tool, 'portal_workflow')
-    wf_tool.setChainForPortalTypes(('Discussion Item',), _SINGLESTATE_WF_ID)
-
-
+    wf_tool.setChainForPortalTypes(('Discussion Item',), _SINGLESTATE_WF_ID,
+                                   verify=False)

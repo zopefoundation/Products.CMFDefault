@@ -1,8 +1,10 @@
 Add Forms
 ---------
 
-Set up user.
+Set site and up user.
 
+    >>> from zope.site.hooks import setSite
+    >>> setSite(app.site)
     >>> uf = app.site.acl_users
     >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
 
@@ -56,14 +58,14 @@ This is the most simple add form you can create for 'test.foo'. Add views
 always belong to specific content factories. The name of the factory and the
 name of the add view have to be the same.
 
-    >>> from zope.component import getSiteManager
+    >>> from zope.component import getGlobalSiteManager
     >>> from zope.formlib import form
     >>> from Products.CMFDefault.formlib.form import ContentAddFormBase
     >>> from Products.CMFDefault.formlib.tests import IFoo
 
     >>> class FooAddView(ContentAddFormBase):
     ...     form_fields = form.FormFields(IFoo)
-    >>> getSiteManager().registerAdapter(FooAddView, name='test.foo')
+    >>> getGlobalSiteManager().registerAdapter(FooAddView, name='test.foo')
 
 The customized add form has the same title but no ID field. On the other hand
 it has the fields defined in IFoo.
@@ -95,7 +97,7 @@ Now we add again the ID field.
     ...         form.FormFields(IFoo)
     ...         )
     ...     form_fields['id'].custom_widget = IDInputWidget
-    >>> getSiteManager().registerAdapter(FooAddView, name='test.foo')
+    >>> getGlobalSiteManager().registerAdapter(FooAddView, name='test.foo')
 
 The customized add form has the ID field and the fields defined in IFoo.
 
