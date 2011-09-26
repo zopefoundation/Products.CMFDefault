@@ -19,9 +19,14 @@ from Testing import ZopeTestCase
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from Acquisition import aq_base
+from zope.component import queryUtility
 from zope.site.hooks import setSite
 
 from Products.CMFDefault.testing import FunctionalLayer
+from Products.CMFDefault.utils import PRODUCTS_CMFUID_INSTALLED
+
+if PRODUCTS_CMFUID_INSTALLED:
+    from Products.CMFUid.interfaces import IUniqueIdHandler
 
 
 class CMFSiteTests(ZopeTestCase.FunctionalTestCase):
@@ -51,7 +56,7 @@ class CMFSiteTests(ZopeTestCase.FunctionalTestCase):
         site = self.app.site
         catalog = site.portal_catalog
         ttool = site.portal_types
-        uid_handler = getattr(site, 'portal_uidhandler', None)
+        uidtool = queryUtility(IUniqueIdHandler)
 
         portal_types = [ x for x in ttool.listContentTypes()
                            if x not in ( 'Discussion Item'
@@ -71,7 +76,7 @@ class CMFSiteTests(ZopeTestCase.FunctionalTestCase):
             # in case of the CMFUid beeing installed this test
             # indexes also the site root because the 'Favorite'
             # references it by unique id
-            isUidEnabledFavorite = uid_handler and portal_type == 'Favorite'
+            isUidEnabledFavorite = uidtool and portal_type == 'Favorite'
             if isUidEnabledFavorite:
                 self.assertEqual( len( catalog ), 2 )
             else:

@@ -236,8 +236,7 @@ class SyndicationToolTests(SecurityTest):
         getSiteManager().registerUtility(TypesTool(), ITypesTool)
         self.app._setObject('pf', PortalFolder('pf'))
         self.app._setObject('bf', CMFBTreeFolder('bf'))
-        self.app._setObject('portal_syndication', self._makeOne())
-        tool = self.app.portal_syndication
+        tool = self._makeOne()
         tool.editProperties(updatePeriod=PERIOD,
                             updateFrequency=FREQUENCY,
                             updateBase=NOW,

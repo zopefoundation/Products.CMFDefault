@@ -67,6 +67,7 @@ class ViewBase(BrowserView):
 
     @memoize
     def _getTool(self, name):
+        # BBB: _getTool is deprecated. Please use getUtility instead.
         return getToolByName(self.context, name)
 
     @memoize

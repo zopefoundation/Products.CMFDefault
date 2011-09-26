@@ -263,8 +263,11 @@ def upgrade_member_data_tool(tool):
             logger.info("Member data tool property modes fixed.")
 
 _TOOL_UTILITIES = (
+    ('caching_policy_manager', 'Products.CMFCore.interfaces.ICachingPolicyManager'),
+    ('content_type_registry', 'Products.CMFCore.interfaces.IContentTypeRegistry'),
     ('cookie_authentication', 'Products.CMFCore.interfaces.ICookieCrumbler'),
     ('portal_actions', 'Products.CMFCore.interfaces.IActionsTool'),
+    ('portal_calendar', 'Products.CMFCalendar.interfaces.ICalendarTool'),
     ('portal_catalog', 'Products.CMFCore.interfaces.ICatalogTool'),
     ('portal_memberdata', 'Products.CMFCore.interfaces.IMemberDataTool'),
     ('portal_membership', 'Products.CMFCore.interfaces.IMembershipTool'),

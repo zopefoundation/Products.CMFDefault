@@ -20,19 +20,22 @@ from Acquisition import aq_base
 from App.class_init import InitializeClass
 from zope.component import adapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.component.factory import Factory
 from zope.container.interfaces import IObjectAddedEvent
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.interfaces import IURLTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.interfaces import IFavorite
 from Products.CMFDefault.interfaces import IMutableFavorite
 from Products.CMFDefault.Link import Link
 from Products.CMFDefault.permissions import View
+from Products.CMFDefault.utils import PRODUCTS_CMFUID_INSTALLED
 
+if PRODUCTS_CMFUID_INSTALLED:
+    from Products.CMFUid.interfaces import IUniqueIdHandler
 
 def addFavorite(self, id, title='', remote_url='', description=''):
     """Add a Favorite.
@@ -67,20 +70,20 @@ class Favorite(Link):
         the unique id handler tool is available.
         """
         # check for unique id handler tool
-        handler = getToolByName(self, 'portal_uidhandler', None)
-        if handler is None:
+        uidtool = queryUtility(IUniqueIdHandler)
+        if uidtool is None:
             return
 
         obj = getUtility(ISiteRoot).restrictedTraverse(self.remote_url)
-        return handler.register(obj)
+        return uidtool.register(obj)
 
     def _getObjectByUid(self):
         """Registers and returns the uid of the remote object if
         the unique id handler tool is available.
         """
         # check for unique id handler tool
-        handler = getToolByName(self, 'portal_uidhandler', None)
-        if handler is None:
+        uidtool = queryUtility(IUniqueIdHandler)
+        if uidtool is None:
             return
 
         # check for remote uid info on object
@@ -88,7 +91,7 @@ class Favorite(Link):
         if uid is None:
             return
 
-        return handler.queryObject(uid, None)
+        return uidtool.queryObject(uid, None)
 
     security.declareProtected(View, 'getRemoteUrl')
     def getRemoteUrl(self):

@@ -38,6 +38,7 @@ from Products.CMFCore.CookieCrumbler import ATTEMPT_NONE
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICookieCrumbler
 from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFDefault.browser.utils import ViewBase, memoize
@@ -237,7 +238,7 @@ class LoggedIn(ViewBase):
         now = DateTime()
         last_login = member.getProperty('login_time')
         never_logged_in = str(last_login).startswith('2000/01/01')
-        ptool = self._getTool('portal_properties')
+        ptool = getUtility(IPropertiesTool)
         if never_logged_in and ptool.getProperty('validate_email'):
             return self.first_login(member)
         else:

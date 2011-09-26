@@ -34,6 +34,7 @@ from ZTUtils import make_query
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ITypeInformation
 from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
@@ -49,7 +50,7 @@ class _EditFormMixin(ViewBase):
     template = ViewPageTemplateFile('editform.pt')
 
     def _setRedirect(self, provider_id, action_path, keys=''):
-        provider = self._getTool(provider_id)
+        provider = getToolByName(self.context, provider_id)
         try:
             target = provider.getActionInfo(action_path, self.context,
                                             check_condition=1)['url']

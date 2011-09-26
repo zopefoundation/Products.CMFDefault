@@ -26,12 +26,13 @@ from OFS.PropertyManager import PropertyManager
 from Products.MailHost.interfaces import IMailHost
 from Products.MailHost.MailHost import MailHost
 
-from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.testcase import SecurityTest
 
+
 class PropertiedDummySite(PropertyManager, DummySite):
+
     _properties = (
         {'id':'title', 'type':'string', 'mode': 'w'},
         {'id':'description', 'type':'text', 'mode': 'w'},
@@ -55,14 +56,14 @@ class PropertiesToolTests(SecurityTest):
         return PropertiesTool(*args, **kw)
 
     def setUp(self):
+        from Products.CMFCore.interfaces import IPropertiesTool
+
         SecurityTest.setUp(self)
         self.site = PropertiedDummySite('site')
         sm = getSiteManager()
+        sm.registerUtility(MailHost('MailHost'), IMailHost)
+        sm.registerUtility(self._makeOne(), IPropertiesTool)
         sm.registerUtility(self.site, ISiteRoot)
-        self.site._setObject('portal_properties', self._makeOne())
-        sm.registerUtility(self.site.portal_properties, IPropertiesTool)
-        self.site._setObject('MailHost', MailHost('MailHost'))
-        sm.registerUtility(self.site.MailHost, IMailHost)
 
     def tearDown(self):
         cleanUp()
@@ -75,6 +76,8 @@ class PropertiesToolTests(SecurityTest):
         verifyClass(IPropertiesTool, PropertiesTool)
 
     def test_editProperties(self):
+        from Products.CMFCore.interfaces import IPropertiesTool
+
         # https://bugs.launchpad.net/zope-cmf/+bug/174246
         # PropertiesTool.editProperties fails with traceback due to
         # faulty invocation of the site's manage_changeProperties method

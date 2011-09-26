@@ -14,9 +14,11 @@
 """
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.formlib import form
 from zope.schema import getFieldNames
 
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceRadioWidget
 from Products.CMFDefault.utils import Message as _
@@ -40,7 +42,7 @@ class PortalConfig(EditFormBase):
 
     def setUpWidgets(self, ignore_request=False):
         data = {}
-        ptool = self._getTool('portal_properties')
+        ptool = getUtility(IPropertiesTool)
         charset = ptool.getProperty('default_charset', None)
         for name in getFieldNames(IPortalConfig):
             value = ptool.getProperty(name)
@@ -56,7 +58,7 @@ class PortalConfig(EditFormBase):
                     ignore_request=ignore_request)
 
     def handle_success(self, action, data):
-        ptool = self._getTool('portal_properties')
+        ptool = getUtility(IPropertiesTool)
         ptool.editProperties(data)
         self.status = _(u"Portal settings changed.")
         self._setRedirect('portal_actions', 'global/configPortal')

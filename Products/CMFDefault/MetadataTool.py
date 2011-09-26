@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault portal_metadata tool.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -555,7 +553,7 @@ class MetadataTool(UniqueObject, Folder):
     def setInitialMetadata( self, content ):
         """ See IMetadataTool.
         """
-        for schema_id, schema in self.listSchemas():
+        for _schema_id, schema in self.listSchemas():
             for element, policy in schema.listPolicies(
                                     content.getPortalTypeName()):
 
@@ -574,7 +572,7 @@ class MetadataTool(UniqueObject, Folder):
     def validateMetadata( self, content ):
         """ See IMetadataTool.
         """
-        for schema_id, schema in self.listSchemas():
+        for _schema_id, schema in self.listSchemas():
             for element, policy in schema.listPolicies(
                                     content.getPortalTypeName()):
 
@@ -591,5 +589,5 @@ class MetadataTool(UniqueObject, Folder):
                             'Value %s is not in allowed vocabulary for ' \
                             'metadata element %s.' % ( value, element )
 
-InitializeClass( MetadataTool )
+InitializeClass(MetadataTool)
 registerToolInterface('portal_metadata', IMetadataTool)

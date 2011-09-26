@@ -20,12 +20,13 @@ from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from OFS.PropertyManager import PropertyManager
+from zope.component import queryUtility
 from zope.interface import implements
 
 from Products.CMFCore.interfaces import ICatalogableDublinCore
 from Products.CMFCore.interfaces import IDublinCore
+from Products.CMFCore.interfaces import IMetadataTool
 from Products.CMFCore.interfaces import IMutableDublinCore
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import View
 from Products.CMFDefault.utils import _dtmldir
@@ -156,11 +157,10 @@ class DefaultDublinCoreImpl( PropertyManager ):
         return self.description
 
     security.declareProtected(View, 'Publisher')
-    def Publisher( self ):
+    def Publisher(self):
         """ Dublin Core Publisher element - resource publisher.
         """
-        tool = getToolByName(self, 'portal_metadata', None)
-
+        tool = queryUtility(IMetadataTool)
         if tool is not None:
             return tool.getPublisher()
 

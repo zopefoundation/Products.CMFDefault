@@ -19,9 +19,11 @@ import Testing
 from AccessControl.SecurityManagement import newSecurityManager
 from Acquisition import Implicit
 from DateTime.DateTime import DateTime
+from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IMetadataTool
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyUserFolder
 from Products.CMFCore.tests.base.testcase import SecurityTest
@@ -151,7 +153,8 @@ class DublinCoreTests(SecurityTest):
     def test_publisher_with_metadata_tool(self):
         PUBLISHER = 'Some Publisher'
         site = DummySite('site').__of__(self.root)
-        site.portal_metadata = DummyMetadataTool(publisher=PUBLISHER)
+        tool = DummyMetadataTool(publisher=PUBLISHER)
+        getSiteManager().registerUtility(tool, IMetadataTool)
         item = self._makeDummyContent('item').__of__(site)
         self.assertEqual(item.Publisher(), PUBLISHER)
 

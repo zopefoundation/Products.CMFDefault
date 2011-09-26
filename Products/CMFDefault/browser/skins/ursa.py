@@ -14,17 +14,26 @@
 """
 
 from zope.component import getUtility
+from zope.component import queryUtility
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IWorkflowTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
+from Products.CMFDefault.utils import PRODUCTS_CMFCALENDAR_INSTALLED
+from Products.CMFDefault.utils import PRODUCTS_CMFUID_INSTALLED
+
+if PRODUCTS_CMFCALENDAR_INSTALLED:
+    from Products.CMFCalendar.interfaces import ICalendarTool
+
+if PRODUCTS_CMFUID_INSTALLED:
+    from Products.CMFUid.interfaces import IUniqueIdHandler
 
 
 class UrsineGlobals(ViewBase):
@@ -71,12 +80,14 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def syndtool(self):
-        return self._getTool('portal_syndication')
+        return queryUtility(ISyndicationTool)
 
     @property
     @memoize
     def caltool(self):
-        return getToolByName(self.context, 'portal_calendar', None)
+        if PRODUCTS_CMFCALENDAR_INSTALLED:
+            return queryUtility(ICalendarTool)
+        return None
 
     @property
     @memoize
@@ -86,7 +97,9 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def uidtool(self):
-        return getToolByName(self.context, 'portal_uidhandler', None)
+        if PRODUCTS_CMFUID_INSTALLED:
+            return queryUtility(IUniqueIdHandler)
+        return None
 
     @property
     @memoize

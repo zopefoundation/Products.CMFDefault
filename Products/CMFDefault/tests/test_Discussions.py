@@ -32,7 +32,6 @@ from Products.CMFCore.tests.base.testcase import SecurityTest
 from Products.CMFCore.tests.base.tidata import FTIDATA_DUMMY
 from Products.CMFCore.TypesTool import FactoryTypeInformation as FTI
 from Products.CMFCore.TypesTool import TypesTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.DiscussionTool import DiscussionTool
 from Products.CMFDefault.exceptions import DiscussionNotAllowed
 
@@ -316,8 +315,8 @@ class DiscussionTests(SecurityTest):
         dtool = self.dtool
         talkback = dtool.getDiscussionFor(test)
         self.failUnless(hasattr(talkback, 'aq_base'))
-        # Acquire a portal tool
-        self.failUnless(getToolByName(talkback, 'portal_discussion'))
+        # Acquire REQUEST
+        self.failUnless(getattr(talkback, 'REQUEST'))
 
     def test_existingTalkbackIsWrapped(self):
         test = self._makeDummyContent('test')
@@ -326,8 +325,8 @@ class DiscussionTests(SecurityTest):
         dtool.getDiscussionFor(test)
         talkback = dtool.getDiscussionFor(test)
         self.failUnless(hasattr(talkback, 'aq_base'))
-        # Acquire a portal tool
-        self.failUnless(getToolByName(talkback, 'portal_discussion'))
+        # Acquire REQUEST
+        self.failUnless(getattr(talkback, 'REQUEST'))
 
 
 def test_suite():

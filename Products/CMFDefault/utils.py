@@ -11,38 +11,49 @@
 #
 ##############################################################################
 """ Utility functions.
-
-$Id$
 """
 
-from email.Header import make_header
-from email.MIMEText import MIMEText
 import os
 import re
 import rfc822
-from sgmllib import SGMLParser
 import StringIO
+from email.Header import make_header
+from email.MIMEText import MIMEText
+from sgmllib import SGMLParser
 
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from Acquisition import aq_get
 from App.Common import package_home
-from ZTUtils.Zope import complex_marshal
-
+from pkg_resources import DistributionNotFound
+from pkg_resources import get_distribution
+from zope import i18n # disambiguation
 from zope.component import getUtility
 from zope.component import queryUtility
-from zope import i18n # disambiguation
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.interfaces.browser import IBrowserRequest
+from ZTUtils.Zope import complex_marshal
 
 from Products.CMFCore.interfaces import IPropertiesTool
-
-from Products.CMFDefault.interfaces import IHTMLScrubber
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.exceptions import IllegalHTML
-
+from Products.CMFDefault.interfaces import IHTMLScrubber
 
 security = ModuleSecurityInfo( 'Products.CMFDefault.utils' )
+
+try:
+    get_distribution('Products.CMFCalendar')
+except DistributionNotFound:
+    PRODUCTS_CMFCALENDAR_INSTALLED = False
+else:
+    PRODUCTS_CMFCALENDAR_INSTALLED = True
+
+try:
+    get_distribution('Products.CMFUid')
+except DistributionNotFound:
+    PRODUCTS_CMFUID_INSTALLED = False
+else:
+    PRODUCTS_CMFUID_INSTALLED = True
 
 security.declarePrivate('_dtmldir')
 _dtmldir = os.path.join( package_home( globals() ), 'dtml' )

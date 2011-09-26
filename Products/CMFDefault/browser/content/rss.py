@@ -18,6 +18,7 @@ from zope.sequencesort.ssort import sort
 from ZTUtils import LazyFilter
 
 from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
@@ -37,9 +38,9 @@ class View(ViewBase):
     @decode
     def items(self):
         """Return items according to policy"""
-        stool = self._getTool("portal_syndication")
+        syndtool = getUtility(ISyndicationTool)
         key, reverse = self.context.getDefaultSorting()
-        items = stool.getSyndicatableContent(self.context)
+        items = syndtool.getSyndicatableContent(self.context)
         items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
         items = LazyFilter(items, skip='View')
         items = ({'title': o.Title(), 'description': o.Description(),

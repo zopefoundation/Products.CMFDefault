@@ -15,6 +15,7 @@
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getAdapter
+from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import Interface
 from zope.schema import Choice
@@ -22,6 +23,7 @@ from zope.schema import Datetime
 from zope.schema import Int
 
 from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.vocabulary import SimpleVocabulary
@@ -97,7 +99,7 @@ class Site(EditFormBase):
     @property
     @memoize
     def syndtool(self):
-        return self._getTool("portal_syndication")
+        return getUtility(ISyndicationTool)
 
     @memoize
     def enabled(self, action=None):
@@ -202,7 +204,7 @@ class Syndicate(EditFormBase):
     @property
     @memoize
     def allowed(self):
-        syndtool = self._getTool('portal_syndication')
+        syndtool = getUtility(ISyndicationTool)
         return syndtool.isSiteSyndicationAllowed()
 
     def handle_enable(self, action, data):

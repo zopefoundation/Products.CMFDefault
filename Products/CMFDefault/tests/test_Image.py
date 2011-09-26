@@ -23,17 +23,19 @@ import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from App.Common import rfc1123_date
+from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.site.hooks import setSite
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import ICachingPolicyManager
 from Products.CMFCore.testing import ConformsToContent
 from Products.CMFCore.tests.base.dummy import DummyCachingManager
 from Products.CMFCore.tests.base.dummy import DummyCachingManagerWithPolicy
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFCore.tests.base.dummy import FAKE_ETAG
-from Products.CMFCore.tests.base.testcase import RequestTest
+from Products.CMFCore.tests.base.testcase import TransactionalTest
 from Products.CMFDefault import tests
 from Products.CMFDefault.testing import FunctionalLayer
 
@@ -187,17 +189,7 @@ class TestImageCopyPaste(ZopeTestCase.FunctionalTestCase):
         self.assertEqual(review_state, 'published')
 
 
-class TestCaching(RequestTest):
-
-    def _extractFile( self ):
-
-        f = open( TEST_JPG, 'rb' )
-        try:
-            data = f.read()
-        finally:
-            f.close()
-
-        return TEST_JPG, data
+class CachingTests(TransactionalTest):
 
     def _getTargetClass(self):
         from Products.CMFDefault.Image import Image
@@ -207,41 +199,71 @@ class TestCaching(RequestTest):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _setupCachingPolicyManager(self, cpm_object):
-        self.root.caching_policy_manager = cpm_object
+    def _extractFile(self):
+        f = open(TEST_JPG, 'rb')
+        try:
+            data = f.read()
+        finally:
+            f.close()
+
+        return TEST_JPG, data
 
     def tearDown(self):
         cleanUp()
-        RequestTest.tearDown(self)
+        TransactionalTest.tearDown(self)
 
-    def test_index_html_with_304_from_cpm( self ):
-        self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
-        path, ref = self._extractFile()
-        self.root.file = self._makeOne('test_file', 'test_image.jpg', file=ref)
-        file = self.root.file
+    def test_index_html_with_304_from_cpm(self):
+        cpm = DummyCachingManagerWithPolicy()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
+        _path, ref = self._extractFile()
+        file = self._makeOne('test_file', 'test_image.jpg', file=ref)
+        file = file.__of__(self.app)
 
-        mod_time = file.modified()
+        mod_time = file.modified().timeTime()
 
-        self.REQUEST.environ[ 'IF_MODIFIED_SINCE'
-                            ] = '%s;' % rfc1123_date( mod_time )
-        self.REQUEST.environ[ 'IF_NONE_MATCH'
+        self.REQUEST.environ['IF_MODIFIED_SINCE'
+                            ] = '%s;' % rfc1123_date(mod_time)
+        self.REQUEST.environ['IF_NONE_MATCH'
                             ] = '%s;' % FAKE_ETAG
 
-        data = file.index_html( self.REQUEST, self.RESPONSE )
-        self.assertEqual( len(data), 0 )
-        self.assertEqual( self.RESPONSE.getStatus(), 304 )
+        data = file.index_html(self.REQUEST, self.RESPONSE)
+        self.assertEqual(len(data), 0)
+        self.assertEqual(self.RESPONSE.getStatus(), 304)
 
-    def test_caching( self ):
+    def test_index_html_200_with_cpm(self):
+        # should behave the same as without cpm installed
+        cpm = DummyCachingManagerWithPolicy()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
+        _path, ref = self._extractFile()
+        file = self._makeOne('test_file', 'test_image.jpg', file=ref)
+        file = file.__of__(self.app)
+
+        mod_time = file.modified().timeTime()
+
+        data = file.index_html(self.REQUEST, self.RESPONSE)
+
+        self.assertEqual(len(data), len(ref))
+        self.assertEqual(data, ref)
+        # ICK!  'HTTPResponse.getHeader' doesn't case-flatten the key!
+        self.assertEqual(self.RESPONSE.getHeader('Content-Length'.lower())
+                        , str(len(ref)))
+        self.assertEqual(self.RESPONSE.getHeader('Content-Type'.lower())
+                        , 'image/jpeg')
+        self.assertEqual(self.RESPONSE.getHeader('Last-Modified'.lower())
+                        , rfc1123_date(mod_time))
+
+    def test_caching(self):
         large_data = '0' * 100000
         def fake_response_write(data):
             return
         response_write = self.RESPONSE.write
         self.RESPONSE.write = fake_response_write
-        self._setupCachingPolicyManager(DummyCachingManager())
+        cpm = DummyCachingManager()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
         original_len = len(self.RESPONSE.headers)
-        image = self._makeOne('test_image', 'test_image.jpg', file=large_data)
-        image = image.__of__(self.root)
-        image.index_html(self.REQUEST, self.RESPONSE)
+        obj = self._makeOne('test_image', 'test_image.jpg', file=large_data)
+        obj = obj.__of__(self.app)
+        obj.index_html(self.REQUEST, self.RESPONSE)
         headers = self.RESPONSE.headers
         self.failUnless(len(headers) >= original_len + 3)
         self.failUnless('foo' in headers.keys())
@@ -249,45 +271,25 @@ class TestCaching(RequestTest):
         self.assertEqual(headers['test_path'], '/test_image')
         self.RESPONSE.write = response_write
 
-    def test_index_html_200_with_cpm( self ):
-        self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
-        path, ref = self._extractFile()
-        file = self._makeOne( 'test_file', 'test_image.jpg', file=ref )
-        file = file.__of__( self.root )
-
-        mod_time = file.modified()
-
-        data = file.index_html( self.REQUEST, self.RESPONSE )
-
-        # should behave the same as without cpm
-        self.assertEqual( len( data ), len( ref ) )
-        self.assertEqual( data, ref )
-        # ICK!  'HTTPResponse.getHeader' doesn't case-flatten the key!
-        self.assertEqual( self.RESPONSE.getHeader( 'Content-Length'.lower() )
-                        , str(len(ref)) )
-        self.assertEqual( self.RESPONSE.getHeader( 'Content-Type'.lower() )
-                        , 'image/jpeg' )
-        self.assertEqual( self.RESPONSE.getHeader( 'Last-Modified'.lower() )
-                        , rfc1123_date( mod_time ) )
-
-    def test_index_html_with_304_and_caching( self ):
+    def test_index_html_with_304_and_caching(self):
         # See collector #355
-        self._setupCachingPolicyManager(DummyCachingManager())
+        cpm = DummyCachingManager()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
         original_len = len(self.RESPONSE.headers)
-        path, ref = self._extractFile()
-        self.root.image = self._makeOne( 'test_image', 'test_image.gif' )
-        image = self.root.image
+        _path, ref = self._extractFile()
+        self.app.image = self._makeOne('test_image', 'test_image.gif', file=ref)
+        image = self.app.image
         transaction.savepoint(optimistic=True)
 
         mod_time = image.modified()
 
-        self.REQUEST.environ[ 'IF_MODIFIED_SINCE'
-                            ] = '%s;' % rfc1123_date( mod_time+1 )
+        self.REQUEST.environ['IF_MODIFIED_SINCE'
+                            ] = '%s;' % rfc1123_date(mod_time + 1)
 
-        data = image.index_html( self.REQUEST, self.RESPONSE )
+        data = image.index_html(self.REQUEST, self.RESPONSE)
 
-        self.assertEqual( data, '' )
-        self.assertEqual( self.RESPONSE.getStatus(), 304 )
+        self.assertEqual(data, '')
+        self.assertEqual(self.RESPONSE.getStatus(), 304)
 
         headers = self.RESPONSE.headers
         self.failUnless(len(headers) >= original_len + 3)
@@ -299,23 +301,24 @@ class TestCaching(RequestTest):
         """Ensure that headers set by the caching policy manager trump
         any of the same name that from time to time may be set while 
         rendering the object."""
-        path, ref = self._extractFile()
+        _path, ref = self._extractFile()
 
-        self._setupCachingPolicyManager(LMDummyCachingManager())
+        cpm = LMDummyCachingManager()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
 
-        img = self._makeOne( 'test_image', 'test_image.gif' )
-                
+        obj = self._makeOne('test_image', 'test_image.gif', file=ref)
+
         # Cause persistent's modified time record to be set
-        self.root.foo = img
+        self.app.foo = obj
         transaction.commit()
-        img = self.root.foo
+        obj = self.app.foo
         # end
-        
+
         # index_html in OFS will set Last-modified if ._p_mtime exists
-        img.index_html(self.REQUEST, self.RESPONSE)
-        
+        obj.index_html(self.REQUEST, self.RESPONSE)
+
         headers = self.RESPONSE.headers
-        self.assertEqual(headers['last-modified'], 
+        self.assertEqual(headers['last-modified'],
                          "Sun, 06 Nov 1994 08:49:37 GMT")
 
 
@@ -323,5 +326,5 @@ def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(TestImageElement),
         unittest.makeSuite(TestImageCopyPaste),
-        unittest.makeSuite(TestCaching),
+        unittest.makeSuite(CachingTests),
         ))

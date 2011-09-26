@@ -21,8 +21,17 @@ from zope.component.testing import PlacelessSetup
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IWorkflowTool
+from Products.CMFDefault.utils import PRODUCTS_CMFCALENDAR_INSTALLED
+from Products.CMFDefault.utils import PRODUCTS_CMFUID_INSTALLED
+
+if PRODUCTS_CMFCALENDAR_INSTALLED:
+    from Products.CMFCalendar.interfaces import ICalendarTool
+
+if PRODUCTS_CMFUID_INSTALLED:
+    from Products.CMFUid.interfaces import IUniqueIdHandler
 
 
 class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
@@ -112,19 +121,22 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_wtool(self):
         view = self._makeOne()
-        tool = view.context.portal_workflow = DummyWorkflowTool()
+        tool = DummyWorkflowTool()
         getSiteManager().registerUtility(tool, IWorkflowTool)
         self.failUnless(view.wtool is tool)
 
     def test_syndtool(self):
         view = self._makeOne()
-        tool = view.context.portal_syndication = DummyTool()
+        tool = DummyTool()
+        getSiteManager().registerUtility(tool, ISyndicationTool)
         self.failUnless(view.syndtool is tool)
 
     def test_uidtool(self):
         view = self._makeOne()
-        tool = view.context.portal_uidhandler = DummyTool()
-        self.assertTrue(view.uidtool is tool)
+        if PRODUCTS_CMFUID_INSTALLED:
+            tool = DummyTool()
+            getSiteManager().registerUtility(tool, IUniqueIdHandler)
+            self.assertTrue(view.uidtool is tool)
 
     def test_uidtool_not_installed(self):
         view = self._makeOne()
@@ -132,13 +144,16 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_uidtool_installed(self):
         view = self._makeOne()
-        view.context.portal_uidhandler = DummyTool()
-        self.assertTrue(view.uidtool_installed)
+        if PRODUCTS_CMFUID_INSTALLED:
+            getSiteManager().registerUtility(DummyTool(), IUniqueIdHandler)
+            self.assertTrue(view.uidtool_installed)
 
     def test_caltool(self):
         view = self._makeOne()
-        tool = view.context.portal_calendar = DummyTool()
-        self.assertTrue(view.caltool is tool)
+        if PRODUCTS_CMFCALENDAR_INSTALLED:
+            tool = DummyTool()
+            getSiteManager().registerUtility(tool, ICalendarTool)
+            self.assertTrue(view.caltool is tool)
 
     def test_caltool_not_installed(self):
         view = self._makeOne()
@@ -146,8 +161,9 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_caltool_installed(self):
         view = self._makeOne()
-        view.context.portal_calendar = DummyTool()
-        self.assertTrue(view.caltool_installed)
+        if PRODUCTS_CMFCALENDAR_INSTALLED:
+            getSiteManager().registerUtility(DummyTool(), ICalendarTool)
+            self.assertTrue(view.caltool_installed)
 
     def test_portal_object(self):
         view = self._makeOne()
@@ -215,7 +231,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
     def test_wf_state(self):
         view = self._makeOne()
-        tool = view.context.portal_workflow = DummyWorkflowTool()
+        tool = DummyWorkflowTool()
         getSiteManager().registerUtility(tool, IWorkflowTool)
         self.assertEqual(view.wf_state, 'DUMMY')
 

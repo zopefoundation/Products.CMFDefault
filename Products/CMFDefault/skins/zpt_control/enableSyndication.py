@@ -1,9 +1,11 @@
-## Script (Python) "enableSyndication"
-##title=Enable Syndication for a resource
 ##parameters=
+##title=Enable Syndication for a resource
+##
+from Products.CMFCore.utils import getUtilityByInterfaceName
 
-if context.portal_syndication.isSiteSyndicationAllowed():
-    context.portal_syndication.enableSyndication(context)
+syndtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ISyndicationTool')
+if syndtool.isSiteSyndicationAllowed():
+    syndtool.enableSyndication(context)
     msg = 'Syndication+Enabled'
 else:
     msg = 'Syndication+Not+Allowed'

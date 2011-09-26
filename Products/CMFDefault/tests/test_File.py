@@ -20,14 +20,16 @@ from os.path import join as path_join
 
 import transaction
 from App.Common import rfc1123_date
+from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import ICachingPolicyManager
 from Products.CMFCore.testing import ConformsToContent
 from Products.CMFCore.tests.base.dummy import DummyCachingManager
 from Products.CMFCore.tests.base.dummy import DummyCachingManagerWithPolicy
 from Products.CMFCore.tests.base.dummy import FAKE_ETAG
-from Products.CMFCore.tests.base.testcase import RequestTest
+from Products.CMFCore.tests.base.testcase import TransactionalTest
 from Products.CMFDefault import tests
 
 TESTS_HOME = tests.__path__[0]
@@ -82,7 +84,7 @@ class FileTests(ConformsToContent, unittest.TestCase):
         self.assertEqual(file.content_type, 'image/jpeg')
 
 
-class CachingTests(RequestTest):
+class CachingTests(TransactionalTest):
 
     def _getTargetClass(self):
         from Products.CMFDefault.File import File
@@ -92,9 +94,8 @@ class CachingTests(RequestTest):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _extractFile( self ):
-
-        f = open( TEST_SWF, 'rb' )
+    def _extractFile(self):
+        f = open(TEST_SWF, 'rb')
         try:
             data = f.read()
         finally:
@@ -102,99 +103,100 @@ class CachingTests(RequestTest):
 
         return TEST_SWF, data
 
-    def _setupCachingPolicyManager(self, cpm_object):
-        self.root.caching_policy_manager = cpm_object
-
     def tearDown(self):
         cleanUp()
-        RequestTest.tearDown(self)
+        TransactionalTest.tearDown(self)
 
-    def test_index_html_with_304_from_cpm( self ):
-        self._setupCachingPolicyManager(DummyCachingManagerWithPolicy())
-        path, ref = self._extractFile()
-        file = self._makeOne( 'test_file', 'test_file.swf', file=ref )
-        file = file.__of__( self.root )
+    def test_index_html_with_304_from_cpm(self):
+        cpm = DummyCachingManagerWithPolicy()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
+        _path, ref = self._extractFile()
+        file = self._makeOne('test_file', 'test_file.swf', file=ref)
+        file = file.__of__(self.app)
 
         mod_time = file.modified().timeTime()
 
-        self.REQUEST.environ[ 'IF_MODIFIED_SINCE'
-                            ] = '%s;' % rfc1123_date( mod_time )
-        self.REQUEST.environ[ 'IF_NONE_MATCH'
+        self.REQUEST.environ['IF_MODIFIED_SINCE'
+                            ] = '%s;' % rfc1123_date(mod_time)
+        self.REQUEST.environ['IF_NONE_MATCH'
                             ] = '%s;' % FAKE_ETAG
 
-        data = file.index_html( self.REQUEST, self.RESPONSE )
-        self.assertEqual( len(data), 0 )
-        self.assertEqual( self.RESPONSE.getStatus(), 304 )
+        data = file.index_html(self.REQUEST, self.RESPONSE)
+        self.assertEqual(len(data), 0)
+        self.assertEqual(self.RESPONSE.getStatus(), 304)
 
-    def test_index_html_200_with_cpm( self ):
+    def test_index_html_200_with_cpm(self):
         # should behave the same as without cpm installed
-        self._setupCachingPolicyManager(DummyCachingManager())
-        path, ref = self._extractFile()
-        file = self._makeOne( 'test_file', 'test_file.swf', file=ref )
-        file = file.__of__( self.root )
+        cpm = DummyCachingManagerWithPolicy()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
+        _path, ref = self._extractFile()
+        file = self._makeOne('test_file', 'test_file.swf', file=ref)
+        file = file.__of__(self.app)
 
         mod_time = file.modified().timeTime()
 
-        data = file.index_html( self.REQUEST, self.RESPONSE )
+        data = file.index_html(self.REQUEST, self.RESPONSE)
 
-        self.assertEqual( len( data ), len( ref ) )
-        self.assertEqual( data, ref )
+        self.assertEqual(len(data), len(ref))
+        self.assertEqual(data, ref)
         # ICK!  'HTTPResponse.getHeader' doesn't case-flatten the key!
-        self.assertEqual( self.RESPONSE.getHeader( 'Content-Length'.lower() )
-                        , str(len(ref)) )
-        self.assertEqual( self.RESPONSE.getHeader( 'Content-Type'.lower() )
-                        , 'application/octet-stream' )
-        self.assertEqual( self.RESPONSE.getHeader( 'Last-Modified'.lower() )
-                        , rfc1123_date( mod_time ) )
+        self.assertEqual(self.RESPONSE.getHeader('Content-Length'.lower())
+                        , str(len(ref)))
+        self.assertEqual(self.RESPONSE.getHeader('Content-Type'.lower())
+                        , 'application/octet-stream')
+        self.assertEqual(self.RESPONSE.getHeader('Last-Modified'.lower())
+                        , rfc1123_date(mod_time))
 
-    def test_caching( self ):
-        large_file_data = '0' * 100000
+    def test_caching(self):
+        large_data = '0' * 100000
         def fake_response_write(data):
             return
         response_write = self.RESPONSE.write
         self.RESPONSE.write = fake_response_write
-        self._setupCachingPolicyManager(DummyCachingManager())
+        cpm = DummyCachingManager()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
         original_len = len(self.RESPONSE.headers)
-        file = self._makeOne('test_file', 'test_file.swf', file=large_file_data)
-        file = file.__of__(self.root)
-        file.index_html(self.REQUEST, self.RESPONSE)
+        obj = self._makeOne('test_file', 'test_file.swf', file=large_data)
+        obj = obj.__of__(self.app)
+        obj.index_html(self.REQUEST, self.RESPONSE)
         headers = self.RESPONSE.headers
         self.failUnless(len(headers) >= original_len + 3)
         self.failUnless('foo' in headers.keys())
         self.failUnless('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_file')
         self.RESPONSE.write = response_write
-    
+
     def test_caching_policy_headers_are_canonical(self):
         """Ensure that headers set by the caching policy manager trump
         any of the same name that from time to time may be set while 
         rendering the object."""
-        path, ref = self._extractFile()
+        _path, ref = self._extractFile()
 
-        self._setupCachingPolicyManager(LMDummyCachingManager())
+        cpm = LMDummyCachingManager()
+        getSiteManager().registerUtility(cpm, ICachingPolicyManager)
 
-        file = self._makeOne( 'test_file', 'test_file.swf', file=ref )
-                
+        obj = self._makeOne('test_file', 'test_file.swf', file=ref)
+
         # Cause persistent's modified time record to be set
-        self.root.foo = file
+        self.app.foo = obj
         transaction.commit()
-        file = self.root.foo
+        obj = self.app.foo
         # end
 
         # index_html in OFS will set Last-modified if ._p_mtime exists
-        file.index_html(self.REQUEST, self.RESPONSE)
-        
+        obj.index_html(self.REQUEST, self.RESPONSE)
+
         headers = self.RESPONSE.headers
-        self.assertEqual(headers['last-modified'], 
+        self.assertEqual(headers['last-modified'],
                          "Sun, 06 Nov 1994 08:49:37 GMT")
 
 # We set up a new type of dummy caching manager that sets a bogus
 # last modified date.  This should be visible in the request
 class LMDummyCachingManager(DummyCachingManager):
 
-    def getHTTPCachingHeaders( self, content, view_name, 
-                               keywords, time=None ):
-        return ('Last-modified', 'Sun, 06 Nov 1994 08:49:37 GMT'), 
+    def getHTTPCachingHeaders(self, content, view_name,
+                               keywords, time=None):
+        return ('Last-modified', 'Sun, 06 Nov 1994 08:49:37 GMT'),
 
 
 def test_suite():

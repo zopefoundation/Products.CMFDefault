@@ -6,21 +6,21 @@ from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import getBrowserCharset
 
 atool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IActionsTool',
-                                  # BBB: fallback for CMF 2.2 instances
+                                  # fallback for bootstrap
                                   getToolByName(script, 'portal_actions'))
-caltool = getToolByName(script, 'portal_calendar', None)
+caltool = getUtilityByInterfaceName('Products.CMFCalendar.interfaces.ICalendarTool', None)
 mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool',
-                                  # BBB: fallback for CMF 2.2 instances
+                                  # fallback for bootstrap
                                   getToolByName(script, 'portal_membership'))
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool',
-                                  # BBB: fallback for CMF 2.2 instances
+                                  # fallback for bootstrap
                                   getToolByName(script, 'portal_url'))
 wtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IWorkflowTool',
-                                  # BBB: fallback for CMF 2.2 instances
+                                  # fallback for bootstrap
                                   getToolByName(script, 'portal_workflow'))
-uidtool = getToolByName(script, 'portal_uidhandler', None)
-syndtool = getToolByName(script, 'portal_syndication', None)
+uidtool = getUtilityByInterfaceName('Products.CMFUid.interfaces.IUniqueIdHandler', None)
+syndtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ISyndicationTool', None)
 portal_object = utool.getPortalObject()
 isAnon = mtool.isAnonymousUser()
 member = mtool.getAuthenticatedMember()

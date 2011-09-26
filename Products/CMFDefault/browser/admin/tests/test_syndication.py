@@ -24,6 +24,7 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
@@ -51,9 +52,9 @@ class SyndicationViewTests(unittest.TestCase):
 
     def setUp(self):
         """Setup a site"""
-        self.site = site = DummySite('site')
-        site.portal_syndication = DummySyndicationTool()
+        self.site = DummySite('site')
         sm = getSiteManager()
+        sm.registerUtility(DummySyndicationTool(), ISyndicationTool)
         sm.registerUtility(DummyTool(), IActionsTool)
         sm.registerUtility(DummyTool(), IMembershipTool)
         sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
@@ -122,8 +123,9 @@ class FolderSyndicationTests(unittest.TestCase):
         from Products.CMFDefault.SyndicationInfo import SyndicationInfo
 
         self.site = DummySite('site')
-        self.site.portal_syndication = DummySyndicationTool()
+        self.syndtool = DummySyndicationTool()
         sm = getSiteManager()
+        sm.registerUtility(self.syndtool, ISyndicationTool)
         sm.registerAdapter(SyndicationInfo, [IFolderish], ISyndicationInfo)
         sm.registerUtility(DummyTool(), IActionsTool)
         sm.registerUtility(DummyTool(), IMembershipTool)
@@ -157,7 +159,7 @@ class FolderSyndicationTests(unittest.TestCase):
         self.assertTrue(view.disabled())
 
     def test_handle_enable(self):
-        self.site.portal_syndication.isAllowed = 1
+        self.syndtool.isAllowed = 1
         view = self._getTargetClass()
         view.handle_enable("enable", {})
         self.assertTrue(view.enabled())
@@ -167,7 +169,7 @@ class FolderSyndicationTests(unittest.TestCase):
             "Syndication%20enabled.")
 
     def test_handle_disable(self):
-        self.site.portal_syndication.isAllowed = 1
+        self.syndtool.isAllowed = 1
         view = self._getTargetClass()
         view.adapter.enable()
         view.handle_disable("disable", {})

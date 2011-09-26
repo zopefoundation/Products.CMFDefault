@@ -145,8 +145,7 @@ Widgets
       >>> class DummyTool:
       ...     def listAllowedSubjects(self, context): return ('SPAM', 'EGGS')
       >>> view = DummyView()
-      >>> view.portal_metadata = DummyTool()
-      >>> getSiteManager().registerUtility(view.portal_metadata, IMetadataTool)
+      >>> getSiteManager().registerUtility(DummyTool(), IMetadataTool)
 
       >>> request = DummyRequest()
       >>> request.form['PREFIX.NAME.1'] = ['EGGS']

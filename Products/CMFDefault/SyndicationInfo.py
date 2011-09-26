@@ -14,13 +14,16 @@
 """
 
 from OFS.SimpleItem import SimpleItem
-
 from zope.component import adapts
-from zope.interface import implements, alsoProvides, noLongerProvides
+from zope.component import getUtility
+from zope.interface import alsoProvides
+from zope.interface import implements
+from zope.interface import noLongerProvides
 
-from Products.CMFCore.interfaces import (ISyndicatable, ISyndicationInfo,
-    IFolderish)
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.interfaces import ISyndicatable
+from Products.CMFCore.interfaces import ISyndicationInfo
+from Products.CMFCore.interfaces import ISyndicationTool
 
 
 class SyndicationInformation(SimpleItem):
@@ -52,7 +55,7 @@ class SyndicationInfo(object):
     @property
     def site_settings(self):
         """Get site syndication tool"""
-        return getToolByName(self.context, "portal_syndication")
+        return getUtility(ISyndicationTool)
 
     def get_info(self):
         """

@@ -5,8 +5,12 @@
  <utilities>
   <utility interface="Products.CMFCore.interfaces.IActionsTool"
      object="portal_actions"/>
+  <utility interface="Products.CMFCore.interfaces.ICachingPolicyManager"
+     object="caching_policy_manager"/>
   <utility interface="Products.CMFCore.interfaces.ICatalogTool"
      object="portal_catalog"/>
+  <utility interface="Products.CMFCore.interfaces.IContentTypeRegistry"
+     object="content_type_registry"/>
   <utility interface="Products.CMFCore.interfaces.ICookieCrumbler"
      object="cookie_authentication"/>
   <utility interface="Products.CMFCore.interfaces.IDiscussionTool"
