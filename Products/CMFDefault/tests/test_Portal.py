@@ -52,11 +52,14 @@ class CMFSiteTests(ZopeTestCase.FunctionalTestCase):
 
         self.assertEqual(len(catalog), 0)
 
-    def test_MetadataCataloguing( self ):
+    def test_MetadataCataloguing(self):
         site = self.app.site
         catalog = site.portal_catalog
         ttool = site.portal_types
-        uidtool = queryUtility(IUniqueIdHandler)
+        if PRODUCTS_CMFUID_INSTALLED:
+            uidtool = queryUtility(IUniqueIdHandler)
+        else:
+            uidtool = None
 
         portal_types = [ x for x in ttool.listContentTypes()
                            if x not in ( 'Discussion Item'

@@ -17,6 +17,7 @@ import urlparse
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
+from Acquisition import aq_get
 from App.class_init import InitializeClass
 from zope.component import adapter
 from zope.component import getUtility
@@ -70,6 +71,8 @@ class Favorite(Link):
         the unique id handler tool is available.
         """
         # check for unique id handler tool
+        if not PRODUCTS_CMFUID_INSTALLED:
+            return
         uidtool = queryUtility(IUniqueIdHandler)
         if uidtool is None:
             return
@@ -82,6 +85,8 @@ class Favorite(Link):
         the unique id handler tool is available.
         """
         # check for unique id handler tool
+        if not PRODUCTS_CMFUID_INSTALLED:
+            return
         uidtool = queryUtility(IUniqueIdHandler)
         if uidtool is None:
             return
@@ -156,7 +161,11 @@ class Favorite(Link):
             t=('', '') + tokens[2:]
             remote_url=urlparse.urlunparse(t)
         # if URL begins with site URL, remove site URL
-        portal_url = getUtility(IURLTool).getPortalPath()
+        utool = queryUtility(IURLTool)
+        if utool is None:
+            # fallback for bootstrap
+            utool = aq_get(self, 'portal_url', None)
+        portal_url = utool.getPortalPath()
         i = remote_url.find(portal_url)
         if i==0:
             remote_url=remote_url[len(portal_url):]
