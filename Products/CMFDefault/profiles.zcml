@@ -12,8 +12,8 @@
 
   <genericsetup:registerProfile
       name="views_support"
-      title="Experimental CMFDefault Browser Views"
-      description="Hooks up the browser views."
+      title="CMFDefaults Browser Views"
+      description="Uses browser views only."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFCore.interfaces.ISiteRoot"
       />
@@ -37,7 +37,8 @@
   <genericsetup:registerProfile
       name="absolut"
       title="'Absolut' - the pure CSS skin"
-      description="All layouting done using CSS"
+      description="All layouting done using CSS.
+      The Browser Views extension profile should also be installed"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFCore.interfaces.ISiteRoot"
       />
