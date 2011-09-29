@@ -16,12 +16,14 @@
 import unittest
 
 from zope.component import getSiteManager
+from zope.interface import implements
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.interface import alsoProvides
 from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISyndicationInfo
 from Products.CMFCore.interfaces import ISyndicationTool
@@ -40,12 +42,21 @@ class DummySyndicationTool(object):
     syUpdateBase = updateBase = ""
     max_items = 15
 
+    def getProperty(self, key, default):
+        return getattr(self, key, default)
+
     def editProperties(self, **kw):
         for k, v in kw.items():
             setattr(self, k, v)
 
     def isSiteSyndicationAllowed(self):
         return self.isAllowed
+
+    def hasProperty(self, key):
+        return getattr(self, key)
+
+    def _updateProperty(self, key, value):
+        setattr(self, key, value)
 
 
 class DummySyndicationAdapter(object):
@@ -54,17 +65,26 @@ class DummySyndicationAdapter(object):
         self.context = context
 
 
+class DummyPropertiesTool(DummyTool):
+
+    def getProperty(self, key, default):
+        return getattr(self, key, default)
+
+
 class SyndicationViewTests(unittest.TestCase):
 
     def setUp(self):
         """Setup a site"""
         self.site = DummySite('site')
+        alsoProvides(self.site, IPropertiesTool)
         sm = getSiteManager()
         sm.registerUtility(DummySyndicationTool(), ISyndicationTool)
         sm.registerUtility(DummyTool(), IActionsTool)
         sm.registerUtility(DummyTool(), IMembershipTool)
         sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
-        sm.registerAdapter(DummySyndicationAdapter, (IFolderish, ), ISyndicationInfo)
+        sm.registerUtility(DummyPropertiesTool(), IPropertiesTool)
+        from Products.CMFDefault.browser.admin.syndication import ISyndicationSchema
+        sm.registerAdapter(self._getTargetAdapter(), (IFolderish, ), ISyndicationSchema)
 
     def tearDown(self):
         cleanUp()
@@ -75,40 +95,47 @@ class SyndicationViewTests(unittest.TestCase):
         alsoProvides(request, IUserPreferredCharsets)
         return Site(self.site, request)
 
+    def _getTargetAdapter(self):
+        from Products.CMFDefault.browser.admin.syndication import SyndicationToolSchemaAdapter
+        return SyndicationToolSchemaAdapter
+
     def test_enabled(self):
         view = self._getTargetClass()
-        self.assertFalse(view.enabled())
+        self.assertFalse(view.enabled)
 
     def test_disabled(self):
         view = self._getTargetClass()
-        self.assertTrue(view.disabled())
+        self.assertTrue(view.disabled)
 
     def test_handle_enable(self):
         view = self._getTargetClass()
         view.handle_enable("enable", {})
-        self.assertTrue(view.enabled())
+        self.assertTrue(view.enabled)
         self.assertEqual(view.status, u"Syndication enabled.")
         self.assertEqual(view.request.RESPONSE.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20enabled.")
 
-    #def test_handle_change(self):
-        #view = self._getTargetClass()
-        #self.assertEqual(view.syndtool.updatePeriod, 'daily')
-        #self.assertEqual(view.syndtool.updateFrequency, 1)
-        #self.assertEqual(view.syndtool.updateBase, "")
-        #self.assertEqual(view.syndtool.max_items, 15)
-        #data = {'frequency':3, 'period':'weekly', 'base':'active',
-                #'max_items':10}
-        #view.handle_change("change", data)
-        #self.assertEqual(view.syndtool.updatePeriod, 'weekly')
-        #self.assertEqual(view.syndtool.updateFrequency, 3)
-        #self.assertEqual(view.syndtool.updateBase, "active")
-        #self.assertEqual(view.syndtool.max_items, 10)
-        #self.assertEqual(view.status, u"Syndication settings changed.")
-        #self.assertEqual(view.request.RESPONSE.location,
-            #"http://www.foobar.com/bar/site?portal_status_message="
-            #"Syndication%20settings%20changed.")
+    def test_handle_change(self):
+        import datetime
+        today = datetime.datetime.now()
+        view = self._getTargetClass()
+        view.adapters = {DummySyndicationAdapter: ISyndicationInfo}
+        self.assertEqual(view.getContent().period, 'daily')
+        self.assertEqual(view.getContent().frequency, 1)
+        self.assertEqual(view.getContent().base, "")
+        self.assertEqual(view.getContent().max_items, 15)
+        data = {'frequency':3, 'period':'weekly', 'base':today,
+                'max_items':10}
+        view.handle_change("change", data)
+        self.assertEqual(view.getContent().period, 'weekly')
+        self.assertEqual(view.getContent().frequency, 3)
+        self.assertEqual(view.getContent().base, today)
+        self.assertEqual(view.getContent().max_items, 10)
+        self.assertEqual(view.status, u"Syndication settings changed.")
+        self.assertEqual(view.request.RESPONSE.location,
+            "http://www.foobar.com/bar/site?portal_status_message="
+            "Syndication%20settings%20changed.")
 
     def test_handle_disable(self):
         view = self._getTargetClass()

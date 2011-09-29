@@ -125,17 +125,25 @@ class Site(SettingsEditFormBase):
     def syndtool(self):
         return getUtility(ISyndicationTool)
 
+    @property
     @memoize
     def enabled(self, action=None):
         return self.syndtool.isAllowed
 
+    @property
     @memoize
     def disabled(self, action=None):
         return not self.syndtool.isAllowed
 
+    @memoize
+    def getContent(self):
+        syndtool = getUtility(ISyndicationTool)
+        return SyndicationToolSchemaAdapter(syndtool)
+
     def setUpWidgets(self, ignore_request=False):
+        self.adapters = {}
         fields = self.form_fields
-        if self.disabled():
+        if self.disabled:
             fields = form.FormFields()
         super(Site, self).setUpWidgets(ignore_request)
 
@@ -229,7 +237,6 @@ class Syndicate(SettingsEditFormBase):
 
     def handle_change(self, action, data):
         self._handle_success(action, data)
-        #self.adapter.set_info(**data)
         self.status = _(u"Syndication settings changed.")
         self._setRedirect("portal_actions", "object/syndication")
 
