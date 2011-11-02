@@ -1,7 +1,4 @@
-""" CMFDefault product permissions
-
-$Id$
-"""
+""" CMFDefault product permissions """
 from AccessControl import ModuleSecurityInfo
 
 security = ModuleSecurityInfo('Products.CMFDefault.permissions')

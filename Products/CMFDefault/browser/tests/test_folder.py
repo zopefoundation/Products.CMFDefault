@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Test Products.CMFDefault.browser.folder
-
-$Id$
-"""
+""" Test Products.CMFDefault.browser.folder """
 
 import unittest
 

@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault portal_metadata tool.
-
-$Id$
-"""
+""" CMFDefault portal_metadata tool. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass

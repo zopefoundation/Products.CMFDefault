@@ -10,7 +10,4 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""CMFDefault browser views.
-
-$Id$
-"""
+"""CMFDefault browser views. """

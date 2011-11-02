@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" A simple submit/review/publish workflow.
-
-$Id$
-"""
+""" A simple submit/review/publish workflow. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base

@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""CMFDefault upgrade steps.
-
-$Id$
-"""
+"""CMFDefault upgrade steps. """
 
 def mark_as_finished(tool):
     """empty upgrade step handler

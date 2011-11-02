@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for MetadataTool module.
-
-$Id$
-"""
+""" Unit tests for MetadataTool module. """
 
 import unittest
 import Testing

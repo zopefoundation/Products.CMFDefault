@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault content interfaces.
-
-$Id$
-"""
+""" CMFDefault content interfaces. """
 
 from zope.interface import Interface
 

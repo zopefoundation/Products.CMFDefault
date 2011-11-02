@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Utility functions.
-
-$Id$
-"""
+""" Utility functions. """
 
 from email.Header import make_header
 from email.MIMEText import MIMEText

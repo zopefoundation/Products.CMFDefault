@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Makers for z3c.recipe.i18n.
-
-$Id$
-"""
+"""Makers for z3c.recipe.i18n. """
 import os
 
 def tal_strings_html(path, domain, include_default_domain, exclude_dirs, **kw):

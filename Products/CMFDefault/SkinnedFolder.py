@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Allow the "view" of a folder to be skinned by type.
-
-$Id$
-"""
+""" Allow the "view" of a folder to be skinned by type. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass

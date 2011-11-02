@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for File module.
-
-$Id$
-"""
+""" Unit tests for File module. """
 
 import unittest
 import Testing

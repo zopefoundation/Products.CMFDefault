@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Custom form widgets.
-
-$Id$
-"""
+"""Custom form widgets. """
 
 from zope.app.form import InputWidget
 from zope.app.form.browser import ASCIIWidget

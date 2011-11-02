@@ -10,7 +10,4 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""CMFDefault formlib support.
-
-$Id$
-"""
+"""CMFDefault formlib support. """

@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser views for documents.
-
-$Id$
-"""
+"""Browser views for documents. """
 
 from zope.component import adapts
 from zope.formlib import form

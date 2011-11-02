@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" News content object.
-
-$Id$
-"""
+""" News content object. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass

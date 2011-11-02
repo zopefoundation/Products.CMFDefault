@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Test Products.CMFDefault.browser.ursa
-
-$Id$
-"""
+""" Test Products.CMFDefault.browser.ursa """
 import unittest
 from zope.component.testing import PlacelessSetup
 

@@ -11,10 +11,7 @@
 #
 ##############################################################################
 """ This module implements a portal-managed Image class. It is based on
-Zope's built-in Image object.
-
-$Id$
-"""
+Zope's built-in Image object. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass

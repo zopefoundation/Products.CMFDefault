@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for PropertiesTool module.
-
-$Id$
-"""
+""" Unit tests for PropertiesTool module. """
 
 import unittest
 import Testing

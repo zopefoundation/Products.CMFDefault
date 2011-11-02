@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for adding members.
-
-$Id$
-"""
+""" Unit tests for adding members. """
 
 import unittest
 from Testing import ZopeTestCase

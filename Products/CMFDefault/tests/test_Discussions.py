@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for Discussions.
-
-$Id$
-"""
+""" Unit tests for Discussions. """
 
 import unittest
 import Testing

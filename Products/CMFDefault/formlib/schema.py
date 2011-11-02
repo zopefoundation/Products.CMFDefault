@@ -14,10 +14,7 @@
 
 SchemaAdapterBase and ProxyFieldProperty are legacy code. They should only be
 used to adapt old content types that can't handle unicode and datetime
-correctly.
-
-$Id$
-"""
+correctly. """
 
 from datetime import datetime
 

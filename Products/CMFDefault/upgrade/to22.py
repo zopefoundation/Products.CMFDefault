@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Upgrade steps to CMFDefault 2.2.
-
-$Id$
-"""
+"""Upgrade steps to CMFDefault 2.2. """
 import logging
 from urllib import quote
 

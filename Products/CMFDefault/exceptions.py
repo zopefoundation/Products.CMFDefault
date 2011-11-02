@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault product exceptions.
-
-$Id$
-"""
+""" CMFDefault product exceptions. """
 
 from zope.schema import ValidationError
 from zope.i18nmessageid import MessageFactory

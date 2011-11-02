@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Test Products.CMFDefault.browser.folder with CMFBTreeFolder
-
-$Id$
-"""
+""" Test Products.CMFDefault.browser.folder with CMFBTreeFolder """
 
 import unittest
 from Testing import ZopeTestCase

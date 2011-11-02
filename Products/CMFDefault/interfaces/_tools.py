@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault tool interfaces.
-
-$Id$
-"""
+""" CMFDefault tool interfaces. """
 
 from Products.CMFCore.interfaces import IMembershipTool as BaseInterface
 

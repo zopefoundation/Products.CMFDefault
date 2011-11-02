@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault.interfaces package.
-
-$Id$
-"""
+""" CMFDefault.interfaces package. """
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from _content import *

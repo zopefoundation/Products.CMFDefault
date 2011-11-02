@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault portal_properties tool.
-
-$Id$
-"""
+""" CMFDefault portal_properties tool. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_inner, aq_parent

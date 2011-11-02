@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Discussion item portal type.
-
-$Id$
-"""
+""" Discussion item portal type. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import Implicit

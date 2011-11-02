@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Formlib schema vocabulary base classes.
-
-$Id$
-"""
+"""Formlib schema vocabulary base classes. """
 
 from zope.interface import implements
 from zope.schema.interfaces import IVocabularyFactory

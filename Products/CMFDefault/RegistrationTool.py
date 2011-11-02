@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault portal_registration tool.
-
-$Id$
-"""
+""" CMFDefault portal_registration tool. """
 
 from warnings import warn
 

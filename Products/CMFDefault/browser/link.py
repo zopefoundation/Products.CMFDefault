@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser views for links.
-
-$Id$
-"""
+"""Browser views for links. """
 
 import urlparse
 

@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for utils module.
-
-$Id$
-"""
+""" Unit tests for utils module. """
 
 import unittest
 

@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser views for folders.
-
-$Id$
-"""
+"""Browser views for folders. """
 
 import urllib
 

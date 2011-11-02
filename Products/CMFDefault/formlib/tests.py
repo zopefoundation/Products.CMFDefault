@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""CMFDefault formlib tests.
-
-$Id$
-"""
+"""CMFDefault formlib tests. """
 
 import doctest
 import unittest

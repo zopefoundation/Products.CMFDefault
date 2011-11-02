@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault portal_url tool.
-
-$Id$
-"""
+""" CMFDefault portal_url tool. """
 
 # for URL Tools created with CMF versions before 1.4
 from Products.CMFCore.URLTool import URLTool

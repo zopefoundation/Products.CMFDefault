@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Favorites are references to other objects within the same CMF site.
-
-$Id$
-"""
+""" Favorites are references to other objects within the same CMF site. """
 
 import urlparse
 

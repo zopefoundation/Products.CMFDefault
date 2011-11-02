@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for http://zope.org/Collectors/CMF/318
-
-$Id$
-"""
+""" Unit tests for http://zope.org/Collectors/CMF/318 """
 
 import unittest
 from Testing import ZopeTestCase

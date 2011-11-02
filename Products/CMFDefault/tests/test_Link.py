@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for Link module.
-
-$Id$
-"""
+""" Unit tests for Link module. """
 
 import unittest
 import Testing

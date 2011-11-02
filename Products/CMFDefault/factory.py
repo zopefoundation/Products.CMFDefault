@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Configured site factory implementation.
-
-$Id$
-"""
+""" Configured site factory implementation. """
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.site.hooks import setSite

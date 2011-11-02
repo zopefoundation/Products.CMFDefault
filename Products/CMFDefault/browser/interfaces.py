@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser view interfaces.
-
-$Id$
-"""
+"""Browser view interfaces. """
 
 from zope.interface import Interface
 from zope.schema import Bool

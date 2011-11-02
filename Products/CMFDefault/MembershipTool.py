@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault portal_membership tool.
-
-$Id$
-"""
+""" CMFDefault portal_membership tool. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base

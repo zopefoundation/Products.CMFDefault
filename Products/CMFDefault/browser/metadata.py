@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser views for metadata.
-
-$Id$
-"""
+"""Browser views for metadata. """
 
 from Acquisition import aq_self
 from zope.app.form.browser import DatetimeI18nWidget

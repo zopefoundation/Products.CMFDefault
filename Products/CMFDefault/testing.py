@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit test layers.
-
-$Id$
-"""
+""" Unit test layers. """
 
 from Testing import ZopeTestCase
 ZopeTestCase.installProduct('ZCTextIndex', 1)

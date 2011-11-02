@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Formlib form base classes.
-
-$Id$
-"""
+"""Formlib form base classes. """
 
 from datetime import datetime
 from sets import Set

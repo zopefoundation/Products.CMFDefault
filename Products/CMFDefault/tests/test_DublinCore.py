@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for DublinCore module.
-
-$Id$
-"""
+""" Unit tests for DublinCore module. """
 
 import unittest
 import Testing

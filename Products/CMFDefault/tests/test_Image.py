@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for Image module.
-
-$Id$
-"""
+""" Unit tests for Image module. """
 
 import unittest
 from Testing import ZopeTestCase

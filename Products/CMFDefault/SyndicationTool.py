@@ -12,10 +12,7 @@
 ##############################################################################
 """ CMFDefault portal_syndication tool.
 
-Manage outbound RSS syndication of folder content.
-
-$Id$
-"""
+Manage outbound RSS syndication of folder content. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base

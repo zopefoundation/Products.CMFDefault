@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Portal class
-
-$Id$
-"""
+""" Portal class """
 
 from App.class_init import InitializeClass
 

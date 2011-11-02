@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Link instances represent explicit links-as-content.
-
-$Id$
-"""
+""" Link instances represent explicit links-as-content. """
 
 import urlparse
 

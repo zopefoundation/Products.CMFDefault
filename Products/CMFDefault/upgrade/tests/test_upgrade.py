@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Upgrade tests.
-
-$Id$
-"""
+"""Upgrade tests. """
 
 import unittest
 from Testing import ZopeTestCase

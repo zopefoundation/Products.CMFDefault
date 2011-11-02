@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Test Products.CMFDefault.browser.link
-
-$Id$
-"""
+""" Test Products.CMFDefault.browser.link """
 
 import unittest
 from Testing import ZopeTestCase

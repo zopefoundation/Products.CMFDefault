@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Upgrade steps to CMFDefault 2.1.
-
-$Id$
-"""
+"""Upgrade steps to CMFDefault 2.1. """
 import logging
 
 from Acquisition import aq_base

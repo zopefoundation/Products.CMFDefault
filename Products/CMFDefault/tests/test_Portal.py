@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit / functional tests for a CMFSite.
-
-$Id$
-"""
+""" Unit / functional tests for a CMFSite. """
 
 import unittest
 from Testing import ZopeTestCase

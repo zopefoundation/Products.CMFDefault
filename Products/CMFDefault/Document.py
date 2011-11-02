@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Basic textual content object, supporting HTML, STX and plain text.
-
-$Id$
-"""
+""" Basic textual content object, supporting HTML, STX and plain text. """
 try:
     from reStructuredText import HTML as ReST
     REST_AVAILABLE = True

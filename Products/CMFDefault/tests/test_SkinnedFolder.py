@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for SkinnedFolder module.
-
-$Id$
-"""
+""" Unit tests for SkinnedFolder module. """
 
 import unittest
 import Testing

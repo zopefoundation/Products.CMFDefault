@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Shared utility functions for browser view tests
-
-$Id$
-"""
+""" Shared utility functions for browser view tests """
 
 try:
     from Zope2.App.schema import Zope2VocabularyRegistry

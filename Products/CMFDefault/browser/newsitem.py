@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser views for news items.
-
-$Id$
-"""
+"""Browser views for news items. """
 
 from zope.component import adapts
 from zope.formlib import form

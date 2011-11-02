@@ -10,7 +10,4 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""CMFDefault upgrade unit tests.
-
-$Id$
-"""
+"""CMFDefault upgrade unit tests. """

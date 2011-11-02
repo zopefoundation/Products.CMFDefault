@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for NewsItem module.
-
-$Id$
-"""
+""" Unit tests for NewsItem module. """
 
 import unittest
 import Testing

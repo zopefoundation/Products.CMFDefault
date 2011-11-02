@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser view utilities.
-
-$Id$
-"""
+"""Browser view utilities. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass

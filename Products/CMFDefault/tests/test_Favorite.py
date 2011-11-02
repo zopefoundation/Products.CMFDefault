@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Unit tests for Favorites.
-
-$Id$
-"""
+""" Unit tests for Favorites. """
 
 import unittest
 import Testing

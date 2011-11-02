@@ -12,10 +12,7 @@
 ##############################################################################
 """ This module implements a portal-managed File class.  It is based on
 Zope's built-in File object, but modifies the behaviour slightly to
-make it more Portal-friendly.
-
-$Id$
-"""
+make it more Portal-friendly. """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass

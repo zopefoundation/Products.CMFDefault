@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" CMFDefault setup handlers.
-
-$Id$
-"""
+""" CMFDefault setup handlers. """
 
 from Products.CMFDefault.exceptions import BadRequest
 

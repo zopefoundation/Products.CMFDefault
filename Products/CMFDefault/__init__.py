@@ -10,10 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Default implementation of CMFCore.
-
-$Id$
-"""
+""" Default implementation of CMFCore. """
 
 def initialize(context):
     from Products.CMFCore.utils import ToolInit
