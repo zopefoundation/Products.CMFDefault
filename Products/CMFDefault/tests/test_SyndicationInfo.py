@@ -13,11 +13,13 @@
 """ Unit tests for the SyndicationInfo adapter.
 """
 
+from datetime import datetime
 import unittest
 import Testing
 
-from DateTime.DateTime import DateTime
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getSiteManager
+from zope.component import getAdapter
 from zope.interface.verify import verifyClass
 
 from Products.CMFCore.interfaces import ISyndicationTool
@@ -27,13 +29,17 @@ from Products.CMFCore.tests.base.testcase import TransactionalTest
 class SyndicationInfoTests(TransactionalTest):
 
     def setUp(self):
+        from zope.annotation.attribute import AttributeAnnotations
+        from Products.CMFCore.interfaces import IFolderish
         from Products.CMFCore.PortalFolder import PortalFolder
 
         super(SyndicationInfoTests, self).setUp()
         self.app._setObject('portal', PortalFolder('portal'))
         self.portal = self.app.portal
         self.syndtool = DummySyndicationTool()
-        getSiteManager().registerUtility(self.syndtool, ISyndicationTool)
+        sm = getSiteManager()
+        sm.registerUtility(self.syndtool, ISyndicationTool)
+        sm.registerAdapter(AttributeAnnotations, [IFolderish], IAnnotations)
 
     def _getTargetClass(self):
         from Products.CMFDefault.SyndicationInfo import SyndicationInfo
@@ -41,56 +47,64 @@ class SyndicationInfoTests(TransactionalTest):
         return SyndicationInfo
 
     def _makeOne(self):
+        from zope.interface import alsoProvides
         from Products.CMFCore.PortalFolder import PortalFolder
+        folder = PortalFolder('folder')
 
-        self.portal._setObject('folder', PortalFolder('folder'))
-        return self._getTargetClass()(self.portal.folder)
-    
+        self.portal._setObject('folder', folder)
+        alsoProvides(folder, IAnnotations)
+
+        return self._getTargetClass()(folder)
+
     def test_interfaces(self):
         from Products.CMFCore.interfaces import ISyndicationInfo
 
         verifyClass(ISyndicationInfo, self._getTargetClass())
-    
+
     def test_site_settings(self):
         adapter = self._makeOne()
         self.assertTrue(adapter.site_settings is self.syndtool)
-    
-    def test_get_info(self):
-        adapter = self._makeOne()
-        self.assertEqual(adapter.get_info(),
-                        {'max_items': 15, 'frequency': 1, 'period': 'daily',
-                        'base': DateTime('2010/10/03 12:00:00 GMT+0')})
-    
-    def test_set_info(self):
+
+    def test_set(self):
         adapter = self._makeOne()
         settings = {'max_items': 10, 'frequency': 7, 'period': 'daily',
-        'base': DateTime()}
-        self.assertNotEqual(adapter.get_info(), settings)
-        adapter.set_info(**settings)
-        self.assertEqual(adapter.get_info(), settings)
-    
+                    'base': datetime.today()}
+        annotations = getAdapter(adapter.context, IAnnotations)
+        self.assertFalse(annotations.has_key(adapter.key))
+        annotations[adapter.key] = settings
+        for k, v in settings.items():
+            self.assertEqual(getattr(adapter, k), v)
+
     def revert(self):
         adapter = self._makeOne()
         settings = {'max_items': 20, 'frequency': 1, 'period': 'monthly',
-        'base': DateTime()}
-        adapter.set_info(**settings)
-        self.assertEqual(adapter.get_info(), settings)
+                    'base': datetime.today()}
+        setattr(adapter.context, adapter.key, settings)
+        self.assertEqual(getattr(adapter.context, adapter.key, settings))
         adapter.revert()
-        self.assertNotEqual(adapter.get_info(), settings)
-    
-    def test_enabled(self):
+        self.assertNotEqual(getattr(adapter.context, adapter.key, settings))
+
+    def test_not_enabled_by_default(self):
         adapter = self._makeOne()
         self.assertFalse(adapter.enabled)
-    
+
     def test_enable(self):
         adapter = self._makeOne()
-        self.syndtool.isAllowed = 1
+        self.syndtool.enabled = True
         adapter.enable()
         self.assertTrue(adapter.enabled)
-    
+
+    def test_get_default_values(self):
+        adapter = self._makeOne()
+        self.assertFalse(hasattr(adapter.context, adapter.key))
+        self.assertEqual(adapter.period, self.syndtool.period)
+        self.assertEqual(adapter.frequency, self.syndtool.frequency)
+        self.assertEqual(adapter.base, self.syndtool.base)
+        self.assertEqual(adapter.max_items, self.syndtool.max_items)
+
     def test_disable(self):
         adapter = self._makeOne()
-        self.syndtool.isAllowed = 1
+        self.syndtool.enabled = True
         adapter.enable()
         self.assertTrue(adapter.enabled)
         adapter.disable()
@@ -98,15 +112,13 @@ class SyndicationInfoTests(TransactionalTest):
 
 
 class DummySyndicationTool(object):
-    
-    isAllowed = 0
-    syUpdatePeriod = 'daily'
-    syUpdateFrequency = 1
-    syUpdateBase = DateTime('2010/10/03 12:00:00 GMT+0')
+
+    enabled  = 0
+    period = 'daily'
+    frequency = 1
+    base = datetime(2010, 10, 3, 12, 0, 0)
     max_items = 15
-    
-    def manage_fixupOwnershipAfterAdd(self):
-        pass
+
 
 def test_suite():
     return unittest.TestSuite((

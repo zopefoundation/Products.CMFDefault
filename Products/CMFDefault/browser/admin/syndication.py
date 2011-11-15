@@ -12,91 +12,30 @@
 ##############################################################################
 """Syndication configuration views.
 """
-
-from datetime import datetime
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.component import adapts
+from zope.interface import alsoProvides
 from zope.formlib import form
-from zope.interface import Interface
 from zope.interface import implements
-from zope.schema import Choice
-from zope.schema import Datetime
-from zope.schema import Int
 
-from Products.CMFCore.interfaces import ISyndicationInfo
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFDefault.SyndicationTool import SyndicationTool
+from Products.CMFDefault.SyndicationInfo import ISyndicationInfo
 from Products.CMFDefault.browser.utils import memoize
-from Products.CMFDefault.formlib.form import EditFormBase, SettingsEditFormBase
+from Products.CMFDefault.formlib.form import SettingsEditFormBase, EditFormBase
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
-from Products.CMFDefault.formlib.vocabulary import SimpleVocabulary
 from Products.CMFDefault.utils import Message as _
-
-available_periods = (
-    (u'hourly', 'hourly', _(u'Hourly')),
-    (u'daily', 'daily', _(u'Daily')),
-    (u'weekly', 'weekly', _(u'Weekly')),
-    (u'monthly', 'monthly', _(u'Monthly')),
-    (u'yearly', 'yearly', _(u'Yearly')))
-
-
-class ISyndicationSchema(Interface):
-
-    """Syndication form schema"""
-
-    period = Choice(
-        title=_(u"Update period"),
-        vocabulary=SimpleVocabulary.fromTitleItems(available_periods),
-        default=SyndicationTool.syUpdatePeriod
-    )
-
-    frequency = Int(
-        title=_(u"Update frequency"),
-        description=_(u"This is a multiple of the update period. An"
-                      u" update frequency of '3' and an update period"
-                      u" of 'Monthly' will mean an update every three months."),
-        default=1
-    )
-
-    base = Datetime(
-        title=_(u"Update base"),
-        description=_(u""),
-        default=datetime.now()
-    )
-
-    max_items = Int(
-        title=_(u"Maximum number of items"),
-        description=_(u""),
-        default=15
-    )
-
-
-class SyndicationToolSchemaAdapter(SchemaAdapterBase):
-
-    """Adapter for ISyndicationTool.
-    """
-
-    adapts(IFolderish)
-    implements(ISyndicationSchema)
-
-    period  = ProxyFieldProperty(ISyndicationSchema['period'], 'syUpdatePeriod')
-    frequency = ProxyFieldProperty(ISyndicationSchema['frequency'], 'syUpdateFrequency')
-    base = ProxyFieldProperty(ISyndicationSchema['base'], 'syUpdateBase')
-    max_items = ProxyFieldProperty(ISyndicationSchema['max_items'])
 
 
 class Site(SettingsEditFormBase):
 
     """Enable or disable syndication for a site."""
 
-    form_fields = form.FormFields(ISyndicationSchema)
-    template = ViewPageTemplateFile("syndication.pt")
-    allowed = True
+    form_fields = form.FormFields(ISyndicationInfo)
     label = _(u"Configure Portal Syndication")
 
     actions = form.Actions(
@@ -120,35 +59,27 @@ class Site(SettingsEditFormBase):
         )
     )
 
-    @property
-    @memoize
-    def syndtool(self):
-        return getUtility(ISyndicationTool)
-
-    @property
     @memoize
     def enabled(self, action=None):
-        return self.syndtool.isAllowed
+        return self.getContent().enabled
 
-    @property
     @memoize
     def disabled(self, action=None):
-        return not self.syndtool.isAllowed
+        return not self.getContent().enabled
 
     @memoize
     def getContent(self):
         syndtool = getUtility(ISyndicationTool)
-        return SyndicationToolSchemaAdapter(syndtool)
+        return syndtool
 
     def setUpWidgets(self, ignore_request=False):
         self.adapters = {}
-        fields = self.form_fields
-        if self.disabled:
-            fields = form.FormFields()
         super(Site, self).setUpWidgets(ignore_request)
+        self.widgets['enabled'].hide = True
 
     def handle_enable(self, action, data):
-        self.syndtool.isAllowed = True
+        self.getContent().enabled = True
+        self._handle_success(action, data)
         self.status = _(u"Syndication enabled.")
         self._setRedirect("portal_actions", "global/syndication")
 
@@ -158,26 +89,24 @@ class Site(SettingsEditFormBase):
         self._setRedirect("portal_actions", "global/syndication")
 
     def handle_disable(self, action, data):
-        self.syndtool.isAllowed = False
+        self.getContent().enabled = False
         self.status = _(u"Syndication disabled.")
         self._setRedirect("portal_actions", "global/syndication")
 
 
-# XXX: Don't use this form, it might corrupt your settings!
-class Syndicate(SettingsEditFormBase):
+class Folder(SettingsEditFormBase):
 
     """Enable, disable and customise syndication settings for a folder.
     """
 
-    form_fields = form.FormFields(ISyndicationSchema)
-    template = ViewPageTemplateFile("syndication.pt")
+    form_fields = form.FormFields(ISyndicationInfo)
     label = _(u"Configure Folder Syndication")
 
     actions = form.Actions(
         form.Action(
             name="enable",
             label=_(u"Enable Syndication"),
-            condition="disabled",
+            condition="allowed",
             success="handle_enable",
             ),
         form.Action(
@@ -200,38 +129,42 @@ class Syndicate(SettingsEditFormBase):
         )
     )
 
-    @property
     @memoize
-    def adapter(self):
+    def getContent(self):
         return getAdapter(self.context, ISyndicationInfo)
-
-    def setUpWidgets(self, ignore_request=False):
-        fields = self.form_fields
-        if self.disabled():
-            fields = form.FormFields()
-        super(Syndicate, self).setUpWidgets(ignore_request)
-
-    @memoize
-    def enabled(self, action=None):
-        return self.adapter.enabled
 
     @memoize
     def disabled(self, action=None):
-        return not self.adapter.enabled
+        return not self.enabled()
 
-    @property
     @memoize
-    def allowed(self):
-        syndtool = getUtility(ISyndicationTool)
-        return syndtool.isSiteSyndicationAllowed()
+    def enabled(self, action=None):
+        return self.getContent().enabled
+
+    def setUpWidgets(self, ignore_request=False):
+        if not self.allowed():
+            self.form_fields = form.FormFields()
+            self.widgets = {}
+            return
+        super(Folder, self).setUpWidgets(ignore_request)
+        self.widgets['enabled'].hide = True
+
+    @memoize
+    def allowed(self, action=None):
+        return self.getContent().allowed
+
+    def applyChanges(self, data):
+        return form.applyData(self.context, self.form_fields, data,
+                          self.adapters)
 
     def handle_enable(self, action, data):
-        self.adapter.enable()
+        self.getContent().enable()
+        self._handle_success(action, data)
         self.status = _(u"Syndication enabled.")
         self._setRedirect("portal_actions", "object/syndication")
 
     def handle_disable(self, action, data):
-        self.adapter.disable()
+        self.getContent().disable()
         self.status = _(u"Syndication disabled.")
         self._setRedirect("portal_actions", "object/syndication")
 
@@ -241,6 +174,6 @@ class Syndicate(SettingsEditFormBase):
         self._setRedirect("portal_actions", "object/syndication")
 
     def handle_revert(self, action, data):
-        self.adapter.revert()
+        self.getContent().revert()
         self.status = _(u"Syndication reset to site default.")
         self._setRedirect("portal_actions", "object/syndication")

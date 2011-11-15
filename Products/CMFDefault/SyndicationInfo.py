@@ -13,17 +13,27 @@
 """ SyndicationInfo is an adapter for IFolderish objects.
 """
 
+from datetime import datetime
+
 from OFS.SimpleItem import SimpleItem
+from zope.annotation.interfaces import IAnnotations
 from zope.component import adapts
 from zope.component import getUtility
+from zope.component import getAdapter
 from zope.interface import alsoProvides
 from zope.interface import implements
+from zope.interface import Interface
 from zope.interface import noLongerProvides
+from zope.schema import Bool, Choice, Datetime, Int
+from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ISyndicatable
 from Products.CMFCore.interfaces import ISyndicationInfo
 from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFDefault.formlib.vocabulary import SimpleVocabulary
+from Products.CMFDefault.SyndicationTool import SyndicationTool
+from Products.CMFDefault.utils import Message as _
 
 
 class SyndicationInformation(SimpleItem):
@@ -36,18 +46,57 @@ class SyndicationInformation(SimpleItem):
     id='syndication_information'
     meta_type='SyndicationInformation'
 
+available_periods = (
+    (u'hourly', 'hourly', _(u'Hourly')),
+    (u'daily', 'daily', _(u'Daily')),
+    (u'weekly', 'weekly', _(u'Weekly')),
+    (u'monthly', 'monthly', _(u'Monthly')),
+    (u'yearly', 'yearly', _(u'Yearly')))
+
+
+class ISyndicationInfo(ISyndicationInfo):
+
+    period = Choice(
+        title=_(u"Update period"),
+        vocabulary=SimpleVocabulary.fromTitleItems(available_periods),
+    )
+
+    frequency = Int(
+        title=_(u"Update frequency"),
+        description=_(u"This is a multiple of the update period. An"
+                      u" update frequency of '3' and an update period"
+                      u" of 'Monthly' will mean an update every three months."),
+    )
+
+    base = Datetime(
+        title=_(u"Update base"),
+        description=_(u""),
+        default=datetime.now()
+    )
+
+    max_items = Int(
+        title=_(u"Maximum number of items"),
+        description=_(u""),
+        default=15
+    )
+
+    enabled = Bool(
+        required=False,
+    )
+
 
 class SyndicationInfo(object):
     """
-    Annotations style adapter.
+    Annotations adapter.
     Folders which can be syndicated are given the ISyndicatable interface
-    Local syndication information is stored as a dictionary on the
-    _syndication_info attribute of the folder
+    Local syndication information is stored as a dictionary under the
+    __cmf.syndication_info key of the annotations
     """
 
+    __slots__ = ("context", "period", "frequency", "base", "max_items")
     implements(ISyndicationInfo)
     adapts(IFolderish)
-    key = "_syndication_info"
+    key = "__cmf.SyndicationInfo"
 
     def __init__(self, context):
         self.context = context
@@ -57,38 +106,66 @@ class SyndicationInfo(object):
         """Get site syndication tool"""
         return getUtility(ISyndicationTool)
 
-    def get_info(self):
-        """
-        Return syndication settings for the folder or from global site
-        settings if there are none for the folder
-        """
-        info = getattr(self.context, self.key, None)
-        if info is None:
-            values = {'period': self.site_settings.syUpdatePeriod,
-                     'frequency':self.site_settings.syUpdateFrequency,
-                     'base': self.site_settings.syUpdateBase,
-                     'max_items': self.site_settings.max_items}
-            return values
-        return info
+    @property
+    def allowed(self):
+        return self.site_settings.enabled
 
-    def set_info(self, period=None, frequency=None, base=None,
-                max_items=None):
-        """Folder has local values"""
-        values = {'period': period, 'frequency': frequency,
-                  'base': base, 'max_items': max_items}
-        setattr(self.context, self.key, values)
+    def _get_property(self, attr):
+        """
+        Get a value from the annotation or site settings.
+        """
+        annotations = getAdapter(self.context, IAnnotations)
+        annotation = annotations.get(self.key, None)
+        if annotation is None:
+            return getattr(self.site_settings, attr)
+        return annotation.get(attr, getattr(self.site_settings, attr))
 
-    def revert(self):
-        """Remove local values"""
-        try:
-            delattr(self.context, self.key)
-        except AttributeError:
-            pass
+    def _set_property(self, attr, value):
+        """
+        Set a value on the annotation
+        """
+        annotations = getAdapter(self.context, IAnnotations)
+        if not annotations.get(self.key):
+            annotations[self.key] = {}
+        annotation = annotations.get(self.key, None)
+        annotation[attr] = value
+
+    def get_period(self):
+        return self._get_property('period')
+
+    def set_period(self, value):
+        self._set_property('period', value)
+
+    period = property(get_period, set_period)
+
+    def get_frequency(self):
+        return self._get_property('frequency')
+
+    def set_frequency(self, value):
+        self._set_property('frequency', value)
+
+    frequency = property(get_frequency, set_frequency)
+
+    def get_base(self):
+        return self._get_property('base')
+
+    def set_base(self, value):
+        return self._set_property('base', value)
+
+    base = property(get_base, set_base)
+
+    def get_max_items(self):
+        return self._get_property('max_items')
+
+    def set_max_items(self, value):
+        self._set_property('max_items', value)
+
+    max_items = property(get_max_items, set_max_items)
 
     @property
     def enabled(self):
         """Is syndication available for the site and a folder"""
-        return self.site_settings.isAllowed \
+        return self.site_settings.enabled \
                and ISyndicatable.providedBy(self.context)
 
     def enable(self):
@@ -99,3 +176,11 @@ class SyndicationInfo(object):
         """Disable syndication for a folder"""
         self.revert()
         noLongerProvides(self.context, ISyndicatable)
+
+    def revert(self):
+        """Remove local values"""
+        annotations = getAdapter(self.context, IAnnotations)
+        try:
+            del annotations[self.key]
+        except KeyError:
+            pass

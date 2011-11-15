@@ -15,6 +15,7 @@
 Manage outbound RSS syndication of folder content.
 """
 
+from datetime import datetime
 from warnings import warn
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -36,7 +37,6 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFDefault.exceptions import AccessControl_Unauthorized
 from Products.CMFDefault.permissions import ManagePortal
 from Products.CMFDefault.permissions import ManageProperties
-from Products.CMFDefault.SyndicationInfo import SyndicationInformation
 from Products.CMFDefault.utils import _dtmldir
 
 
@@ -57,10 +57,10 @@ class SyndicationTool(UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
 
     #Default Sitewide Values
-    isAllowed = False
-    syUpdatePeriod = 'daily'
-    syUpdateFrequency = 1
-    syUpdateBase = DateTime()
+    isAllowed = enabled = False
+    syUpdatePeriod = period = 'daily'
+    syUpdateFrequency = frequency = 1
+    syUpdateBase = base = datetime.now()
     max_items = 15
 
     #ZMI Methods
@@ -74,56 +74,6 @@ class SyndicationTool(UniqueObject, SimpleItem):
 
     security.declareProtected(ManagePortal, 'overview')
     overview = HTMLFile('synOverview', _dtmldir)
-
-    security.declareProtected(ManagePortal, 'editProperties')
-    def editProperties( self
-                      , updatePeriod=None
-                      , updateFrequency=None
-                      , updateBase=None
-                      , isAllowed=None
-                      , max_items=None
-                      , REQUEST=None
-                      ):
-        """
-        Edit the properties for the SystemWide defaults on the
-        SyndicationTool.
-        """
-        if isAllowed is not None:
-            self.isAllowed = isAllowed
-
-        if updatePeriod is not None:
-            self.syUpdatePeriod = updatePeriod
-        else:
-            try:
-                del self.syUpdatePeriod
-            except (AttributeError, KeyError):
-                pass
-
-        if updateFrequency is not None:
-            self.syUpdateFrequency = int(updateFrequency)
-        else:
-            try:
-                del self.syUpdateFrequency
-            except (AttributeError, KeyError):
-                pass
-
-        if updateBase is not None:
-            if not hasattr(updateBase, 'ISO'):
-                updateBase = DateTime( updateBase )
-            self.syUpdateBase = updateBase
-        else:
-            try:
-                del self.syUpdateBase
-            except (AttributeError, KeyError):
-                pass
-
-        if max_items is not None:
-            self.max_items = int(max_items)
-        else:
-            try:
-                del self.max_items
-            except (AttributeError, KeyError):
-                pass
 
     def _syndication_info(self, obj):
         """Get a SyndicationInfo adapter for managing object
@@ -148,22 +98,15 @@ class SyndicationTool(UniqueObject, SimpleItem):
         These are held on the syndication_information object.
         Not Sitewide Properties.
         """
-        info = self._syndication_info(obj)
+        info = self.getSyndicationInfo(obj)
 
         if not info.enabled:
             raise SyndicationError('Syndication is Disabled')
 
-        updatePeriod = updatePeriod or self.syUpdatePeriod
-        updateFrequency = updateFrequency or self.syUpdateFrequency
-        updateBase = updateBase or self.syUpdateBase
-        max_items = max_items or self.max_items
-        if updateBase is not None:
-            if not hasattr(updateBase, 'ISO'):
-                updateBase = DateTime( updateBase )
-
-        values = {'period': updatePeriod, 'frequency': int(updateFrequency),
-                  'base': updateBase, 'max_items': int(max_items)}
-        info.set_info(**values)
+        info.period = updatePeriod or self.period
+        info.frequency = updateFrequency or self.frequency
+        info.base = updateBase or self.base
+        info.max_items = max_items or self.max_items
 
     security.declareProtected(ManageProperties, 'enableSyndication')
     def enableSyndication(self, obj):
@@ -215,7 +158,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
         """
         Return sitewide syndication policy
         """
-        return self.isAllowed
+        return self.enabled
 
     security.declarePublic('isSyndicationAllowed')
     def isSyndicationAllowed(self, obj=None):
@@ -231,7 +174,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
             info = self._syndication_info(obj)
         except SyndicationError:
             return False
-        return info.enabled
+        return getattr(info, 'enabled', False)
 
     security.declarePublic('getSyndicationInfo')
     def getSyndicationInfo(self, obj):
@@ -241,7 +184,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
         info = self._syndication_info(obj)
         if not info.enabled:
             raise SyndicationError('Syndication is not allowed')
-        return info.get_info()
+        return info
 
     security.declarePublic('getUpdatePeriod')
     def getUpdatePeriod( self, obj=None ):
@@ -253,7 +196,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
 
         NOTE:  Need to add checks for sitewide policies!!!
         """
-        return self.getSyndicationInfo(obj)['period']
+        return self.getSyndicationInfo(obj).period
 
     security.declarePublic('getUpdateFrequency')
     def getUpdateFrequency(self, obj=None):
@@ -265,7 +208,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
 
         Note:  Need to add checks for sitewide policies!!!
         """
-        return self.getSyndicationInfo(obj)['frequency']
+        return self.getSyndicationInfo(obj).frequency
 
     security.declarePublic('getUpdateBase')
     def getUpdateBase(self, obj=None):
@@ -280,7 +223,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
         Additionally, sitewide policy checks might have a place
         here...
         """
-        return self.getSyndicationInfo(obj)['base'].ISO()
+        return self.getSyndicationInfo(obj).base.isoformat()
 
     security.declarePublic('getHTML4UpdateBase')
     def getHTML4UpdateBase(self, obj=None):
@@ -296,7 +239,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
         """
         Return the max_items to be displayed in the syndication
         """
-        return self.getSyndicationInfo(obj)['max_items']
+        return self.getSyndicationInfo(obj).max_items
 
 InitializeClass(SyndicationTool)
 registerToolInterface('portal_syndication', ISyndicationTool)

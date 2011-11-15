@@ -11,11 +11,10 @@
 
 <h1 tal:content="view/label">Folder Syndication</h1>
 
-<p class="errors" tal:condition="not: view/allowed"
+<p class="errors" tal:condition="view/disabled"
                   i18n:translate="">Portal syndication is currently disabled</p>
 
 <form action="." method="post"
-      tal:condition="view/allowed"
       tal:attributes="action request/ACTUAL_URL">
 
     <fieldset tal:repeat="widget view/widgets">

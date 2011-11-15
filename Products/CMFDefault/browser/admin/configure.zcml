@@ -2,8 +2,6 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-  <adapter factory=".syndication.SyndicationToolSchemaAdapter"/>
-
   <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
@@ -24,7 +22,7 @@
       for="Products.CMFCore.interfaces.IFolderish"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="syndicate.html"
-      class=".syndication.Syndicate"
+      class=".syndication.Folder"
       permission="cmf.ManagePortal"
       />
 

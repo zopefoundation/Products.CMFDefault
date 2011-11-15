@@ -12,7 +12,8 @@
 ##############################################################################
 """ Unit tests for SyndicationTool module.
 """
-
+from datetime import datetime
+from datetime import timedelta
 import unittest
 import Testing
 
@@ -29,17 +30,54 @@ from Products.CMFCore.tests.base.testcase import SecurityTest
 
 class Dummy:
 
+    period = None
+    frequency = None
+    base = None
+    max_items = None
+
     def getId(self):
         return 'dummy'
 
 
-class DummyInfo:
+class DummyInfo(object):
 
     def __init__(self, context):
         self.context = context
 
     def __call__(self):
         pass
+
+    def set_f(self, frequency):
+        self.context.frequency = frequency
+
+    def get_f(self):
+        return self.context.frequency
+
+    frequency = property(get_f, set_f)
+
+    def get_p(self):
+        return self.context.period
+
+    def set_p(self, period):
+        self.context.period = period
+
+    period = property(get_p, set_p)
+
+    def get_b(self):
+        return self.context.base
+
+    def set_b(self, base):
+        self.context.base = base
+
+    base = property(get_b, set_b)
+
+    def get_m(self):
+        return self.context.max_items
+
+    def set_m(self, max_items):
+        self.context.max_items = max_items
+
+    max_items = property(get_m, set_m)
 
     @property
     def enabled(self):
@@ -53,20 +91,6 @@ class DummyInfo:
     def disable(self):
         self.context.enabled = False
 
-    def set_info(self, **kw):
-        for k, v in kw.items():
-            setattr(self.context, k, v)
-
-    def get_info(self):
-        if hasattr(self.context, 'frequency'):
-            # values set on context
-            return {'frequency': self.context.frequency,
-                    'period': self.context.period,
-                    'base': self.context.base,
-                    'max_items': self.context.max_items}
-        #values from syndication tool
-        return {'frequency': '1', 'period': 'daily',
-                'base': DateTime('2010/10/04 12:00:00 GMT'), 'max_items': 15}
 
 class SyndicationToolTests(SecurityTest):
 
@@ -95,55 +119,15 @@ class SyndicationToolTests(SecurityTest):
         verifyClass(ISyndicationTool, self._getTargetClass())
 
     def test_empty(self):
-        ONE_MINUTE = (24.0 * 60.0) / 86400
+        ONE_MINUTE = timedelta(0, 61, 0)
 
         tool = self._makeOne()
 
-        self.assertEqual(tool.syUpdatePeriod, 'daily')
-        self.assertEqual(tool.syUpdateFrequency, 1)
-        self.failUnless(DateTime() - tool.syUpdateBase < ONE_MINUTE)
-        self.failIf(tool.isAllowed)
+        self.assertEqual(tool.period, 'daily')
+        self.assertEqual(tool.frequency, 1)
+        self.failUnless(datetime.now() - tool.base < ONE_MINUTE)
+        self.failIf(tool.enabled)
         self.assertEqual(tool.max_items, 15)
-
-    def test_editProperties_normal(self):
-        PERIOD = 'hourly'
-        FREQUENCY = 4
-        NOW = DateTime()
-        MAX_ITEMS = 42
-
-        tool = self._makeOne()
-        tool.editProperties(updatePeriod=PERIOD,
-                            updateFrequency=FREQUENCY,
-                            updateBase=NOW,
-                            isAllowed=True,
-                            max_items=MAX_ITEMS,
-                           )
-
-        self.assertEqual(tool.syUpdatePeriod, PERIOD)
-        self.assertEqual(tool.syUpdateFrequency, FREQUENCY)
-        self.assertEqual(tool.syUpdateBase, NOW)
-        self.failUnless(tool.isAllowed)
-        self.assertEqual(tool.max_items, MAX_ITEMS)
-
-    def test_editProperties_coercing(self):
-        PERIOD = 'hourly'
-        FREQUENCY = 4
-        NOW = DateTime()
-        MAX_ITEMS = 42
-
-        tool = self._makeOne()
-        tool.editProperties(updatePeriod=PERIOD,
-                            updateFrequency='%d' % FREQUENCY,
-                            updateBase=NOW.ISO(),
-                            isAllowed='True',
-                            max_items='%d' % MAX_ITEMS,
-                           )
-
-        self.assertEqual(tool.syUpdatePeriod, PERIOD)
-        self.assertEqual(tool.syUpdateFrequency, FREQUENCY)
-        self.assertEqual(tool.syUpdateBase, DateTime(NOW.ISO()))
-        self.failUnless(tool.isAllowed)
-        self.assertEqual(tool.max_items, MAX_ITEMS)
 
     def test_object_not_syndicatable(self):
         tool = self._makeOne()
@@ -163,7 +147,7 @@ class SyndicationToolTests(SecurityTest):
 
     def test_enable_object_syndication(self):
         tool = self._makeOne()
-        tool.isAllowed = True
+        tool.enabled = True
         context = self._makeContext()
         tool.enableSyndication(context)
         self.assertTrue(tool.isSyndicationAllowed(context))
@@ -171,11 +155,11 @@ class SyndicationToolTests(SecurityTest):
     def test_editSyInformationProperties_normal(self):
         PERIOD = 'hourly'
         FREQUENCY = 4
-        NOW = DateTime()
+        NOW = datetime.now()
         MAX_ITEMS = 42
 
         tool = self._makeOne()
-        tool.isAllowed = True
+        tool.enabled = True
         context = self._makeContext()
         tool.enableSyndication(context)
 
@@ -185,40 +169,13 @@ class SyndicationToolTests(SecurityTest):
                                          updateBase=NOW,
                                          max_items=MAX_ITEMS,
                                         )
-        self.assertEqual(tool.getSyndicationInfo(context),
-                             {'frequency': FREQUENCY, 'period': PERIOD,
-                              'base': NOW, 'max_items': MAX_ITEMS})
-
-    def test_editSyInformationProperties_coercing(self):
-        PERIOD = 'hourly'
-        FREQUENCY = 4
-        NOW = DateTime()
-        MAX_ITEMS = 42
-
-        tool = self._makeOne()
-        tool.isAllowed = True
-        context = self._makeContext()
-        tool.enableSyndication(context)
-
-        tool.editSyInformationProperties(context,
-                                         updatePeriod=PERIOD,
-                                         updateFrequency='%d' % FREQUENCY,
-                                         updateBase=NOW.ISO(),
-                                         max_items='%d' % MAX_ITEMS,
-                                        )
-        self.assertEqual(tool.getSyndicationInfo(context),
-                             {'frequency': FREQUENCY, 'period': PERIOD,
-                              'base': DateTime(NOW.ISO()),
-                              'max_items': MAX_ITEMS})
-
-    def test_editProperties_isAllowedOnly(self):
-        # Zope 2.8 crashes if we don't edit all properties.
-        # This is because Zope now raises AttributeError
-        # instead of KeyError in editProperties().
-        tool = self._makeOne()
-        tool.editProperties(isAllowed=1)
-
-        self.failUnless(tool.isAllowed)
+        info = tool.getSyndicationInfo(context)
+        import pdb
+        #pdb.set_trace()
+        self.assertEqual(info.frequency, FREQUENCY)
+        self.assertEqual(info.period, PERIOD)
+        self.assertEqual(info.base, NOW)
+        self.assertEqual(info.max_items, MAX_ITEMS)
 
     def test_getSyndicatableContent(self):
         # http://www.zope.org/Collectors/CMF/369
@@ -230,19 +187,18 @@ class SyndicationToolTests(SecurityTest):
 
         PERIOD = 'hourly'
         FREQUENCY = 4
-        NOW = DateTime()
+        NOW = datetime.now()
         MAX_ITEMS = 42
 
         getSiteManager().registerUtility(TypesTool(), ITypesTool)
         self.app._setObject('pf', PortalFolder('pf'))
         self.app._setObject('bf', CMFBTreeFolder('bf'))
         tool = self._makeOne()
-        tool.editProperties(updatePeriod=PERIOD,
-                            updateFrequency=FREQUENCY,
-                            updateBase=NOW,
-                            isAllowed=True,
-                            max_items=MAX_ITEMS,
-                           )
+        tool.period = PERIOD
+        tool.frequency = FREQUENCY
+        tool.base = NOW
+        tool.enabled = True
+        tool.max_items = MAX_ITEMS
 
         self.assertEqual(len(tool.getSyndicatableContent(self.app.pf)), 0)
         self.assertEqual(len(tool.getSyndicatableContent(self.app.bf)), 0)
