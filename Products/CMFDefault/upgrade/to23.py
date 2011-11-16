@@ -321,3 +321,24 @@ def upgrade_root_site_manager(tool):
             sm.registerUtility(tool_obj, iface)
             logger.info('Registered %s for interface %s' % (tool_id,
                                                             tool_interface))
+
+def upgrade_syndicationtool(tool):
+    """Replace SyndicatonInformation objects with SyndicationInfo adapters"""
+
+    def change_to_adapter(SyndicationInformation):
+        """Read values from the SyndicationInformation object and set them on
+        the adapter"""
+        folder = aq_parent(aq_inner(SyndicationInformation))
+        adapter = getAdapter(folder, ISyndicationInfo)
+        adapter.period = SyndicationInformation.syndPeriod
+        adapter.base = SyndicationInformation.syndBase
+        adapter.frequency = SyndicationInformation.syndFrequency
+        adapter.max_items = SyndicationInformation.max_items
+        folder._delObj(SyndicationInformation.getId())
+
+    # convert Zope.DateTime to python.datetime on the tool
+
+    # migrate existing SyndicationInformation objects to adapter based Infos.
+    portal = aq_parent(aq_inner(tool))
+    portal.ZopeFindAndApply(obj_metatypes=["SyndicationInformation"],
+                        apply_func=change_to_adapter)
