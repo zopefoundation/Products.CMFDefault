@@ -109,6 +109,10 @@ class SyndicationToolTests(SecurityTest):
         sm.registerAdapter(DummyInfo, [IFolderish], ISyndicationInfo)
         return folder
 
+    def _makeInfo(self, context):
+        info = DummyInfo(context)
+        return info
+
     def tearDown(self):
         cleanUp()
         SecurityTest.tearDown(self)
@@ -170,8 +174,6 @@ class SyndicationToolTests(SecurityTest):
                                          max_items=MAX_ITEMS,
                                         )
         info = tool.getSyndicationInfo(context)
-        import pdb
-        #pdb.set_trace()
         self.assertEqual(info.frequency, FREQUENCY)
         self.assertEqual(info.period, PERIOD)
         self.assertEqual(info.base, NOW)
@@ -202,6 +204,115 @@ class SyndicationToolTests(SecurityTest):
 
         self.assertEqual(len(tool.getSyndicatableContent(self.app.pf)), 0)
         self.assertEqual(len(tool.getSyndicatableContent(self.app.bf)), 0)
+
+    def test_getUpdateBase(self):
+        NOW = datetime.now()
+
+        tool = self._makeOne()
+        tool.base = NOW
+
+        self.assertEqual(NOW.isoformat(), tool.getUpdateBase())
+
+
+    def test_getUpdateBaseWithContext(self):
+        NOW = datetime.now()
+
+        tool = self._makeOne()
+        tool.enabled = True
+
+        context = self._makeContext()
+        info = self._makeInfo(context)
+        tool.enableSyndication(context)
+        info.base = NOW
+
+        self.assertEqual(NOW.isoformat(), tool.getUpdateBase(context))
+
+
+    def test_getHTML4UpdateBase(self):
+        NOW = datetime.now()
+
+        tool = self._makeOne()
+        tool.base = NOW
+
+        as_HTML4 = tool.getHTML4UpdateBase()
+        self.assertEqual(as_HTML4, NOW.isoformat())
+
+    def test_getHTML4UpdateBaseWithContext(self):
+        NOW = datetime.now()
+
+        tool = self._makeOne()
+        tool.enabled = True
+
+        context = self._makeContext()
+        info = self._makeInfo(context)
+        tool.enableSyndication(context)
+        info.base = NOW
+
+        as_HTML4 = tool.getHTML4UpdateBase(context)
+        self.assertEqual(NOW.isoformat(), as_HTML4)
+
+    def test_getMaxItems(self):
+        max_items = 5
+
+        tool = self._makeOne()
+        tool.max_items = max_items
+
+        self.assertEqual(max_items, tool.getMaxItems())
+
+    def test_getMaxItemsWithContext(self):
+        max_items = 10
+
+        tool = self._makeOne()
+        tool.enabled = True
+
+        context = self._makeContext()
+        info = self._makeInfo(context)
+        tool.enableSyndication(context)
+        info.max_items = max_items
+
+        self.assertEqual(max_items, tool.getMaxItems(context))
+
+    def test_getUpdatePeriod(self):
+        period = 3
+
+        tool = self._makeOne()
+        tool.period = period
+
+        self.assertEqual(period, tool.getUpdatePeriod())
+
+    def test_getUpdatePeriodWithContext(self):
+        period = 2
+
+        tool = self._makeOne()
+        tool.enabled = True
+
+        context = self._makeContext()
+        info = self._makeInfo(context)
+        tool.enableSyndication(context)
+        info.period = period
+
+        self.assertEqual(period, tool.getUpdatePeriod(context))
+
+    def test_getUpdateFrequency(self):
+        frequency = 'monthly'
+
+        tool = self._makeOne()
+        tool.frequency = frequency
+
+        self.assertEqual(frequency, tool.getUpdateFrequency())
+
+    def test_getUpdateFrequencyWithContext(self):
+        frequency = 'weekly'
+
+        tool = self._makeOne()
+        tool.enabled = True
+
+        context = self._makeContext()
+        info = self._makeInfo(context)
+        tool.enableSyndication(context)
+        info.frequency = frequency
+
+        self.assertEqual(frequency, tool.getUpdateFrequency(context))
 
 
 def test_suite():

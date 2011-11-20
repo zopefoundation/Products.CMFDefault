@@ -196,7 +196,11 @@ class SyndicationTool(UniqueObject, SimpleItem):
 
         NOTE:  Need to add checks for sitewide policies!!!
         """
-        return self.getSyndicationInfo(obj).period
+        if obj is not None:
+            period = self.getSyndicationInfo(obj).period
+        else:
+            period = self.period
+        return period
 
     security.declarePublic('getUpdateFrequency')
     def getUpdateFrequency(self, obj=None):
@@ -208,7 +212,12 @@ class SyndicationTool(UniqueObject, SimpleItem):
 
         Note:  Need to add checks for sitewide policies!!!
         """
-        return self.getSyndicationInfo(obj).frequency
+        if obj is not None:
+            frequency = self.getSyndicationInfo(obj).frequency
+        else:
+            frequency = self.frequency
+
+        return frequency
 
     security.declarePublic('getUpdateBase')
     def getUpdateBase(self, obj=None):
@@ -223,7 +232,11 @@ class SyndicationTool(UniqueObject, SimpleItem):
         Additionally, sitewide policy checks might have a place
         here...
         """
-        return self.getSyndicationInfo(obj).base.isoformat()
+        if obj is not None:
+            base = self.getSyndicationInfo(obj).base
+        else:
+            base = self.base
+        return base.isoformat()
 
     security.declarePublic('getHTML4UpdateBase')
     def getHTML4UpdateBase(self, obj=None):
@@ -233,13 +246,18 @@ class SyndicationTool(UniqueObject, SimpleItem):
         warn("RSS 2.0 uses RFC 822 formatting"
              " this method will be removed in CMF 2.4",
              DeprecationWarning, stacklevel=2)
-        return self.getSyndicationInfo(obj)['base'].HTML4()
+        # HTML4 is the same as isoformat()
+        return self.getUpdateBase(obj)
 
     def getMaxItems(self, obj=None):
         """
         Return the max_items to be displayed in the syndication
         """
-        return self.getSyndicationInfo(obj).max_items
+        if obj is not None:
+            max_items = self.getSyndicationInfo(obj).max_items
+        else:
+            max_items = self.max_items
+        return max_items
 
 InitializeClass(SyndicationTool)
 registerToolInterface('portal_syndication', ISyndicationTool)
