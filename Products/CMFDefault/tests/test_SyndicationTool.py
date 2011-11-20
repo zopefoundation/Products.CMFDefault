@@ -235,7 +235,7 @@ class SyndicationToolTests(SecurityTest):
         tool.base = NOW
 
         as_HTML4 = tool.getHTML4UpdateBase()
-        self.assertEqual(as_HTML4, NOW.isoformat())
+        self.assertEqual(NOW.strftime("%Y-%m-%dT%H:%M:%SZ"), as_HTML4)
 
     def test_getHTML4UpdateBaseWithContext(self):
         NOW = datetime.now()
@@ -249,7 +249,8 @@ class SyndicationToolTests(SecurityTest):
         info.base = NOW
 
         as_HTML4 = tool.getHTML4UpdateBase(context)
-        self.assertEqual(NOW.isoformat(), as_HTML4)
+
+        self.assertEqual(NOW.strftime("%Y-%m-%dT%H:%M:%SZ"), as_HTML4)
 
     def test_getMaxItems(self):
         max_items = 5

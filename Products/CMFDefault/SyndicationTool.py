@@ -246,8 +246,15 @@ class SyndicationTool(UniqueObject, SimpleItem):
         warn("RSS 2.0 uses RFC 822 formatting"
              " this method will be removed in CMF 2.4",
              DeprecationWarning, stacklevel=2)
-        # HTML4 is the same as isoformat()
-        return self.getUpdateBase(obj)
+        # HTML4 is almost the same as isoformat()
+        if obj is not None:
+            base = obj.base
+        else:
+            base = self.base
+        # normalise
+        base = base.replace(tzinfo=None)
+        as_zope = DateTime(base.isoformat())
+        return as_zope.HTML4()
 
     def getMaxItems(self, obj=None):
         """
