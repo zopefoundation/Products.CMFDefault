@@ -14,13 +14,14 @@
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from zope.globalrequest import getRequest
 from zope.interface import implements
+from ZPublisher.BaseRequest import RequestContainer
 
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
@@ -104,12 +105,13 @@ class MembershipTool(BaseTool):
     def getMembersFolder(self):
         """ Get the members folder object.
         """
-        parent = aq_parent( aq_inner(self) )
+        parent = aq_parent(aq_inner(self))
         try:
             members_folder = parent.restrictedTraverse(self.membersfolder_id)
         except (AttributeError, KeyError):
-            members_folder = None
-        return members_folder
+            return None
+        request_container = RequestContainer(REQUEST=getRequest())
+        return members_folder.__of__(request_container)
 
     security.declarePublic('createMemberArea')
     def createMemberArea(self, member_id=''):

@@ -17,7 +17,11 @@ import unittest
 import Testing
 
 from AccessControl.SecurityManagement import newSecurityManager
+from five.localsitemanager import make_objectmanager_site
 from zope.component import getSiteManager
+from zope.component.hooks import setSite
+from zope.globalrequest import clearRequest
+from zope.globalrequest import setRequest
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
@@ -28,9 +32,10 @@ from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFCore.tests.base.dummy import DummyUserFolder
 from Products.CMFCore.tests.base.testcase import SecurityTest
+from Products.CMFCore.tests.base.testcase import TransactionalTest
 
 
-class MembershipToolTests(unittest.TestCase):
+class MembershipToolTests(TransactionalTest):
 
     def _makeOne(self, *args, **kw):
         from Products.CMFDefault.MembershipTool import MembershipTool
@@ -38,8 +43,19 @@ class MembershipToolTests(unittest.TestCase):
         return MembershipTool(*args, **kw)
 
     def setUp(self):
-        self.site = DummySite('site')
-        self.site._setObject( 'portal_membership', self._makeOne() )
+        from Products.CMFCore.interfaces import IMembershipTool
+
+        TransactionalTest.setUp(self)
+        self.site = DummySite('site').__of__(self.app)
+        make_objectmanager_site(self.site)
+        setSite(self.site)
+        self.site._setObject('portal_membership', self._makeOne())
+        sm = getSiteManager()
+        sm.registerUtility(self.site.portal_membership, IMembershipTool)
+
+    def tearDown(self):
+        cleanUp()
+        TransactionalTest.tearDown(self)
 
     def test_interfaces(self):
         from Products.CMFDefault.interfaces import IMembershipTool
@@ -48,21 +64,40 @@ class MembershipToolTests(unittest.TestCase):
         verifyClass(IMembershipTool, MembershipTool)
 
     def test_MembersFolder_methods(self):
-        mtool = self.site.portal_membership
-        self.assertEqual( mtool.getMembersFolder(), None )
-        self.site._setObject( 'Members', DummyFolder() )
-        self.assertEqual( mtool.getMembersFolder(), self.site.Members )
+        from Products.CMFCore.interfaces import IMembershipTool
+
+        mtool = getSiteManager().getUtility(IMembershipTool)
+        self.assertEqual(mtool.getMembersFolder(), None)
+        self.site._setObject('Members', DummyFolder())
+        self.assertEqual(mtool.getMembersFolder(), self.site.Members)
         mtool.setMembersFolderById(id='foo')
-        self.assertEqual( mtool.getMembersFolder(), None )
-        self.site._setObject( 'foo', DummyFolder() )
-        self.assertEqual( mtool.getMembersFolder(), self.site.foo )
-        mtool.setMembersFolderById( id='foo/members' )
-        self.assertEqual( mtool.getMembersFolder(), None )
-        self.site.foo._setObject( 'members', DummyFolder() )
-        self.assertEqual( mtool.getMembersFolder(), self.site.foo.members )
+        self.assertEqual(mtool.getMembersFolder(), None)
+        self.site._setObject('foo', DummyFolder())
+        self.assertEqual(mtool.getMembersFolder(), self.site.foo)
+        mtool.setMembersFolderById(id='foo/members')
+        self.assertEqual(mtool.getMembersFolder(), None)
+        self.site.foo._setObject('members', DummyFolder())
+        self.assertEqual(mtool.getMembersFolder(), self.site.foo.members)
         mtool.setMembersFolderById()
         # Note: self.site is returned due to DummyObject.restrictedTraverse
-        self.assertEqual( mtool.getMembersFolder(), self.site )
+        self.assertEqual(mtool.getMembersFolder(), self.site)
+
+    def test_HomeFolder_methods(self):
+        from Products.CMFCore.interfaces import IMembershipTool
+
+        mtool = getSiteManager().getUtility(IMembershipTool)
+        setRequest(self.REQUEST)
+        self.assertEqual(mtool.getHomeFolder(id='member_foo'), None)
+        self.assertEqual(mtool.getHomeUrl(id='member_foo'), None)
+        self.site._setObject('Members', PortalFolder('Members'))
+        self.assertEqual(mtool.getHomeFolder(id='member_foo'), None)
+        self.assertEqual(mtool.getHomeUrl(id='member_foo'), None)
+        self.site.Members._setObject('member_foo', PortalFolder('member_foo'))
+        self.assertEqual(mtool.getHomeFolder(id='member_foo'),
+                         self.site.Members.member_foo)
+        self.assertEqual(mtool.getHomeUrl(id='member_foo'),
+                         'http://nohost/bar/site/Members/member_foo')
+        clearRequest()
 
 
 class MembershipToolSecurityTests(SecurityTest):
@@ -74,7 +109,7 @@ class MembershipToolSecurityTests(SecurityTest):
 
     def setUp(self):
         SecurityTest.setUp(self)
-        self.site = DummySite('site').__of__(self.root)
+        self.site = DummySite('site').__of__(self.app)
         self.site._setObject( 'portal_membership', self._makeOne() )
 
     def tearDown(self):
