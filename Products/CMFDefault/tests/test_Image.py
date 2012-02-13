@@ -306,16 +306,10 @@ class CachingTests(TransactionalTest):
         cpm = LMDummyCachingManager()
         getSiteManager().registerUtility(cpm, ICachingPolicyManager)
 
-        obj = self._makeOne('test_image', 'test_image.gif', file=ref)
+        self.app.foo = self._makeOne('test_image', 'test_image.gif', file=ref)
 
-        # Cause persistent's modified time record to be set
-        self.app.foo = obj
-        transaction.commit()
-        obj = self.app.foo
-        # end
-
-        # index_html in OFS will set Last-modified if ._p_mtime exists
-        obj.index_html(self.REQUEST, self.RESPONSE)
+        # index_html in OFS will set Last-Modified to ._p_mtime or current time
+        self.app.foo.index_html(self.REQUEST, self.RESPONSE)
 
         headers = self.RESPONSE.headers
         self.assertEqual(headers['last-modified'],

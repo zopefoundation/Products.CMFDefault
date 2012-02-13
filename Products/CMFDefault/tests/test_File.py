@@ -18,7 +18,6 @@ import Testing
 
 from os.path import join as path_join
 
-import transaction
 from App.Common import rfc1123_date
 from zope.component import getSiteManager
 from zope.interface.verify import verifyClass
@@ -175,16 +174,10 @@ class CachingTests(TransactionalTest):
         cpm = LMDummyCachingManager()
         getSiteManager().registerUtility(cpm, ICachingPolicyManager)
 
-        obj = self._makeOne('test_file', 'test_file.swf', file=ref)
+        self.app.foo = self._makeOne('test_file', 'test_file.swf', file=ref)
 
-        # Cause persistent's modified time record to be set
-        self.app.foo = obj
-        transaction.commit()
-        obj = self.app.foo
-        # end
-
-        # index_html in OFS will set Last-modified if ._p_mtime exists
-        obj.index_html(self.REQUEST, self.RESPONSE)
+        # index_html in OFS will set Last-Modified to ._p_mtime or current time
+        self.app.foo.index_html(self.REQUEST, self.RESPONSE)
 
         headers = self.RESPONSE.headers
         self.assertEqual(headers['last-modified'],
