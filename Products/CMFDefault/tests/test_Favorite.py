@@ -71,7 +71,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         self.assertEqual( f.getRemoteUrl(), utool() )
         self.assertEqual( f.getObject(), self.site )
         self.assertEqual( f.getIconURL(), self.site.getIconURL() )
-        self.assertEqual( f.icon(), self.site.icon() )
+        self.assertEqual( f.icon(), '' )
 
     def test_CtorArgs( self ):
         utool = getSiteManager().getUtility(IURLTool)
@@ -108,7 +108,7 @@ class FavoriteTests(ConformsToContent, unittest.TestCase):
         self.assertEqual( f.getObject(), self.site )
         self.assertEqual( f.getRemoteUrl(), utool() )
         self.assertEqual( f.getIconURL(), self.site.getIconURL() )
-        self.assertEqual( f.icon(), self.site.icon() )
+        self.assertEqual( f.icon(), '' )
 
 
 def test_suite():
