@@ -17,12 +17,16 @@ import datetime
 import unittest
 from Testing import ZopeTestCase
 
-import transaction
-
-from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.User import UnrestrictedUser
+from DateTime.DateTime import DateTime
+from Products.CMFCore.PortalFolder import PortalFolder
+from Products.CMFCore.interfaces import ISyndicationTool, IFolderish
 from Products.CMFDefault.testing import FunctionalLayer
+from Products.CMFDefault.SyndicationInfo import SyndicationInfo, ISyndicationInfo
+from Products.CMFDefault.SyndicationTool import SyndicationTool
 from zope.site.hooks import setSite
+from zope.component import getSiteManager
+from zope.component import getAdapter
+from zope.testing.cleanup import cleanUp
 
 
 class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase):
@@ -32,20 +36,47 @@ class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase):
 
     def setUp(self):
         super(FunctionalUpgradeTestCase, self).setUp()
+        sm = getSiteManager()
+        #self.sm = sm
+        sm.registerAdapter(SyndicationInfo, [IFolderish], ISyndicationInfo)
+        syndication  = SyndicationTool()
+        sm.registerUtility(syndication, ISyndicationTool)
+        from zope.annotation.interfaces import IAnnotations
+        from zope.annotation.attribute import AttributeAnnotations
+        #sm.registerAdapter(AttributeAnnotations, [IFolderish], IAnnotations)
+        folder = PortalFolder("Dummy Portal Folder")
+        self.folder = folder
 
-    def makeOne(self):
-        """Create an old style SyndicatonInformation for a folder"""
-        from Products.CMFCore.PortalFolder import PortalFolder
+
+    def _make_info(self):
+        """Add an old style SyndicationInfo to the folder"""
         from Products.CMFDefault.SyndicationInfo import SyndicationInformation
-        folder = PortalFolder(syndicated_folder)
         info = SyndicationInformation()
-        info.syndBase = datetime.datetime.now()
-        info.syndPeriod = 1
-        info.syndFrequency = 1
+        info.syUpdateBase = DateTime()
+        info.syUpdatePeriod = 1
+        info.syUpdateFrequency = 1
         info.max_items = 5
+        return info
 
-    def test_nothing(self):
-        pass
+    def test_upgrade(self):
+        info = self._make_info()
+        self.folder._setObject(info.getId(), info)
+        old_info = self.folder._getOb(info.getId())
+        self.assertTrue('syndication_information' in self.folder.objectIds())
+        self.assertTrue(isinstance(old_info.syUpdateBase, DateTime))
+
+        from Products.CMFDefault.upgrade.to23 import change_to_adapter
+        change_to_adapter(old_info)
+        self.assertFalse('syndication_information' in self.folder.objectIds())
+        new_info = getAdapter(self.folder, ISyndicationInfo)
+        self.assertEqual(new_info.max_items, old_info.max_items)
+        self.assertEqual(new_info.period, old_info.syUpdatePeriod)
+        self.assertEqual(new_info.frequency, old_info.syUpdateFrequency)
+        self.assertFalse(old_info.syUpdateBase.timezoneNaive())
+        self.assertTrue(new_info.base.tzinfo is None)
+
+    def TearDown(self):
+        cleanUp()
 
 
 def test_suite():

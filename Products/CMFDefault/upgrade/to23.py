@@ -322,23 +322,44 @@ def upgrade_root_site_manager(tool):
             logger.info('Registered %s for interface %s' % (tool_id,
                                                             tool_interface))
 
-def upgrade_syndicationtool(tool):
-    """Replace SyndicatonInformation objects with SyndicationInfo adapters"""
 
-    def change_to_adapter(SyndicationInformation):
-        """Read values from the SyndicationInformation object and set them on
-        the adapter"""
-        folder = aq_parent(aq_inner(SyndicationInformation))
-        adapter = getAdapter(folder, ISyndicationInfo)
-        adapter.period = SyndicationInformation.syndPeriod
-        adapter.base = SyndicationInformation.syndBase
-        adapter.frequency = SyndicationInformation.syndFrequency
-        adapter.max_items = SyndicationInformation.max_items
-        folder._delObj(SyndicationInformation.getId())
+def DateTime_to_datetime(Zope_DateTime):
+    """
+    Convert from Zope DateTime to Python datetime and strip timezone
+    """
+    from DateTime.DateTime import DateTime
+    naive = DateTime(str(Zope_DateTime).rsplit(' ', 1)[0])
+    return naive.asdatetime()
 
-    # convert Zope.DateTime to python.datetime on the tool
+def change_to_adapter(SyndicationInformation, path=None):
+    """
+    Read values from the SyndicationInformation object and set them on
+    the adapter and then delete the SyndicationInformation object
+    """
+    from zope.component import getAdapter
+    from Products.CMFDefault.SyndicationInfo import ISyndicationInfo
+    folder = aq_parent(aq_inner(SyndicationInformation))
+    adapter = getAdapter(folder, ISyndicationInfo)
+    adapter.period = SyndicationInformation.syUpdatePeriod
+    adapter.base = DateTime_to_datetime(SyndicationInformation.syUpdateBase)
+    adapter.frequency = SyndicationInformation.syUpdateFrequency
+    adapter.max_items = SyndicationInformation.max_items
+    folder._delObject(SyndicationInformation.getId())
 
-    # migrate existing SyndicationInformation objects to adapter based Infos.
+
+def check_syndication_tool(tool):
+    """Convert if portal_syndication exists"""
     portal = aq_parent(aq_inner(tool))
-    portal.ZopeFindAndApply(obj_metatypes=["SyndicationInformation"],
-                        apply_func=change_to_adapter)
+    try:
+        syndication = getToolByName(portal, "portal_syndication")
+        return True
+    except AttributeError:
+        return False
+
+
+def upgrade_syndication_tool(tool):
+    """Replace SyndicatonInformation objects with SyndicationInfo adapters"""
+    portal = aq_parent(aq_inner(tool))
+    syndication = getToolByName(portal, "portal_syndication")
+    syndication.base = DateTime_to_datetime(syndication.syUpdateBase)
+    portal.ZopeFind(portal, obj_metatypes=["SyndicationInformation"])
