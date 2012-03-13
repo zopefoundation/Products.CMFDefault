@@ -369,7 +369,7 @@ def upgrade_syndication_tool(tool):
     portal = aq_parent(aq_inner(tool))
     syndication = getToolByName(portal, "portal_syndication")
     syndication.base = DateTime_to_datetime(syndication.syUpdateBase)
-    syndication.isAllowed and True or False
+    syndication.enabled = syndication.isAllowed and True or False
     infos = portal.ZopeFindAndApply(portal,
                                     obj_metatypes=["SyndicationInformation"],
                                     search_sub=True,
