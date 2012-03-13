@@ -344,6 +344,8 @@ def change_to_adapter(SyndicationInformation, path=None):
     adapter.base = DateTime_to_datetime(SyndicationInformation.syUpdateBase)
     adapter.frequency = SyndicationInformation.syUpdateFrequency
     adapter.max_items = SyndicationInformation.max_items
+    if getattr(SyndicationInformation, 'isAllowed', False):
+        adapter.enable()
     folder._delObject(SyndicationInformation.getId())
 
 
@@ -352,14 +354,24 @@ def check_syndication_tool(tool):
     portal = aq_parent(aq_inner(tool))
     try:
         syndication = getToolByName(portal, "portal_syndication")
-        return True
     except AttributeError:
         return False
+    infos = portal.ZopeFind(portal,
+                            obj_metatypes=["SyndicationInformation"],
+                            search_sub=True)
+    if infos != []:
+        return True
 
 
 def upgrade_syndication_tool(tool):
     """Replace SyndicatonInformation objects with SyndicationInfo adapters"""
+    logger = logging.getLogger('GenericSetup.upgrade')
     portal = aq_parent(aq_inner(tool))
     syndication = getToolByName(portal, "portal_syndication")
     syndication.base = DateTime_to_datetime(syndication.syUpdateBase)
-    portal.ZopeFind(portal, obj_metatypes=["SyndicationInformation"])
+    syndication.isAllowed and True or False
+    infos = portal.ZopeFindAndApply(portal,
+                                    obj_metatypes=["SyndicationInformation"],
+                                    search_sub=True,
+                                    apply_func=change_to_adapter)
+    logger.info("SyndicationTool updated and SyndicationInformation replaced by Annotations")

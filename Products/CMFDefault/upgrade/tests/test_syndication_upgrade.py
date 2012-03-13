@@ -37,13 +37,9 @@ class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase):
     def setUp(self):
         super(FunctionalUpgradeTestCase, self).setUp()
         sm = getSiteManager()
-        #self.sm = sm
         sm.registerAdapter(SyndicationInfo, [IFolderish], ISyndicationInfo)
         syndication  = SyndicationTool()
         sm.registerUtility(syndication, ISyndicationTool)
-        from zope.annotation.interfaces import IAnnotations
-        from zope.annotation.attribute import AttributeAnnotations
-        #sm.registerAdapter(AttributeAnnotations, [IFolderish], IAnnotations)
         folder = PortalFolder("Dummy Portal Folder")
         self.folder = folder
 
@@ -55,6 +51,7 @@ class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase):
         info.syUpdateBase = DateTime()
         info.syUpdatePeriod = 1
         info.syUpdateFrequency = 1
+        info.isAllowed = 1
         info.max_items = 5
         return info
 

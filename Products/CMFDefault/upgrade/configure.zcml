@@ -231,6 +231,14 @@
         checker=".to23.check_root_site_manager"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade syndication settings"
+        description="Upgrade to Python datetime based tool and annotations
+        adapter"
+        handler=".to23.upgrade_syndication_tool"
+        checker=".to23.check_syndication_tool"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
