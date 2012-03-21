@@ -1,5 +1,5 @@
 'absolut' profile
-==============
+=================
 
 This profile supplies an alternate main template to the one provided
 in the 'zpt_generic' skins directory. The skin does pure CSS and
