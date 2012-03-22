@@ -13,8 +13,10 @@
 """
 """
 
-from zope.component import getUtility
+from zope.component import getUtility, ComponentLookupError
 from zope.component import queryUtility
+
+from Acquisition import aq_get
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
@@ -60,23 +62,39 @@ class UrsineGlobals(ViewBase):
     @property
     @memoize
     def utool(self):
-        return getUtility(IURLTool)
+        try:
+            return getUtility(IURLTool)
+        except ComponentLookupError:
+            # BBB: fallback for CMF 2.2 instances
+            return aq_get(self.context, 'portal_url')
 
     @property
     @memoize
     def mtool(self):
-        return getUtility(IMembershipTool)
+        try:
+            return getUtility(IMembershipTool)
+        except ComponentLookupError:
+            # BBB: fallback for CMF 2.2 instances
+            return aq_get(self.context, 'portal_membership')
 
     @property
     @memoize
     def atool(self):
-        return getUtility(IActionsTool)
+        try:
+            return getUtility(IActionsTool)
+        except ComponentLookupError:
+            # BBB: fallback for CMF 2.2 instances
+            return aq_get(self.context, 'portal_actions')
 
     @property
     @memoize
     def wtool(self):
-        return getUtility(IWorkflowTool)
-        
+        try:
+            return getUtility(IWorkflowTool)
+        except ComponentLookupError:
+            # BBB: fallback for CMF 2.2 instances
+            return aq_get(self.context, 'portal_workflow')
+
     @property
     @memoize
     def syndtool(self):
