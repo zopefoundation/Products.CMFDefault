@@ -1,60 +1,58 @@
 Content Creator Goals
 =====================
 
-  * Make information available to the end users of the site.
+* Make information available to the end users of the site.
 
-    - "Create a content object":CreateNewContent
+- :doc:`CreateNewContent`
 
-      o Add Content form with a slightly more involved
-        description of each content type that comes with the CMF.
+  - Add Content form with a slightly more involved
+    description of each content type that comes with the CMF.
 
-      o Next form in succession is the "Standard Resource
-        Metadata" form which is now a separate use case.  Since
-        this is a succession of three steps ("Add Content",
-        "Metadata", "Edit") "Define content metadata" use case
-        should be merged in with this one.
+  - Next form in succession is the "Standard Resource
+    Metadata" form which is now a separate use case.  Since
+    this is a succession of three steps ("Add Content",
+    "Metadata", "Edit") "Define content metadata" use case
+    should be merged in with this one.
 
-      o "Edit" form.
+  - "Edit" form.
 
-    - **XXX** "Define content metadata":ChangeMetadata
+- **XXX** "Define content metadata":ChangeMetadata
 
-      This should mainly be pointers back to "Create a content object".
+  This should mainly be pointers back to :doc:`CreateNewContent`.
 
-    - "Submit content for publication":SubmitContentForPublication
+- :doc:`SubmitContentForPublication`
 
-      o Brief discussion of workflow with references back to
-        workflow use cases.
+ - Brief discussion of workflow with references back to
+    workflow use cases.
 
-      o Submit for the default workflow
+ - Submit for the default workflow
 
-  * Ensure that information is up-to-date and accurate.
+* Ensure that information is up-to-date and accurate.
 
-    - "View personally authored content":ViewMyContent
+- :doc:`ViewMyContent`
 
-    - "Update existing content":ChangeContent
+- :doc:`ChangeContent`
 
-    - "Remove unneeded content":RemoveContent
+- :doc:`RemoveContent`
 
-    - "Undo changes to content":UndoChanges
-
-
-  * Improve content quality over time using end user
-          feedback.
-
-    - **XXX** "Make a content object discussable":EnableDiscussion
-
-          *Note:  this is not a per-object option in stock CMF.*
-
-  * Collaborate with other content creators.
-
-    - "Give local roles to other users":ManageLocalRoles
+- :doc:`UndoChanges`
 
 
-  * Modify content organization to improve maintainability
-          or navigation.
+* Improve content quality over time using end user feedback.
 
-    - "Add content folders":AddContentFolders
+- **XXX** :doc:`EnableDiscussion`
 
-    - "Move / copy content between folders":MoveCopyContent
+  *Note:  this is not a per-object option in stock CMF.*
 
-    - "Rename content object":RenameContent
+* Collaborate with other content creators.
+
+- :doc:`ManageLocalRoles`
+
+
+* Modify content organization to improve maintainability or navigation.
+
+- :doc:`AddContentFolders`
+
+- :doc:`MoveCopyContent`
+
+- :doc:`RenameContent`

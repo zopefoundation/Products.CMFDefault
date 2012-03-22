@@ -1,23 +1,22 @@
 Reviewer Goals
 ==============
 
-  * Collaborate with content creators to ensure the quality and
-          timeliness of site content.
+* Collaborate with content creators to ensure the quality and timeliness of
+  site content.
 
-    - "Browse content submitted for review and
-       publication":BrowseSubmittedForReview
+- :doc:`BrowseSubmittedForReview`
 
-       o Brief description of the Action box, with pointers back to
-         where this is set up in the skin.
+  - Brief description of the Action box, with pointers back to
+     where this is set up in the skin.
 
-       o Pending lists
+  - Pending lists
 
-    - "Approve content for publication":ApproveForPublication
+- :doc:`ApproveForPublication`
 
-        This should mainly be a pointer back into "Browse content
-        submitted for review and publication"
+    This should mainly be a pointer back into "Browse content
+    submitted for review and publication"
 
-  * React quickly to resolve issues with published content.
+* React quickly to resolve issues with published content.
 
-    - "Remove content from public site":UnpublishContent
+  - :doc:`UnpublishContent`
 
