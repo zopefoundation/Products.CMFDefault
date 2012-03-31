@@ -322,7 +322,6 @@ def upgrade_root_site_manager(tool):
             logger.info('Registered %s for interface %s' % (tool_id,
                                                             tool_interface))
 
-
 def DateTime_to_datetime(Zope_DateTime):
     """
     Convert from Zope DateTime to Python datetime and strip timezone
@@ -348,7 +347,6 @@ def change_to_adapter(SyndicationInformation, path=None):
         adapter.enable()
     folder._delObject(SyndicationInformation.getId())
 
-
 def check_syndication_tool(tool):
     """Convert if portal_syndication exists"""
     portal = aq_parent(aq_inner(tool))
@@ -362,7 +360,6 @@ def check_syndication_tool(tool):
     if infos != []:
         return True
 
-
 def upgrade_syndication_tool(tool):
     """Replace SyndicatonInformation objects with SyndicationInfo adapters"""
     logger = logging.getLogger('GenericSetup.upgrade')
@@ -375,3 +372,23 @@ def upgrade_syndication_tool(tool):
                                     search_sub=True,
                                     apply_func=change_to_adapter)
     logger.info("SyndicationTool updated and SyndicationInformation replaced by Annotations")
+
+def check_root_properties(tool):
+    """2.3.0-beta to 2.3.0 upgrade step checker
+    """
+    portal = aq_parent(aq_inner(tool))
+    enable_actionicons = portal.getProperty('enable_actionicons')
+    if isinstance(enable_actionicons, tuple):
+        return True
+    return False
+
+def upgrade_root_properties(tool):
+    """2.3.0-beta to 2.3.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    portal = aq_parent(aq_inner(tool))
+    enable_actionicons = portal.getProperty('enable_actionicons')
+    if isinstance(enable_actionicons, tuple):
+        enable_actionicons = bool(enable_actionicons[0])
+        portal._updateProperty('enable_actionicons', enable_actionicons)
+        logger.info("'enable_actionicons' property fixed.")

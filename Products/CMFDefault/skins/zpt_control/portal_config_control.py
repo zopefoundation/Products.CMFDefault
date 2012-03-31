@@ -5,10 +5,8 @@ from Products.CMFDefault.utils import Message as _
 
 ptool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
 
-if not ptool.hasProperty('enable_actionicons'):
-    ptool.manage_addProperty('enable_actionicons', '', 'boolean')
-
 kw.setdefault('enable_actionicons', False)
+kw.setdefault('enable_permalink', False)
 
 ptool.editProperties(kw)
 

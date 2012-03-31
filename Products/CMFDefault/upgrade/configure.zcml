@@ -239,6 +239,13 @@
         checker=".to23.check_syndication_tool"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade root properties"
+        description="Fix 'enable_actionicons' property if corrupted."
+        handler=".to23.upgrade_root_properties"
+        checker=".to23.check_root_properties"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

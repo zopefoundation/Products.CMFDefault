@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- skins and upgrade: Fixed broken reconfig_form.
+  Added upgrade step for fixing site properties corrupted by that form.
+
 
 2.3.0-beta (2012-03-21)
 -----------------------
@@ -71,6 +74,7 @@ Products.CMFDefault Changelog
   
 - SyndicationTool: Updated to produce RSS 2.0. Uses an adapter for
   syndication information.
+
 
 2.2.0-beta (2009-12-06)
 -----------------------

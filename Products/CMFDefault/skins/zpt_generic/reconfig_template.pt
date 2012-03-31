@@ -111,7 +111,7 @@
       tal:attributes="checked form/enable_actionicons" />
    <tal:span i18n:translate="">Show action icons</tal:span>
     <dl class="FieldHelp">
-     <dd i18n:translate="">Actions available to the user are shown as 
+     <dd i18n:translate="">Actions available to the user are shown as
        textual links. With this option enabled, they are also shown as
        icons if the action definition specifies one.</dd>
     </dl>
@@ -120,11 +120,13 @@
  <tr>
   <th i18n:translate="">Permalinks</th>
   <td>
-   <input type="checkbox" name="enable_actionicons:boolean" value="True"
-      tal:attributes="checked form/enable_actionicons" />
+   <input type="checkbox" name="enable_permalink:boolean" value="True"
+      tal:attributes="checked form/enable_permalink" />
    <tal:span i18n:translate="">Show permalinks</tal:span>
     <dl class="FieldHelp">
-     <dd i18n:translate="">If permalinks are enabled then a unique identifier is assigned to every item of content independent of it's id or position in a site. This requires the CMFUid tool to be installed.</dd>
+     <dd i18n:translate="">If permalinks are enabled then a unique identifier
+       is assigned to every item of content independent of it's id or position
+       in a site. This requires the CMFUid tool to be installed.</dd>
     </dl>
     <span class="errors" tal:condition="not: globals/uidtool_installed">CMFUid is not installed</span>
   </td>
