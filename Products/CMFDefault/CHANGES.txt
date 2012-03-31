@@ -1,8 +1,8 @@
 Products.CMFDefault Changelog
 =============================
 
-2.3.0 (unreleased)
-------------------
+2.3.0-beta2 (2012-03-31)
+------------------------
 
 - skins and upgrade: Fixed broken reconfig_form.
   Added upgrade step for fixing site properties corrupted by that form.
