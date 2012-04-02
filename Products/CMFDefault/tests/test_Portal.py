@@ -20,7 +20,7 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from Acquisition import aq_base
 from zope.component import queryUtility
-from zope.site.hooks import setSite
+from zope.component.hooks import setSite
 
 from Products.CMFDefault.testing import FunctionalLayer
 from Products.CMFDefault.utils import PRODUCTS_CMFUID_INSTALLED

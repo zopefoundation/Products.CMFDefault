@@ -11,11 +11,10 @@
 #
 ##############################################################################
 """ Configured site factory implementation.
-
 """
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from zope.site.hooks import setSite
+from zope.component.hooks import setSite
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName

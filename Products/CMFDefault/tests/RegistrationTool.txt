@@ -31,8 +31,8 @@ RegistrationTool
 
     >>> from zope.component import getSiteManager
     >>> from zope.component import getUtility
+    >>> from zope.component.hooks import setSite
     >>> from zope.globalrequest import setRequest
-    >>> from zope.site.hooks import setSite
     >>> from Products.CMFCore.interfaces import IMembershipTool
     >>> from Products.CMFCore.interfaces import IRegistrationTool
     >>> from Products.MailHost.interfaces import IMailHost
@@ -163,4 +163,3 @@ Clean up
 
     >>> from zope.globalrequest import clearRequest
     >>> clearRequest()
-    

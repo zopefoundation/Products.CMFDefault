@@ -16,7 +16,7 @@
 import unittest
 from Testing import ZopeTestCase
 
-from zope.site.hooks import setSite
+from zope.component.hooks import setSite
 
 from Products.CMFDefault.testing import FunctionalLayer
 

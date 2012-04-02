@@ -13,19 +13,19 @@
 """Syndication Upgrade tests.
 """
 
-import datetime
 import unittest
 from Testing import ZopeTestCase
 
 from DateTime.DateTime import DateTime
-from Products.CMFCore.PortalFolder import PortalFolder
 from Products.CMFCore.interfaces import ISyndicationTool, IFolderish
-from Products.CMFDefault.testing import FunctionalLayer
-from Products.CMFDefault.SyndicationInfo import SyndicationInfo, ISyndicationInfo
+from Products.CMFCore.PortalFolder import PortalFolder
+from Products.CMFDefault.SyndicationInfo import ISyndicationInfo
+from Products.CMFDefault.SyndicationInfo import SyndicationInfo
 from Products.CMFDefault.SyndicationTool import SyndicationTool
-from zope.site.hooks import setSite
-from zope.component import getSiteManager
+from Products.CMFDefault.testing import FunctionalLayer
 from zope.component import getAdapter
+from zope.component import getSiteManager
+from zope.component.hooks import setSite
 from zope.testing.cleanup import cleanUp
 
 

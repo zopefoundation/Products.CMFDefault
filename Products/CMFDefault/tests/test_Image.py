@@ -16,16 +16,16 @@
 import unittest
 from Testing import ZopeTestCase
 
-from os.path import join as path_join
 from cStringIO import StringIO
+from os.path import join as path_join
 
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from App.Common import rfc1123_date
 from zope.component import getSiteManager
+from zope.component.hooks import setSite
 from zope.interface.verify import verifyClass
-from zope.site.hooks import setSite
 from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import ICachingPolicyManager

@@ -3,7 +3,7 @@ Add Forms
 
 Set site and up user.
 
-    >>> from zope.site.hooks import setSite
+    >>> from zope.component.hooks import setSite
     >>> setSite(app.site)
     >>> uf = app.site.acl_users
     >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])

@@ -16,17 +16,18 @@
 import unittest
 from Testing import ZopeTestCase
 
-import transaction
 from os.path import abspath
 from os.path import dirname
 from os.path import join as path_join
 
+import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
+from zope.component.hooks import setSite
+
 from Products.CMFCore.tests.base.testcase import WarningInterceptor
 from Products.CMFDefault.testing import FunctionalLayer
 from Products.GenericSetup.context import TarballImportContext
-from zope.site.hooks import setSite
 
 here = abspath(dirname(__file__))
 

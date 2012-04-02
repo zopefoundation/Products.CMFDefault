@@ -1,11 +1,11 @@
 Form Views
---------------
+----------
 
 Set up user.
 
     >>> uf = app.site.acl_users
     >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
-    >>> from zope.site.hooks import setSite
+    >>> from zope.component.hooks import setSite
     >>> setSite(app.site)
 
 Create the browser object we'll be using.

@@ -11,9 +11,8 @@
 #
 ##############################################################################
 """Upgrade steps to CMFDefault 2.1.
-
-$Id$
 """
+
 import logging
 
 from Acquisition import aq_base
@@ -24,9 +23,9 @@ from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 from five.localsitemanager.registry import PersistentComponents
 from zope.component import getMultiAdapter
 from zope.component.globalregistry import base
+from zope.component.hooks import setSite
 from zope.component.interfaces import ComponentLookupError
 from zope.dottedname.resolve import resolve
-from zope.site.hooks import setSite
 
 from Products.CMFCore.DirectoryView import _dirreg
 from Products.CMFCore.DirectoryView import _generateKey
