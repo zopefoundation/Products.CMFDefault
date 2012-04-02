@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <dc-workflow workflow_id="singlestate_workflow"
              title="Single-state workflow" description=""
              state_variable="review_state"
