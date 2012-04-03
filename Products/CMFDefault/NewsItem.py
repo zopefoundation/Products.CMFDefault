@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ News content object.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo

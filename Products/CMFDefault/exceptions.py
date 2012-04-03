@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault product exceptions.
-
-$Id$
 """
 
 from zope.schema import ValidationError

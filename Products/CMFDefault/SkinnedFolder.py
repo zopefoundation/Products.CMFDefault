@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Allow the "view" of a folder to be skinned by type.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo

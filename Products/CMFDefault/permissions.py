@@ -1,6 +1,4 @@
 """ CMFDefault product permissions
-
-$Id$
 """
 from AccessControl import ModuleSecurityInfo
 
@@ -68,5 +66,3 @@ from Products.CMFCore.permissions import View
 
 security.declarePublic('ViewManagementScreens')
 from Products.CMFCore.permissions import ViewManagementScreens
-
-

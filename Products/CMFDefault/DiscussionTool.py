@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Basic portal discussion access tool.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo

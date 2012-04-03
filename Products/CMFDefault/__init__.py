@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Default implementation of CMFCore.
-
-$Id$
 """
 
 def initialize(context):

@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault setup handlers.
-
-$Id$
 """
 
 from Products.CMFDefault.exceptions import BadRequest

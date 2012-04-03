@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault.interfaces package.
-
-$Id$
 """
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer

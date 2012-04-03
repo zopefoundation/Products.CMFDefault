@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """Formlib schema vocabulary base classes.
-
-$Id$
 """
 
 from zope.interface import implements

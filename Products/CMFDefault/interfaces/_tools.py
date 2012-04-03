@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault tool interfaces.
-
-$Id$
 """
 
 from Products.CMFCore.interfaces import IMembershipTool as BaseInterface

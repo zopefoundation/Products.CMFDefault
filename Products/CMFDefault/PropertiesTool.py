@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault portal_properties tool.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo

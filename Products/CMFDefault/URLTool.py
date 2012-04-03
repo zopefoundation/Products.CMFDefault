@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ CMFDefault portal_url tool.
-
-$Id$
 """
 
 # for URL Tools created with CMF versions before 1.4

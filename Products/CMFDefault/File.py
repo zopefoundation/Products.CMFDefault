@@ -13,8 +13,6 @@
 """ This module implements a portal-managed File class.  It is based on
 Zope's built-in File object, but modifies the behaviour slightly to
 make it more Portal-friendly.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo

@@ -11,8 +11,6 @@
 #
 ##############################################################################
 """ Discussion item portal type.
-
-$Id$
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
