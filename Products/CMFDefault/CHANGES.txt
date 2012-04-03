@@ -49,8 +49,6 @@ Products.CMFDefault Changelog
 - browser views: Added SettingsEditFormBase.
   This can be used for edit forms for global settings.
 
-- Require at least Zope 2.13.4.
-
 - profiles and upgrade: Added support for using the new OFS UserFolder class.
 
 - views: Added Unauthorized exception view.
@@ -60,6 +58,8 @@ Products.CMFDefault Changelog
 
 - SyndicationTool: Updated to produce RSS 2.0. Uses an adapter for
   syndication information.
+
+- Require at least Zope 2.13.12.
 
 
 2.2.2 (2010-10-31)
