@@ -12,10 +12,13 @@
 ##############################################################################
 """ Unit tests for SyndicationTool module.
 """
-from datetime import datetime
-from datetime import timedelta
+
 import unittest
 import Testing
+
+import warnings
+from datetime import datetime
+from datetime import timedelta
 
 from DateTime.DateTime import DateTime
 from zope.component import getSiteManager
@@ -234,7 +237,10 @@ class SyndicationToolTests(SecurityTest):
         tool = self._makeOne()
         tool.base = NOW
 
-        as_HTML4 = tool.getHTML4UpdateBase()
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            as_HTML4 = tool.getHTML4UpdateBase()
+
         self.assertEqual(NOW.strftime("%Y-%m-%dT%H:%M:%SZ"), as_HTML4)
 
     def test_getHTML4UpdateBaseWithContext(self):
@@ -248,7 +254,9 @@ class SyndicationToolTests(SecurityTest):
         tool.enableSyndication(context)
         info.base = NOW
 
-        as_HTML4 = tool.getHTML4UpdateBase(context)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            as_HTML4 = tool.getHTML4UpdateBase(context)
 
         self.assertEqual(NOW.strftime("%Y-%m-%dT%H:%M:%SZ"), as_HTML4)
 
