@@ -1,41 +1,41 @@
 Site Manager Goals
 ==================
 
-  * Provide an online collaboration environment for an organization
-    or community.
+Provide an online collaboration environment for an organization or community
+----------------------------------------------------------------------------
 
-    - "Create a CMF site":CreateCMFSite
+- :doc:`CreateCMFSite`
 
-    - "Configure CMF site":ConfigureCMFSite
+- :doc:`ConfigureCMFSite`
 
-  * Maintain an overall site structure and organization.
+Maintain an overall site structure and organization
+---------------------------------------------------
 
-    - "Create CMF Folder":CreateCMFFolder
+- :doc:`CreateCMFFolder`
 
-    - "Create CMF Topic":CreateCMFTopic
+- :doc:`CreateCMFTopic`
 
-    - **XXX** "Configure CMF Topic":ConfigureCMFTopic
+- **XXX**:doc:`ConfigureCMFTopic`
 
-    - **XXX** "Configure what types of content can be created by
-       members":ConfigureAllowedContentTypes
+- **XXX**:doc:`ConfigureAllowedContentTypes`
 
-  * Implement security policies for the site.
+Implement security policies for the site
+----------------------------------------
 
-    - **XXX** "Configure security for a content object
-       or folder":ConfigureObjectSecurity
+- **XXX**:doc:`ConfigureObjectSecurity`
 
-  * Implement workflow policies for the site.
+Implement workflow policies for the site
+------------------------------------------
 
-    - **XXX** "Associate a workflow with a content
-       type":AssociateWorkflowWithContentType
+- **XXX** :doc:`AssociateWorkflowWithContentType`
 
-  * Implement metadata policies for the site.
+Implement metadata policies for the site
+----------------------------------------
 
-    - **XXX** "Configure required metadata for a content
-       type":ConfigureRequiredMetadata
+- **XXX** :doc:`ConfigureRequiredMetadata`
 
-  * Implement syndication policies for the site.
+Implement syndication policies for the site
+-------------------------------------------
 
-    - **XXX** "Configure what content is released via
-       syndication":ConfigureContentSyndication
+- **XXX** :doc:ConfigureContentSyndication
 

@@ -1,18 +1,20 @@
 Membership Manager Goals
 ========================
 
-  * Empower many users to collaborate on content production
+Empower many users to collaborate on content production
+-------------------------------------------------------
 
-    - **XXX** "Add a new member to the site using a
-       standard user folder":AddMemberToUserFolder
+- **XXX** :doc:`AddMemberToUserFolder`
 
-  * Delegate responsibilities to site members
+Delegate responsibilities to site members
+-------------------------------------------
 
-    - **XXX** "Change member information and abilities":ChangeMemberInformation
+- **XXX** :doc:`ChangeMemberInformation`
 
-  * Ensure that only appropriate users have access to the site
+Ensure that only appropriate users have access to the site
+------------------------------------------------------------
 
-    - **XXX** "Browse member roster":BrowseMemberRoster
+- **XXX** :doc:`BrowseMemberRoster`
 
-    - **XXX** "Remove a member from the site":RemoveMemberFromSite
+- **XXX** :doc:`RemoveMemberFromSite`
 

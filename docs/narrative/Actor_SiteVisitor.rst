@@ -1,20 +1,21 @@
 Site Vistor Goals
 =================
 
-  * Participate in the community or operations of the site
+Participate in the community or operations of the site
+------------------------------------------------------
 
-    - "Become a member of the site":BecomeAMember
+- :doc:`BecomeAMember`
 
-    - "Log into the site":LoginAsMember
+- "Log into the site":LoginAsMember
 
-    - "Browse community news":BrowseNewsItems
+- "Browse community news":BrowseNewsItems
 
-    - **XXX** "Submit a news item":SubmitNewsItem
+- **XXX** "Submit a news item":SubmitNewsItem
 
-      o Not a stock use case for anonymous visitors;  see
-        "Create Content":CreateNewContent and "Submit
-        Content":SubmitContentForPublication for Content
-        Creator's take.
+  o Not a stock use case for anonymous visitors;  see
+    "Create Content":CreateNewContent and "Submit
+    Content":SubmitContentForPublication for Content
+    Creator's take.
 
   * Quickly find content that is important to him
 
