@@ -56,13 +56,47 @@ Products.CMFDefault Changelog
 - views: Added Unauthorized exception view.
   This replaces CookieCrumbler's old redirect support.
 
+- skins: Removed unused styles from css.
+
+- SyndicationTool: Updated to produce RSS 2.0. Uses an adapter for
+  syndication information.
+
+
+2.2.2 (2010-10-31)
+------------------
+
+- Content-type setting was incorrectly transcribed from getMailGlobals 
+  which meant that content-type=' ;charset-utf-8' was set on browser 
+  views which is incorrect (backport from trunk).
+
+- Utility class used for wrapping items for display (backport from 
+  trunk).
+
+- Fixed Chameleon incompatibilities in some templates.
+
+
+2.2.1 (2010-07-04)
+------------------
+
+- Require at least Zope 2.12.3 and always use the five.formlib extension.
+
+- Removed testing dependency on zope.app.testing.
+
 - Deal with deprecation warnings for Zope 2.13.
 
 - Use the standard libraries doctest module.
 
-- skins: Removed unused styles from css.
+- upgrade: Added 2 more upgrade steps for upgrades from CMF 2.0.
+  Upgrades from unmodified CMF 2.0 and CMF 2.1 sites are now fully covered,
+  customized or older CMF sites might require additional manual upgrades.
 
-- Removed testing dependency on zope.app.testing.
+
+2.2.0 (2010-01-04)
+------------------
+
+- Use five.formlib in favor of Products.Five.formlib if it is available.
+
+- skins: Fixed skin changing for logged in members.
 
 - Upgrade steps: Merged faulty utility registration fixup script,
   tool utility registration and new-style actions upgrade from 
@@ -75,9 +109,6 @@ Products.CMFDefault Changelog
 
 - MetadataTool: Replaced write-on-read upgrade for the Dublin Core
   metadata definitions with a set of GenericSetup upgrade steps.
-  
-- SyndicationTool: Updated to produce RSS 2.0. Uses an adapter for
-  syndication information.
 
 
 2.2.0-beta (2009-12-06)
