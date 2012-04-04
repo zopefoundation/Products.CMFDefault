@@ -9,9 +9,8 @@ Reviewer
 Overview
 --------
 
-The Reviewer's job is to enforce the site's policies with respect
-to the quality and appropriateness of content published by Content
-Creators.
+The Reviewer's job is to enforce the site's policies with respect to the
+quality and appropriateness of content published by Content Creators.
 
 Assumptions
 -----------

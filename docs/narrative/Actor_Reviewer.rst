@@ -4,12 +4,12 @@ Reviewer Goals
 * Collaborate with content creators to ensure the quality and timeliness of
   site content.
 
-- :doc:`BrowseSubmittedForReview`
+* :doc:`BrowseSubmittedForReview`
 
-  - Brief description of the Action box, with pointers back to where this is
+  * Brief description of the Action box, with pointers back to where this is
     set up in the skin.
 
-  - Pending lists
+  * Pending lists
 
 - :doc:`ApproveForPublication`
 
@@ -18,5 +18,5 @@ Reviewer Goals
 
 * React quickly to resolve issues with published content.
 
-  - :doc:`UnpublishContent`
+  * :doc:`UnpublishContent`
 
