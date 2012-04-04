@@ -5,3 +5,4 @@ Products.CMFDefault documentation
    :maxdepth: 2
 
    narrative/index
+   api/index

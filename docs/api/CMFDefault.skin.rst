@@ -4,7 +4,7 @@ skin Package
 :mod:`skin` Package
 -------------------
 
-.. automodule:: CMFDefault.skin
+.. automodule:: Products.CMFDefault.skin
     :members:
     :undoc-members:
     :show-inheritance:

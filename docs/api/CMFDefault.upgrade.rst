@@ -4,7 +4,7 @@ upgrade Package
 :mod:`upgrade` Package
 ----------------------
 
-.. automodule:: CMFDefault.upgrade
+.. automodule:: Products.CMFDefault.upgrade
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ upgrade Package
 :mod:`to20` Module
 ------------------
 
-.. automodule:: CMFDefault.upgrade.to20
+.. automodule:: Products.CMFDefault.upgrade.to20
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ upgrade Package
 :mod:`to21` Module
 ------------------
 
-.. automodule:: CMFDefault.upgrade.to21
+.. automodule:: Products.CMFDefault.upgrade.to21
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ upgrade Package
 :mod:`to22` Module
 ------------------
 
-.. automodule:: CMFDefault.upgrade.to22
+.. automodule:: Products.CMFDefault.upgrade.to22
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ upgrade Package
 :mod:`to23` Module
 ------------------
 
-.. automodule:: CMFDefault.upgrade.to23
+.. automodule:: Products.CMFDefault.upgrade.to23
     :members:
     :undoc-members:
     :show-inheritance:

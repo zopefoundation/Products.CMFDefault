@@ -1,55 +1,60 @@
 Missing Use Cases
 =================
 
-  "ContentCreator":Actor_ContentCreator
+"ContentCreator":Actor_ContentCreator
+-------------------------------------
 
-   - "Define content metadata":ChangeMetadata
+ - "Define content metadata":ChangeMetadata
 
-   - "Make a content object discussable":EnableDiscussion
+ - "Make a content object discussable":EnableDiscussion
 
-  "MembershipManager":Actor_MembershipManager
+"MembershipManager":Actor_MembershipManager
+-------------------------------------------
 
-   - "Add a new member to the site using a standard user
-      folder":AddMemberToUserFolder
+ - "Add a new member to the site using a standard user
+    folder":AddMemberToUserFolder
 
-   - "Change member information and abilities":ChangeMemberInformation
+ - "Change member information and abilities":ChangeMemberInformation
 
-   - "Browse member roster":BrowseMemberRoster
+ - "Browse member roster":BrowseMemberRoster
 
-   - "Remove a member from the site":RemoveMemberFromSite
+ - "Remove a member from the site":RemoveMemberFromSite
 
-  "SiteDesigner":Actor_SiteDesigner
+"SiteDesigner":Actor_SiteDesigner
+---------------------------------
 
-   - "Create new skin for the site":CreateNewSkin
+ - "Create new skin for the site":CreateNewSkin
 
-   - "Modify skin appearance":ChangeSkinLookAndFeel
+ - "Modify skin appearance":ChangeSkinLookAndFeel
 
-   - "Change skin behavior":ChangeSkinBehavior
+ - "Change skin behavior":ChangeSkinBehavior
 
-   - "Change the default skin for the site":ChangeDefaultSiteSkin
+ - "Change the default skin for the site":ChangeDefaultSiteSkin
 
-  "SiteManager":Actor_SiteManager
+"SiteManager":Actor_SiteManager
+-------------------------------
 
-   - "Configure CMF Topic":ConfigureCMFTopic
+ - "Configure CMF Topic":ConfigureCMFTopic
 
-   - "Configure what types of content can be created
-      by users":ConfigureAllowedContentTypes
+ - "Configure what types of content can be created
+    by users":ConfigureAllowedContentTypes
 
-   - "Configure security for a content object
-      or folder":ConfigureObjectSecurity
+ - "Configure security for a content object
+    or folder":ConfigureObjectSecurity
 
-   - "Associate a workflow with a content
-      type":AssociateWorkflowWithContentType
+ - "Associate a workflow with a content
+    type":AssociateWorkflowWithContentType
 
-   - "Configure required metadata for a content
-      type":ConfigureRequiredMetadata
+ - "Configure required metadata for a content
+    type":ConfigureRequiredMetadata
 
-   - "Configure what content is released via
-      syndication":ConfigureContentSyndiation
+ - "Configure what content is released via
+    syndication":ConfigureContentSyndiation
 
-  "SiteVisitor":Actor_SiteVisitor
+"SiteVisitor":Actor_SiteVisitor
+-------------------------------
 
-   - "Submit a news item":SubmitNewsItem
+ - "Submit a news item":SubmitNewsItem
 
-   - "Browse a portal topic":BrowsePortalTopic
+ - "Browse a portal topic":BrowsePortalTopic
 

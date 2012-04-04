@@ -4,7 +4,7 @@ admin Package
 :mod:`admin` Package
 --------------------
 
-.. automodule:: CMFDefault.browser.admin
+.. automodule:: Products.CMFDefault.browser.admin
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ admin Package
 :mod:`config` Module
 --------------------
 
-.. automodule:: CMFDefault.browser.admin.config
+.. automodule:: Products.CMFDefault.browser.admin.config
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ admin Package
 :mod:`interfaces` Module
 ------------------------
 
-.. automodule:: CMFDefault.browser.admin.interfaces
+.. automodule:: Products.CMFDefault.browser.admin.interfaces
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ admin Package
 :mod:`syndication` Module
 -------------------------
 
-.. automodule:: CMFDefault.browser.admin.syndication
+.. automodule:: Products.CMFDefault.browser.admin.syndication
     :members:
     :undoc-members:
     :show-inheritance:

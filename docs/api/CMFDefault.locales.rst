@@ -4,7 +4,7 @@ locales Package
 :mod:`locales` Package
 ----------------------
 
-.. automodule:: CMFDefault.locales
+.. automodule:: Products.CMFDefault.locales
     :members:
     :undoc-members:
     :show-inheritance:

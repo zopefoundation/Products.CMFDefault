@@ -14,7 +14,7 @@ Provide an integrated look and feel for site content
     likely be a separate use case that refers back to this one.
 
   - The theory behind customizing methods, but don't refer to specific
-  layers or specific methods/images.
+    layers or specific methods/images.
 
 - **XXX** :doc:`ChangeSkinLookAndFeel`
 

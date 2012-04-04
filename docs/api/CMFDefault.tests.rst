@@ -4,7 +4,7 @@ tests Package
 :mod:`tests` Package
 --------------------
 
-.. automodule:: CMFDefault.tests
+.. automodule:: Products.CMFDefault.tests
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ tests Package
 :mod:`test_DefaultWorkflow` Module
 ----------------------------------
 
-.. automodule:: CMFDefault.tests.test_DefaultWorkflow
+.. automodule:: Products.CMFDefault.tests.test_DefaultWorkflow
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ tests Package
 :mod:`test_DiscussionReply` Module
 ----------------------------------
 
-.. automodule:: CMFDefault.tests.test_DiscussionReply
+.. automodule:: Products.CMFDefault.tests.test_DiscussionReply
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ tests Package
 :mod:`test_DiscussionTool` Module
 ---------------------------------
 
-.. automodule:: CMFDefault.tests.test_DiscussionTool
+.. automodule:: Products.CMFDefault.tests.test_DiscussionTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ tests Package
 :mod:`test_Discussions` Module
 ------------------------------
 
-.. automodule:: CMFDefault.tests.test_Discussions
+.. automodule:: Products.CMFDefault.tests.test_Discussions
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ tests Package
 :mod:`test_Document` Module
 ---------------------------
 
-.. automodule:: CMFDefault.tests.test_Document
+.. automodule:: Products.CMFDefault.tests.test_Document
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ tests Package
 :mod:`test_DublinCore` Module
 -----------------------------
 
-.. automodule:: CMFDefault.tests.test_DublinCore
+.. automodule:: Products.CMFDefault.tests.test_DublinCore
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,7 +60,7 @@ tests Package
 :mod:`test_Favorite` Module
 ---------------------------
 
-.. automodule:: CMFDefault.tests.test_Favorite
+.. automodule:: Products.CMFDefault.tests.test_Favorite
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,7 +68,7 @@ tests Package
 :mod:`test_File` Module
 -----------------------
 
-.. automodule:: CMFDefault.tests.test_File
+.. automodule:: Products.CMFDefault.tests.test_File
     :members:
     :undoc-members:
     :show-inheritance:
@@ -76,7 +76,7 @@ tests Package
 :mod:`test_Image` Module
 ------------------------
 
-.. automodule:: CMFDefault.tests.test_Image
+.. automodule:: Products.CMFDefault.tests.test_Image
     :members:
     :undoc-members:
     :show-inheritance:
@@ -84,7 +84,7 @@ tests Package
 :mod:`test_Link` Module
 -----------------------
 
-.. automodule:: CMFDefault.tests.test_Link
+.. automodule:: Products.CMFDefault.tests.test_Link
     :members:
     :undoc-members:
     :show-inheritance:
@@ -92,7 +92,7 @@ tests Package
 :mod:`test_MembershipTool` Module
 ---------------------------------
 
-.. automodule:: CMFDefault.tests.test_MembershipTool
+.. automodule:: Products.CMFDefault.tests.test_MembershipTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -100,7 +100,7 @@ tests Package
 :mod:`test_MetadataTool` Module
 -------------------------------
 
-.. automodule:: CMFDefault.tests.test_MetadataTool
+.. automodule:: Products.CMFDefault.tests.test_MetadataTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -108,7 +108,7 @@ tests Package
 :mod:`test_NewsItem` Module
 ---------------------------
 
-.. automodule:: CMFDefault.tests.test_NewsItem
+.. automodule:: Products.CMFDefault.tests.test_NewsItem
     :members:
     :undoc-members:
     :show-inheritance:
@@ -116,7 +116,7 @@ tests Package
 :mod:`test_Portal` Module
 -------------------------
 
-.. automodule:: CMFDefault.tests.test_Portal
+.. automodule:: Products.CMFDefault.tests.test_Portal
     :members:
     :undoc-members:
     :show-inheritance:
@@ -124,7 +124,7 @@ tests Package
 :mod:`test_PropertiesTool` Module
 ---------------------------------
 
-.. automodule:: CMFDefault.tests.test_PropertiesTool
+.. automodule:: Products.CMFDefault.tests.test_PropertiesTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -132,7 +132,7 @@ tests Package
 :mod:`test_RegistrationTool` Module
 -----------------------------------
 
-.. automodule:: CMFDefault.tests.test_RegistrationTool
+.. automodule:: Products.CMFDefault.tests.test_RegistrationTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -140,7 +140,7 @@ tests Package
 :mod:`test_SkinnedFolder` Module
 --------------------------------
 
-.. automodule:: CMFDefault.tests.test_SkinnedFolder
+.. automodule:: Products.CMFDefault.tests.test_SkinnedFolder
     :members:
     :undoc-members:
     :show-inheritance:
@@ -148,7 +148,7 @@ tests Package
 :mod:`test_SyndicationInfo` Module
 ----------------------------------
 
-.. automodule:: CMFDefault.tests.test_SyndicationInfo
+.. automodule:: Products.CMFDefault.tests.test_SyndicationInfo
     :members:
     :undoc-members:
     :show-inheritance:
@@ -156,7 +156,7 @@ tests Package
 :mod:`test_SyndicationTool` Module
 ----------------------------------
 
-.. automodule:: CMFDefault.tests.test_SyndicationTool
+.. automodule:: Products.CMFDefault.tests.test_SyndicationTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -164,7 +164,7 @@ tests Package
 :mod:`test_join` Module
 -----------------------
 
-.. automodule:: CMFDefault.tests.test_join
+.. automodule:: Products.CMFDefault.tests.test_join
     :members:
     :undoc-members:
     :show-inheritance:
@@ -172,7 +172,7 @@ tests Package
 :mod:`test_utils` Module
 ------------------------
 
-.. automodule:: CMFDefault.tests.test_utils
+.. automodule:: Products.CMFDefault.tests.test_utils
     :members:
     :undoc-members:
     :show-inheritance:

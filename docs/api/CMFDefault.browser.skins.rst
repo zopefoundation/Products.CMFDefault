@@ -4,7 +4,7 @@ skins Package
 :mod:`skins` Package
 --------------------
 
-.. automodule:: CMFDefault.browser.skins
+.. automodule:: Products.CMFDefault.browser.skins
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ skins Package
 :mod:`icons` Module
 -------------------
 
-.. automodule:: CMFDefault.browser.skins.icons
+.. automodule:: Products.CMFDefault.browser.skins.icons
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ skins Package
 :mod:`ursa` Module
 ------------------
 
-.. automodule:: CMFDefault.browser.skins.ursa
+.. automodule:: Products.CMFDefault.browser.skins.ursa
     :members:
     :undoc-members:
     :show-inheritance:

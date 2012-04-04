@@ -57,10 +57,10 @@ setup(name='Products.%s' % NAME,
           'zope.testing >= 3.7.0',
           'Products.DCWorkflow',
           ],
-      extras_require=dict(
-        test=[
-          'Products.DCWorkflow',
-          ]),
+      extras_require={ 'test': ['Products.DCWorkflow'],
+                       'docs': ['Sphinx', 
+                                'repoze.sphinx.autointerface', 
+                                'pkginfo']},
       test_loader='zope.testing.testrunner.eggsupport:SkipLayers',
       test_suite='Products.%s' % NAME,
       entry_points="""

@@ -7,7 +7,7 @@ Reviewer Goals
 - :doc:`BrowseSubmittedForReview`
 
   - Brief description of the Action box, with pointers back to where this is
-  set up in the skin.
+    set up in the skin.
 
   - Pending lists
 

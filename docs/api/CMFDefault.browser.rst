@@ -4,7 +4,7 @@ browser Package
 :mod:`browser` Package
 ----------------------
 
-.. automodule:: CMFDefault.browser
+.. automodule:: Products.CMFDefault.browser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ browser Package
 :mod:`test_utils` Module
 ------------------------
 
-.. automodule:: CMFDefault.browser.test_utils
+.. automodule:: Products.CMFDefault.browser.test_utils
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ browser Package
 :mod:`utils` Module
 -------------------
 
-.. automodule:: CMFDefault.browser.utils
+.. automodule:: Products.CMFDefault.browser.utils
     :members:
     :undoc-members:
     :show-inheritance:

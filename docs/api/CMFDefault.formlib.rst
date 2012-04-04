@@ -4,7 +4,7 @@ formlib Package
 :mod:`formlib` Package
 ----------------------
 
-.. automodule:: CMFDefault.formlib
+.. automodule:: Products.CMFDefault.formlib
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ formlib Package
 :mod:`form` Module
 ------------------
 
-.. automodule:: CMFDefault.formlib.form
+.. automodule:: Products.CMFDefault.formlib.form
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ formlib Package
 :mod:`schema` Module
 --------------------
 
-.. automodule:: CMFDefault.formlib.schema
+.. automodule:: Products.CMFDefault.formlib.schema
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ formlib Package
 :mod:`tests` Module
 -------------------
 
-.. automodule:: CMFDefault.formlib.tests
+.. automodule:: Products.CMFDefault.formlib.tests
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ formlib Package
 :mod:`vocabulary` Module
 ------------------------
 
-.. automodule:: CMFDefault.formlib.vocabulary
+.. automodule:: Products.CMFDefault.formlib.vocabulary
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ formlib Package
 :mod:`widgets` Module
 ---------------------
 
-.. automodule:: CMFDefault.formlib.widgets
+.. automodule:: Products.CMFDefault.formlib.widgets
     :members:
     :undoc-members:
     :show-inheritance:

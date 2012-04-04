@@ -4,7 +4,7 @@ interfaces Package
 :mod:`interfaces` Package
 -------------------------
 
-.. automodule:: CMFDefault.interfaces
+.. automodule:: Products.CMFDefault.interfaces
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ interfaces Package
 :mod:`_content` Module
 ----------------------
 
-.. automodule:: CMFDefault.interfaces._content
+.. automodule:: Products.CMFDefault.interfaces._content
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ interfaces Package
 :mod:`_tools` Module
 --------------------
 
-.. automodule:: CMFDefault.interfaces._tools
+.. automodule:: Products.CMFDefault.interfaces._tools
     :members:
     :undoc-members:
     :show-inheritance:

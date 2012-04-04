@@ -4,7 +4,7 @@ workflow Package
 :mod:`history` Module
 ---------------------
 
-.. automodule:: CMFDefault.browser.workflow.history
+.. automodule:: Products.CMFDefault.browser.workflow.history
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ workflow Package
 :mod:`workflow` Module
 ----------------------
 
-.. automodule:: CMFDefault.browser.workflow.workflow
+.. automodule:: Products.CMFDefault.browser.workflow.workflow
     :members:
     :undoc-members:
     :show-inheritance:

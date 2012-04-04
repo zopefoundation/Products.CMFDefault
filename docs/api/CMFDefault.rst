@@ -4,7 +4,7 @@ CMFDefault Package
 :mod:`CMFDefault` Package
 -------------------------
 
-.. automodule:: CMFDefault.__init__
+.. automodule:: Products.CMFDefault.__init__
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ CMFDefault Package
 :mod:`DefaultWorkflow` Module
 -----------------------------
 
-.. automodule:: CMFDefault.DefaultWorkflow
+.. automodule:: Products.CMFDefault.DefaultWorkflow
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ CMFDefault Package
 :mod:`DiscussionItem` Module
 ----------------------------
 
-.. automodule:: CMFDefault.DiscussionItem
+.. automodule:: Products.CMFDefault.DiscussionItem
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ CMFDefault Package
 :mod:`DiscussionTool` Module
 ----------------------------
 
-.. automodule:: CMFDefault.DiscussionTool
+.. automodule:: Products.CMFDefault.DiscussionTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ CMFDefault Package
 :mod:`Document` Module
 ----------------------
 
-.. automodule:: CMFDefault.Document
+.. automodule:: Products.CMFDefault.Document
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ CMFDefault Package
 :mod:`DublinCore` Module
 ------------------------
 
-.. automodule:: CMFDefault.DublinCore
+.. automodule:: Products.CMFDefault.DublinCore
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ CMFDefault Package
 :mod:`Favorite` Module
 ----------------------
 
-.. automodule:: CMFDefault.Favorite
+.. automodule:: Products.CMFDefault.Favorite
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,7 +60,7 @@ CMFDefault Package
 :mod:`File` Module
 ------------------
 
-.. automodule:: CMFDefault.File
+.. automodule:: Products.CMFDefault.File
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,7 +68,7 @@ CMFDefault Package
 :mod:`Image` Module
 -------------------
 
-.. automodule:: CMFDefault.Image
+.. automodule:: Products.CMFDefault.Image
     :members:
     :undoc-members:
     :show-inheritance:
@@ -76,7 +76,7 @@ CMFDefault Package
 :mod:`Link` Module
 ------------------
 
-.. automodule:: CMFDefault.Link
+.. automodule:: Products.CMFDefault.Link
     :members:
     :undoc-members:
     :show-inheritance:
@@ -84,7 +84,7 @@ CMFDefault Package
 :mod:`MembershipTool` Module
 ----------------------------
 
-.. automodule:: CMFDefault.MembershipTool
+.. automodule:: Products.CMFDefault.MembershipTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -92,7 +92,7 @@ CMFDefault Package
 :mod:`MetadataTool` Module
 --------------------------
 
-.. automodule:: CMFDefault.MetadataTool
+.. automodule:: Products.CMFDefault.MetadataTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -100,7 +100,7 @@ CMFDefault Package
 :mod:`NewsItem` Module
 ----------------------
 
-.. automodule:: CMFDefault.NewsItem
+.. automodule:: Products.CMFDefault.NewsItem
     :members:
     :undoc-members:
     :show-inheritance:
@@ -108,7 +108,7 @@ CMFDefault Package
 :mod:`Portal` Module
 --------------------
 
-.. automodule:: CMFDefault.Portal
+.. automodule:: Products.CMFDefault.Portal
     :members:
     :undoc-members:
     :show-inheritance:
@@ -116,7 +116,7 @@ CMFDefault Package
 :mod:`PropertiesTool` Module
 ----------------------------
 
-.. automodule:: CMFDefault.PropertiesTool
+.. automodule:: Products.CMFDefault.PropertiesTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -124,7 +124,7 @@ CMFDefault Package
 :mod:`RegistrationTool` Module
 ------------------------------
 
-.. automodule:: CMFDefault.RegistrationTool
+.. automodule:: Products.CMFDefault.RegistrationTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -132,7 +132,7 @@ CMFDefault Package
 :mod:`SkinnedFolder` Module
 ---------------------------
 
-.. automodule:: CMFDefault.SkinnedFolder
+.. automodule:: Products.CMFDefault.SkinnedFolder
     :members:
     :undoc-members:
     :show-inheritance:
@@ -140,7 +140,7 @@ CMFDefault Package
 :mod:`SyndicationInfo` Module
 -----------------------------
 
-.. automodule:: CMFDefault.SyndicationInfo
+.. automodule:: Products.CMFDefault.SyndicationInfo
     :members:
     :undoc-members:
     :show-inheritance:
@@ -148,7 +148,7 @@ CMFDefault Package
 :mod:`SyndicationTool` Module
 -----------------------------
 
-.. automodule:: CMFDefault.SyndicationTool
+.. automodule:: Products.CMFDefault.SyndicationTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -156,7 +156,7 @@ CMFDefault Package
 :mod:`URLTool` Module
 ---------------------
 
-.. automodule:: CMFDefault.URLTool
+.. automodule:: Products.CMFDefault.URLTool
     :members:
     :undoc-members:
     :show-inheritance:
@@ -164,7 +164,7 @@ CMFDefault Package
 :mod:`exceptions` Module
 ------------------------
 
-.. automodule:: CMFDefault.exceptions
+.. automodule:: Products.CMFDefault.exceptions
     :members:
     :undoc-members:
     :show-inheritance:
@@ -172,7 +172,7 @@ CMFDefault Package
 :mod:`factory` Module
 ---------------------
 
-.. automodule:: CMFDefault.factory
+.. automodule:: Products.CMFDefault.factory
     :members:
     :undoc-members:
     :show-inheritance:
@@ -180,7 +180,7 @@ CMFDefault Package
 :mod:`permissions` Module
 -------------------------
 
-.. automodule:: CMFDefault.permissions
+.. automodule:: Products.CMFDefault.permissions
     :members:
     :undoc-members:
     :show-inheritance:
@@ -188,7 +188,7 @@ CMFDefault Package
 :mod:`setuphandlers` Module
 ---------------------------
 
-.. automodule:: CMFDefault.setuphandlers
+.. automodule:: Products.CMFDefault.setuphandlers
     :members:
     :undoc-members:
     :show-inheritance:
@@ -196,7 +196,7 @@ CMFDefault Package
 :mod:`testing` Module
 ---------------------
 
-.. automodule:: CMFDefault.testing
+.. automodule:: Products.CMFDefault.testing
     :members:
     :undoc-members:
     :show-inheritance:
@@ -204,7 +204,7 @@ CMFDefault Package
 :mod:`utils` Module
 -------------------
 
-.. automodule:: CMFDefault.utils
+.. automodule:: Products.CMFDefault.utils
     :members:
     :undoc-members:
     :show-inheritance:

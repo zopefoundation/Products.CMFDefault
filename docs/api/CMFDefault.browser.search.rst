@@ -4,7 +4,7 @@ search Package
 :mod:`interfaces` Module
 ------------------------
 
-.. automodule:: CMFDefault.browser.search.interfaces
+.. automodule:: Products.CMFDefault.browser.search.interfaces
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ search Package
 :mod:`search` Module
 --------------------
 
-.. automodule:: CMFDefault.browser.search.search
+.. automodule:: Products.CMFDefault.browser.search.search
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ search Package
 :mod:`vocab` Module
 -------------------
 
-.. automodule:: CMFDefault.browser.search.vocab
+.. automodule:: Products.CMFDefault.browser.search.vocab
     :members:
     :undoc-members:
     :show-inheritance:

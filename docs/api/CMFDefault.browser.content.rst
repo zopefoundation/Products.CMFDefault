@@ -4,7 +4,7 @@ content Package
 :mod:`content` Package
 ----------------------
 
-.. automodule:: CMFDefault.browser.content
+.. automodule:: Products.CMFDefault.browser.content
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ content Package
 :mod:`document` Module
 ----------------------
 
-.. automodule:: CMFDefault.browser.content.document
+.. automodule:: Products.CMFDefault.browser.content.document
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ content Package
 :mod:`favorite` Module
 ----------------------
 
-.. automodule:: CMFDefault.browser.content.favorite
+.. automodule:: Products.CMFDefault.browser.content.favorite
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ content Package
 :mod:`file` Module
 ------------------
 
-.. automodule:: CMFDefault.browser.content.file
+.. automodule:: Products.CMFDefault.browser.content.file
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ content Package
 :mod:`folder` Module
 --------------------
 
-.. automodule:: CMFDefault.browser.content.folder
+.. automodule:: Products.CMFDefault.browser.content.folder
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ content Package
 :mod:`image` Module
 -------------------
 
-.. automodule:: CMFDefault.browser.content.image
+.. automodule:: Products.CMFDefault.browser.content.image
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ content Package
 :mod:`interfaces` Module
 ------------------------
 
-.. automodule:: CMFDefault.browser.content.interfaces
+.. automodule:: Products.CMFDefault.browser.content.interfaces
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,7 +60,7 @@ content Package
 :mod:`link` Module
 ------------------
 
-.. automodule:: CMFDefault.browser.content.link
+.. automodule:: Products.CMFDefault.browser.content.link
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,7 +68,7 @@ content Package
 :mod:`metadata` Module
 ----------------------
 
-.. automodule:: CMFDefault.browser.content.metadata
+.. automodule:: Products.CMFDefault.browser.content.metadata
     :members:
     :undoc-members:
     :show-inheritance:
@@ -76,7 +76,7 @@ content Package
 :mod:`newsitem` Module
 ----------------------
 
-.. automodule:: CMFDefault.browser.content.newsitem
+.. automodule:: Products.CMFDefault.browser.content.newsitem
     :members:
     :undoc-members:
     :show-inheritance:
@@ -84,7 +84,7 @@ content Package
 :mod:`rss` Module
 -----------------
 
-.. automodule:: CMFDefault.browser.content.rss
+.. automodule:: Products.CMFDefault.browser.content.rss
     :members:
     :undoc-members:
     :show-inheritance:
