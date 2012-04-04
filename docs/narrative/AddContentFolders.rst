@@ -25,7 +25,7 @@ Procedure
 2. In the "Folder contents" view of the folder, select the "New" button.
 
 3. From the list of addable portal types, select "Folder" by clicking the
-   adjacent radio button. Supply an ID :ref:`[1]` for the new folder in the input
+   adjacent radio button. Supply an ID [#]_ for the new folder in the input
    field at the bottom of the page, and click the "Add" button.
 
 4. The system will create the new folder using the ID you supplied, and
@@ -41,15 +41,12 @@ Procedure
 6. Click the "Change" button. The system will update the folder's metadata
    using the values you supply.
 
-Notes
------
+.. rubric:: Notes
 
-.. _[1]:
-
-1
--
-Don't confuse the folder's ID with the its Title. ID's cannot contain special
-characters (e.g., comma, asterisk, brackets, parentheses, etc.) A good
-practise is not to use spaces in an ID either. The ID is used in the url to
-reach the folder's content, so any character which is not allowed in a URI is
-not allowed in the id (see: "URI RFC", http://www.ietf.org/rfc/rfc2396.txt).
+.. [#]
+   Don't confuse the folder's ID with the its Title. ID's cannot contain
+   special characters (e.g., comma, asterisk, brackets, parentheses, etc.) A
+   good practise is not to use spaces in an ID either. The ID is used in the url
+   to reach the folder's content, so any character which is not allowed in a URI
+   is not allowed in the id (see: "URI RFC",
+   http://www.ietf.org/rfc/rfc2396.txt).
