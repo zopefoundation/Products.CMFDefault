@@ -4,12 +4,12 @@ Use Case:  Move / copy content between folders
 Actor
 -----
 
-- Content Creator
+Content Creator
 
 Assumptions
 -----------
 
-- Content Creator has logged into the CMF (see :doc:`LoginAsMember`).
+Content Creator has logged into the CMF (see :doc:`LoginAsMember`).
 
 Procedure
 ---------
