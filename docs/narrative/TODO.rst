@@ -2,14 +2,14 @@ Missing Use Cases
 =================
 
 "ContentCreator":doc:`Actor_ContentCreator`
--------------------------------------
+-------------------------------------------
 
 * "Define content metadata":doc:ChangeMetadata`
 
 * "Make a content object discussable":doc:`EnableDiscussion`
 
 "MembershipManager":doc:`Actor_MembershipManager`
--------------------------------------------
+-------------------------------------------------
 
 * "Add a new member to the site using a standard user
    folder":doc:`AddMemberToUserFolder`
@@ -21,7 +21,7 @@ Missing Use Cases
 * "Remove a member from the site":doc:`RemoveMemberFromSite`
 
 "SiteDesigner":docActor_SiteDesigner`
----------------------------------
+-------------------------------------
 
 * "Create new skin for the site":doc:`CreateNewSkin`
 
@@ -32,7 +32,7 @@ Missing Use Cases
 * "Change the default skin for the site":doc`ChangeDefaultSiteSkin`
 
 "SiteManager":doc:`Actor_SiteManager`
--------------------------------
+-------------------------------------
 
 * "Configure CMF Topic":ConfigureCMFTopic
 
