@@ -64,6 +64,9 @@ class BatchViewTests(unittest.TestCase):
     def test_page_number(self):
         batch = self._makeOne()
         self.assertEqual(batch.page_number(), 1)
+        batch = self._makeOne(1000)
+        batch._getBatchStart = lambda: 250
+        self.assertEqual(batch.page_number(), 11)
 
     def test_summary_length(self):
         batch = self._makeOne()
@@ -81,12 +84,25 @@ class BatchViewTests(unittest.TestCase):
     def test_navigation_previous(self):
         batch = self._makeOne()
         self.assertEqual(batch.navigation_previous(), None)
+        batch = self._makeOne(1000)
+        batch._getBatchStart = lambda: 250
+        self.assertEqual(batch.navigation_previous(),
+                         {'url': u'http://example.com?b_start=225',
+                          'title': u'Previous ${count} items'}
+                         )
 
     def test_navigation_next(self):
         batch = self._makeOne()
         self.assertEqual(batch.navigation_next(),
                          {'url': u'http://example.com?b_start=25',
-                          'title': u'Next ${count} items'})
+                          'title': u'Next ${count} items'}
+                         )
+        batch = self._makeOne(1000)
+        batch._getBatchStart = lambda: 250
+        self.assertEqual(batch.navigation_next(),
+                         {'url': u'http://example.com?b_start=275',
+                          'title': u'Next ${count} items'}
+                         )
 
     def test_page_range(self):
         batch = self._makeOne()
@@ -106,6 +122,20 @@ class BatchViewTests(unittest.TestCase):
                           {'url': u'http://example.com?b_start=175', 'number': 8},
                           {'url': u'http://example.com?b_start=200', 'number': 9},
                           {'url': u'http://example.com?b_start=225', 'number': 10}]
+                         )
+        batch = self._makeOne(1000)
+        batch._getBatchStart = lambda: 250
+        self.assertEqual(batch.page_range(),
+                         [{'url': u'http://example.com?b_start=150', 'number': 7},
+                          {'url': u'http://example.com?b_start=175', 'number': 8},
+                          {'url': u'http://example.com?b_start=200', 'number': 9},
+                          {'url': u'http://example.com?b_start=225', 'number': 10},
+                          {'url': u'http://example.com?b_start=250', 'number': 11},
+                          {'url': u'http://example.com?b_start=275', 'number': 12},
+                          {'url': u'http://example.com?b_start=300', 'number': 13},
+                          {'url': u'http://example.com?b_start=325', 'number': 14},
+                          {'url': u'http://example.com?b_start=350', 'number': 15},
+                          {'url': u'http://example.com?b_start=375', 'number': 16}]
                          )
 
 
