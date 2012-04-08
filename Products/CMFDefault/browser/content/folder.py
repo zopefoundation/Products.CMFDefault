@@ -17,6 +17,7 @@ LOG = logging.getLogger("Folder contents views")
 import urllib
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.PythonScripts.standard import thousands_commas
 from zope.component import getUtility
 from zope.formlib import form
 from zope.schema.vocabulary import SimpleTerm
@@ -221,7 +222,7 @@ class BatchViewBase(ViewBase):
 
 class ContentProxy(object):
     """Utility wrapping content item for display purposes"""
-    
+
     def __init__(self, context):
         self.name = context.getId()
         self.title = context.TitleOrId()
