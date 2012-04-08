@@ -36,6 +36,79 @@ from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
 
 
+class BatchViewTests(unittest.TestCase):
+
+    def _makeOne(self, batch_size=30):
+        from Products.CMFDefault.browser.content.folder import BatchViewBase
+        batch = BatchViewBase(None,
+                              TestRequest(ACTUAL_URL='http://example.com'))
+        batch._get_items = lambda: range(batch_size)
+        return batch
+
+    def test_expand_prefix(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.expand_prefix('key'), 'key')
+        batch = self._makeOne()
+        batch.prefix= 'form'
+        self.assertEqual(batch.expand_prefix('key'), 'form.key')
+
+    def test_page_count(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.page_count(), 2)
+        batch = self._makeOne(25)
+        self.assertEqual(batch.page_count(), 1)
+        batch = self._makeOne()
+        batch._BATCH_SIZE = 2
+        self.assertEqual(batch.page_count(), 15)
+
+    def test_page_number(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.page_number(), 1)
+
+    def test_summary_length(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.summary_length(), '30')
+        batch = self._makeOne(10000)
+        self.assertEqual(batch.summary_length(), '10,000')
+
+    def test_summary_type(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.summary_type(), 'items')
+        batch = self._makeOne()
+        batch._get_items = lambda: range(1)
+        self.assertEqual(batch.summary_type(), 'item')
+
+    def test_navigation_previous(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.navigation_previous(), None)
+
+    def test_navigation_next(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.navigation_next(),
+                         {'url': u'http://example.com?b_start=25',
+                          'title': u'Next ${count} items'})
+
+    def test_page_range(self):
+        batch = self._makeOne()
+        self.assertEqual(batch.page_range(),
+                         [{'url': u'http://example.com?b_start=0', 'number': 1},
+                          {'url': u'http://example.com?b_start=25', 'number': 2}]
+                         )
+        batch = self._makeOne(1000)
+        self.assertEqual(batch.page_range(),
+                         [{'url': u'http://example.com?b_start=0', 'number': 1},
+                          {'url': u'http://example.com?b_start=25', 'number': 2},
+                          {'url': u'http://example.com?b_start=50', 'number': 3},
+                          {'url': u'http://example.com?b_start=75', 'number': 4},
+                          {'url': u'http://example.com?b_start=100', 'number': 5},
+                          {'url': u'http://example.com?b_start=125', 'number': 6},
+                          {'url': u'http://example.com?b_start=150', 'number': 7},
+                          {'url': u'http://example.com?b_start=175', 'number': 8},
+                          {'url': u'http://example.com?b_start=200', 'number': 9},
+                          {'url': u'http://example.com?b_start=225', 'number': 10}]
+                         )
+
+
 class FolderContentsViewTests(unittest.TestCase):
 
     def setUp(self):
@@ -63,7 +136,7 @@ class FolderContentsViewTests(unittest.TestCase):
         for i in range(batch_size + 2):
             content_id = "Dummy%s" % i
             self._make_one(content_id)
-            
+
     def test_getNavigationURL(self):
         url = 'http://example.com/folder_contents'
         self._make_batch()
@@ -169,11 +242,12 @@ ftest_suite = ZopeTestCase.FunctionalDocFileSuite('folder.txt',
                         setUp=setupVocabulary,
                         tearDown=clearVocabulary,
                         )
-    
+
 ftest_suite.layer = FunctionalLayer
 
 def test_suite():
     suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(BatchViewTests))
     suite.addTest(unittest.makeSuite(FolderContentsViewTests))
     suite.addTest(unittest.makeSuite(FolderViewTests))
     suite.addTest(unittest.TestSuite((ftest_suite,)))
