@@ -12,8 +12,6 @@
 ##############################################################################
 """Browser views for folders.
 """
-import logging
-LOG = logging.getLogger("Folder contents views")
 import urllib
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -149,7 +147,7 @@ class BatchViewBase(ViewBase):
     def navigation_previous(self):
         batch_obj = self._getBatchObj().previous
         if batch_obj is None:
-            return None
+            return
 
         length = len(batch_obj)
         url = self._getNavigationURL(batch_obj.first)
@@ -163,7 +161,7 @@ class BatchViewBase(ViewBase):
     def navigation_next(self):
         batch_obj = self._getBatchObj().next
         if batch_obj is None:
-            return None
+            return
 
         length = len(batch_obj)
         url = self._getNavigationURL(batch_obj.first)
@@ -175,22 +173,16 @@ class BatchViewBase(ViewBase):
 
     def page_range(self):
         """Create a range of up to ten pages around the current page"""
-        pages = [(idx + 1, b_start) for idx, b_start in enumerate(
-                    range(0,
-                        self._getBatchObj().sequence_length,
-                        self._BATCH_SIZE)
-                    )
-                ]
+        b_size = self._BATCH_SIZE
         range_start = max(self.page_number() - 5, 0)
-        range_stop = min(max(self.page_number() + 5, 10), len(pages))
-        _page_range = []
-        for page, b_start in pages[range_start:range_stop]:
-            _page_range.append(
-                {'number':page,
-                 'url':self._getNavigationURL(b_start)
-                }
-                              )
-        return _page_range
+        range_stop = min(max(self.page_number() + 5, 10), self.page_count())
+
+        pages = []
+        for p in range(range_start, range_stop):
+            b_start = p*b_size
+            pages.append({'number':p + 1,
+                      'url':self._getNavigationURL(b_start)})
+        return pages
 
     @memoize
     def page_count(self):
