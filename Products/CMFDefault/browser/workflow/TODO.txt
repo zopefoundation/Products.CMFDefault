@@ -1,8 +1,8 @@
 Workflow Views
---------------
+==============
 
 Do Workflow
-===========
+-----------
 
  [X] IWorkflowAware @@submit.html
      content_status_modify.py -> workflow.Submit
@@ -15,7 +15,6 @@ Do Workflow
  [X] IWorkflowAware @@publish.html
      content_publish_form.pt -> publish.pt
 
-
  [X] IWorkflowAware @@reject.html
      content_reject_form.pt -> reject.pt
 
@@ -25,11 +24,12 @@ Do Workflow
  [X] IWorkflowAware @@show.html
      content_show_form.pt -> show.pt
 
- [ ] rejectItems.py
- [ ] review.pt
+ [x] IWorkflowAware@@reject.html
+ [x] review.pt -> reject.pt
 
 View Workflow History
-=====================
+---------------------
+
  [X] IWorkflowAware @@history.html
  content_status_history.pt -> history.View
                               history.pt

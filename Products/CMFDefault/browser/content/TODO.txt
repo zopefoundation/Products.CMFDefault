@@ -103,6 +103,3 @@ Converting skins to views:
 
       RSS.py -> rss.View
       RSS_template.pt -> rss.pt
-
-
-  [ ] complete this todo list

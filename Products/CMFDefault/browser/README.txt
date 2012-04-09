@@ -1,17 +1,25 @@
-Experimental Browser Views
+Browser Views
+=============
 
-  This sub-package provides Zope 3-style browser views for some CMF content
-  interfaces. These views are not used by the default profile.
+This sub-package provides browser views for all CMF content, generic and
+control scripts and templates. Unlike PythonScripts browser views have no
+restrictions on the Python modules used. As views are not checked each time
+they run, they can be faster the PythonScripts. The "ursa globals" are good a
+example of this.
 
-  The content of this sub-package is experimental and might be refactored
-  without further notice. Documentation and unittests are still missing but
-  the views should work just as well as the corresponding skin methods.
+These views are not used by the default profile.
 
-  See TODO.txt for a detailed list of converted skin methods.
+Documentation is still missing but the most views have unit and functional
+tests and should work just as well as the corresponding skin methods. The
+URLs are mapped using the ActionsTool.
 
-  Using the Browser Views
+See TODO.txt in each folder for a detailed list of converted skin methods.
 
-    In an un-customized CMFDefault site you will notice no difference because
-    the browser views are just different in implementation, not in look and
-    feel. But the browser view machinery bypasses the CMF skin machinery, so
-    you will notice that TTW customizations no longer have any effect.
+Using the Browser Views
+-----------------------
+
+In an un-customized CMFDefault site you will notice almost no difference
+because the browser views are just different in implementation, not in look
+and feel. But the browser view machinery lagrely bypasses the CMF skin
+machinery, so you will notice that TTW customizations no longer have any
+effect. A site's "main_template" can still be customized.

@@ -35,11 +35,11 @@ Converting skins to views:
       password_form_template.pt -> formlib based
       change_password.py -> formlib based
 
-  [ ] member roster:
-      
+  [x] member roster:
+
       roster.pt -> members.Roster
                    members_list.pt
-      
+
       members_manage_form.py -> members.Manage
       members_manage_template.pt -> members.pt
       members_add_control.py
@@ -47,5 +47,3 @@ Converting skins to views:
       members_delete_form.py -> members.Manage
       members_delete_template_template.py -> members_delete.pt
 
-
-  [ ] complete this todo list
