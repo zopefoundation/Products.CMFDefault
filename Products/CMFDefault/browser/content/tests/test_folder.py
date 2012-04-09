@@ -73,6 +73,8 @@ class BatchViewTests(unittest.TestCase):
         self.assertEqual(batch.summary_length(), '30')
         batch = self._makeOne(10000)
         self.assertEqual(batch.summary_length(), '10,000')
+        batch = self._makeOne(0)
+        self.assertEqual(batch.summary_length(), '')
 
     def test_summary_type(self):
         batch = self._makeOne()

@@ -15,7 +15,6 @@
 import urllib
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.PythonScripts.standard import thousands_commas
 from zope.component import getUtility
 from zope.formlib import form
 from zope.schema.vocabulary import SimpleTerm
@@ -35,6 +34,7 @@ from Products.CMFDefault.formlib.form import _EditFormMixin
 from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.utils import Message as _
+from Products.CMFDefault.utils import thousands_commas
 
 from .interfaces import IDeltaItem, IFolderItem, IBatchForm, ISortForm
 
