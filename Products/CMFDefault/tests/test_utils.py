@@ -27,7 +27,7 @@ Title: Test Products.CMFDefault.utils.parseHeadersBody'''
 
     MULTIPARAGRAPH_DESCRIPTION = \
         '''Description: this description spans multiple lines.
-        
+
         It includes a second paragraph'''
 
     TEST_BODY = '''Body goes here, and can span multiple
@@ -347,6 +347,19 @@ Header: value
 
         self.assertEqual( formatted
                         , 'Foo: foo\r\nBar: bar\r\n  \r\n  with multiline' )
+
+
+    def test_thousand_commas_integer(self):
+        from Products.CMFDefault.utils import thousands_commas as FUT
+        self.assertEqual(FUT(1), '1')
+        self.assertEqual(FUT(10), '10')
+        self.assertEqual(FUT(100), '100')
+        self.assertEqual(FUT(1000), '1,000')
+        self.assertEqual(FUT(1000000), ('1,000,000'))
+
+    def test_thousand_commas_string(self):
+        from Products.CMFDefault.utils import thousands_commas as FUT
+        self.assertRaises(ValueError, FUT, "a")
 
 
 def test_suite():

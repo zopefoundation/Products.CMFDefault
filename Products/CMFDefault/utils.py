@@ -16,7 +16,9 @@
 import os
 import re
 import rfc822
+import sys
 import StringIO
+from warnings import warn
 from email.Header import make_header
 from email.MIMEText import MIMEText
 from sgmllib import SGMLParser
@@ -547,3 +549,18 @@ def checkEmailAddress(address):
 
 security.declarePublic('Message')
 Message = _ = MessageFactory('cmf_default')
+
+security.declarePublic("thousands_commas")
+def thousands_commas(value):
+    """Format an integer with commas as thousand separator"""
+    i = int(value)
+    if sys.version_info[0] >  2 \
+       or (sys.version_info[0] == 2 and sys.version_info[1] > 6):
+        warn("On Python 2.7 and higher Use {:,}.formatting",
+             DeprecationWarning,
+             stacklevel=2)
+        return "{:,}".format(value)
+    l = list(str(i))
+    for idx in range(len(l) -3, 0, -3):
+        l.insert(idx, ",")
+    return "".join(l)
