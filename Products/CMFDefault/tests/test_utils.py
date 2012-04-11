@@ -27,7 +27,7 @@ Title: Test Products.CMFDefault.utils.parseHeadersBody'''
 
     MULTIPARAGRAPH_DESCRIPTION = \
         '''Description: this description spans multiple lines.
-
+           
         It includes a second paragraph'''
 
     TEST_BODY = '''Body goes here, and can span multiple
