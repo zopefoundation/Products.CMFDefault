@@ -49,7 +49,7 @@ class BatchViewTests(unittest.TestCase):
         batch = self._makeOne()
         self.assertEqual(batch.expand_prefix('key'), 'key')
         batch = self._makeOne()
-        batch.prefix= 'form'
+        batch.prefix = 'form'
         self.assertEqual(batch.expand_prefix('key'), 'form.key')
 
     def test_page_count(self):
@@ -108,37 +108,37 @@ class BatchViewTests(unittest.TestCase):
 
     def test_page_range(self):
         batch = self._makeOne()
-        self.assertEqual(batch.page_range(),
-                         [{'url': u'http://example.com?b_start=0', 'number': 1},
-                          {'url': u'http://example.com?b_start=25', 'number': 2}]
-                         )
+        self.assertEqual(
+            batch.page_range(),
+            [{'url': u'http://example.com?b_start=0', 'number': 1},
+             {'url': u'http://example.com?b_start=25', 'number': 2}])
         batch = self._makeOne(1000)
-        self.assertEqual(batch.page_range(),
-                         [{'url': u'http://example.com?b_start=0', 'number': 1},
-                          {'url': u'http://example.com?b_start=25', 'number': 2},
-                          {'url': u'http://example.com?b_start=50', 'number': 3},
-                          {'url': u'http://example.com?b_start=75', 'number': 4},
-                          {'url': u'http://example.com?b_start=100', 'number': 5},
-                          {'url': u'http://example.com?b_start=125', 'number': 6},
-                          {'url': u'http://example.com?b_start=150', 'number': 7},
-                          {'url': u'http://example.com?b_start=175', 'number': 8},
-                          {'url': u'http://example.com?b_start=200', 'number': 9},
-                          {'url': u'http://example.com?b_start=225', 'number': 10}]
-                         )
+        self.assertEqual(
+            batch.page_range(),
+            [{'url': u'http://example.com?b_start=0', 'number': 1},
+             {'url': u'http://example.com?b_start=25', 'number': 2},
+             {'url': u'http://example.com?b_start=50', 'number': 3},
+             {'url': u'http://example.com?b_start=75', 'number': 4},
+             {'url': u'http://example.com?b_start=100', 'number': 5},
+             {'url': u'http://example.com?b_start=125', 'number': 6},
+             {'url': u'http://example.com?b_start=150', 'number': 7},
+             {'url': u'http://example.com?b_start=175', 'number': 8},
+             {'url': u'http://example.com?b_start=200', 'number': 9},
+             {'url': u'http://example.com?b_start=225', 'number': 10}])
         batch = self._makeOne(1000)
         batch._getBatchStart = lambda: 250
-        self.assertEqual(batch.page_range(),
-                         [{'url': u'http://example.com?b_start=150', 'number': 7},
-                          {'url': u'http://example.com?b_start=175', 'number': 8},
-                          {'url': u'http://example.com?b_start=200', 'number': 9},
-                          {'url': u'http://example.com?b_start=225', 'number': 10},
-                          {'url': u'http://example.com?b_start=250', 'number': 11},
-                          {'url': u'http://example.com?b_start=275', 'number': 12},
-                          {'url': u'http://example.com?b_start=300', 'number': 13},
-                          {'url': u'http://example.com?b_start=325', 'number': 14},
-                          {'url': u'http://example.com?b_start=350', 'number': 15},
-                          {'url': u'http://example.com?b_start=375', 'number': 16}]
-                         )
+        self.assertEqual(
+            batch.page_range(),
+            [{'url': u'http://example.com?b_start=150', 'number': 7},
+             {'url': u'http://example.com?b_start=175', 'number': 8},
+             {'url': u'http://example.com?b_start=200', 'number': 9},
+             {'url': u'http://example.com?b_start=225', 'number': 10},
+             {'url': u'http://example.com?b_start=250', 'number': 11},
+             {'url': u'http://example.com?b_start=275', 'number': 12},
+             {'url': u'http://example.com?b_start=300', 'number': 13},
+             {'url': u'http://example.com?b_start=325', 'number': 14},
+             {'url': u'http://example.com?b_start=350', 'number': 15},
+             {'url': u'http://example.com?b_start=375', 'number': 16}])
 
 
 class FolderContentsViewTests(unittest.TestCase):
@@ -177,60 +177,56 @@ class FolderContentsViewTests(unittest.TestCase):
 
     def test_view(self):
         view = ContentsView(self.folder, TestRequest())
-        self.failUnless(IBrowserPublisher.providedBy(view))
+        self.assertTrue(IBrowserPublisher.providedBy(view))
 
     def test_up_info(self):
         view = ContentsView(self.folder, TestRequest())
-        self.assertEquals({'url':u'', 'id':u'Root', 'icon':u''},
-                            view.up_info())
+        self.assertEqual({'url': u'', 'id': u'Root', 'icon': u''},
+                         view.up_info())
 
     def test_list_batch_items(self):
         view = ContentsView(self.folder, TestRequest())
         view.content_fields()
-        self.assertEquals(view.listBatchItems, [])
+        self.assertEqual(view.listBatchItems, [])
 
     def test_is_orderable(self):
         view = ContentsView(self.folder, TestRequest())
-        self.failIf(view.is_orderable())
+        self.assertFalse(view.is_orderable())
 
     def test_sort_can_be_changed(self):
         view = ContentsView(self.folder, TestRequest())
-        self.failIf(view.can_sort_be_changed())
+        self.assertFalse(view.can_sort_be_changed())
 
     def test_empty_has_subobjects(self):
         view = ContentsView(self.folder, TestRequest())
-        self.failIf(view.has_subobjects())
+        self.assertFalse(view.has_subobjects())
 
     def test_has_subobjects(self):
         self._make_one()
         view = ContentsView(self.folder, TestRequest())
-        self.failUnless(view.has_subobjects())
+        self.assertTrue(view.has_subobjects())
 
     def test_check_clipboard_data(self):
         view = ContentsView(self.folder, TestRequest())
-        self.failIf(view.check_clipboard_data())
+        self.assertFalse(view.check_clipboard_data())
 
     def test_validate_items(self):
         """Cannot validate forms without widgets"""
         view = ContentsView(self.folder, TestRequest())
         self.assertRaises(AttributeError,
-                            view.validate_items, "", {'foo':'bar'})
+                          view.validate_items, "", {'foo': 'bar'})
 
     def test_get_ids(self):
         view = ContentsView(self.folder, TestRequest())
-        self.assertEquals(
-                        view._get_ids({'foo':'bar'}),
-                        [])
-        self.assertEquals(
-                        view._get_ids({'DummyItem1.select':True,
-                                       'DummyItem2.select':False,
-                                       'DummyItem3.select':True}),
-                        ['DummyItem1', 'DummyItem3'])
-        self.assertEquals(
-                        view._get_ids({'delta':True,
-                                       'delta':1}),
-                        []
-                        )
+        self.assertEqual(view._get_ids({'foo': 'bar'}),
+                         [])
+        self.assertEqual(view._get_ids({'DummyItem1.select': True,
+                                        'DummyItem2.select': False,
+                                        'DummyItem3.select': True}),
+                         ['DummyItem1', 'DummyItem3'])
+        self.assertEqual(view._get_ids({'delta': True,
+                                        'delta': 1}),
+                         [])
 
 
 class FolderViewTests(unittest.TestCase):

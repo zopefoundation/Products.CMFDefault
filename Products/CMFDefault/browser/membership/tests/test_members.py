@@ -111,28 +111,21 @@ class MembershipViewTests(unittest.TestCase):
 
     def test_get_ids(self):
         view = Manage(self.site, TestRequest())
-        self.assertEquals(
-                        view._get_ids({'foo':'bar'}),
-                        [])
-        self.assertEquals(
-                        sorted(
-                            view._get_ids({'DummyUser1.select':True,
-                                       'DummyUser2.select':False,
-                                       'DummyUser3.select':True})
-                            ),
-                        ['DummyUser1', 'DummyUser3']
-                        )
-        self.assertEquals(
-                        view._get_ids({'stupid.name.select.select':True}),
-                        ['stupid.name.select']
-        )
+        self.assertEqual(view._get_ids({'foo': 'bar'}),
+                         [])
+        self.assertEqual(sorted(view._get_ids({'DummyUser1.select': True,
+                                               'DummyUser2.select': False,
+                                               'DummyUser3.select': True})),
+                         ['DummyUser1', 'DummyUser3'])
+        self.assertEqual(view._get_ids({'stupid.name.select.select': True}),
+                         ['stupid.name.select'])
 
     def test_handle_select_for_deletion(self):
         view = Manage(self.site, TestRequest())
         self.assertTrue(view.guillotine == None)
         # Catch exception raised when template tries to render
         self.assertRaises(AttributeError,
-                view.handle_select_for_deletion, None, {"Alice.select":True})
+                view.handle_select_for_deletion, None, {"Alice.select": True})
         self.assertTrue(view.guillotine == "Alice")
 
     def test_handle_delete(self):
@@ -141,8 +134,7 @@ class MembershipViewTests(unittest.TestCase):
         self.assertFalse(self.mtool.listMembers() == [])
         # Catch exception raised when trying to redirect
         self.assertRaises(TypeError,
-                         view.handle_delete, None, {"Bob.select":True}
-                         )
+                          view.handle_delete, None, {"Bob.select": True})
         self.assertTrue(self.mtool.listMembers() == [])
 
 

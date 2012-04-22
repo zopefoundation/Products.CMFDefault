@@ -28,18 +28,15 @@ class MembershipTests(ZopeTestCase.FunctionalTestCase):
     def afterSetUp(self):
         setSite(self.app.site)
 
-    def test_join( self ):
+    def test_join(self):
         site = self.app.site
         member_id = 'test_user'
 
-        site.portal_registration.addMember( member_id
-                                          , 'zzyyzz'
-                                          , properties={ 'username': member_id
-                                                       , 'email' : 'foo@bar.com'
-                                                       }
-                                          )
+        site.portal_registration.addMember(member_id, 'zzyyzz',
+                                           properties={'username': member_id,
+                                                       'email': 'foo@bar.com'})
         u = site.acl_users.getUser(member_id)
-        self.failUnless(u)
+        self.assertTrue(u)
 
     def test_join_memberproperties(self):
         # Make sure the member data wrapper carries correct properties
@@ -47,29 +44,26 @@ class MembershipTests(ZopeTestCase.FunctionalTestCase):
         site = self.app.site
         member_id = 'test_user'
 
-        site.portal_registration.addMember( member_id
-                                          , 'zzyyzz'
-                                          , properties={ 'username': member_id
-                                                       , 'email' : 'foo@bar.com'
-                                                       }
-                                          )
+        site.portal_registration.addMember(member_id, 'zzyyzz',
+                                           properties={'username': member_id,
+                                                       'email': 'foo@bar.com'})
 
         m = site.portal_membership.getMemberById('test_user')
         self.assertEqual(m.getProperty('email'), 'foo@bar.com')
         self.assertEqual(m.getMemberId(), member_id)
         self.assertEqual(m.getRoles(), ('Member', 'Authenticated'))
 
-    def test_join_without_email( self ):
+    def test_join_without_email(self):
         site = self.app.site
 
         self.assertRaises(ValueError,
                           site.portal_registration.addMember,
                           'test_user',
                           'zzyyzz',
-                          properties={'username':'test_user', 'email': ''}
+                          properties={'username': 'test_user', 'email': ''}
                           )
 
-    def test_join_with_variable_id_policies( self ):
+    def test_join_with_variable_id_policies(self):
         site = self.app.site
         member_id = 'test.user'
 
@@ -78,22 +72,18 @@ class MembershipTests(ZopeTestCase.FunctionalTestCase):
                           site.portal_registration.addMember,
                           member_id,
                           'zzyyzz',
-                          properties={ 'username':'Test User'
-                                     , 'email': 'foo@bar.com'
-                                     }
+                          properties={'username': 'Test User',
+                                      'email': 'foo@bar.com'}
                           )
 
         # Now change the policy to allow "."
         new_pattern = "^[A-Za-z][A-Za-z0-9_\.]*$"
         site.portal_registration.manage_editIDPattern(new_pattern)
-        site.portal_registration.addMember( member_id
-                                          , 'zzyyzz'
-                                          , properties={ 'username': 'TestUser2'
-                                                       , 'email' : 'foo@bar.com'
-                                                       }
-                                          )
+        site.portal_registration.addMember(member_id, 'zzyyzz',
+                                           properties={'username': 'TestUser2',
+                                                       'email': 'foo@bar.com'})
         u = site.acl_users.getUser(member_id)
-        self.failUnless(u)
+        self.assertTrue(u)
 
 
 def test_suite():

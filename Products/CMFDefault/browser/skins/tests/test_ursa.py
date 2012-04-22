@@ -100,36 +100,36 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
     def test_ptool(self):
         view = self._makeOne()
         tool = view.context.portal_properties
-        self.failUnless(view.ptool is tool)
+        self.assertTrue(view.ptool is tool)
 
     def test_utool(self):
         view = self._makeOne()
         tool = DummyURLTool()
         getSiteManager().registerUtility(tool, IURLTool)
-        self.failUnless(view.utool is tool)
+        self.assertTrue(view.utool is tool)
 
     def test_mtool(self):
         view = self._makeOne()
         tool = view.context.portal_membership
-        self.failUnless(view.mtool is tool)
+        self.assertTrue(view.mtool is tool)
 
     def test_atool(self):
         view = self._makeOne()
         tool = DummyActionsTool()
         getSiteManager().registerUtility(tool, IActionsTool)
-        self.failUnless(view.atool is tool)
+        self.assertTrue(view.atool is tool)
 
     def test_wtool(self):
         view = self._makeOne()
         tool = DummyWorkflowTool()
         getSiteManager().registerUtility(tool, IWorkflowTool)
-        self.failUnless(view.wtool is tool)
+        self.assertTrue(view.wtool is tool)
 
     def test_syndtool(self):
         view = self._makeOne()
         tool = DummyTool()
         getSiteManager().registerUtility(tool, ISyndicationTool)
-        self.failUnless(view.syndtool is tool)
+        self.assertTrue(view.syndtool is tool)
 
     def test_uidtool(self):
         view = self._makeOne()
@@ -171,7 +171,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         tool = DummyURLTool()
         tool.getPortalObject = lambda: portal
         getSiteManager().registerUtility(tool, IURLTool)
-        self.failUnless(view.portal_object is portal)
+        self.assertTrue(view.portal_object is portal)
 
     def test_portal_url(self):
         view = self._makeOne()
@@ -311,26 +311,26 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         tool = view.context.portal_membership
         member = DummyUser()
         tool.getAuthenticatedMember = lambda: member
-        self.failUnless(view.member is member)
+        self.assertTrue(view.member is member)
 
     def test_membersfolder(self):
         view = self._makeOne()
         tool = view.context.portal_membership
         membersfolder = object()
         tool.getMembersFolder = lambda: membersfolder
-        self.failUnless(view.membersfolder is membersfolder)
+        self.assertTrue(view.membersfolder is membersfolder)
 
     def test_isAnon_tool_returns_True(self):
         view = self._makeOne()
         tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: True
-        self.failUnless(view.isAnon)
+        self.assertTrue(view.isAnon)
 
     def test_isAnon_tool_returns_False(self):
         view = self._makeOne()
         tool = view.context.portal_membership
         tool.isAnonymousUser = lambda: False
-        self.failIf(view.isAnon)
+        self.assertFalse(view.isAnon)
 
     def test_membername_anonymous(self):
         view = self._makeOne()
@@ -441,13 +441,18 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
 
 
 class DummyContext:
+
     pass
 
+
 class DummyAction:
+
     def __init__(self, id):
         self.id = id
 
+
 class DummySite:
+
     def __init__(self, paths_to_contexts=()):
         self.paths_to_contexts = paths_to_contexts[:]
 
@@ -457,11 +462,15 @@ class DummySite:
                 return context
         raise ValueError('Unknown path: %s' % path)
 
+
 class DummyPropertiesTool:
+
     def getProperty(self, id, d=None):
         return getattr(self, id, d)
 
+
 class DummyURLTool:
+
     def __init__(self, site=None, paths_to_contexts=()):
         self.site = site
         self.paths_to_contexts = paths_to_contexts[:]
@@ -477,10 +486,14 @@ class DummyURLTool:
                 return path
         raise ValueError('Unknown context: %s' % context)
 
+
 class DummyMembershipTool:
+
     pass
 
+
 class DummyActionsTool:
+
     def __init__(self, actions=None):
         if actions is None:
             actions = {}
@@ -489,20 +502,28 @@ class DummyActionsTool:
     def listFilteredActionsFor(self, context):
         return self.actions
 
+
 class DummyWorkflowTool:
+
     review_state = 'DUMMY'
+
     def getInfoFor(self, context, key, default):
         if key == 'review_state':
             return self.review_state
+
 
 class DummyTool(object):
 
     pass
 
+
 class DummyUser:
+
     pass
 
+
 class DummyResponse:
+
     def __init__(self, **kw):
         self._orig_headers = kw.copy()
         self._set_headers = []
@@ -513,7 +534,9 @@ class DummyResponse:
     def setHeader(self, key, value):
         self._set_headers.append((key, value))
 
+
 class DummyRequest:
+
     def __init__(self):
         self.RESPONSE = DummyResponse()
 

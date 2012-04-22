@@ -68,31 +68,32 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
     def test_show_icons_not_set(self):
         #Show action icons not set
         view = self._makeOne()
-        self.failIf(view._show_icons)
+        self.assertFalse(view._show_icons)
 
     def test_show_icons_enabled(self):
         #Show actions set to True
         site = self._makeSite()
         site.portal_properties.enable_actionicons = True
         view = self._makeOne(site)
-        self.failUnless(view._show_icons)
+        self.assertTrue(view._show_icons)
 
     def test_show_icons_disabled(self):
         #Show action icons set to False
         site = self._makeSite()
         site.portal_properties.enable_actionicons = False
         view = self._makeOne(site)
-        self.failIf(view._show_icons)
+        self.assertFalse(view._show_icons)
 
     def test_type_icons_with_action_icons_disabled(self):
         #Type actions should always be visible
         types = [DummyType("Document"), DummyType("Image")]
         site = self._makeSite(types=types)
         view = self._makeOne(site)
-        self.failIf(view.show_icons)
+        self.assertFalse(view.show_icons)
 
         css = view.types()
-        self.assertEqual(css,""".Document {background: url(http://example.com/Document.png) no-repeat 0.1em}
+        self.assertEqual(css, """\
+.Document {background: url(http://example.com/Document.png) no-repeat 0.1em}
 
 .Image {background: url(http://example.com/Image.png) no-repeat 0.1em}""")
 
@@ -102,10 +103,11 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         site = self._makeSite(types=types)
         site.portal_properties.enable_actionicons = True
         view = self._makeOne(site)
-        self.failUnless(view.show_icons)
+        self.assertTrue(view.show_icons)
 
         css = view.types()
-        self.assertEqual(css,""".Document {background: url(http://example.com/Document.png) no-repeat 0.1em}
+        self.assertEqual(css, """\
+.Document {background: url(http://example.com/Document.png) no-repeat 0.1em}
 
 .Image {background: url(http://example.com/Image.png) no-repeat 0.1em}""")
 
@@ -113,7 +115,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         #Action icons disabled. Image less styles should be returned.
         site = self._makeSite(actions=ACTIONS)
         view = self._makeOne(site)
-        self.failIf(view.show_icons)
+        self.assertFalse(view.show_icons)
 
         css = view.actions()
         self.assertEqual(css, """/* user actions */
@@ -143,7 +145,7 @@ class AbsolutIconsTests(unittest.TestCase, PlacelessSetup):
         site = self._makeSite(actions=ACTIONS)
         site.portal_properties.enable_actionicons = True
         view = self._makeOne(site)
-        self.failUnless(view.show_icons)
+        self.assertTrue(view.show_icons)
 
         css = view.actions()
         self.assertEqual(css, """/* user actions */
@@ -207,8 +209,7 @@ class DummyTypesTool:
 
 
 def DummyAction(name):
-
-    return {'id':name, 'icon':'%s.png' % name}
+    return {'id': name, 'icon': '%s.png' % name}
 
 
 ACTIONS = {'global': [DummyAction('Undo')],

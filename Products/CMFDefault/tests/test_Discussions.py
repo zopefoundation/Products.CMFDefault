@@ -92,87 +92,85 @@ class DiscussionTests(SecurityTest):
     def _makeDummyContent(self, id, *args, **kw):
         return self.site._setObject(id, DummyContent(id, *args, **kw))
 
-    def test_policy( self ):
+    def test_policy(self):
         dtool = self.dtool
         ttool = self.ttool
         test = self._makeDummyContent('test')
         self.assertRaises(DiscussionNotAllowed, dtool.getDiscussionFor, test)
-        assert getattr( test, 'talkback', None ) is None
+        self.assertTrue(getattr(test, 'talkback', None) is None)
 
         test.allow_discussion = 1
-        assert dtool.getDiscussionFor(test)
-        assert test.talkback
+        self.assertTrue(dtool.getDiscussionFor(test))
+        self.assertTrue(test.talkback)
 
         del test.talkback
         del test.allow_discussion
         fti = FTIDATA_DUMMY[0].copy()
-        ttool._setObject( 'Dummy Content', FTI(**fti) )
+        ttool._setObject('Dummy Content', FTI(**fti))
         self.assertRaises(DiscussionNotAllowed, dtool.getDiscussionFor, test)
-        assert getattr( test, 'talkback', None ) is None
+        self.assertTrue(getattr(test, 'talkback', None) is None)
 
         ti = getattr(ttool, 'Dummy Content')
         ti.allow_discussion = 1
-        assert dtool.getDiscussionFor(test)
-        assert test.talkback
+        self.assertTrue(dtool.getDiscussionFor(test))
+        self.assertTrue(test.talkback)
 
         del test.talkback
         ti.allow_discussion = 0
         self.assertRaises(DiscussionNotAllowed, dtool.getDiscussionFor, test)
-        assert getattr( test, 'talkback', None ) is None
+        self.assertTrue(getattr(test, 'talkback', None) is None)
 
         test.allow_discussion = 1
-        assert dtool.getDiscussionFor(test)
-        assert test.talkback
+        self.assertTrue(dtool.getDiscussionFor(test))
+        self.assertTrue(test.talkback)
 
-    def test_nestedReplies( self ):
+    def test_nestedReplies(self):
         dtool = self.dtool
         test = self._makeDummyContent('test')
         test.allow_discussion = 1
         talkback = dtool.getDiscussionFor(test)
-        assert talkback._getDiscussable() == test
-        assert talkback._getDiscussable( outer=1 ) == test
-        assert not talkback.hasReplies( test )
-        assert len( talkback.getReplies() ) == 0
+        self.assertEqual(talkback._getDiscussable(), test)
+        self.assertEqual(talkback._getDiscussable(outer=1), test)
+        self.assertFalse(talkback.hasReplies(test))
+        self.assertEqual(len(talkback.getReplies()), 0)
 
-        reply_id = talkback.createReply( title='test', text='blah' )
-        assert talkback.hasReplies( test )
-        assert len( talkback.getReplies() ) == 1
-        assert talkback.getReply( reply_id )
+        reply_id = talkback.createReply(title='test', text='blah')
+        self.assertTrue(talkback.hasReplies(test))
+        self.assertEqual(len(talkback.getReplies()), 1)
+        self.assertTrue(talkback.getReply(reply_id))
 
         reply1 = talkback.getReplies()[0]
         items = talkback._container.items()
-        self.assertEqual( reply1.getId(), items[0][0] )
-        self.assertEqual( reply1.inReplyTo(), test )
-        self.assertEqual( reply1.listCreators(), ('dummy',) )
+        self.assertEqual(reply1.getId(), items[0][0])
+        self.assertEqual(reply1.inReplyTo(), test)
+        self.assertEqual(reply1.listCreators(), ('dummy',))
 
         parents = reply1.parentsInThread()
-        assert len( parents ) == 1
-        assert test in parents
+        self.assertEqual(len(parents), 1)
+        self.assertTrue(test in parents)
 
         talkback1 = dtool.getDiscussionFor(reply1)
-        assert talkback == talkback1
-        assert len( talkback1.getReplies() ) == 0
-        assert len( talkback.getReplies() ) == 1
+        self.assertEqual(talkback, talkback1)
+        self.assertEqual(len(talkback1.getReplies()), 0)
+        self.assertEqual(len(talkback.getReplies()), 1)
 
-        talkback1.createReply( title='test2'
-                             , text='blah2'
-                             )
-        assert len( talkback._container ) == 2
-        assert talkback1.hasReplies( reply1 )
-        assert len( talkback1.getReplies() ) == 1
-        assert len( talkback.getReplies() ) == 1
+        talkback1.createReply(title='test2', text='blah2')
+        self.assertEqual(len(talkback._container), 2)
+        self.assertTrue(talkback1.hasReplies(reply1))
+        self.assertEqual(len(talkback1.getReplies()), 1)
+        self.assertEqual(len(talkback.getReplies()), 1)
 
         reply2 = talkback1.getReplies()[0]
-        assert reply2.inReplyTo() == reply1
+        self.assertEqual(reply2.inReplyTo(), reply1)
 
         parents = reply2.parentsInThread()
-        assert len( parents ) == 2
-        assert parents[ 0 ] == test
-        assert parents[ 1 ] == reply1
+        self.assertEqual(len(parents), 2)
+        self.assertEqual(parents[0], test)
+        self.assertEqual(parents[1], reply1)
 
-        parents = reply2.parentsInThread( 1 )
-        assert len( parents ) == 1
-        assert parents[ 0 ] == reply1
+        parents = reply2.parentsInThread(1)
+        self.assertEqual(len(parents), 1)
+        self.assertEqual(parents[0], reply1)
 
     def test_itemCataloguing(self):
         ctool = CatalogTool()
@@ -182,42 +180,37 @@ class DiscussionTests(SecurityTest):
         test = self._makeDummyContent('test', catalog=1)
         test.allow_discussion = 1
 
-        self.assertEqual( len(ctool), 1 )
-        self.failUnless(has_path(ctool, test.getPhysicalPath()))
+        self.assertEqual(len(ctool), 1)
+        self.assertTrue(has_path(ctool, test.getPhysicalPath()))
         talkback = dtool.getDiscussionFor(test)
-        self.assertEqual( talkback.getPhysicalPath(),
-                          ('', 'bar', 'site', 'test', 'talkback') )
-        talkback.createReply( title='test'
-                            , text='blah'
-                            )
-        self.assertEqual( len(ctool), 2 )
+        self.assertEqual(talkback.getPhysicalPath(),
+                         ('', 'bar', 'site', 'test', 'talkback'))
+        talkback.createReply(title='test', text='blah')
+        self.assertEqual(len(ctool), 2)
         for reply in talkback.getReplies():
-            self.failUnless(has_path(ctool, reply.getPhysicalPath()))
-            self.failUnless(has_path(ctool, '/bar/site/test/talkback/%s'
+            self.assertTrue(has_path(ctool, reply.getPhysicalPath()))
+            self.assertTrue(has_path(ctool, '/bar/site/test/talkback/%s'
                                             % reply.getId()))
 
         reply1 = talkback.getReplies()[0]
         path1 = '/'.join(reply1.getPhysicalPath())
-        self.assertEqual( ctool.getMetadataForUID(path1),
-                          {'in_reply_to': None} )
+        self.assertEqual(ctool.getMetadataForUID(path1), {'in_reply_to': None})
 
         talkback1 = dtool.getDiscussionFor(reply1)
-        talkback1.createReply( title='test2'
-                             , text='blah2'
-                             )
+        talkback1.createReply(title='test2', text='blah2')
         for reply in talkback.getReplies():
-            self.failUnless(has_path(ctool, reply.getPhysicalPath()))
-            self.failUnless(has_path(ctool, '/bar/site/test/talkback/%s'
+            self.assertTrue(has_path(ctool, reply.getPhysicalPath()))
+            self.assertTrue(has_path(ctool, '/bar/site/test/talkback/%s'
                                             % reply.getId()))
         for reply in talkback1.getReplies():
-            self.failUnless(has_path(ctool, reply.getPhysicalPath()))
-            self.failUnless(has_path(ctool, '/bar/site/test/talkback/%s'
+            self.assertTrue(has_path(ctool, reply.getPhysicalPath()))
+            self.assertTrue(has_path(ctool, '/bar/site/test/talkback/%s'
                                             % reply.getId()))
 
         reply2 = talkback1.getReplies()[0]
         path2 = '/'.join(reply2.getPhysicalPath())
-        self.assertEqual( ctool.getMetadataForUID(path2),
-                          {'in_reply_to': reply1.getId()} )
+        self.assertEqual(ctool.getMetadataForUID(path2),
+                         {'in_reply_to': reply1.getId()})
 
     def test_itemWorkflowNotification(self):
         from Products.CMFDefault.DiscussionItem import DiscussionItem
@@ -246,7 +239,7 @@ class DiscussionTests(SecurityTest):
             else:
                 DiscussionItem.notifyWorkflowCreated = old_method
 
-    def test_deletePropagation( self ):
+    def test_deletePropagation(self):
         ctool = CatalogTool()
         getSiteManager().registerUtility(ctool, ICatalogTool)
         dtool = self.dtool
@@ -254,12 +247,10 @@ class DiscussionTests(SecurityTest):
         test.allow_discussion = 1
 
         talkback = dtool.getDiscussionFor(test)
-        talkback.createReply( title='test'
-                            , text='blah'
-                            )
-        self.assertEqual( len(ctool), 2 )
+        talkback.createReply(title='test', text='blah')
+        self.assertEqual(len(ctool), 2)
         self.site._delObject('test')
-        self.assertEqual( len(ctool), 0 )
+        self.assertEqual(len(ctool), 0)
 
     def test_deleteReplies(self):
         dtool = self.dtool
@@ -314,9 +305,9 @@ class DiscussionTests(SecurityTest):
         test.allow_discussion = 1
         dtool = self.dtool
         talkback = dtool.getDiscussionFor(test)
-        self.failUnless(hasattr(talkback, 'aq_base'))
+        self.assertTrue(hasattr(talkback, 'aq_base'))
         # Acquire REQUEST
-        self.failUnless(getattr(talkback, 'REQUEST'))
+        self.assertTrue(getattr(talkback, 'REQUEST'))
 
     def test_existingTalkbackIsWrapped(self):
         test = self._makeDummyContent('test')
@@ -324,9 +315,9 @@ class DiscussionTests(SecurityTest):
         dtool = self.dtool
         dtool.getDiscussionFor(test)
         talkback = dtool.getDiscussionFor(test)
-        self.failUnless(hasattr(talkback, 'aq_base'))
+        self.assertTrue(hasattr(talkback, 'aq_base'))
         # Acquire REQUEST
-        self.failUnless(getattr(talkback, 'REQUEST'))
+        self.assertTrue(getattr(talkback, 'REQUEST'))
 
 
 def test_suite():

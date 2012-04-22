@@ -28,7 +28,7 @@ from Products.CMFDefault.testing import FunctionalLayer
 
 class FauxMembershipTool(Implicit):
 
-    def getMemberById( self, username ):
+    def getMemberById(self, username):
         return None
 
 
@@ -65,13 +65,10 @@ Spam, spam, spam
         rtool = self._makeOne().__of__(self.app)
         getSiteManager().registerUtility(FauxMembershipTool(), IMembershipTool)
 
-        props = { 'email' : INJECTED_HEADERS
-                , 'username' : 'username'
-                }
-
+        props = {'email': INJECTED_HEADERS, 'username': 'username'}
         result = rtool.testPropertiesValidity(props, None)
 
-        self.failIf( result is None, 'Invalid e-mail passed inspection' )
+        self.assertFalse(result is None, 'Invalid e-mail passed inspection')
 
 
 def test_suite():

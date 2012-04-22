@@ -57,7 +57,7 @@ class TestImageElement(ConformsToContent, unittest.TestCase):
 
     def setUp(self):
         self.site = DummySite('site')
-        self.site._setObject( 'portal_membership', DummyTool() )
+        self.site._setObject('portal_membership', DummyTool())
 
     def test_interfaces(self):
         from Products.CMFDefault.interfaces import IFile
@@ -84,17 +84,17 @@ class TestImageElement(ConformsToContent, unittest.TestCase):
 
         testfile = open(TEST_JPG, 'rb')
         image.edit(file=testfile)
-        testfile.seek(0,2)
+        testfile.seek(0, 2)
         testfilesize = testfile.tell()
         testfile.close()
 
-        assert image.get_size() == testfilesize
+        self.assertEqual(image.get_size(), testfilesize)
 
         emptyfile = StringIO()
         image.edit(file=emptyfile)
 
-        assert image.get_size() > 0
-        assert image.get_size() == testfilesize
+        self.assertTrue(image.get_size() > 0)
+        self.assertEqual(image.get_size(), testfilesize)
 
     def test_Image_setFormat(self):
         # Setting the DC.format must also set the content_type property
@@ -140,52 +140,60 @@ class TestImageCopyPaste(ZopeTestCase.FunctionalTestCase):
         # Copy/pasting a File should reset wf state to private
         cb = self.site.manage_copyObjects(['file'])
         self.subfolder.manage_pasteObjects(cb)
-        review_state = self.workflow.getInfoFor(self.subfolder.file, 'review_state')
+        review_state = self.workflow.getInfoFor(self.subfolder.file,
+                                                'review_state')
         self.assertEqual(review_state, 'private')
 
     def test_File_CloneResetsWorkflowState(self):
         # Cloning a File should reset wf state to private
         self.subfolder.manage_clone(self.site.file, 'file')
-        review_state = self.workflow.getInfoFor(self.subfolder.file, 'review_state')
+        review_state = self.workflow.getInfoFor(self.subfolder.file,
+                                                'review_state')
         self.assertEqual(review_state, 'private')
 
     def test_File_CutPasteKeepsWorkflowState(self):
         # Cut/pasting a File should keep the wf state
         cb = self.site.manage_cutObjects(['file'])
         self.subfolder.manage_pasteObjects(cb)
-        review_state = self.workflow.getInfoFor(self.subfolder.file, 'review_state')
+        review_state = self.workflow.getInfoFor(self.subfolder.file,
+                                                'review_state')
         self.assertEqual(review_state, 'published')
 
     def test_File_RenameKeepsWorkflowState(self):
         # Renaming a File should keep the wf state
         self.site.manage_renameObjects(['file'], ['file2'])
-        review_state = self.workflow.getInfoFor(self.site.file2, 'review_state')
+        review_state = self.workflow.getInfoFor(self.site.file2,
+                                                'review_state')
         self.assertEqual(review_state, 'published')
 
     def test_Image_CopyPasteResetsWorkflowState(self):
         #  Copy/pasting an Image should reset wf state to private
         cb = self.site.manage_copyObjects(['image'])
         self.subfolder.manage_pasteObjects(cb)
-        review_state = self.workflow.getInfoFor(self.subfolder.image, 'review_state')
+        review_state = self.workflow.getInfoFor(self.subfolder.image,
+                                                'review_state')
         self.assertEqual(review_state, 'private')
 
     def test_Image_CloneResetsWorkflowState(self):
         # Cloning an Image should reset wf state to private
         self.subfolder.manage_clone(self.site.image, 'image')
-        review_state = self.workflow.getInfoFor(self.subfolder.image, 'review_state')
+        review_state = self.workflow.getInfoFor(self.subfolder.image,
+                                                'review_state')
         self.assertEqual(review_state, 'private')
 
     def test_Image_CutPasteKeepsWorkflowState(self):
         # Cut/pasting an Image should keep the wf state
         cb = self.site.manage_cutObjects(['image'])
         self.subfolder.manage_pasteObjects(cb)
-        review_state = self.workflow.getInfoFor(self.subfolder.image, 'review_state')
+        review_state = self.workflow.getInfoFor(self.subfolder.image,
+                                                'review_state')
         self.assertEqual(review_state, 'published')
 
     def test_Image_RenameKeepsWorkflowState(self):
         # Renaming an Image should keep the wf state
         self.site.manage_renameObjects(['image'], ['image2'])
-        review_state = self.workflow.getInfoFor(self.site.image2, 'review_state')
+        review_state = self.workflow.getInfoFor(self.site.image2,
+                                                'review_state')
         self.assertEqual(review_state, 'published')
 
 
@@ -245,17 +253,19 @@ class CachingTests(TransactionalTest):
         self.assertEqual(len(data), len(ref))
         self.assertEqual(data, ref)
         # ICK!  'HTTPResponse.getHeader' doesn't case-flatten the key!
-        self.assertEqual(self.RESPONSE.getHeader('Content-Length'.lower())
-                        , str(len(ref)))
-        self.assertEqual(self.RESPONSE.getHeader('Content-Type'.lower())
-                        , 'image/jpeg')
-        self.assertEqual(self.RESPONSE.getHeader('Last-Modified'.lower())
-                        , rfc1123_date(mod_time))
+        self.assertEqual(self.RESPONSE.getHeader('Content-Length'.lower()),
+                         str(len(ref)))
+        self.assertEqual(self.RESPONSE.getHeader('Content-Type'.lower()),
+                         'image/jpeg')
+        self.assertEqual(self.RESPONSE.getHeader('Last-Modified'.lower()),
+                         rfc1123_date(mod_time))
 
     def test_caching(self):
         large_data = '0' * 100000
+
         def fake_response_write(data):
             return
+
         response_write = self.RESPONSE.write
         self.RESPONSE.write = fake_response_write
         cpm = DummyCachingManager()
@@ -265,9 +275,9 @@ class CachingTests(TransactionalTest):
         obj = obj.__of__(self.app)
         obj.index_html(self.REQUEST, self.RESPONSE)
         headers = self.RESPONSE.headers
-        self.failUnless(len(headers) >= original_len + 3)
-        self.failUnless('foo' in headers.keys())
-        self.failUnless('bar' in headers.keys())
+        self.assertTrue(len(headers) >= original_len + 3)
+        self.assertTrue('foo' in headers.keys())
+        self.assertTrue('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_image')
         self.RESPONSE.write = response_write
 
@@ -277,7 +287,8 @@ class CachingTests(TransactionalTest):
         getSiteManager().registerUtility(cpm, ICachingPolicyManager)
         original_len = len(self.RESPONSE.headers)
         _path, ref = self._extractFile()
-        self.app.image = self._makeOne('test_image', 'test_image.gif', file=ref)
+        self.app.image = self._makeOne('test_image', 'test_image.gif',
+                                       file=ref)
         image = self.app.image
         transaction.savepoint(optimistic=True)
 
@@ -292,14 +303,14 @@ class CachingTests(TransactionalTest):
         self.assertEqual(self.RESPONSE.getStatus(), 304)
 
         headers = self.RESPONSE.headers
-        self.failUnless(len(headers) >= original_len + 3)
-        self.failUnless('foo' in headers.keys())
-        self.failUnless('bar' in headers.keys())
+        self.assertTrue(len(headers) >= original_len + 3)
+        self.assertTrue('foo' in headers.keys())
+        self.assertTrue('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_image')
 
     def test_caching_policy_headers_are_canonical(self):
         """Ensure that headers set by the caching policy manager trump
-        any of the same name that from time to time may be set while 
+        any of the same name that from time to time may be set while
         rendering the object."""
         _path, ref = self._extractFile()
 

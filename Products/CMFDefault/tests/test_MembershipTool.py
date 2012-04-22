@@ -110,7 +110,7 @@ class MembershipToolSecurityTests(SecurityTest):
     def setUp(self):
         SecurityTest.setUp(self)
         self.site = DummySite('site').__of__(self.app)
-        self.site._setObject( 'portal_membership', self._makeOne() )
+        self.site._setObject('portal_membership', self._makeOne())
 
     def tearDown(self):
         cleanUp()
@@ -118,49 +118,49 @@ class MembershipToolSecurityTests(SecurityTest):
 
     def test_createMemberArea(self):
         mtool = self.site.portal_membership
-        members = self.site._setObject( 'Members', PortalFolder('Members') )
-        acl_users = self.site._setObject( 'acl_users', DummyUserFolder() )
+        members = self.site._setObject('Members', PortalFolder('Members'))
+        acl_users = self.site._setObject('acl_users', DummyUserFolder())
         wtool = DummyTool()
         getSiteManager().registerUtility(wtool, IWorkflowTool)
 
         # permission
         mtool.createMemberArea('user_foo')
-        self.failIf( hasattr(members.aq_self, 'user_foo') )
+        self.assertFalse(hasattr(members.aq_self, 'user_foo'))
         newSecurityManager(None, acl_users.user_bar)
         mtool.createMemberArea('user_foo')
-        self.failIf( hasattr(members.aq_self, 'user_foo') )
+        self.assertFalse(hasattr(members.aq_self, 'user_foo'))
         newSecurityManager(None, acl_users.user_foo)
         mtool.setMemberareaCreationFlag()
         mtool.createMemberArea('user_foo')
-        self.failIf( hasattr(members.aq_self, 'user_foo') )
+        self.assertFalse(hasattr(members.aq_self, 'user_foo'))
         newSecurityManager(None, acl_users.all_powerful_Oz)
         mtool.setMemberareaCreationFlag()
         mtool.createMemberArea('user_foo')
-        self.failUnless( hasattr(members.aq_self, 'user_foo') )
+        self.assertTrue(hasattr(members.aq_self, 'user_foo'))
 
         # default content
         f = members.user_foo
         ownership = acl_users.user_foo
-        localroles = ( ( 'user_foo', ('Owner',) ), )
-        self.assertEqual( f.Title(), "user_foo's Home" )
-        self.assertEqual( f.getOwner(), ownership )
-        self.assertEqual( f.get_local_roles(), localroles,
-                          'CMF Collector issue #162 (LocalRoles broken): %s'
-                          % str( f.get_local_roles() ) )
-        self.assertEqual( f.index_html.getOwner(), ownership,
-                          'CMF Collector issue #162 (Ownership broken): %s'
-                          % str( f.index_html.getOwner() ) )
-        self.assertEqual( f.index_html.get_local_roles(), localroles,
-                          'CMF Collector issue #162 (LocalRoles broken): %s'
-                          % str( f.index_html.get_local_roles() ) )
-        self.assertEqual( wtool.test_notified, f.index_html )
+        localroles = (('user_foo', ('Owner',)),)
+        self.assertEqual(f.Title(), "user_foo's Home")
+        self.assertEqual(f.getOwner(), ownership)
+        self.assertEqual(f.get_local_roles(), localroles,
+                         'CMF Collector issue #162 (LocalRoles broken): %s'
+                         % str(f.get_local_roles()))
+        self.assertEqual(f.index_html.getOwner(), ownership,
+                         'CMF Collector issue #162 (Ownership broken): %s'
+                         % str(f.index_html.getOwner()))
+        self.assertEqual(f.index_html.get_local_roles(), localroles,
+                         'CMF Collector issue #162 (LocalRoles broken): %s'
+                         % str(f.index_html.get_local_roles()))
+        self.assertEqual(wtool.test_notified, f.index_html)
 
         # acquisition
         self.site.user_bar = 'test attribute'
         newSecurityManager(None, acl_users.user_bar)
         mtool.createMemberArea('user_bar')
-        self.failUnless( hasattr(members.aq_self, 'user_bar'),
-                         'CMF Collector issue #102 (acquisition bug)' )
+        self.assertTrue(hasattr(members.aq_self, 'user_bar'),
+                        'CMF Collector issue #102 (acquisition bug)')
 
 
 def test_suite():

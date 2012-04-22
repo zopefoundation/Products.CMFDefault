@@ -20,7 +20,6 @@ import warnings
 from datetime import datetime
 from datetime import timedelta
 
-from DateTime.DateTime import DateTime
 from zope.component import getSiteManager
 from zope.component import queryAdapter
 from zope.interface import alsoProvides
@@ -132,8 +131,8 @@ class SyndicationToolTests(SecurityTest):
 
         self.assertEqual(tool.period, 'daily')
         self.assertEqual(tool.frequency, 1)
-        self.failUnless(datetime.now() - tool.base < ONE_MINUTE)
-        self.failIf(tool.enabled)
+        self.assertTrue(datetime.now() - tool.base < ONE_MINUTE)
+        self.assertFalse(tool.enabled)
         self.assertEqual(tool.max_items, 15)
 
     def test_object_not_syndicatable(self):
@@ -216,7 +215,6 @@ class SyndicationToolTests(SecurityTest):
 
         self.assertEqual(NOW.isoformat(), tool.getUpdateBase())
 
-
     def test_getUpdateBaseWithContext(self):
         NOW = datetime.now()
 
@@ -229,7 +227,6 @@ class SyndicationToolTests(SecurityTest):
         info.base = NOW
 
         self.assertEqual(NOW.isoformat(), tool.getUpdateBase(context))
-
 
     def test_getHTML4UpdateBase(self):
         NOW = datetime.now()

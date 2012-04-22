@@ -65,7 +65,7 @@ class DefaultWorkflowDefinitionTests(unittest.TestCase):
         dummy = self.site._setObject('dummy', DummyContent())
 
         for action in ('submit', 'retract', 'publish', 'reject',):
-            self.assert_(wf.isActionSupported(dummy, action))
+            self.assertTrue(wf.isActionSupported(dummy, action))
 
     def test_isActionSupported_with_keywargs(self):
 
@@ -73,8 +73,8 @@ class DefaultWorkflowDefinitionTests(unittest.TestCase):
         dummy = self.site._setObject('dummy', DummyContent())
 
         for action in ('submit', 'retract', 'publish', 'reject',):
-            self.assert_(wf.isActionSupported(dummy, action,
-                                              arg1=1, arg2=2))
+            self.assertTrue(wf.isActionSupported(dummy, action,
+                                                 arg1=1, arg2=2))
 
     # XXX more tests...
 

@@ -139,17 +139,19 @@ class CachingTests(TransactionalTest):
         self.assertEqual(len(data), len(ref))
         self.assertEqual(data, ref)
         # ICK!  'HTTPResponse.getHeader' doesn't case-flatten the key!
-        self.assertEqual(self.RESPONSE.getHeader('Content-Length'.lower())
-                        , str(len(ref)))
-        self.assertEqual(self.RESPONSE.getHeader('Content-Type'.lower())
-                        , 'application/octet-stream')
-        self.assertEqual(self.RESPONSE.getHeader('Last-Modified'.lower())
-                        , rfc1123_date(mod_time))
+        self.assertEqual(self.RESPONSE.getHeader('Content-Length'.lower()),
+                         str(len(ref)))
+        self.assertEqual(self.RESPONSE.getHeader('Content-Type'.lower()),
+                         'application/octet-stream')
+        self.assertEqual(self.RESPONSE.getHeader('Last-Modified'.lower()),
+                         rfc1123_date(mod_time))
 
     def test_caching(self):
         large_data = '0' * 100000
+
         def fake_response_write(data):
             return
+
         response_write = self.RESPONSE.write
         self.RESPONSE.write = fake_response_write
         cpm = DummyCachingManager()
@@ -159,15 +161,15 @@ class CachingTests(TransactionalTest):
         obj = obj.__of__(self.app)
         obj.index_html(self.REQUEST, self.RESPONSE)
         headers = self.RESPONSE.headers
-        self.failUnless(len(headers) >= original_len + 3)
-        self.failUnless('foo' in headers.keys())
-        self.failUnless('bar' in headers.keys())
+        self.assertTrue(len(headers) >= original_len + 3)
+        self.assertTrue('foo' in headers.keys())
+        self.assertTrue('bar' in headers.keys())
         self.assertEqual(headers['test_path'], '/test_file')
         self.RESPONSE.write = response_write
 
     def test_caching_policy_headers_are_canonical(self):
         """Ensure that headers set by the caching policy manager trump
-        any of the same name that from time to time may be set while 
+        any of the same name that from time to time may be set while
         rendering the object."""
         _path, ref = self._extractFile()
 
@@ -182,6 +184,7 @@ class CachingTests(TransactionalTest):
         headers = self.RESPONSE.headers
         self.assertEqual(headers['last-modified'],
                          "Sun, 06 Nov 1994 08:49:37 GMT")
+
 
 # We set up a new type of dummy caching manager that sets a bogus
 # last modified date.  This should be visible in the request

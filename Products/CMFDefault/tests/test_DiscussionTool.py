@@ -71,24 +71,26 @@ class DiscussionToolSecurityTests(SecurityTest):
         acl_users = self.site._setObject('acl_users', DummyUserFolder())
         newSecurityManager(None, acl_users.all_powerful_Oz)
         dtool = self.dtool
-        foo = self.site._setObject( 'foo', DummyFolder() )
-        baz = foo._setObject( 'baz', DummyFolder() )
+        foo = self.site._setObject('foo', DummyFolder())
+        baz = foo._setObject('baz', DummyFolder())
 
         dtool.overrideDiscussionFor(foo, 1)
-        self.failUnless( hasattr(foo.aq_base, 'allow_discussion') )
+        self.assertTrue(hasattr(foo.aq_base, 'allow_discussion'))
         try:
             dtool.overrideDiscussionFor(baz, None)
         except KeyError:
             self.fail('CMF Collector issue #201 (acquisition bug): '
                       'KeyError raised')
         dtool.overrideDiscussionFor(foo, None)
-        self.failIf( hasattr(foo.aq_base, 'allow_discussion') )
+        self.assertFalse(hasattr(foo.aq_base, 'allow_discussion'))
 
         # https://bugs.launchpad.net/zope-cmf/+bug/162532: Don't break
         # if allow_discussion only exists at the class level
         class DummyContent:
             allow_discussion = False
-            def getId(self): return 'dummy'
+
+            def getId(self):
+                return 'dummy'
 
         dummy = DummyContent()
         try:
@@ -102,31 +104,31 @@ class DiscussionToolSecurityTests(SecurityTest):
         acl_users = self.site._setObject('acl_users', DummyUserFolder())
         newSecurityManager(None, acl_users.all_powerful_Oz)
         dtool = self.dtool
-        foo = self.site._setObject( 'foo', DummyFolder() )
-        baz = foo._setObject( 'baz', DummyFolder() )
+        foo = self.site._setObject('foo', DummyFolder())
+        baz = foo._setObject('baz', DummyFolder())
         dtool.overrideDiscussionFor(foo, 1)
 
-        self.failIf(dtool.isDiscussionAllowedFor(baz))
+        self.assertFalse(dtool.isDiscussionAllowedFor(baz))
 
         # Make sure isDiscussionAllowedFor does not blow up on items
         # that aren't content and/or discussable at all.
-        self.failIf(dtool.isDiscussionAllowedFor(self.ttool))
+        self.assertFalse(dtool.isDiscussionAllowedFor(self.ttool))
 
     def test_getDiscussionFor(self):
         dtool = self.dtool
-        foo = self.site._setObject( 'foo', DummyFolder() )
+        foo = self.site._setObject('foo', DummyFolder())
         foo.allow_discussion = 1
-        baz = foo._setObject( 'baz', DummyFolder() )
+        baz = foo._setObject('baz', DummyFolder())
         baz.allow_discussion = 1
 
-        self.failIf( hasattr(foo.aq_base, 'talkback') )
+        self.assertFalse(hasattr(foo.aq_base, 'talkback'))
         dtool.getDiscussionFor(foo)
-        self.failUnless( hasattr(foo.aq_base, 'talkback') )
-        self.failIf( hasattr(baz.aq_base, 'talkback') )
+        self.assertTrue(hasattr(foo.aq_base, 'talkback'))
+        self.assertFalse(hasattr(baz.aq_base, 'talkback'))
         dtool.getDiscussionFor(baz)
-        self.failUnless( hasattr(baz.aq_base, 'talkback'),
-                         'CMF Collector issue #119 (acquisition bug): '
-                         'talkback not created' )
+        self.assertTrue(hasattr(baz.aq_base, 'talkback'),
+                        'CMF Collector issue #119 (acquisition bug): '
+                        'talkback not created')
 
 
 def test_suite():

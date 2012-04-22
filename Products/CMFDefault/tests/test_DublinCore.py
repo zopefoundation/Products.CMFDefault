@@ -42,7 +42,7 @@ def _DateIndexConvert(value):
 
     if isinstance(t_val, long):
         # t_val must be IntType, not LongType
-        raise OverflowError("Date too big: %s" % `value`)
+        raise OverflowError("Date too big: %s" % repr(value))
 
     return t_val
 
@@ -82,46 +82,46 @@ class DublinCoreTests(SecurityTest):
         verifyClass(IMutableDublinCore, DefaultDublinCoreImpl)
 
     def test_notifyModified(self):
-        site = DummySite('site').__of__(self.root)
-        acl_users = site._setObject( 'acl_users', DummyUserFolder() )
-        site._setObject( 'portal_membership', MembershipTool() )
+        site = DummySite('site').__of__(self.app)
+        acl_users = site._setObject('acl_users', DummyUserFolder())
+        site._setObject('portal_membership', MembershipTool())
         newSecurityManager(None, acl_users.user_foo)
         item = self._makeDummyContent('item').__of__(site)
-        self.assertEqual( item.listCreators(), () )
+        self.assertEqual(item.listCreators(), ())
         item.setModificationDate(0)
         initial_date = item.ModificationDate()
 
         item.notifyModified()
-        self.assertEqual( item.listCreators(), ('user_foo',) )
-        self.assertNotEqual( item.ModificationDate(), initial_date )
+        self.assertEqual(item.listCreators(), ('user_foo',))
+        self.assertNotEqual(item.ModificationDate(), initial_date)
 
     def test_creators_methods(self):
-        site = DummySite('site').__of__(self.root)
-        acl_users = site._setObject( 'acl_users', DummyUserFolder() )
-        site._setObject( 'portal_membership', MembershipTool() )
+        site = DummySite('site').__of__(self.app)
+        acl_users = site._setObject('acl_users', DummyUserFolder())
+        site._setObject('portal_membership', MembershipTool())
         newSecurityManager(None, acl_users.user_foo)
         item = self._makeDummyContent('item').__of__(site)
-        self.assertEqual( item.listCreators(), () )
+        self.assertEqual(item.listCreators(), ())
 
         item.addCreator()
-        self.assertEqual( item.listCreators(), ('user_foo',) )
+        self.assertEqual(item.listCreators(), ('user_foo',))
         newSecurityManager(None, acl_users.user_bar)
         item.addCreator()
-        self.assertEqual( item.listCreators(), ('user_foo', 'user_bar') )
+        self.assertEqual(item.listCreators(), ('user_foo', 'user_bar'))
         item.addCreator()
-        self.assertEqual( item.listCreators(), ('user_foo', 'user_bar') )
+        self.assertEqual(item.listCreators(), ('user_foo', 'user_bar'))
         item.addCreator('user_baz')
-        self.assertEqual( item.listCreators(),
-                          ('user_foo', 'user_bar', 'user_baz') )
+        self.assertEqual(item.listCreators(),
+                         ('user_foo', 'user_bar', 'user_baz'))
         item.setCreators('user_bar')
-        self.assertEqual( item.listCreators(), ('user_bar',) )
-        item.setCreators( ('user_baz',) )
-        self.assertEqual( item.listCreators(), ('user_baz',) )
+        self.assertEqual(item.listCreators(), ('user_bar',))
+        item.setCreators(('user_baz',))
+        self.assertEqual(item.listCreators(), ('user_baz',))
 
     def test_creators_upgrade(self):
-        site = DummySite('site').__of__(self.root)
-        acl_users = site._setObject( 'acl_users', DummyUserFolder() )
-        site._setObject( 'portal_membership', MembershipTool() )
+        site = DummySite('site').__of__(self.app)
+        acl_users = site._setObject('acl_users', DummyUserFolder())
+        site._setObject('portal_membership', MembershipTool())
         newSecurityManager(None, acl_users.user_foo)
         item = self._makeDummyContent('item').__of__(site)
         item.manage_fixupOwnershipAfterAdd()
@@ -140,19 +140,19 @@ class DublinCoreTests(SecurityTest):
 
     def test_ceiling_parsable(self):
         # Test that a None ceiling date will be parsable by a DateIndex
-        site = DummySite('site').__of__(self.root)
+        site = DummySite('site').__of__(self.app)
         item = self._makeDummyContent('item').__of__(site)
         self.assertEqual(item.expiration_date, None)
-        self.assert_(_DateIndexConvert(item.expires()))
+        self.assertTrue(_DateIndexConvert(item.expires()))
 
     def test_publisher_no_metadata_tool(self):
-        site = DummySite('site').__of__(self.root)
+        site = DummySite('site').__of__(self.app)
         item = self._makeDummyContent('item').__of__(site)
         self.assertEqual(item.Publisher(), 'No publisher')
 
     def test_publisher_with_metadata_tool(self):
         PUBLISHER = 'Some Publisher'
-        site = DummySite('site').__of__(self.root)
+        site = DummySite('site').__of__(self.app)
         tool = DummyMetadataTool(publisher=PUBLISHER)
         getSiteManager().registerUtility(tool, IMetadataTool)
         item = self._makeDummyContent('item').__of__(site)
@@ -164,7 +164,7 @@ class DublinCoreTests(SecurityTest):
         # e.g. 4 hours further away from UTC, the DC date methods
         # should still return it in the local timezone so that all
         # user-visible dates can be compared to each other by eye.
-        site = DummySite('site').__of__(self.root)
+        site = DummySite('site').__of__(self.app)
         item = self._makeDummyContent('item').__of__(site)
         dates_and_methods = (
             ('modification_date', 'ModificationDate'),
@@ -181,7 +181,7 @@ class DublinCoreTests(SecurityTest):
                 setattr(item, datename, orig)
             orig_DC = getattr(item, dc_methodname)()
             # Change the timezone of the date.
-            local_offset = orig.tzoffset() % (3600*24)
+            local_offset = orig.tzoffset() % (3600 * 24)
             other_offset = (local_offset + offset) % 24
             otherzone = 'GMT+%d' % other_offset
             setattr(item, datename, orig.toZone(otherzone))

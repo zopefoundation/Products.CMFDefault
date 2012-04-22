@@ -34,14 +34,14 @@ from Products.CMFCore.tests.base.testcase import SecurityTest
 class PropertiedDummySite(PropertyManager, DummySite):
 
     _properties = (
-        {'id':'title', 'type':'string', 'mode': 'w'},
-        {'id':'description', 'type':'text', 'mode': 'w'},
-        {'id':'email_from_address', 'type':'string', 'mode': 'w'},
-        {'id':'email_from_name', 'type':'string', 'mode': 'w'},
-        {'id':'validate_email', 'type':'boolean', 'mode': 'w'},
-        {'id':'default_charset', 'type':'string', 'mode': 'w'},
-        {'id':'email_charset', 'type':'string', 'mode': 'w'},
-        {'id':'enable_permalink', 'type':'boolean', 'mode': 'w'},
+        {'id': 'title', 'type': 'string', 'mode': 'w'},
+        {'id': 'description', 'type': 'text', 'mode': 'w'},
+        {'id': 'email_from_address', 'type': 'string', 'mode': 'w'},
+        {'id': 'email_from_name', 'type': 'string', 'mode': 'w'},
+        {'id': 'validate_email', 'type': 'boolean', 'mode': 'w'},
+        {'id': 'default_charset', 'type': 'string', 'mode': 'w'},
+        {'id': 'email_charset', 'type': 'string', 'mode': 'w'},
+        {'id': 'enable_permalink', 'type': 'boolean', 'mode': 'w'},
         )
     title = description = email_from_address = email_from_name = ''
     default_charset = email_charset = ''
@@ -81,29 +81,28 @@ class PropertiesToolTests(SecurityTest):
         # https://bugs.launchpad.net/zope-cmf/+bug/174246
         # PropertiesTool.editProperties fails with traceback due to
         # faulty invocation of the site's manage_changeProperties method
-        props = { 'email_from_name' : 'Test Admin'
-                , 'email_from_address' : 'test@example.com'
-                , 'description' : 'Test MailHost Description'
-                , 'title' : 'Test MailHost'
-                , 'smtp_server' : 'mail.example.com'
-                , 'validate_email' : True
-                , 'email_charset' : 'iso-8859-15'
-                , 'default_charset' : 'iso-8859-1'
-                , 'enable_permalink' : True
-                }
+        props = {'email_from_name': 'Test Admin',
+                 'email_from_address': 'test@example.com',
+                 'description': 'Test MailHost Description',
+                 'title': 'Test MailHost',
+                 'smtp_server': 'mail.example.com',
+                 'validate_email': True,
+                 'email_charset': 'iso-8859-15',
+                 'default_charset': 'iso-8859-1',
+                 'enable_permalink': True}
         tool = getUtility(IPropertiesTool)
         tool.editProperties(props)
 
         site_prop = self.site.getProperty
-        self.assertEquals(getUtility(IMailHost).smtp_host, 'mail.example.com')
-        self.assertEquals(site_prop('email_from_name'), 'Test Admin')
-        self.assertEquals(site_prop('email_from_address'), 'test@example.com')
-        self.assertEquals(site_prop('description'), 'Test MailHost Description')
-        self.assertEquals(site_prop('title'), 'Test MailHost')
-        self.assertEquals(site_prop('validate_email'), True)
-        self.assertEquals(site_prop('email_charset'), 'iso-8859-15')
-        self.assertEquals(site_prop('default_charset'), 'iso-8859-1')
-        self.assertEquals(site_prop('enable_permalink'), True)
+        self.assertEqual(getUtility(IMailHost).smtp_host, 'mail.example.com')
+        self.assertEqual(site_prop('email_from_name'), 'Test Admin')
+        self.assertEqual(site_prop('email_from_address'), 'test@example.com')
+        self.assertEqual(site_prop('description'), 'Test MailHost Description')
+        self.assertEqual(site_prop('title'), 'Test MailHost')
+        self.assertEqual(site_prop('validate_email'), True)
+        self.assertEqual(site_prop('email_charset'), 'iso-8859-15')
+        self.assertEqual(site_prop('default_charset'), 'iso-8859-1')
+        self.assertEqual(site_prop('enable_permalink'), True)
 
 
 def test_suite():
