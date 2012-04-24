@@ -19,6 +19,7 @@ import Testing
 from AccessControl.SecurityManagement import newSecurityManager
 from five.localsitemanager import make_objectmanager_site
 from zope.component import getSiteManager
+from zope.component.hooks import clearSite
 from zope.component.hooks import setSite
 from zope.globalrequest import clearRequest
 from zope.globalrequest import setRequest
@@ -54,6 +55,7 @@ class MembershipToolTests(TransactionalTest):
         sm.registerUtility(self.site.portal_membership, IMembershipTool)
 
     def tearDown(self):
+        clearSite()
         cleanUp()
         TransactionalTest.tearDown(self)
 
