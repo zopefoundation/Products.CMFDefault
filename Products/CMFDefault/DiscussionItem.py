@@ -44,10 +44,10 @@ class DiscussionItem(Document):
 
     implements(IDiscussionResponse)
 
-    meta_type           = 'Discussion Item'
-    portal_type         = 'Discussion Item'
-    allow_discussion    = 1
-    in_reply_to         = None
+    meta_type = 'Discussion Item'
+    portal_type = 'Discussion Item'
+    allow_discussion = 1
+    in_reply_to = None
 
     security = ClassSecurityInfo()
 
@@ -58,7 +58,7 @@ class DiscussionItem(Document):
         if not hasattr(aq_base(self), 'creators'):
             # for content created with CMF versions before 1.5
             if hasattr(aq_base(self), 'creator') and self.creator != 'unknown':
-                self.creators = ( self.creator, )
+                self.creators = (self.creator,)
             else:
                 self.creators = ()
         return self.creators
@@ -67,7 +67,7 @@ class DiscussionItem(Document):
     #   IDiscussionResponse interface
     #
     security.declareProtected(View, 'inReplyTo')
-    def inReplyTo( self, REQUEST=None ):
+    def inReplyTo(self, REQUEST=None):
         """ Return the IDiscussable object to which we are a reply.
 
             Two cases obtain:
@@ -80,21 +80,21 @@ class DiscussionItem(Document):
                 field will be the ID of the parent DiscussionItem.
         """
         tool = getUtility(IDiscussionTool)
-        talkback = tool.getDiscussionFor( self )
-        return talkback._getReplyParent( self.in_reply_to )
+        talkback = tool.getDiscussionFor(self)
+        return talkback._getReplyParent(self.in_reply_to)
 
     security.declarePrivate(View, 'setReplyTo')
-    def setReplyTo( self, reply_to ):
+    def setReplyTo(self, reply_to):
         """
             Make this object a response to the passed object.
         """
-        if getattr( reply_to, 'meta_type', None ) == self.meta_type:
+        if getattr(reply_to, 'meta_type', None) == self.meta_type:
             self.in_reply_to = reply_to.getId()
         else:
             self.in_reply_to = None
 
     security.declareProtected(View, 'parentsInThread')
-    def parentsInThread( self, size=0 ):
+    def parentsInThread(self, size=0):
         """
             Return the list of items which are "above" this item in
             the discussion thread.
@@ -104,19 +104,19 @@ class DiscussionItem(Document):
         """
         parents = []
         current = self
-        while not size or len( parents ) < size:
+        while not size or len(parents) < size:
             parent = current.inReplyTo()
             assert not parent in parents  # sanity check
-            parents.insert( 0, parent )
+            parents.insert(0, parent)
             if parent.meta_type != self.meta_type:
                 break
             current = parent
         return parents
 
-InitializeClass( DiscussionItem )
+InitializeClass(DiscussionItem)
 
 
-class DiscussionItemContainer( Persistent, Implicit, Traversable ):
+class DiscussionItemContainer(Persistent, Implicit, Traversable):
 
     """
         Store DiscussionItem objects. Discussable content that
@@ -137,16 +137,16 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
         self._container = PersistentMapping()
 
     security.declareProtected(View, 'getId')
-    def getId( self ):
+    def getId(self):
         return self.id
 
     security.declareProtected(View, 'getReply')
-    def getReply( self, reply_id ):
+    def getReply(self, reply_id):
         """
             Return a discussion item, given its ID;  raise KeyError
             if not found.
         """
-        return self._container.get( reply_id ).__of__(self)
+        return self._container.get(reply_id).__of__(self)
 
     # Is this right?
     security.declareProtected(View, '__bobo_traverse__')
@@ -162,7 +162,7 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
             try:
                 return self.getReply(name)
             except:
-                parent = aq_parent( aq_inner( self ) )
+                parent = aq_parent(aq_inner(self))
                 if parent.getId() == name:
                     return parent
                 else:
@@ -187,7 +187,7 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
         for obj in self.objectValues():
             obj.__of__(self).notifyWorkflowCreated()
 
-    security.declarePrivate( 'manage_beforeDelete' )
+    security.declarePrivate('manage_beforeDelete')
     def manage_beforeDelete(self, item, container):
         """
             Remove the contained items from the catalog.
@@ -200,7 +200,7 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
     #   OFS.ObjectManager query interface.
     #
     security.declareProtected(AccessContentsInformation, 'objectIds')
-    def objectIds( self, spec=None ):
+    def objectIds(self, spec=None):
         """
             Return a list of the ids of our DiscussionItems.
         """
@@ -208,19 +208,17 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
             return []
         return self._container.keys()
 
-
     security.declareProtected(AccessContentsInformation, 'objectItems')
     def objectItems(self, spec=None):
         """
             Return a list of (id, subobject) tuples for our DiscussionItems.
         """
-        r=[]
-        a=r.append
-        g=self._container.get
+        r = []
+        a = r.append
+        g = self._container.get
         for id in self.objectIds(spec):
-            a( (id, g( id ) ) )
+            a((id, g(id)))
         return r
-
 
     security.declareProtected(AccessContentsInformation, 'objectValues')
     def objectValues(self):
@@ -233,18 +231,17 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
     #   IDiscussable interface
     #
     security.declareProtected(ReplyToItem, 'createReply')
-    def createReply( self, title, text, Creator=None, text_format='structured-text' ):
+    def createReply(self, title, text, Creator=None,
+                    text_format='structured-text'):
         """
             Create a reply in the proper place
         """
-        container = self._container
-
         id = int(DateTime().timeTime())
-        while self._container.get( str(id), None ) is not None:
+        while self._container.get(str(id), None) is not None:
             id = id + 1
-        id = str( id )
+        id = str(id)
 
-        item = DiscussionItem( id, title=title, description=title )
+        item = DiscussionItem(id, title=title, description=title)
         self._container[id] = item
         item = item.__of__(self)
 
@@ -259,45 +256,46 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
         return id
 
     security.declareProtected(ManagePortal, 'deleteReply')
-    def deleteReply( self, reply_id ):
+    def deleteReply(self, reply_id):
         """ Remove a reply from this container """
-        if self._container.has_key( reply_id ):
-            reply = self._container.get( reply_id ).__of__( self )
+        if reply_id in self._container:
+            reply = self._container.get(reply_id).__of__(self)
             my_replies = reply.talkback.getReplies()
             for my_reply in my_replies:
                 my_reply_id = my_reply.getId()
                 self.deleteReply(my_reply_id)
 
-            if hasattr( reply, 'unindexObject' ):
+            if hasattr(reply, 'unindexObject'):
                 reply.unindexObject()
 
             del self._container[reply_id]
 
-
     security.declareProtected(View, 'hasReplies')
-    def hasReplies( self, content_obj ):
+    def hasReplies(self, content_obj):
         """
             Test to see if there are any dicussion items
         """
-        outer = self._getDiscussable( outer=1 )
+        outer = self._getDiscussable(outer=1)
         if content_obj == outer:
-            return bool( len(self._container) )
+            return bool(len(self._container))
         else:
-            return bool( len( content_obj.talkback._getReplyResults() ) )
+            return bool(len(content_obj.talkback._getReplyResults()))
 
     security.declareProtected(View, 'replyCount')
-    def replyCount( self, content_obj ):
+    def replyCount(self, content_obj):
         """ How many replies do i have? """
-        outer = self._getDiscussable( outer=1 )
+        outer = self._getDiscussable(outer=1)
         if content_obj == outer:
-            return len( self._container )
+            return len(self._container)
         else:
             replies = content_obj.talkback.getReplies()
-            return self._repcount( replies )
+            return self._repcount(replies)
 
     security.declarePrivate('_repcount')
-    def _repcount( self, replies ):
-        """  counts the total number of replies by recursing thru the various levels
+    def _repcount(self, replies):
+        """counts the total number of replies
+
+        by recursing thru the various levels
         """
         count = 0
 
@@ -307,12 +305,12 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
             #if there is at least one reply to this reply
             replies = reply.talkback.getReplies()
             if replies:
-                count = count + self._repcount( replies )
+                count = count + self._repcount(replies)
 
         return count
 
     security.declareProtected(View, 'getReplies')
-    def getReplies( self ):
+    def getReplies(self):
         """ Return a sequence of the IDiscussionResponse objects which are
             associated with this Discussable
         """
@@ -321,7 +319,7 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
         result_ids = self._getReplyResults()
 
         for id in result_ids:
-            a( self._container.get( id ).__of__( self ) )
+            a(self._container.get(id).__of__(self))
 
         return objects
 
@@ -337,33 +335,33 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
     #
     #   Utility methods
     #
-    security.declarePrivate( '_getReplyParent' )
-    def _getReplyParent( self, in_reply_to ):
+    security.declarePrivate('_getReplyParent')
+    def _getReplyParent(self, in_reply_to):
         """
             Return the object indicated by the 'in_reply_to', where
             'None' represents the "outer" content object.
         """
-        outer = self._getDiscussable( outer=1 )
+        outer = self._getDiscussable(outer=1)
         if in_reply_to is None:
             return outer
-        parent = self._container[ in_reply_to ].__of__( aq_inner( self ) )
-        return parent.__of__( outer )
+        parent = self._container[in_reply_to].__of__(aq_inner(self))
+        return parent.__of__(outer)
 
-    security.declarePrivate( '_getDiscussable' )
-    def _getDiscussable( self, outer=0 ):
+    security.declarePrivate('_getDiscussable')
+    def _getDiscussable(self, outer=0):
         """
         """
-        tb = outer and aq_inner( self ) or self
-        return getattr( tb, 'aq_parent', None )
+        tb = outer and aq_inner(self) or self
+        return getattr(tb, 'aq_parent', None)
 
-    security.declarePrivate( '_getReplyResults' )
-    def _getReplyResults( self ):
+    security.declarePrivate('_getReplyResults')
+    def _getReplyResults(self):
         """
            Get a list of ids of DiscussionItems which are replies to
            our Discussable.
         """
         discussable = self._getDiscussable()
-        outer = self._getDiscussable( outer=1 )
+        outer = self._getDiscussable(outer=1)
 
         if discussable == outer:
             in_reply_to = None
@@ -374,9 +372,9 @@ class DiscussionItemContainer( Persistent, Implicit, Traversable ):
         a = result.append
         for key, value in self._container.items():
             if value.in_reply_to == in_reply_to:
-                a( ( key, value ) )
+                a((key, value))
 
-        result.sort( lambda a, b: cmp(a[1].creation_date, b[1].creation_date) )
+        result.sort(lambda a, b: cmp(a[1].creation_date, b[1].creation_date))
 
         return [ x[0] for x in result ]
 

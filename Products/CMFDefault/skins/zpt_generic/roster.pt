@@ -2,7 +2,7 @@
 <body>
 
 <metal:slot metal:fill-slot="main">
-<div tal:condition="python:not(request.has_key('bs'))"
+<div tal:condition="python:not('bs' in request)"
      tal:define="dummy python:request.set('bs', '25')"></div>
 
 <div metal:define-macro="roster"

@@ -1,7 +1,7 @@
 ## Script (Python) "personalize"
 ##title=Personalization Handler.
 ##parameters=
-REQUEST=context.REQUEST
+REQUEST = context.REQUEST
 member = context.portal_membership.getAuthenticatedMember()
 
 failMessage = context.portal_registration.testPropertiesValidity(REQUEST,
@@ -13,7 +13,7 @@ if failMessage:
 
 member.setProperties(REQUEST)
 
-if REQUEST.has_key('portal_skin'):
+if 'portal_skin' in REQUEST:
     context.portal_skins.updateSkinCookie()
 
 qs = '/personalize_form?portal_status_message=Member+changed.'

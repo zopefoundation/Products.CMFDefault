@@ -70,7 +70,7 @@ class SyndicationInfoTests(TransactionalTest):
         settings = {'max_items': 10, 'frequency': 7, 'period': 'daily',
                     'base': datetime.today()}
         annotations = getAdapter(adapter.context, IAnnotations)
-        self.assertFalse(annotations.has_key(adapter.key))
+        self.assertFalse(adapter.key in annotations)
         annotations[adapter.key] = settings
         for k, v in settings.items():
             self.assertEqual(getattr(adapter, k), v)
@@ -113,7 +113,7 @@ class SyndicationInfoTests(TransactionalTest):
 
 class DummySyndicationTool(object):
 
-    enabled  = 0
+    enabled = 0
     period = 'daily'
     frequency = 1
     base = datetime(2010, 10, 3, 12, 0, 0)

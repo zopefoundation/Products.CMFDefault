@@ -41,7 +41,7 @@ from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.exceptions import IllegalHTML
 from Products.CMFDefault.interfaces import IHTMLScrubber
 
-security = ModuleSecurityInfo( 'Products.CMFDefault.utils' )
+security = ModuleSecurityInfo('Products.CMFDefault.utils')
 
 try:
     get_distribution('Products.CMFCalendar')
@@ -58,34 +58,34 @@ else:
     PRODUCTS_CMFUID_INSTALLED = True
 
 security.declarePrivate('_dtmldir')
-_dtmldir = os.path.join( package_home( globals() ), 'dtml' )
-_wwwdir = os.path.join( package_home( globals() ), 'www' )
+_dtmldir = os.path.join(package_home(globals()), 'dtml')
+_wwwdir = os.path.join(package_home(globals()), 'www')
 
 security.declarePublic('formatRFC822Headers')
-def formatRFC822Headers( headers ):
+def formatRFC822Headers(headers):
 
     """ Convert the key-value pairs in 'headers' to valid RFC822-style
         headers, including adding leading whitespace to elements which
         contain newlines in order to preserve continuation-line semantics.
     """
     munged = []
-    linesplit = re.compile( r'[\n\r]+?' )
+    linesplit = re.compile(r'[\n\r]+?')
 
     for key, value in headers:
 
-        vallines = linesplit.split( value )
+        vallines = linesplit.split(value)
         while vallines:
             if vallines[-1].rstrip() == '':
                 vallines = vallines[:-1]
             else:
                 break
-        munged.append( '%s: %s' % ( key, '\r\n  '.join( vallines ) ) )
+        munged.append('%s: %s' % (key, '\r\n  '.join(vallines)))
 
-    return '\r\n'.join( munged )
+    return '\r\n'.join(munged)
 
 
 security.declarePublic('parseHeadersBody')
-def parseHeadersBody( body, headers=None, rc=re.compile( r'\n|\r\n' ) ):
+def parseHeadersBody(body, headers=None, rc=re.compile(r'\n|\r\n')):
 
     """ Parse any leading 'RFC-822'-ish headers from an uploaded
         document, returning a dictionary containing the headers
@@ -136,86 +136,86 @@ def semi_split(s):
 
     """ Split 's' on semicolons.
     """
-    return map(lambda x: x.strip(), s.split( ';' ) )
+    return map(lambda x: x.strip(), s.split(';'))
 
 security.declarePublic('comma_split')
 def comma_split(s):
 
     """ Split 's' on commas.
     """
-    return map(lambda x: x.strip(), s.split( ',') )
+    return map(lambda x: x.strip(), s.split(','))
 
 security.declarePublic('seq_strip')
-def seq_strip(seq, stripper=lambda x: x.strip() ):
+def seq_strip(seq, stripper=lambda x: x.strip()):
     """ Strip a sequence of strings.
     """
     if isinstance(seq, list):
-        return map( stripper, seq )
+        return map(stripper, seq)
 
     if isinstance(seq, tuple):
-        return tuple( map( stripper, seq ) )
+        return tuple(map(stripper, seq))
 
-    raise ValueError, "%s of unsupported sequencetype %s" % ( seq, type( seq ) )
+    raise ValueError("%s of unsupported sequencetype %s" % (seq, type(seq)))
 
 security.declarePublic('tuplize')
-def tuplize( valueName, value, splitter=lambda x: x.split() ):
+def tuplize(valueName, value, splitter=lambda x: x.split()):
 
     if isinstance(value, tuple):
-        return seq_strip( value )
+        return seq_strip(value)
 
     if isinstance(value, list):
-        return seq_strip( tuple( value ) )
+        return seq_strip(tuple(value))
 
     if isinstance(value, basestring):
-        return seq_strip( tuple( splitter( value ) ) )
+        return seq_strip(tuple(splitter(value)))
 
-    raise ValueError, "%s of unsupported type" % valueName
+    raise ValueError("%s of unsupported type" % valueName)
 
 
-class SimpleHTMLParser( SGMLParser ):
+class SimpleHTMLParser(SGMLParser):
 
     #from htmlentitydefs import entitydefs
 
-    def __init__( self, verbose=0 ):
+    def __init__(self, verbose=0):
 
-        SGMLParser.__init__( self, verbose )
+        SGMLParser.__init__(self, verbose)
         self.savedata = None
         self.title = ''
         self.metatags = {}
         self.body = ''
 
-    def handle_data( self, data ):
+    def handle_data(self, data):
 
         if self.savedata is not None:
             self.savedata = self.savedata + data
 
-    def handle_charref( self, ref ):
+    def handle_charref(self, ref):
 
-        self.handle_data( "&#%s;" % ref )
+        self.handle_data("&#%s;" % ref)
 
-    def handle_entityref( self, ref ):
+    def handle_entityref(self, ref):
 
-        self.handle_data( "&%s;" % ref )
+        self.handle_data("&%s;" % ref)
 
-    def save_bgn( self ):
+    def save_bgn(self):
 
         self.savedata = ''
 
-    def save_end( self ):
+    def save_end(self):
 
         data = self.savedata
         self.savedata = None
         return data
 
-    def start_title( self, attrs ):
+    def start_title(self, attrs):
 
         self.save_bgn()
 
-    def end_title( self ):
+    def end_title(self):
 
         self.title = self.save_end()
 
-    def do_meta( self, attrs ):
+    def do_meta(self, attrs):
 
         name = ''
         content = ''
@@ -231,13 +231,13 @@ class SimpleHTMLParser( SGMLParser ):
                 content = value
 
         if name:
-            self.metatags[ name ] = content
+            self.metatags[name] = content
 
-    def unknown_startag( self, tag, attrs ):
+    def unknown_startag(self, tag, attrs):
 
         self.setliteral()
 
-    def unknown_endtag( self, tag ):
+    def unknown_endtag(self, tag):
 
         self.setliteral()
 
@@ -246,88 +246,84 @@ class SimpleHTMLParser( SGMLParser ):
 #
 
 # These are the HTML tags that we will leave intact
-VALID_TAGS = { 'a'          : 1
-             , 'b'          : 1
-             , 'base'       : 0
-             , 'big'        : 1
-             , 'blockquote' : 1
-             , 'body'       : 1
-             , 'br'         : 0
-             , 'caption'    : 1
-             , 'cite'       : 1
-             , 'code'       : 1
-             , 'dd'         : 1
-             , 'div'        : 1
-             , 'dl'         : 1
-             , 'dt'         : 1
-             , 'em'         : 1
-             , 'h1'         : 1
-             , 'h2'         : 1
-             , 'h3'         : 1
-             , 'h4'         : 1
-             , 'h5'         : 1
-             , 'h6'         : 1
-             , 'head'       : 1
-             , 'hr'         : 0
-             , 'html'       : 1
-             , 'i'          : 1
-             , 'img'        : 0
-             , 'kbd'        : 1
-             , 'li'         : 1
-           # , 'link'       : 1 type="script" hoses us
-             , 'meta'       : 0
-             , 'ol'         : 1
-             , 'p'          : 1
-             , 'pre'        : 1
-             , 'small'      : 1
-             , 'span'       : 1
-             , 'strong'     : 1
-             , 'sub'        : 1
-             , 'sup'        : 1
-             , 'table'      : 1
-             , 'tbody'      : 1
-             , 'td'         : 1
-             , 'th'         : 1
-             , 'title'      : 1
-             , 'tr'         : 1
-             , 'tt'         : 1
-             , 'u'          : 1
-             , 'ul'         : 1
-             }
+VALID_TAGS = {'a': 1,
+              'b': 1,
+              'base': 0,
+              'big': 1,
+              'blockquote': 1,
+              'body': 1,
+              'br': 0,
+              'caption': 1,
+              'cite': 1,
+              'code': 1,
+              'dd': 1,
+              'div': 1,
+              'dl': 1,
+              'dt': 1,
+              'em': 1,
+              'h1': 1,
+              'h2': 1,
+              'h3': 1,
+              'h4': 1,
+              'h5': 1,
+              'h6': 1,
+              'head': 1,
+              'hr': 0,
+              'html': 1,
+              'i': 1,
+              'img': 0,
+              'kbd': 1,
+              'li': 1,
+           #  'link': 1, type="script" hoses us
+              'meta': 0,
+              'ol': 1,
+              'p': 1,
+              'pre': 1,
+              'small': 1,
+              'span': 1,
+              'strong': 1,
+              'sub': 1,
+              'sup': 1,
+              'table': 1,
+              'tbody': 1,
+              'td': 1,
+              'th': 1,
+              'title': 1,
+              'tr': 1,
+              'tt': 1,
+              'u': 1,
+              'ul': 1}
 
-NASTY_TAGS = { 'script'     : 1
-             , 'object'     : 1
-             , 'embed'      : 1
-             , 'applet'     : 1
-             }
+NASTY_TAGS = {'script': 1,
+              'object': 1,
+              'embed': 1,
+              'applet': 1}
 
 
-class StrippingParser( SGMLParser ):
+class StrippingParser(SGMLParser):
 
     """ Pass only allowed tags;  raise exception for known-bad.
     """
 
     from htmlentitydefs import entitydefs # replace entitydefs from sgmllib
 
-    def __init__( self, valid_tags=None, nasty_tags=None ):
+    def __init__(self, valid_tags=None, nasty_tags=None):
 
-        SGMLParser.__init__( self )
+        SGMLParser.__init__(self)
         self.result = ""
         self.valid_tags = valid_tags or VALID_TAGS
         self.nasty_tags = nasty_tags or NASTY_TAGS
 
-    def handle_data( self, data ):
+    def handle_data(self, data):
 
         if data:
             self.result = self.result + data
 
-    def handle_charref( self, name ):
-
-        self.result = "%s&#%s;" % ( self.result, name )
+    def handle_charref(self, name):
+        self.result = "%s&#%s;" % (self.result, name)
 
     def handle_entityref(self, name):
-
-        if self.entitydefs.has_key(name):
+        if name in self.entitydefs:
             x = ';'
         else:
             # this breaks unstandard entities that end with ';'
@@ -338,7 +334,7 @@ class StrippingParser( SGMLParser ):
     def unknown_starttag(self, tag, attrs):
         """ Delete all tags except for legal ones.
         """
-        if self.valid_tags.has_key(tag):
+        if tag in self.valid_tags:
 
             self.result = self.result + '<' + tag
 
@@ -379,7 +375,7 @@ class StrippingParser( SGMLParser ):
 
 
 security.declarePublic('scrubHTML')
-def scrubHTML( html ):
+def scrubHTML(html):
 
     """ Strip illegal HTML tags from string text.
 
@@ -391,17 +387,17 @@ def scrubHTML( html ):
         return scrubber.scrub(html)
 
     parser = StrippingParser()
-    parser.feed( html )
+    parser.feed(html)
     parser.close()
     return parser.result
 
 security.declarePublic('isHTMLSafe')
-def isHTMLSafe( html ):
+def isHTMLSafe(html):
 
     """ Would current HTML be permitted to be saved?
     """
     try:
-        scrubHTML( html )
+        scrubHTML(html)
     except IllegalHTML:
         return 0
     else:
@@ -460,7 +456,7 @@ def toUnicode(value, charset=None):
     elif isinstance(value, list):
         return [ toUnicode(val, charset) for val in value ]
     elif isinstance(value, tuple):
-        return tuple( [ toUnicode(val, charset) for val in value ] )
+        return tuple([ toUnicode(val, charset) for val in value ])
     elif isinstance(value, dict):
         for key, val in value.items():
             value[key] = toUnicode(val, charset)
@@ -554,13 +550,13 @@ security.declarePublic("thousands_commas")
 def thousands_commas(value):
     """Format an integer with commas as thousand separator"""
     i = int(value)
-    if sys.version_info[0] >  2 \
+    if sys.version_info[0] > 2 \
        or (sys.version_info[0] == 2 and sys.version_info[1] > 6):
         warn("On Python 2.7 and higher Use {:,}.formatting",
              DeprecationWarning,
              stacklevel=2)
         return "{:,}".format(value)
     l = list(str(i))
-    for idx in range(len(l) -3, 0, -3):
+    for idx in range(len(l) - 3, 0, -3):
         l.insert(idx, ",")
     return "".join(l)

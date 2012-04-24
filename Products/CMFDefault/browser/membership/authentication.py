@@ -77,7 +77,7 @@ class UnauthorizedView(BrowserView):
 
         req = self.request
         if (not req['REQUEST_METHOD'] in ('HEAD', 'GET', 'PUT', 'POST')
-            or req.environ.has_key('WEBDAV_SOURCE_PORT')):
+            or 'WEBDAV_SOURCE_PORT' in req.environ):
             # re-raise the unhandled exception
             raise self.context
 
@@ -211,6 +211,7 @@ class LoginFormView(EditFormBase):
         return self._setRedirect('portal_actions', 'user/logged_in',
                                  'came_from')
 
+
 class LoggedIn(ViewBase):
     """Post login methods"""
 
@@ -278,7 +279,7 @@ class MailPasswordFormView(EditFormBase):
         else:
             ac_name_id = '__ac_name'
         ac_name = self.request.get(ac_name_id)
-        if ac_name and not self.request.has_key('%s.name' % self.prefix):
+        if ac_name and not ('%s.name' % self.prefix) in self.request:
             self.request.form['%s.name' % self.prefix] = ac_name
         super(MailPasswordFormView,
               self).setUpWidgets(ignore_request=ignore_request)

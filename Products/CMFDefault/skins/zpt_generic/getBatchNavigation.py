@@ -1,7 +1,7 @@
 ##parameters=batch_obj, target, type_singular='item', type_plural='items', previous_text='Previous', next_text='Next', **kw
 ##
 from ZTUtils import make_query
-if kw.has_key('portal_status_message'):
+if 'portal_status_message' in kw:
     del kw['portal_status_message']
 
 navigation = {}
@@ -15,11 +15,11 @@ for batch in (batch_obj.previous, batch_obj.next):
             if not v:
                 del kw[k]
 
-        query = kw and ( '?%s' % make_query(kw) ) or ''
+        query = kw and ('?%s' % make_query(kw)) or ''
         url = '%s%s' % (target, query)
-    items.append( {'length': length > 1 and length or '',
-                   'type': length == 1 and type_singular or type_plural,
-                   'url': length and url or ''} )
+    items.append({'length': length > 1 and length or '',
+                  'type': length == 1 and type_singular or type_plural,
+                  'url': length and url or ''})
 navigation['previous'] = items[0]
 navigation['previous']['text'] = previous_text
 navigation['next'] = items[1]
