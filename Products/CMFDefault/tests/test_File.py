@@ -16,6 +16,7 @@
 import unittest
 import Testing
 
+from mimetypes import guess_type
 from os.path import join as path_join
 
 from App.Common import rfc1123_date
@@ -73,14 +74,15 @@ class FileTests(ConformsToContent, unittest.TestCase):
     def test_FileContentTypeUponConstruction(self):
         # Test the content type after calling the constructor with the
         # file object being passed in (http://www.zope.org/Collectors/CMF/370)
+        EXPECTED = guess_type('foo.jpg')[0]
         testfile = open(TEST_JPG, 'rb')
         # Notice the cheat? File objects lack the extra intelligence that
         # picks content types from the actual file data, so it needs to be
         # helped along with a file extension...
         file = self._makeOne('testfile.jpg', file=testfile)
         testfile.close()
-        self.assertEqual(file.Format(), 'image/jpeg')
-        self.assertEqual(file.content_type, 'image/jpeg')
+        self.assertEqual(file.Format(), EXPECTED)
+        self.assertEqual(file.content_type, EXPECTED)
 
 
 class CachingTests(TransactionalTest):
