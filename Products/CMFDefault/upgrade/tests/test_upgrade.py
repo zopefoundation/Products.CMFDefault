@@ -16,6 +16,7 @@
 import unittest
 from Testing import ZopeTestCase
 
+import warnings
 from os.path import abspath
 from os.path import dirname
 from os.path import join as path_join
@@ -25,24 +26,22 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.User import UnrestrictedUser
 from zope.component.hooks import setSite
 
-from Products.CMFCore.tests.base.testcase import WarningInterceptor
 from Products.CMFDefault.testing import FunctionalLayer
 from Products.GenericSetup.context import TarballImportContext
 
 here = abspath(dirname(__file__))
 
 
-class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase,
-                                WarningInterceptor):
+class FunctionalUpgradeTestCase(ZopeTestCase.FunctionalTestCase):
 
     layer = FunctionalLayer
     _setup_fixture = 0
 
     def afterSetUp(self):
         zexp_path = path_join(here, '%s.zexp' % self._SITE_ID)
-        self._trap_warning_output()
-        self.app._importObjectFromFile(zexp_path, verify=0)
-        self._free_warning_output()
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            self.app._importObjectFromFile(zexp_path, verify=0)
         transaction.commit()
 
     def beforeTearDown(self):
