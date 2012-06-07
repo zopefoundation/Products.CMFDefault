@@ -13,10 +13,10 @@
 """
 """
 
-from zope.component import getUtility, ComponentLookupError
-from zope.component import queryUtility
-
 from Acquisition import aq_get
+from zope.component import ComponentLookupError
+from zope.component import getUtility
+from zope.component import queryUtility
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
@@ -24,9 +24,9 @@ from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IWorkflowTool
+from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
-from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import PRODUCTS_CMFCALENDAR_INSTALLED
 from Products.CMFDefault.utils import PRODUCTS_CMFUID_INSTALLED
@@ -136,16 +136,19 @@ class UrsineGlobals(ViewBase):
 
     @property
     @memoize
+    @decode
     def portal_title(self):
         return self.portal_object.Title()
 
     @property
     @memoize
+    @decode
     def object_title(self):
         return self.context.Title()
 
     @property
     @memoize
+    @decode
     def object_description(self):
         return self.context.Description()
 
@@ -179,24 +182,25 @@ class UrsineGlobals(ViewBase):
         page_title = self.object_title
 
         if page_title != site_title:
-            page_title = site_title + ": " + page_title
+            page_title = site_title + u": " + page_title
 
-        return decode(page_title, self.context)
+        return page_title
 
     @property
     @memoize
+    @decode
     def breadcrumbs(self):
         # XXX Shouldn't we just be walking up the aq_inner chain?
         result = [{'id': _(u'root'),
-                   'title' : self.ptool.title(),
-                   'url' : self.portal_url,
+                   'title': self.ptool.title(),
+                   'url': self.portal_url,
                   }]
 
         relative = self.utool.getRelativeContentPath(self.context)
         portal = self.portal_object
 
         for i, token in enumerate(relative):
-            now = relative[:i+1]
+            now = relative[:i + 1]
             obj = portal.unrestrictedTraverse(now)
             if token != 'talkback':
                 result.append({'id': token,
@@ -213,6 +217,7 @@ class UrsineGlobals(ViewBase):
 
     @property
     @memoize
+    @decode
     def membername(self):
         return self.isAnon and 'Guest' or (self.member.getProperty('fullname')
                                            or self.member.getId())
@@ -231,8 +236,9 @@ class UrsineGlobals(ViewBase):
     @memoize
     def status_message(self):
         message = self.request.form.get('portal_status_message')
-        if message is not None:
-            message = decode(message, self.context)
+        if message and isinstance(message, str):
+            # portal_status_message uses always the browser charset.
+            message = message.decode(self._getBrowserCharset())
         return message
 
     @property

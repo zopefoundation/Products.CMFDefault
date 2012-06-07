@@ -17,6 +17,8 @@ import unittest
 
 from zope.component import getSiteManager
 from zope.component.testing import PlacelessSetup
+from zope.i18n.interfaces import IUserPreferredCharsets
+from zope.interface import alsoProvides
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
@@ -189,15 +191,42 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         getSiteManager().registerUtility(tool, IURLTool)
         self.assertEqual(view.portal_title, 'TITLE')
 
+    def test_portal_title_nonascii(self):
+        NONASCII = u'B\xe4r'
+        context = self._makeContext()
+        view = self._makeOne(context)
+        context.Title = lambda: NONASCII.encode('latin-1')
+        context.portal_properties.default_charset = 'latin1'
+        tool = DummyURLTool()
+        tool.getPortalObject = lambda: context
+        getSiteManager().registerUtility(tool, IURLTool)
+        self.assertEqual(view.portal_title, NONASCII)
+
     def test_object_title(self):
         view = self._makeOne()
         view.context.Title = lambda: 'TITLE'
         self.assertEqual(view.object_title, 'TITLE')
 
+    def test_object_title_nonascii(self):
+        NONASCII = u'B\xe4r'
+        context = self._makeContext()
+        view = self._makeOne(context)
+        view.context.Title = lambda: NONASCII.encode('latin-1')
+        context.portal_properties.default_charset = 'latin1'
+        self.assertEqual(view.object_title, NONASCII)
+
     def test_object_description(self):
         view = self._makeOne()
-        view.context.Title = lambda: 'TITLE'
-        self.assertEqual(view.object_title, 'TITLE')
+        view.context.Description = lambda: 'DESCRIPTION'
+        self.assertEqual(view.object_description, 'DESCRIPTION')
+
+    def test_object_description_nonascii(self):
+        NONASCII = u'B\xe4r'
+        context = self._makeContext()
+        view = self._makeOne(context)
+        view.context.Description = lambda: NONASCII.encode('latin-1')
+        context.portal_properties.default_charset = 'latin1'
+        self.assertEqual(view.object_description, NONASCII)
 
     def test_trunc_id(self):
         view = self._makeOne()
@@ -365,7 +394,17 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
     def test_status_message(self):
         view = self._makeOne()
         view.request.form = {'portal_status_message': 'FOO'}
+        view.request.getPreferredCharsets = lambda: []
+        alsoProvides(view.request, IUserPreferredCharsets)
         self.assertEqual(view.status_message, 'FOO')
+
+    def test_status_message_nonascii(self):
+        NONASCII = u'B\xe4r'
+        view = self._makeOne()
+        view.request.form = {'portal_status_message': NONASCII.encode('utf-8')}
+        view.request.getPreferredCharsets = lambda: ['utf-8']
+        alsoProvides(view.request, IUserPreferredCharsets)
+        self.assertEqual(view.status_message, NONASCII)
 
     def test_actions(self):
         ACTIONS = {'global': [],
