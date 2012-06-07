@@ -1,4 +1,4 @@
-<html metal:use-macro="context/main_template/macros/master">
+<html metal:use-macro="context/@@standard_macros/page">
 <body>
 
 <metal:slot metal:fill-slot="header" i18n:domain="cmf_default">
