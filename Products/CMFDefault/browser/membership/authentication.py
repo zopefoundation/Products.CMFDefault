@@ -15,6 +15,8 @@
 
 from urllib import quote, urlencode
 
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from DateTime import DateTime
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -64,29 +66,29 @@ class UnauthorizedView(BrowserView):
     forbidden_template = ViewPageTemplateFile('forbidden.pt')
 
     def __call__(self):
+        self.exception = aq_inner(self.context)
+        self.context = aq_parent(self)
+
         atool = queryUtility(IActionsTool)
         if atool is None:
             # re-raise the unhandled exception
-            raise self.context
+            raise self.exception
 
         try:
             target = atool.getActionInfo('user/login')['url']
         except ValueError:
             # re-raise the unhandled exception
-            raise self.context
+            raise self.exception
 
         req = self.request
         if (not req['REQUEST_METHOD'] in ('HEAD', 'GET', 'PUT', 'POST')
             or 'WEBDAV_SOURCE_PORT' in req.environ):
             # re-raise the unhandled exception
-            raise self.context
+            raise self.exception
 
         attempt = getattr(req, '_cookie_auth', ATTEMPT_NONE)
         if attempt not in (ATTEMPT_NONE, ATTEMPT_LOGIN):
             # An authenticated user was denied access to something.
-            # XXX: hack context to get the right @@standard_macros/page
-            #      why do we get the wrong without this hack?
-            self.context = self.__parent__
             raise Forbidden(self.forbidden_template())
 
         _expireAuthCookie(self)
