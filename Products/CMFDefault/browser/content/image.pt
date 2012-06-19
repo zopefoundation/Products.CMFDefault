@@ -1,7 +1,7 @@
 <html metal:use-macro="context/@@standard_macros/page">
 <head>
 
-<metal:slot fill-slot="base">
+<metal:slot fill-slot="style_slot">
 <tal:span tal:replace="structure context/getBaseTag" />
 </metal:slot>
 
