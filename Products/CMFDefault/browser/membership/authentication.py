@@ -223,8 +223,8 @@ class LoggedInView(ViewBase):
     # helpers
 
     def _set_skin_cookie(self):
-        stool = getUtility(ISkinsTool)
-        if stool.updateSkinCookie():
+        stool = queryUtility(ISkinsTool)
+        if stool is not None and stool.updateSkinCookie():
             skinname = self.context.getSkinNameFromRequest(self.request)
             self.context.changeSkin(skinname, self.request)
 
@@ -318,8 +318,9 @@ class LogoutView(ViewBase):
 
     def _clear_skin_cookie(self):
         """Remove skin cookie"""
-        stool = getUtility(ISkinsTool)
-        stool.clearSkinCookie()
+        stool = queryUtility(ISkinsTool)
+        if stool is not None:
+            stool.clearSkinCookie()
 
     # interface
 

@@ -15,6 +15,7 @@
 
 from zope.component import adapts
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.formlib import form
 from zope.interface import implements
 from zope.interface import Interface
@@ -34,7 +35,9 @@ from Products.CMFDefault.utils import Message as _
 
 
 def portal_skins(context):
-    stool = getUtility(ISkinsTool)
+    stool = queryUtility(ISkinsTool)
+    if stool is None:
+        return SimpleVocabulary(())
     return SimpleVocabulary.fromValues(stool.getSkinSelections())
 
 
@@ -123,8 +126,9 @@ class PreferencesFormView(SettingsEditFormBase):
     def applyChanges(self, data):
         changes = super(PreferencesFormView, self).applyChanges(data)
         if any('portal_skin' in v for v in changes.itervalues()):
-            stool = getUtility(ISkinsTool)
-            stool.updateSkinCookie()
+            stool = queryUtility(ISkinsTool)
+            if stool is not None:
+                stool.updateSkinCookie()
         return changes
 
     def handle_change_success(self, action, data):
