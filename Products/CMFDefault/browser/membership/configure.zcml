@@ -14,7 +14,8 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="logged_in.html"
-      class=".authentication.LoggedIn"
+      class=".authentication.LoggedInView"
+      template="logged_in.pt"
       permission="cmf.SetOwnPassword"
       />
 
@@ -22,7 +23,8 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="logout.html"
-      class=".authentication.Logout"
+      class=".authentication.LogoutView"
+      template="logged_out.pt"
       permission="zope2.View"
       />
 

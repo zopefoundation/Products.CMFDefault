@@ -13,7 +13,8 @@
 """Authentication browser views.
 """
 
-from urllib import quote, urlencode
+from urllib import quote
+from urllib import urlencode
 
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -43,7 +44,8 @@ from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import ISkinsTool
-from Products.CMFDefault.browser.utils import ViewBase, memoize
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
 
@@ -214,42 +216,46 @@ class LoginFormView(EditFormBase):
                                  'came_from')
 
 
-class LoggedIn(ViewBase):
+class LoggedInView(ViewBase):
+
     """Post login methods"""
 
-    template = ViewPageTemplateFile("logged_in.pt")
+    # helpers
 
-    def set_skin_cookie(self):
+    def _set_skin_cookie(self):
         stool = getUtility(ISkinsTool)
         if stool.updateSkinCookie():
-            skinname = stool.getSkinNameFromRequest(self.request)
-            stool.changeSkin(skinname, self.request)
+            skinname = self.context.getSkinNameFromRequest(self.request)
+            self.context.changeSkin(skinname, self.request)
 
-    def first_login(self, member):
+    def _first_login(self, member):
         """First time login, reset password"""
         atool = getUtility(IActionsTool)
         now = DateTime()
         member.setProperties(last_login_time='1999/01/01', login_time=now)
         target = atool.getActionInfo('user/change_password')['url']
-        return self.request.response.redirect(target)
+        self.request.response.redirect(target)
+        return ''
+
+    # interface
 
     def __call__(self):
-        self.set_skin_cookie()
+        self._set_skin_cookie()
         mtool = getUtility(IMembershipTool)
         mtool.createMemberArea()
         member = mtool.getAuthenticatedMember()
-        now = DateTime()
         last_login = member.getProperty('login_time')
         never_logged_in = str(last_login).startswith('2000/01/01')
         ptool = getUtility(IPropertiesTool)
         if never_logged_in and ptool.getProperty('validate_email'):
-            return self.first_login(member)
-        else:
-            member.setProperties(last_login_time=last_login, login_time=now)
+            return self._first_login(member)
+        now = DateTime()
+        member.setProperties(last_login_time=last_login, login_time=now)
         came_from = self.request.get('came_from', None)
         if came_from:
-            return self.request.response.redirect(came_from)
-        return self.template()
+            self.request.response.redirect(came_from)
+            return ''
+        return self.index()
 
 
 class MailPasswordFormView(EditFormBase):
@@ -300,35 +306,37 @@ class MailPasswordFormView(EditFormBase):
         return self._setRedirect('portal_actions', 'user/login')
 
 
-class Logout(ViewBase):
+class LogoutView(ViewBase):
+
     """Log the user out"""
 
-    template = ViewPageTemplateFile("logged_out.pt")
+    # helpers
+
+    def _logout(self):
+        """Log the user out"""
+        _expireAuthCookie(self)
+
+    def _clear_skin_cookie(self):
+        """Remove skin cookie"""
+        stool = getUtility(ISkinsTool)
+        stool.clearSkinCookie()
+
+    # interface
+
+    def __call__(self):
+        """Clear cookies and return the template"""
+        if 'portal_status_message' in self.request:
+            return self.index()
+        if self.logged_in():
+            self._clear_skin_cookie()
+            self._logout()
+            status = "?" + urlencode({'portal_status_message':
+                                      _(u'You have been logged out.')})
+            self.request.response.redirect(self._getViewURL() + status)
+            return ''
 
     @memoize
     def logged_in(self):
         """Check whether the user is (still logged in)"""
         mtool = getUtility(IMembershipTool)
         return not mtool.isAnonymousUser()
-
-    @memoize
-    def logout(self):
-        """Log the user out"""
-        _expireAuthCookie(self)
-
-    @memoize
-    def clear_skin_cookie(self):
-        """Remove skin cookie"""
-        stool = getUtility(ISkinsTool)
-        stool.clearSkinCookie()
-
-    def __call__(self):
-        """Clear cookies and return the template"""
-        if 'portal_status_message' in self.request:
-            return self.template()
-        if self.logged_in():
-            self.clear_skin_cookie()
-            self.logout()
-            status = "?" + urlencode({'portal_status_message':
-                                      _(u'You have been logged out.')})
-            return self.request.response.redirect(self.request.URL + status)

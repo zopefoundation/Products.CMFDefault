@@ -34,13 +34,12 @@ else:
         target = atool.getActionInfo('user/change_password')['url']
         context.REQUEST.RESPONSE.redirect(target)
         return
-    else:
-        member.setProperties(last_login_time=last_login, login_time=now)
-        came_from = context.REQUEST.get('came_from', None)
-        if came_from:
-            context.REQUEST.RESPONSE.redirect(came_from)
-            return
-        options['is_anon'] = False
-        options['title'] = _(u'Login success')
+    member.setProperties(last_login_time=last_login, login_time=now)
+    came_from = context.REQUEST.get('came_from', None)
+    if came_from:
+        context.REQUEST.RESPONSE.redirect(came_from)
+        return
+    options['is_anon'] = False
+    options['title'] = _(u'Login success')
 
 return context.logged_in_template(**decode(options, script))
