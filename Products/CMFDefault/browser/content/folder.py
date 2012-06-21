@@ -217,7 +217,7 @@ class ContentProxy(object):
 
     def __init__(self, context):
         self.name = context.getId()
-        self.title = context.TitleOrId()
+        self.title = context.Title() or context.getId()
         self.type = context.Type() or None
         self.icon = context.icon
         self.url = context.absolute_url()
