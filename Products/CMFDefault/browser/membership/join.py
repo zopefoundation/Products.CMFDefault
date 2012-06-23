@@ -13,8 +13,10 @@
 """Join form.
 """
 
+import transaction
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.formlib import form
 from zope.interface import Interface
 from zope.interface import Invalid
@@ -24,6 +26,7 @@ from zope.schema import Bool
 from zope.schema import Password
 
 from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import ICookieCrumbler
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IRegistrationTool
@@ -69,7 +72,6 @@ class JoinFormView(EditFormBase):
 
     base_template = EditFormBase.template
     template = ViewPageTemplateFile("join.pt")
-    registered = False
 
     actions = form.Actions(
         form.Action(
@@ -112,7 +114,7 @@ class JoinFormView(EditFormBase):
     @property
     @memoize
     def isOrdinaryMember(self):
-        return not (self.registered or self.isManager or self.isAnon)
+        return not (self.isManager or self.isAnon)
 
     @property
     def title(self):
@@ -142,28 +144,56 @@ class JoinFormView(EditFormBase):
                             u"or is not valid. Please choose another."))
         return errors
 
-    def add_member(self, data):
-        """Add new member and notify if requested or required"""
+    def _add_member(self, data):
+        member_id = data['member_id']
+        password = data['password'].encode(self._getDefaultCharset())
         rtool = getUtility(IRegistrationTool)
-        rtool.addMember(
-                        id=data['member_id'],
-                        password=data['password'],
-                             properties={
-                                        'username': data['member_id'],
-                                        'email': data['email']
-                                        }
-                        )
-        if self.validate_email or data['send_password']:
-            rtool.registeredNotify(data['member_id'])
-        self.registered = True
-        self.label = _(u'Success')
+        rtool.addMember(id=member_id, password=password,
+                        properties={'username': member_id,
+                                    'email': data['email']})
+
+    def _notify_member(self, data):
+        if not (self.validate_email or data['send_password']):
+            return False
+        rtool = getUtility(IRegistrationTool)
+        try:
+            rtool.registeredNotify(data['member_id'], REQUEST=self.request)
+        except IOError:
+            return False
+        return True
 
     def handle_register_success(self, action, data):
         """Register user and inform they have been registered"""
-        self.add_member(data)
-        self.status = _(u'You have been registered as a member.')
-        if not self.validate_email:
-            self._setRedirect('portal_actions', 'user/login')
+        try:
+            self._add_member(data)
+        except ValueError, errmsg:
+            transaction.abort()
+            self.form_reset = False
+            self.status = errmsg
+            return self.handle_failure(action, data, ())
+
+        if self.isManager:
+            if self._notify_member(data):
+                self.status = _(u'Member registered and notified.')
+            else:
+                self.status = _(u'Member registered.')
+            return self._setRedirect('portal_actions',
+                                     'global/members_register',
+                                     keys='b_start')
+        if self._notify_member(data):
+            self.status = _(u'You will receive an email shortly containing '
+                            u'your password and instructions on how to '
+                            u'activate your membership.')
+        else:
+            self.status = _(u'You have been registered as a member.')
+        try:
+            cctool = queryUtility(ICookieCrumbler)
+            ac_name_id = cctool.name_cookie
+        except AttributeError:
+            ac_name_id = '__ac_name'
+        self.request.form[ac_name_id] = data['member_id']
+        return self._setRedirect('portal_actions', 'user/login',
+                                 keys=ac_name_id)
 
     def handle_cancel_success(self, action, data):
         return self._setRedirect('portal_actions', 'global/manage_members',

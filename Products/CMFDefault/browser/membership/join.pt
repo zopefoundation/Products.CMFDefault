@@ -16,14 +16,6 @@
          to change your membership information. </p>
   </tal:case>
 
-  <tal:case condition="view/registered">
-  <p i18n:translate="">You have been registered as a member.</p>
-
-  <p tal:condition="view/validate_email" i18n:translate="">You will receive
-    an email shortly containing your password and instructions on how to
-    activate your membership.</p>
-  </tal:case>
-
 <tal:case condition="not: view/isOrdinaryMember">
   <metal:macro metal:use-macro="view/base_template/macros/form" />
 </tal:case>
