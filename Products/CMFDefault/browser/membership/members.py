@@ -166,11 +166,13 @@ class Manage(BatchViewBase, EditFormBase):
         """Identify members to be deleted and redirect to confirmation
         template"""
         mtool = getUtility(IMembershipTool)
+        charset = self._getDefaultCharset()
         members = []
         for member_id in self._get_ids(data):
-            fullname = mtool.getMemberById(member_id).getProperty('fullname')
-            members.append('{0} ({1})'.format(fullname, member_id))
-        self.guillotine = ", ".join(members)
+            member = mtool.getMemberById(member_id)
+            fullname = member.getProperty('fullname').decode(charset)
+            members.append(u'{0} ({1})'.format(fullname, member_id))
+        self.guillotine = u', '.join(members)
         return self.delete_template()
 
     def handle_delete(self, action, data):

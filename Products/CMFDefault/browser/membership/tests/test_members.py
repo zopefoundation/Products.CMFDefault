@@ -23,6 +23,7 @@ from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
@@ -72,10 +73,12 @@ class MembershipViewTests(unittest.TestCase):
     def setUp(self):
         """Setup a site"""
         self.site = DummySite('site')
+        self.site.default_charset = 'ascii'
         self.mtool = DummyMemberTool()
         sm = getSiteManager()
         sm.registerUtility(DummyTool(), IActionsTool)
         sm.registerUtility(self.mtool, IMembershipTool)
+        sm.registerUtility(DummyTool().__of__(self.site), IPropertiesTool)
         sm.registerUtility(DummyTool().__of__(self.site), IURLTool)
 
     def tearDown(self):
