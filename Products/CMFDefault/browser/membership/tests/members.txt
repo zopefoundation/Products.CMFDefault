@@ -36,7 +36,7 @@ Add a new member
 Click delete with no member selected
     >>> browser.open("http://localhost/site/@@members.html")
     >>> browser.getControl(name="form.actions.select").click()
-    >>> "[[cmf_default][Please select one or more items first.]]" in browser.contents
+    >>> "[[cmf_default][Please select one or more members first.]]" in browser.contents
     True
 
 Click delete with member selected

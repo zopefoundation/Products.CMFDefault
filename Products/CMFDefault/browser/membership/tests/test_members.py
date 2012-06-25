@@ -47,6 +47,9 @@ class DummyMemberTool(object):
     def __init__(self):
         self.members = {}
 
+    def getMemberById(self, id):
+        return self.members[id]
+
     def listMembers(self):
         return self.members.values()
 
@@ -121,12 +124,13 @@ class MembershipViewTests(unittest.TestCase):
                          ['stupid.name.select'])
 
     def test_handle_select_for_deletion(self):
+        self._make_one("Alice")
         view = Manage(self.site, TestRequest())
-        self.assertTrue(view.guillotine == None)
+        self.assertEqual(view.guillotine, None)
         # Catch exception raised when template tries to render
         self.assertRaises(AttributeError,
                 view.handle_select_for_deletion, None, {"Alice.select": True})
-        self.assertTrue(view.guillotine == "Alice")
+        self.assertEqual(view.guillotine, "FULL NAME (Alice)")
 
     def test_handle_delete(self):
         self._make_one("Bob")

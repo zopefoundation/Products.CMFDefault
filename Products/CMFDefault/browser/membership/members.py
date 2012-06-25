@@ -154,7 +154,7 @@ class Manage(BatchViewBase, EditFormBase):
         the requested action."""
         super(Manage, self).validate(action, data)
         if self._get_ids(data) == []:
-            return [_(u"Please select one or more items first.")]
+            return [_(u"Please select one or more members first.")]
         else:
             return []
 
@@ -165,7 +165,12 @@ class Manage(BatchViewBase, EditFormBase):
     def handle_select_for_deletion(self, action, data):
         """Identify members to be deleted and redirect to confirmation
         template"""
-        self.guillotine = ", ".join(self._get_ids(data))
+        mtool = getUtility(IMembershipTool)
+        members = []
+        for member_id in self._get_ids(data):
+            fullname = mtool.getMemberById(member_id).getProperty('fullname')
+            members.append('{0} ({1})'.format(fullname, member_id))
+        self.guillotine = ", ".join(members)
         return self.delete_template()
 
     def handle_delete(self, action, data):
@@ -173,12 +178,14 @@ class Manage(BatchViewBase, EditFormBase):
         mtool = getUtility(IMembershipTool)
         mtool.deleteMembers(self._get_ids(data))
         self.status = _(u"Selected members deleted.")
-        self._setRedirect('portal_actions', "global/manage_members")
+        self._setRedirect('portal_actions', "global/manage_members",
+                          '{0}.b_start'.format(self.prefix))
 
     def handle_cancel(self, action, data):
         """Don't delete anyone, return to list"""
         self.status = _(u"Deletion broken off.")
-        self._setRedirect('portal_actions', "global/manage_members")
+        self._setRedirect('portal_actions', "global/manage_members",
+                          '{0}.b_start'.format(self.prefix))
 
 
 class Roster(BatchViewBase):

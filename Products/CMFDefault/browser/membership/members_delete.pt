@@ -2,10 +2,11 @@
 <body>
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
-   <h1 i18n:translate="">Delete Members</h1>
-   
-   <form action="." method="post" tal:attributes="action request/ACTUAL_URL">
+<h1 i18n:translate="">Delete Members</h1>
 
+<form action="." method="post" tal:attributes="action request/ACTUAL_URL">
+  <tal:block repeat="widget view/hidden_widgets"
+             replace="structure widget/hidden" />
   <tal:block repeat="widget view/widgets"
              replace="structure widget/hidden" />
   
@@ -13,11 +14,10 @@
   folders and roles - are selected for deletion:</p>
  <p><strong tal:content="view/guillotine">MEMBERS</strong></p>
  
- <div class="buttons">
+ <div class="FormButtons">
    <tal:loop tal:repeat="action view/delete_actions"
     tal:replace="structure action/render" />
  </div>
-
 </form>
 </metal:slot>
 
