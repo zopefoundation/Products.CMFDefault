@@ -23,6 +23,10 @@ from zope.sequencesort.ssort import sort
 from ZTUtils import Batch
 from ZTUtils import LazyFilter
 
+from .interfaces import IBatchForm
+from .interfaces import IDeltaItem
+from .interfaces import IFolderItem
+from .interfaces import ISortForm
 from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import decode
@@ -35,8 +39,6 @@ from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import thousands_commas
-
-from .interfaces import IDeltaItem, IFolderItem, IBatchForm, ISortForm
 
 def contents_delta_vocabulary(context):
     """Vocabulary for the pulldown for moving objects up and down.
@@ -179,9 +181,9 @@ class BatchViewBase(ViewBase):
 
         pages = []
         for p in range(range_start, range_stop):
-            b_start = p*b_size
-            pages.append({'number':p + 1,
-                      'url':self._getNavigationURL(b_start)})
+            b_start = p * b_size
+            pages.append({'number': p + 1,
+                          'url': self._getNavigationURL(b_start)})
         return pages
 
     @memoize
@@ -325,14 +327,14 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
         f = IFolderItem['select']
         contents = []
         b_start = self._getBatchStart()
-        key, reverse = self._get_sorting()
+        key, _reverse = self._get_sorting()
         fields = form.FormFields()
         for idx, item in enumerate(self._getBatchObj()):
             field = form.FormField(f, 'select', item.id)
             fields += form.FormFields(field)
             content = ContentProxy(item)
             if key == 'position':
-                content.position =  b_start + idx + 1
+                content.position = b_start + idx + 1
             else:
                 content.position = '...'
             contents.append(content)
@@ -386,18 +388,17 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     @memoize
     def column_headings(self):
         key, reverse = self._get_sorting()
-        columns = ( {'sort_key': 'Type',
-                     'title': _(u'Type'),
-                     'colspan': '2'}
-                  , {'sort_key': 'getId',
-                     'title': _(u'Name')}
-                  , {'sort_key': 'modified',
-                     'title': _(u'Last Modified')}
-                  , {'sort_key': 'position',
-                     'title': _(u'Position')}
-                  )
+        columns = ({'sort_key': 'Type',
+                    'title': _(u'Type'),
+                    'colspan': '2'},
+                   {'sort_key': 'getId',
+                    'title': _(u'Name')},
+                   {'sort_key': 'modified',
+                    'title': _(u'Last Modified')},
+                   {'sort_key': 'position',
+                    'title': _(u'Position')})
         for column in columns:
-            paras = {'form.sort_key':column['sort_key']}
+            paras = {'form.sort_key': column['sort_key']}
             if key == column['sort_key'] \
             and not reverse and key != 'position':
                 paras['form.reverse'] = 1
@@ -440,7 +441,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     def is_orderable(self, action=None):
         """Returns true if the displayed contents can be
             reorded."""
-        (key, reverse) = self._get_sorting()
+        key, _reverse = self._get_sorting()
         return key == 'position' and len(self.contents) > 1
 
     #Action validators
@@ -499,7 +500,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
                 self.status = _(u'Item pasted.')
             else:
                 self.status = _(u'Items pasted.')
-        except CopyError, error:
+        except CopyError:
             self.status = _(u'CopyError: Paste failed.')
             self.request['RESPONSE'].expireCookie('__cp',
                     path='%s' % (self.request['BASEPATH1'] or "/"))
