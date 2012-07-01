@@ -60,3 +60,14 @@ All sort options apart from position are reversible.
     >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=position&form.reverse=1')
     >>> 'name="form.reverse" type="hidden" value="1"' in browser.contents
     True
+
+Change the default sort order:
+
+    >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=getId')
+    >>> '[[cmf_default][Set as Default Sort]]' in browser.contents
+    True
+    >>> browser.getControl('[[cmf_default][Set as Default Sort]]').click()
+    >>> '[[cmf_default][Default sort order changed.]]' in browser.contents
+    True
+    >>> '[[cmf_default][Set as Default Sort]]' in browser.contents
+    False

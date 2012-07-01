@@ -308,8 +308,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
             name='sort_order',
             label=_(u'Set as Default Sort'),
             condition='can_sort_be_changed',
-            validator='validate_items',
-            success='handle_top',
+            success='handle_sort_order',
             failure='handle_failure')
             )
 
@@ -595,10 +594,8 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
 
     def handle_sort_order(self, action, data):
         """Set the sort options for the folder."""
-        key = data['position']
-        reverse = data.get('reverse', 0)
-        self.context.setDefaultSorting(key, reverse)
-        self.status = _(u"Sort order changed")
+        self.context.setDefaultSorting(*self._get_sorting())
+        self.status = _(u'Default sort order changed.')
         return self._setRedirect('portal_types', 'object/folderContents')
 
 
