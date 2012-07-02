@@ -69,8 +69,8 @@
   /
   <input type="submit" name="items_down" value="Down"
      i18n:attributes="value" />
-  by
-  <select name="delta:int">
+  <label for="order_delta" i18n:translate="order_delta_label">by</label>
+  <select name="delta:int" id="order_delta">
    <option value=""
       tal:repeat="delta form/listDeltas"
       tal:attributes="value delta"

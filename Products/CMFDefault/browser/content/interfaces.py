@@ -19,6 +19,8 @@ from zope.schema import Choice
 from zope.schema import Int
 from zope.schema import TextLine
 
+from Products.CMFDefault.utils import Message as _
+
 
 class IFolderItem(Interface):
     """Schema for folderish objects contents."""
@@ -34,10 +36,11 @@ class IFolderItem(Interface):
 
 class IDeltaItem(Interface):
     """Schema for delta"""
+
     delta = Choice(
-        title=u"By",
+        title=_(u'order_delta_label', default=u'by'),
         description=u"Move an object up or down the chosen number of places.",
-        required=False,
+        required=True,
         vocabulary=u'cmf.contents delta vocabulary',
         default=1)
 
