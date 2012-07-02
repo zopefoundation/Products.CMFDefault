@@ -313,13 +313,8 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
             )
 
     actions = object_actions + delta_actions + absolute_actions + sort_actions
-    errors = ()
-
-    def __init__(self, *args, **kw):
-        super(ContentsView, self).__init__(*args, **kw)
-        self.form_fields = form.FormFields()
-        self.delta_field = form.FormFields(IDeltaItem)
-        self.contents = self.context.contentValues()
+    form_fields = form.FormFields()
+    delta_field = form.FormFields(IDeltaItem)
 
     def content_fields(self):
         """Create content field objects only for batched items"""
@@ -408,7 +403,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     @memoize
     def _get_items(self):
         key, reverse = self._get_sorting()
-        items = self.contents
+        items = self.context.contentValues()
         return sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
 
     def _get_ids(self, data):
@@ -421,7 +416,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     @memoize
     def has_subobjects(self, action=None):
         """Return false if the user cannot rename subobjects"""
-        return bool(self.contents)
+        return bool(self._get_items())
 
     @memoize
     def check_clipboard_data(self, action=None):
@@ -441,7 +436,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
         """Returns true if the displayed contents can be
             reorded."""
         key, _reverse = self._get_sorting()
-        return key == 'position' and len(self.contents) > 1
+        return key == 'position' and len(self._get_items()) > 1
 
     #Action validators
     def validate_items(self, action=None, data=None):
