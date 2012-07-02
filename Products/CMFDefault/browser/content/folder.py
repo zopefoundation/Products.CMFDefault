@@ -447,11 +447,12 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     def validate_items(self, action=None, data=None):
         """Check whether any items have been selected for
         the requested action."""
-        super(ContentsView, self).validate(action, data)
+        errors = self.validate(action, data)
+        if errors:
+            return errors
         if self._get_ids(data) == []:
-            return [_(u"Please select one or more items first.")]
-        else:
-            return []
+            errors.append(_(u"Please select one or more items first."))
+        return errors
 
     #Action handlers
     def handle_rename(self, action, data):
