@@ -197,18 +197,18 @@ class FolderContentsViewTests(unittest.TestCase):
         view = ContentsView(self.folder, TestRequest())
         self.assertFalse(view.can_sort_be_changed())
 
-    def test_empty_has_subobjects(self):
+    def test_show_basic_empty(self):
         view = ContentsView(self.folder, TestRequest())
-        self.assertFalse(view.has_subobjects())
+        self.assertFalse(view.show_basic())
 
-    def test_has_subobjects(self):
+    def test_show_basic(self):
         self._make_one()
         view = ContentsView(self.folder, TestRequest())
-        self.assertTrue(view.has_subobjects())
+        self.assertTrue(view.show_basic())
 
-    def test_check_clipboard_data(self):
+    def test_show_paste(self):
         view = ContentsView(self.folder, TestRequest())
-        self.assertFalse(view.check_clipboard_data())
+        self.assertFalse(view.show_paste())
 
     def test_validate_items(self):
         """Cannot validate forms without widgets"""

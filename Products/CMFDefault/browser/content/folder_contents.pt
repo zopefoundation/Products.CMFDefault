@@ -29,7 +29,7 @@
    tal:attributes="action request/ACTUAL_URL">
    <tal:block repeat="widget view/hidden_widgets"
               replace="structure widget/hidden" />
-   <table class="BatchTable" tal:condition="view/has_subobjects">
+   <table class="BatchTable" tal:condition="view/listBatchItems">
      <tr>
        <th tal:repeat="column view/column_headings"
             tal:attributes="colspan column/colspan | nothing"><a href="column"
@@ -39,7 +39,8 @@
      </tr>
    <tr tal:repeat="item view/listBatchItems"
       tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or None">
-     <td tal:content="structure python:view.widgets[item.widget]()">Checkbox</td>
+     <td><tal:case tal:condition="item/widget"
+        tal:content="structure python: view.widgets[item.widget]()">Checkbox</tal:case></td>
      <td><a href="" tal:attributes="href item/url"
          tal:condition="item/icon"
       ><img src="" alt="" border="0"

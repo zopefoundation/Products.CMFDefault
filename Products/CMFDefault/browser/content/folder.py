@@ -35,8 +35,11 @@ from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.formlib.form import _EditFormMixin
+from Products.CMFDefault.permissions import AddPortalContent
+from Products.CMFDefault.permissions import DeleteObjects
 from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
+from Products.CMFDefault.permissions import ViewManagementScreens
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import thousands_commas
 
@@ -224,7 +227,6 @@ class ContentProxy(object):
         self.icon = context.icon
         self.url = context.absolute_url()
         self.ModificationDate = context.ModificationDate()
-        self.widget = "%s.select" % self.name
 
 
 class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
@@ -238,32 +240,32 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
             name='rename',
             label=_(u'Rename'),
             validator='validate_items',
-            condition='has_subobjects',
+            condition='show_rename',
             success='handle_rename',
             failure='handle_failure'),
         form.Action(
             name='cut',
             label=_(u'Cut'),
-            condition='has_subobjects',
+            condition='show_basic',
             validator='validate_items',
             success='handle_cut',
             failure='handle_failure'),
         form.Action(
             name='copy',
             label=_(u'Copy'),
-            condition='has_subobjects',
+            condition='show_basic',
             validator='validate_items',
             success='handle_copy',
             failure='handle_failure'),
         form.Action(
             name='paste',
             label=_(u'Paste'),
-            condition='check_clipboard_data',
+            condition='show_paste',
             success='handle_paste'),
         form.Action(
             name='delete',
             label=_(u'Delete'),
-            condition='has_subobjects',
+            condition='show_delete',
             validator='validate_items',
             success='handle_delete',
             failure='handle_failure')
@@ -318,6 +320,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
 
     def content_fields(self):
         """Create content field objects only for batched items"""
+        show_widgets = self._checkPermission(ViewManagementScreens)
         f = IFolderItem['select']
         contents = []
         b_start = self._getBatchStart()
@@ -327,6 +330,10 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
             field = form.FormField(f, 'select', item.id)
             fields += form.FormFields(field)
             content = ContentProxy(item)
+            if show_widgets:
+                content.widget = '{0}.select'.format(content.name)
+            else:
+                content.widget = None
             if key == 'position':
                 content.position = b_start + idx + 1
             else:
@@ -376,10 +383,6 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
             return self.context.getDefaultSorting()
 
     @memoize
-    def _is_default_sorting(self,):
-        return self._get_sorting() == self.context.getDefaultSorting()
-
-    @memoize
     def column_headings(self):
         key, reverse = self._get_sorting()
         columns = ({'sort_key': 'Type',
@@ -414,27 +417,52 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
 
     #Action conditions
     @memoize
-    def has_subobjects(self, action=None):
-        """Return false if the user cannot rename subobjects"""
+    def show_basic(self, action=None):
+        if not self._checkPermission(ViewManagementScreens):
+            return False
         return bool(self._get_items())
 
     @memoize
-    def check_clipboard_data(self, action=None):
+    def show_delete(self, action=None):
+        if not self.show_basic():
+            return False
+        return self._checkPermission(DeleteObjects)
+
+    @memoize
+    def show_paste(self, action=None):
         """Any data in the clipboard"""
+        if not self._checkPermission(ViewManagementScreens):
+            return False
+        if not self._checkPermission(AddPortalContent):
+            return False
         return bool(self.context.cb_dataValid())
+
+    @memoize
+    def show_rename(self, action=None):
+        if not self.show_basic():
+            return False
+        if not self._checkPermission(AddPortalContent):
+            return False
+        return self.context.allowedContentTypes()
 
     @memoize
     def can_sort_be_changed(self, action=None):
         """Returns true if the default sort key may be changed
             may be sorted for display"""
-        items_move_allowed = self._checkPermission(ManageProperties)
-        return items_move_allowed and not \
-            self._get_sorting() == self.context.getDefaultSorting()
+        if not self._checkPermission(ViewManagementScreens):
+            return False
+        if not self._checkPermission(ManageProperties):
+            return False
+        return not self._get_sorting() == self.context.getDefaultSorting()
 
     @memoize
     def is_orderable(self, action=None):
         """Returns true if the displayed contents can be
             reorded."""
+        if not self._checkPermission(ViewManagementScreens):
+            return False
+        if not self._checkPermission(ManageProperties):
+            return False
         key, _reverse = self._get_sorting()
         return key == 'position' and len(self._get_items()) > 1
 
