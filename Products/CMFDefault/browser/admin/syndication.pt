@@ -9,7 +9,7 @@
 <p class="errors" i18n:translate="">Portal syndication is currently disabled</p>
 </tal:case>
 <tal:case condition="view/allowed">
-  <metal:macro metal:use-macro="view/base_template/macros/form" />
+<metal:macro metal:use-macro="context/@@formlib_macros/body" />
 </tal:case>
 </metal:slot>
 

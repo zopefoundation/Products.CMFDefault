@@ -2,7 +2,7 @@
 <body>
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
-<metal:macro metal:use-macro="view/base_template/macros/form" />
+<metal:macro metal:use-macro="context/@@formlib_macros/body" />
 
 <p><a href=""
     tal:attributes="href string:${portal_url}/mail_password.html"

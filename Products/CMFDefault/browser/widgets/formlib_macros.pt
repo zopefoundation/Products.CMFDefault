@@ -1,7 +1,8 @@
 <html>
 <body>
 
-<ul class="errors" metal:define-macro="errors"
+<metal:macro metal:define-macro="body"
+><ul class="errors" metal:define-macro="errors"
    tal:condition="view/errors">
  <li tal:repeat="error view/error_views"><tal:span
      tal:replace="structure error" /></li>
@@ -14,6 +15,8 @@
    tal:content="view/description">DESCRIPTION OF THE FORM.</p
 ></metal:macro>
 
+<form action="." method="post" enctype="multipart/form-data"
+   tal:attributes="action request/ACTUAL_URL">
 <div class="form" metal:define-macro="form">
 <div class="widgets">
  <tal:loop tal:repeat="widget view/widgets"
@@ -38,6 +41,8 @@
     tal:replace="structure action/render" />
 </div>
 </div>
+</form
+></metal:macro>
 
 </body>
 </html>

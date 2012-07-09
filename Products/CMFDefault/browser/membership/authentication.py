@@ -162,7 +162,6 @@ class LoginFormView(EditFormBase):
     """Form view for ILoginSchema.
     """
 
-    base_template = EditFormBase.template
     template = ViewPageTemplateFile('login.pt')
     label = _(u'Log in')
     prefix = ''
@@ -263,7 +262,6 @@ class MailPasswordFormView(EditFormBase):
     """Form view for IMailPasswordSchema.
     """
 
-    base_template = EditFormBase.template
     template = ViewPageTemplateFile('mail_password.pt')
     label = _(u"Don't panic!")
     description = _(u"Just enter your member ID below, click 'Send', and "

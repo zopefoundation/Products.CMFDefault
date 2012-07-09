@@ -88,7 +88,6 @@ class Folder(SettingsEditFormBase):
     """Enable, disable and customise syndication settings for a folder.
     """
 
-    base_template = SettingsEditFormBase.template
     template = ViewPageTemplateFile("syndication.pt")
     form_fields = form.FormFields(ISyndicationInfo).omit('enabled')
     label = _(u"Configure Folder Syndication")

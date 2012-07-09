@@ -70,7 +70,6 @@ class IJoinSchema(Interface):
 
 class JoinFormView(EditFormBase):
 
-    base_template = EditFormBase.template
     template = ViewPageTemplateFile("join.pt")
 
     actions = form.Actions(
@@ -117,7 +116,7 @@ class JoinFormView(EditFormBase):
         return not (self.isManager or self.isAnon)
 
     @property
-    def title(self):
+    def label(self):
         if self.isManager:
             return _(u'Register a New Member')
         else:
