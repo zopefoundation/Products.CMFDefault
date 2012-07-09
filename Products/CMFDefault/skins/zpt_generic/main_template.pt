@@ -289,7 +289,7 @@
 
    <tr tal:condition="caltool_installed">
     <td>
-     <div metal:use-macro="context/@@calendar_widget/macros/calendarBox">
+     <div metal:use-macro="context/@@calendar_widget/calendarBox">
      </div>
     </td>
    </tr>
