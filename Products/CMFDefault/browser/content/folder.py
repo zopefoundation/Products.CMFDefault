@@ -317,6 +317,12 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     actions = object_actions + delta_actions + absolute_actions + sort_actions
     form_fields = form.FormFields()
     delta_field = form.FormFields(IDeltaItem)
+    description = u''
+
+    @property
+    def label(self):
+        return _(u'Folder Contents: ${obj_title}',
+                 mapping={'obj_title': self.title()})
 
     def content_fields(self):
         """Create content field objects only for batched items"""

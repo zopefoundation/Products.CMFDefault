@@ -18,4 +18,12 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      for="*"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="formlib_macros"
+      template="formlib_macros.pt"
+      permission="zope2.View"
+      />
+
 </configure>

@@ -75,7 +75,6 @@ class MemberProxy(object):
 
 class Manage(BatchViewBase, EditFormBase):
 
-    label = _(u"Manage Members")
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
     guillotine = None
@@ -112,12 +111,20 @@ class Manage(BatchViewBase, EditFormBase):
                 )
             )
     actions = manage_actions + delete_actions
+    label = _(u'Manage Members')
+
+    @property
+    def description(self):
+        if not self.members_exist():
+            return _(u'Currently there are no members registered.')
+        return u''
 
     @memoize
     def _get_items(self):
         mtool = getUtility(IMembershipTool)
         return mtool.listMembers()
 
+    @memoize
     def members_exist(self, action=None):
         return len(self._getBatchObj()) > 0
 
