@@ -15,6 +15,9 @@
 
 import unittest
 
+import sys
+import warnings
+
 
 class DefaultUtilsTests(unittest.TestCase):
 
@@ -321,11 +324,20 @@ Header: value
 
     def test_thousand_commas_integer(self):
         from Products.CMFDefault.utils import thousands_commas as FUT
-        self.assertEqual(FUT(1), '1')
-        self.assertEqual(FUT(10), '10')
-        self.assertEqual(FUT(100), '100')
-        self.assertEqual(FUT(1000), '1,000')
-        self.assertEqual(FUT(1000000), ('1,000,000'))
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            self.assertEqual(FUT(1), '1')
+            self.assertEqual(FUT(10), '10')
+            self.assertEqual(FUT(100), '100')
+            self.assertEqual(FUT(1000), '1,000')
+            self.assertEqual(FUT(1000000), ('1,000,000'))
+            if sys.version_info >= (2, 7):
+                self.assertEqual(len(w), 5)
+                self.assertTrue(issubclass(w[-1].category, DeprecationWarning))
+                self.assertTrue(
+                    'On Python 2.7 and higher Use {:,}.formatting'
+                    in str(w[-1].message))
 
     def test_thousand_commas_string(self):
         from Products.CMFDefault.utils import thousands_commas as FUT

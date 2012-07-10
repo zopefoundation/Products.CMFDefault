@@ -12,6 +12,8 @@
 ##############################################################################
 """Browser views for folders.
 """
+
+import sys
 import urllib
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -204,7 +206,10 @@ class BatchViewBase(ViewBase):
     @memoize
     def summary_length(self):
         length = self._getBatchObj().sequence_length
-        return length and thousands_commas(length) or ''
+        if sys.version_info < (2, 7):
+            # BBB: for Python 2.6
+            return length and thousands_commas(length) or ''
+        return length and '{:,}'.format(length) or ''
 
     @memoize
     def summary_type(self):
