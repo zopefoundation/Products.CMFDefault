@@ -19,7 +19,6 @@ from urllib import urlencode
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from DateTime import DateTime
-from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import Forbidden
 from zExceptions import Redirect
@@ -29,6 +28,7 @@ from zope.formlib import form
 from zope.formlib.widgets import TextWidget
 from zope.interface import implements
 from zope.interface import Interface
+from zope.publisher.browser import BrowserView
 from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import Password

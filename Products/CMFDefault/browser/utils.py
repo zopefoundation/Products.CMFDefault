@@ -13,16 +13,13 @@
 """Browser view utilities.
 """
 
-from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import InitializeClass
-from Products.Five import BrowserView
+from zope.publisher.browser import BrowserView
 from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.permissions import View
 from Products.CMFDefault.utils import getBrowserCharset
 from Products.CMFDefault.utils import toUnicode
 
@@ -41,24 +38,6 @@ def memoize(meth):
             self.__memo__[sig] = meth(self, *args)
         return self.__memo__[sig]
     return memoized_meth
-
-
-class MacroView(BrowserView):
-
-    """Allows to use macros from non-view templates.
-    """
-
-    # The following allows to traverse the view/class and reach
-    # macros defined in page templates, e.g. in a use-macro.
-    security = ClassSecurityInfo()
-
-    def _macros(self):
-        return self.index.macros
-
-    security.declareProtected(View, 'macros')
-    macros = property(_macros, None, None)
-
-InitializeClass(MacroView)
 
 
 class ViewBase(BrowserView):

@@ -17,8 +17,8 @@ from logging import getLogger
 
 LOG = getLogger("Action Icons CSS")
 
-from Products.Five import BrowserView
 from zope.component import getUtility
+from zope.publisher.browser import BrowserView
 
 from Products.CMFCore.Expression import getExprContext
 from Products.CMFCore.interfaces import IActionsTool
