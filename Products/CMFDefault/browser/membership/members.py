@@ -24,9 +24,9 @@ from zope.sequencesort.ssort import sort
 from ZTUtils import LazyFilter
 
 from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFDefault.browser.content.folder import BatchViewBase
-from Products.CMFDefault.browser.content.interfaces import IBatchForm
 from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.widgets.batch import BatchViewBase
+from Products.CMFDefault.browser.widgets.batch import IBatchForm
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.utils import Message as _
 

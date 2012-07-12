@@ -21,9 +21,9 @@ from zope.formlib import form
 from .interfaces import ISearchSchema
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFDefault.browser.content.folder import BatchViewBase
-from Products.CMFDefault.browser.content.interfaces import IBatchForm
 from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.widgets.batch import BatchViewBase
+from Products.CMFDefault.browser.widgets.batch import IBatchForm
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceMultiSelectWidget
 from Products.CMFDefault.utils import Message as _
@@ -126,7 +126,7 @@ class Search(BatchViewBase, EditFormBase):
 
     @memoize
     def listBatchItems(self):
-        return( {'description': item.Description,
+        return({'description': item.Description,
            'icon': item.getIconURL,
            'title': item.Title,
            'type': item.Type,

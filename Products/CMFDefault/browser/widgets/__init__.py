@@ -10,5 +10,5 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""CMFDefault form views.
+"""CMFDefault browser view widgets.
 """

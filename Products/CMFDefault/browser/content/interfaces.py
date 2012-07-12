@@ -16,7 +16,6 @@
 from zope.interface import Interface
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import Int
 from zope.schema import TextLine
 
 from Products.CMFDefault.utils import Message as _
@@ -43,23 +42,3 @@ class IDeltaItem(Interface):
         required=True,
         vocabulary=u'cmf.contents delta vocabulary',
         default=1)
-
-
-class IBatchForm(Interface):
-    """Schema for batch forms"""
-
-    b_start = Int(
-        title=u"Batch start",
-        required=False,
-        default=0)
-
-
-class ISortForm(Interface):
-    """Schema for sort keys"""
-    sort_key = TextLine(
-        title=u"Sort key",
-        required=False)
-
-    reverse = Int(
-        title=u"Reverse sort order",
-        required=False)

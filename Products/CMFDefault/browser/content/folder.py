@@ -13,7 +13,6 @@
 """Browser views for folders.
 """
 
-import sys
 import urllib
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -22,18 +21,15 @@ from zope.formlib import form
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.sequencesort.ssort import sort
-from ZTUtils import Batch
 from ZTUtils import LazyFilter
 
-from .interfaces import IBatchForm
 from .interfaces import IDeltaItem
 from .interfaces import IFolderItem
-from .interfaces import ISortForm
 from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
-from Products.CMFDefault.browser.utils import ViewBase
+from Products.CMFDefault.browser.widgets.batch import BatchViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
 from Products.CMFDefault.formlib.form import _EditFormMixin
@@ -43,7 +39,6 @@ from Products.CMFDefault.permissions import ListFolderContents
 from Products.CMFDefault.permissions import ManageProperties
 from Products.CMFDefault.permissions import ViewManagementScreens
 from Products.CMFDefault.utils import Message as _
-from Products.CMFDefault.utils import thousands_commas
 
 def contents_delta_vocabulary(context):
     """Vocabulary for the pulldown for moving objects up and down.
@@ -52,174 +47,6 @@ def contents_delta_vocabulary(context):
     deltas = [SimpleTerm(i, str(i), str(i))
             for i in range(1, min(5, length)) + range(5, length, 5)]
     return SimpleVocabulary(deltas)
-
-
-class BatchViewBase(ViewBase):
-    """ Helper class for creating batch-based views.
-    """
-
-    _BATCH_SIZE = 25
-    hidden_fields = form.FormFields(IBatchForm, ISortForm)
-    prefix = ''
-
-    @memoize
-    def setUpWidgets(self, ignore_request=False):
-        self.hidden_widgets = form.setUpWidgets(self.hidden_fields,
-                            self.prefix, self.context, self.request,
-                            ignore_request=ignore_request)
-
-    @memoize
-    def _getBatchStart(self):
-        b_start = self._getHiddenVars().get('b_start', 0)
-        return int(b_start)
-
-    @memoize
-    def _getBatchObj(self):
-        b_start = self._getBatchStart()
-        items = self._get_items()
-        return Batch(items, self._BATCH_SIZE, b_start, orphan=0)
-
-    @memoize
-    def _getHiddenVars(self):
-        data = {}
-        if hasattr(self, 'hidden_widgets'):
-            form.getWidgetsData(self.hidden_widgets, self.prefix, data)
-        else:
-            data = self.request.form
-        return data
-
-    @memoize
-    def _getNavigationVars(self):
-        return self._getHiddenVars()
-
-    @memoize
-    def expand_prefix(self, key,):
-        """Return a form specific query key for use in GET strings"""
-        return "%s%s" % (form.expandPrefix(self.prefix), key)
-
-    @memoize
-    def _getNavigationURL(self, b_start=None):
-        target = self._getViewURL()
-        kw = self._getNavigationVars().copy()
-        if 'bstart' not in kw:
-            kw['b_start'] = b_start
-
-        for k, v in kw.items():
-            if not v or k == 'portal_status_message':
-                pass
-            else:
-                new_key = self.expand_prefix(k)
-                if new_key != k:
-                    kw[new_key] = v
-                    del kw[k]
-
-        query = kw and ('?%s' % urllib.urlencode(kw)) or ''
-
-        return u'%s%s' % (target, query)
-
-    # interface
-
-    @memoize
-    @decode
-    def listBatchItems(self):
-        batch_obj = self._getBatchObj()
-
-        items = []
-        for item in batch_obj:
-            item_description = item.Description()
-            item_title = item.Title()
-            item_type = remote_type = item.Type()
-            if item_type == 'Favorite':
-                try:
-                    item = item.getObject()
-                    item_description = item_description or item.Description()
-                    item_title = item_title or item.Title()
-                    remote_type = item.Type()
-                except KeyError:
-                    pass
-            is_file = remote_type in ('File', 'Image')
-            is_link = remote_type == 'Link'
-            items.append({'description': item_description,
-                          'format': is_file and item.Format() or '',
-                          'icon': item.getIconURL(),
-                          'size': is_file and ('%0.0f kb' %
-                                            (item.get_size() / 1024.0)) or '',
-                          'title': item_title,
-                          'type': item_type,
-                          'url': is_link and item.getRemoteUrl() or
-                                 item.absolute_url()})
-        return tuple(items)
-
-    @memoize
-    def navigation_previous(self):
-        batch_obj = self._getBatchObj().previous
-        if batch_obj is None:
-            return
-
-        length = len(batch_obj)
-        url = self._getNavigationURL(batch_obj.first)
-        if length == 1:
-            title = _(u'Previous item')
-        else:
-            title = _(u'Previous ${count} items', mapping={'count': length})
-        return {'title': title, 'url': url}
-
-    @memoize
-    def navigation_next(self):
-        batch_obj = self._getBatchObj().next
-        if batch_obj is None:
-            return
-
-        length = len(batch_obj)
-        url = self._getNavigationURL(batch_obj.first)
-        if length == 1:
-            title = _(u'Next item')
-        else:
-            title = _(u'Next ${count} items', mapping={'count': length})
-        return {'title': title, 'url': url}
-
-    def page_range(self):
-        """Create a range of up to ten pages around the current page"""
-        b_size = self._BATCH_SIZE
-        range_start = max(self.page_number() - 5, 0)
-        range_stop = min(max(self.page_number() + 5, 10), self.page_count())
-
-        pages = []
-        for p in range(range_start, range_stop):
-            b_start = p * b_size
-            pages.append({'number': p + 1,
-                          'url': self._getNavigationURL(b_start)})
-        return pages
-
-    @memoize
-    def page_count(self):
-        """Count total number of pages in the batch"""
-        batch_obj = self._getBatchObj()
-        count = (batch_obj.sequence_length - 1) / self._BATCH_SIZE + 1
-        return count
-
-    @memoize
-    def page_number(self):
-        """Get the number of the current page in the batch"""
-        return (self._getBatchStart() / self._BATCH_SIZE) + 1
-
-    @memoize
-    def summary_length(self):
-        length = self._getBatchObj().sequence_length
-        if sys.version_info < (2, 7):
-            # BBB: for Python 2.6
-            return length and thousands_commas(length) or ''
-        return length and '{:,}'.format(length) or ''
-
-    @memoize
-    def summary_type(self):
-        length = self._getBatchObj().sequence_length
-        return (length == 1) and _(u'item') or _(u'items')
-
-    @memoize
-    @decode
-    def summary_match(self):
-        return self.request.form.get('SearchableText')
 
 
 class ContentProxy(object):
