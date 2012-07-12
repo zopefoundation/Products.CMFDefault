@@ -133,8 +133,7 @@ class Favorite(Link):
         try:
             return self.getObject().getIconURL()
         except KeyError:
-            utool = getUtility(IURLTool)
-            return '%s/p_/broken' % utool()
+            return super(Favorite, self).getIconURL()
 
     security.declareProtected(View, 'getObject')
     def getObject(self):
