@@ -31,8 +31,6 @@ from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFDefault.browser.content.folder import ContentsView
 from Products.CMFDefault.browser.content.folder import FolderView
-from Products.CMFDefault.browser.content.tests.utils import clearVocabulary
-from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
 
 
@@ -167,16 +165,11 @@ class FolderViewTests(unittest.TestCase):
         self.assertFalse(view.has_local())
 
 
-ftest_suite = ZopeTestCase.FunctionalDocFileSuite('folder.txt',
-                        setUp=setupVocabulary,
-                        tearDown=clearVocabulary,
-                        )
-
-ftest_suite.layer = FunctionalLayer
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(FolderContentsViewTests))
     suite.addTest(unittest.makeSuite(FolderViewTests))
-    suite.addTest(unittest.TestSuite((ftest_suite,)))
+    s = ZopeTestCase.FunctionalDocFileSuite('folder.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
     return suite

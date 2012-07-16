@@ -19,6 +19,7 @@ ZopeTestCase.installProduct('CMFCore', 1)
 
 import transaction
 from Zope2.App import zcml
+from Zope2.App.schema import configure_vocabulary_registry
 
 from Products.CMFCore.testing import FunctionalZCMLLayer
 from Products.CMFDefault.factory import addConfiguredSite
@@ -33,6 +34,7 @@ class FunctionalLayer(FunctionalZCMLLayer):
 
         zcml.load_config('configure.zcml', Products.CMFDefault)
         zcml.load_config('configure.zcml', Products.DCWorkflow)
+        configure_vocabulary_registry()
 
         app = ZopeTestCase.app()
         addConfiguredSite(app, 'site', 'Products.CMFDefault:default',

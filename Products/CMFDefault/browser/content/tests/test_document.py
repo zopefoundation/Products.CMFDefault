@@ -16,19 +16,12 @@
 import unittest
 from Testing import ZopeTestCase
 
-from Products.CMFDefault.browser.content.tests.utils import clearVocabulary
-from Products.CMFDefault.browser.content.tests.utils import setupVocabulary
 from Products.CMFDefault.testing import FunctionalLayer
 
 
-ftest_suite = ZopeTestCase.FunctionalDocFileSuite(
-                'document.txt',
-                setUp=setupVocabulary,
-                tearDown=clearVocabulary,
-               )
-ftest_suite.layer = FunctionalLayer
-
 def test_suite():
-    return unittest.TestSuite((
-        ftest_suite,
-    ))
+    suite = unittest.TestSuite()
+    s = ZopeTestCase.FunctionalDocFileSuite('document.txt')
+    s.layer = FunctionalLayer
+    suite.addTest(s)
+    return suite
