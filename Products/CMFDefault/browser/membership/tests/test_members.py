@@ -100,6 +100,7 @@ class MembershipViewTests(unittest.TestCase):
         url = 'http://example.com/members.html'
         self._make_batch()
         view = Manage(self.site, TestRequest(ACTUAL_URL=url))
+        view._getNavigationVars = lambda: {}
         self.assertTrue(view._getNavigationURL(25) == url + "?form.b_start=25")
 
     def test_view(self):
@@ -109,6 +110,7 @@ class MembershipViewTests(unittest.TestCase):
     def test_list_batch_items(self):
         self._make_one("Bob")
         view = Manage(self.site, TestRequest())
+        view._getNavigationVars = lambda: {}
         view.member_fields()
         members = view.listBatchItems
         self.assertTrue(isinstance(members[0], MemberProxy))

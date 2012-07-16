@@ -22,7 +22,7 @@ from .interfaces import ISearchSchema
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import memoize
-from Products.CMFDefault.browser.widgets.batch import BatchViewBase
+from Products.CMFDefault.browser.widgets.batch import BatchFormMixin
 from Products.CMFDefault.browser.widgets.batch import IBatchForm
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceMultiSelectWidget
@@ -31,7 +31,8 @@ from Products.CMFDefault.utils import Message as _
 EPOCH = datetime.date(1970, 1, 1)
 
 
-class Search(BatchViewBase, EditFormBase):
+class Search(BatchFormMixin, EditFormBase):
+
     """Portal Search Form"""
 
     template = ViewPageTemplateFile("search.pt")
@@ -41,7 +42,6 @@ class Search(BatchViewBase, EditFormBase):
     form_fields['review_state'].custom_widget = ChoiceMultiSelectWidget
     form_fields['Subject'].custom_widget = ChoiceMultiSelectWidget
     form_fields['portal_type'].custom_widget = ChoiceMultiSelectWidget
-    prefix = 'form'
 
     search = form.Actions(
         form.Action(
@@ -82,7 +82,7 @@ class Search(BatchViewBase, EditFormBase):
         return mtool.isAnonymousUser()
 
     @memoize
-    def _getHiddenVars(self):
+    def _getNavigationVars(self):
         data = {}
         if hasattr(self, 'hidden_widgets'):
             form.getWidgetsData(self.hidden_widgets, self.prefix, data)

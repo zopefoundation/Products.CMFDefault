@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Browser views for folders.
+"""Base classes for batch views.
 """
 
 import sys
@@ -21,6 +21,7 @@ from zope.interface import Interface
 from zope.schema import Int
 from zope.schema import TextLine
 from ZTUtils import Batch
+from ZTUtils import make_query
 
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
@@ -56,23 +57,14 @@ class ISortForm(Interface):
 
 class BatchViewBase(ViewBase):
 
-    """ Helper class for creating batch-based views.
+    """Base class for creating batch-based views.
     """
 
     _BATCH_SIZE = 25
-    hidden_fields = form.FormFields(IBatchForm, ISortForm)
-    prefix = ''
-
-    @memoize
-    def setUpWidgets(self, ignore_request=False):
-        self.hidden_widgets = form.setUpWidgets(self.hidden_fields,
-                            self.prefix, self.context, self.request,
-                            ignore_request=ignore_request)
 
     @memoize
     def _getBatchStart(self):
-        b_start = self._getHiddenVars().get('b_start', 0)
-        return int(b_start)
+        return self._getNavigationVars().get('b_start', 0)
 
     @memoize
     def _getBatchObj(self):
@@ -81,22 +73,8 @@ class BatchViewBase(ViewBase):
         return Batch(items, self._BATCH_SIZE, b_start, orphan=0)
 
     @memoize
-    def _getHiddenVars(self):
-        data = {}
-        if hasattr(self, 'hidden_widgets'):
-            form.getWidgetsData(self.hidden_widgets, self.prefix, data)
-        else:
-            data = self.request.form
-        return data
-
-    @memoize
     def _getNavigationVars(self):
-        return self._getHiddenVars()
-
-    @memoize
-    def expand_prefix(self, key,):
-        """Return a form specific query key for use in GET strings"""
-        return "%s%s" % (form.expandPrefix(self.prefix), key)
+        return self.request.form
 
     @memoize
     def _getNavigationURL(self, b_start):
@@ -106,14 +84,9 @@ class BatchViewBase(ViewBase):
         kw['b_start'] = b_start
         for k, v in kw.items():
             if not v or k == 'portal_status_message':
-                pass
-            else:
-                new_key = self.expand_prefix(k)
-                if new_key != k:
-                    kw[new_key] = v
-                    del kw[k]
+                del kw[k]
 
-        query = kw and ('?%s' % urllib.urlencode(kw)) or ''
+        query = kw and ('?%s' % make_query(kw)) or ''
         return u'%s%s' % (target, query)
 
     # interface
@@ -218,4 +191,42 @@ class BatchViewBase(ViewBase):
     @memoize
     @decode
     def summary_match(self):
-        return self.request.form.get('SearchableText')
+        return self._getNavigationVars().get('SearchableText')
+
+
+class BatchFormMixin(BatchViewBase):
+
+    """Mixin class for creating batch-based forms.
+    """
+
+    hidden_fields = form.FormFields(IBatchForm, ISortForm)
+
+    @memoize
+    def _getNavigationVars(self):
+        data = {}
+        form.getWidgetsData(self.hidden_widgets, self.prefix, data)
+        return data
+
+    @memoize
+    def _getNavigationURL(self, b_start):
+        target = self._getViewURL()
+        kw = self._getNavigationVars().copy()
+
+        kw['b_start'] = b_start
+        for k, v in kw.items():
+            if not v or k == 'portal_status_message':
+                del kw[k]
+            else:
+                new_key = "%s%s" % (form.expandPrefix(self.prefix), k)
+                if new_key != k:
+                    kw[new_key] = v
+                    del kw[k]
+
+        query = kw and ('?%s' % urllib.urlencode(kw)) or ''
+        return u'%s%s' % (target, query)
+
+    @memoize
+    def setUpWidgets(self, ignore_request=False):
+        self.hidden_widgets = form.setUpWidgets(
+            self.hidden_fields, self.prefix, self.context, self.request,
+            ignore_request=ignore_request)

@@ -49,17 +49,17 @@ class SearchFormTests(unittest.TestCase):
 
     def test_strip_unused_paramaters(self):
         view = self._getTargetClass()
-        data = {'portal_type': ['Document'], 'review_state':u"None",
-                'Subject':u"None"}
+        data = {'portal_type': ['Document'], 'review_state': u"None",
+                'Subject': u"None"}
         view.handle_search('search', data)
-        self.assertEqual(view._query, {'portal_type':['Document']})
+        self.assertEqual(view._query, {'portal_type': ['Document']})
 
     def test_add_search_vars_to_hidden(self):
         view = self._getTargetClass()
         self.assertFalse(hasattr(view, '_query'))
         data = {'portal_type': ['Document']}
         view.handle_search('search', data)
-        self.assertEqual(view._getHiddenVars(), data)
+        self.assertEqual(view._getNavigationVars(), data)
 
     def test_search_returns_results(self):
         view = self._getTargetClass()

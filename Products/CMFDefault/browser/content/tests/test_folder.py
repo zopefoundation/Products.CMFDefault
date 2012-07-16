@@ -68,6 +68,7 @@ class FolderContentsViewTests(unittest.TestCase):
         url = 'http://example.com/folder_contents'
         self._make_batch()
         view = ContentsView(self.folder, TestRequest(ACTUAL_URL=url))
+        view._getNavigationVars = lambda: {}
         self.assertTrue(view._getNavigationURL(25) == url + "?form.b_start=25")
 
     def test_view(self):
@@ -81,24 +82,29 @@ class FolderContentsViewTests(unittest.TestCase):
 
     def test_list_batch_items(self):
         view = ContentsView(self.folder, TestRequest())
+        view._getNavigationVars = lambda: {}
         view.content_fields()
         self.assertEqual(view.listBatchItems, [])
 
     def test_is_orderable(self):
         view = ContentsView(self.folder, TestRequest())
+        view._getNavigationVars = lambda: {}
         self.assertFalse(view.is_orderable())
 
     def test_sort_can_be_changed(self):
         view = ContentsView(self.folder, TestRequest())
+        view._getNavigationVars = lambda: {}
         self.assertFalse(view.can_sort_be_changed())
 
     def test_show_basic_empty(self):
         view = ContentsView(self.folder, TestRequest())
+        view._getNavigationVars = lambda: {}
         self.assertFalse(view.show_basic())
 
     def test_show_basic(self):
         self._make_one()
         view = ContentsView(self.folder, TestRequest())
+        view._getNavigationVars = lambda: {}
         self.assertTrue(view.show_basic())
 
     def test_show_paste(self):
@@ -148,7 +154,7 @@ class FolderViewTests(unittest.TestCase):
         url = 'http://example.com/view'
         self._make_batch()
         view = FolderView(self.folder, TestRequest(ACTUAL_URL=url))
-        self.assertTrue(view._getNavigationURL(25) == url + "?b_start=25")
+        self.assertEqual(view._getNavigationURL(25), url + "?b_start:int=25")
 
     def test_folder_has_local(self):
         self._make_one('local_pt')

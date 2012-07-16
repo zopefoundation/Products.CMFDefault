@@ -29,10 +29,11 @@ from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.widgets.batch import BatchFormMixin
 from Products.CMFDefault.browser.widgets.batch import BatchViewBase
 from Products.CMFDefault.exceptions import CopyError
 from Products.CMFDefault.exceptions import zExceptions_Unauthorized
-from Products.CMFDefault.formlib.form import _EditFormMixin
+from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.permissions import AddPortalContent
 from Products.CMFDefault.permissions import DeleteObjects
 from Products.CMFDefault.permissions import ListFolderContents
@@ -61,11 +62,11 @@ class ContentProxy(object):
         self.ModificationDate = context.ModificationDate()
 
 
-class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
+class ContentsView(BatchFormMixin, EditFormBase):
+
     """Folder contents view"""
 
     template = ViewPageTemplateFile('folder_contents.pt')
-    prefix = 'form'
 
     object_actions = form.Actions(
         form.Action(
@@ -213,7 +214,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
     @memoize
     def _get_sorting(self):
         """How should the contents be sorted"""
-        data = self._getHiddenVars()
+        data = self._getNavigationVars()
         key = data.get('sort_key')
         if key:
             return (key, data.get('reverse', 0))
@@ -321,7 +322,7 @@ class ContentsView(BatchViewBase, _EditFormMixin, form.PageForm):
         # currently redirects to a PythonScript
         # should be replaced with a dedicated form
         self.request.form['ids'] = self._get_ids(data)
-        keys = ",".join(self._getHiddenVars().keys() + ['ids'])
+        keys = ",".join(self._getNavigationVars().keys() + ['ids'])
         # keys = 'b_start, ids, key, reverse'
         return self._setRedirect('portal_types', 'object/rename_items', keys)
 
@@ -468,7 +469,7 @@ class FolderView(BatchViewBase):
 
     @memoize
     def _get_items(self):
-        (key, reverse) = self.context.getDefaultSorting()
+        key, reverse = self.context.getDefaultSorting()
         items = self.context.contentValues()
         items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
         return LazyFilter(items, skip='View')

@@ -1,7 +1,7 @@
 <html metal:use-macro="context/@@standard_macros/page">
 <body>
 
-<metal:slot metal:fill-slot="body">
+<metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
 
 <h2 i18n:translate="">Portal Members</h2>
 

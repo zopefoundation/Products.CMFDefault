@@ -20,14 +20,14 @@ from zope.interface import Interface
 from zope.schema import Bool
 from zope.schema import Date
 from zope.schema import TextLine
-from zope.sequencesort.ssort import sort
-from ZTUtils import LazyFilter
 
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.widgets.batch import BatchFormMixin
 from Products.CMFDefault.browser.widgets.batch import BatchViewBase
 from Products.CMFDefault.browser.widgets.batch import IBatchForm
 from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.permissions import ManageUsers
 from Products.CMFDefault.utils import Message as _
 
 
@@ -73,12 +73,11 @@ class MemberProxy(object):
         self.widget = "%s.select" % member_id
 
 
-class Manage(BatchViewBase, EditFormBase):
+class Manage(BatchFormMixin, EditFormBase):
 
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
     guillotine = None
-    prefix = 'form' # required for hidden fields to work
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
 
@@ -200,11 +199,6 @@ class Manage(BatchViewBase, EditFormBase):
 
 class Roster(BatchViewBase):
 
-    hidden_fields = form.FormFields(IBatchForm)
-    form_fields = form.FormFields()
-    actions = ()
-    template = ViewPageTemplateFile("members_list.pt")
-
     @property
     @memoize
     def mtool(self):
@@ -212,24 +206,20 @@ class Roster(BatchViewBase):
 
     @memoize
     def isUserManager(self):
-        return self.mtool.checkPermission('Manage users',
-                          self.mtool.getMembersFolder()
-                                            )
+        return self.mtool.checkPermission(ManageUsers,
+                                          self.mtool.getMembersFolder())
 
     @memoize
     def _get_items(self):
-        (key, reverse) = self.context.getDefaultSorting()
-        items = self.mtool().getRoster()
-        items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
-        return LazyFilter(items, skip='View')
+        return self.mtool.getRoster()
 
-    @memoize
     def listBatchItems(self):
         members = []
-        for item in self._getBatchObj():
-            member = item
-            member['home'] = self.mtool().getHomeUrl(item['id'],
-                                verifyPermission=1)
-            member['listed'] = member['listed'] and _(u"Yes") or _("No")
-            members.append(member)
-        return members
+        for member in self._getBatchObj():
+            member_home = self.mtool.getHomeUrl(member['id'],
+                                                verifyPermission=1)
+            member_listed = member['listed'] and _(u'Yes') or _(u'No')
+            members.append({'id': member['id'],
+                            'home': member_home,
+                            'listed': member_listed})
+        return tuple(members)
