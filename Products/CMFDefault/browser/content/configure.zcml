@@ -143,9 +143,13 @@
       factory=".file.FileAddView"
       />
 
-  <adapter
-      name="cmf.image"
-      factory=".file.FileAddView"
+  <browser:page
+      for="Products.CMFDefault.interfaces.IFile"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="view.html"
+      class=".file.FileView"
+      template="file.pt"
+      permission="zope2.View"
       />
 
   <browser:page
@@ -154,6 +158,11 @@
       name="edit.html"
       class=".file.FileEditView"
       permission="cmf.ModifyPortalContent"
+      />
+
+  <adapter
+      name="cmf.image"
+      factory=".file.FileAddView"
       />
 
   <browser:page

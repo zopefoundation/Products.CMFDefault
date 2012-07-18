@@ -21,6 +21,9 @@ from zope.schema import ASCIILine
 from zope.schema import Text
 from zope.schema import TextLine
 
+from Products.CMFDefault.browser.utils import decode
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.formlib.form import ContentAddFormBase
 from Products.CMFDefault.formlib.form import ContentEditFormBase
 from Products.CMFDefault.formlib.schema import FileUpload
@@ -81,6 +84,34 @@ class FileSchemaAdapter(SchemaAdapterBase):
                                      'Description', 'setDescription')
     format = ProxyFieldProperty(IFileSchema['format'], 'Format')
     file = property(_getFile, _setFile)
+
+
+class FileView(ViewBase):
+
+    """View for IFile.
+    """
+
+    # interface
+
+    @memoize
+    @decode
+    def content_type(self):
+        return self.context.getContentType()
+
+    @memoize
+    @decode
+    def id(self):
+        return self.context.getId()
+
+    @memoize
+    @decode
+    def size(self):
+        return self.context.get_size()
+
+    @memoize
+    @decode
+    def url(self):
+        return self.context.absolute_url()
 
 
 class FileAddView(ContentAddFormBase):
