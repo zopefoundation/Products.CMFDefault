@@ -31,8 +31,8 @@
      </tr>
    <tr tal:repeat="item view/listBatchItems"
       tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or None">
-     <td><tal:case tal:condition="item/widget"
-        tal:content="structure python: view.widgets[item.widget]()">Checkbox</tal:case></td>
+     <td><input name="form.select_ids" type="checkbox" value=""
+         tal:condition="item/checkbox" tal:attributes="value item/name" /></td>
      <td><a href="" tal:attributes="href item/url"
          tal:condition="item/icon"
       ><img src="" alt="" border="0"

@@ -22,12 +22,11 @@
      <tbody>
        <tr tal:repeat="item view/listBatchItems"
            tal:attributes="class python: (repeat['item'].even() and 'row-hilite') or None">
-         <td tal:content="structure python:view.widgets[item.widget]()"></td>
-          <td><a href="" tal:condition="item/home"
-                         tal:content="item/name" 
-                         tal:attributes="href item/home">User name</a>
-              <tal:block condition="not: item/home" replace="item/name" />
-          </td>
+          <td><input name="form.select_ids" type="checkbox" value=""
+                     tal:attributes="value item/name" /></td>
+          <td><a href="" tal:omit-tag="not: item/home"
+                 tal:content="string:${item/fullname} (${item/name})"
+                 tal:attributes="href item/home">FULL NAME (ID)</a></td>
           <td><a href="" 
                  tal:content="item/email" 
                  tal:attributes="href string:mailto:${item/email}"></a></td>

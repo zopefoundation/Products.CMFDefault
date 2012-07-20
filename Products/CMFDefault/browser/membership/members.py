@@ -17,7 +17,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import Interface
-from zope.schema import Bool
 from zope.schema import Date
 from zope.schema import TextLine
 
@@ -34,9 +33,6 @@ from Products.CMFDefault.utils import Message as _
 class IMemberItem(Interface):
 
     """Schema for portal members """
-
-    select = Bool(
-        required=False)
 
     name = TextLine(
         title=u"Name",
@@ -61,23 +57,21 @@ class MemberProxy(object):
 
     """Utility class wrapping a member for display purposes"""
 
-    def __init__(self, member, mtool):
+    def __init__(self, member, mtool, charset):
         member_id = member.getId()
-        fullname = member.getProperty('fullname')
         last_login = member.getProperty('login_time')
         never_logged_in = str(last_login).startswith('2000/01/01')
         self.login_time = never_logged_in and '---' or last_login.Date()
-        self.name = '%s (%s)' % (fullname, member_id)
+        self.name = member_id
+        self.fullname = member.getProperty('fullname').decode(charset)
         self.home = mtool.getHomeUrl(member_id, verifyPermission=0)
         self.email = member.getProperty('email')
-        self.widget = "%s.select" % member_id
 
 
 class Manage(BatchFormMixin, EditFormBase):
 
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
-    guillotine = None
     form_fields = form.FormFields()
     hidden_fields = form.FormFields(IBatchForm)
 
@@ -93,9 +87,7 @@ class Manage(BatchFormMixin, EditFormBase):
             condition='members_exist',
             success='handle_select_for_deletion',
             failure='handle_failure',
-            validator=('validate_items')
-                )
-            )
+            validator=('validate_items')))
 
     delete_actions = form.Actions(
         form.Action(
@@ -105,10 +97,8 @@ class Manage(BatchFormMixin, EditFormBase):
             failure='handle_failure'),
         form.Action(
             name='cancel',
-            label=_(u'Cancel'),
-            success='handle_cancel'
-                )
-            )
+            label=_(u'Cancel')))
+
     actions = manage_actions + delete_actions
     label = _(u'Manage Members')
 
@@ -127,33 +117,35 @@ class Manage(BatchFormMixin, EditFormBase):
     def members_exist(self, action=None):
         return len(self._getBatchObj()) > 0
 
-    def _get_ids(self, data):
+    @memoize
+    def _get_ids(self):
         """Identify objects that have been selected"""
-        ids = [k[:-7] for k, v in data.items()
-                 if v is True and k.endswith('.select')]
-        return ids
+        ids = self.request.form.get('form.select_ids', [])
+        if isinstance(ids, basestring):
+            ids = [ids]
+        return [ str(id) for id in ids ]
 
     @memoize
-    def member_fields(self):
+    def listBatchItems(self):
         """Create content field objects only for batched items
-        Also create pseudo-widget for each item
         """
         mtool = getUtility(IMembershipTool)
-        f = IMemberItem['select']
+        charset = self._getDefaultCharset()
         members = []
-        fields = form.FormFields()
         for item in self._getBatchObj():
-            field = form.FormField(f, 'select', item.getId())
-            fields += form.FormFields(field)
-            members.append(MemberProxy(item, mtool))
-        self.listBatchItems = members
-        return fields
+            members.append(MemberProxy(item, mtool, charset))
+        return tuple(members)
+
+    @memoize
+    def listSelectedItems(self):
+        ids = self._get_ids()
+        members = [ m for m in self.listBatchItems() if m.name in ids ]
+        return tuple(members)
 
     def setUpWidgets(self, ignore_request=False):
         """Create widgets for the members"""
         super(Manage, self).setUpWidgets(ignore_request)
-        self.widgets = form.setUpWidgets(self.member_fields(), self.prefix,
-                    self.context, self.request, ignore_request=ignore_request)
+        self.widgets = self.hidden_widgets
 
     def validate_items(self, action=None, data=None):
         """Check whether any items have been selected for
@@ -161,7 +153,7 @@ class Manage(BatchFormMixin, EditFormBase):
         errors = self.validate(action, data)
         if errors:
             return errors
-        if self._get_ids(data) == []:
+        if self._get_ids() == []:
             errors.append(_(u"Please select one or more members first."))
         return errors
 
@@ -172,27 +164,13 @@ class Manage(BatchFormMixin, EditFormBase):
     def handle_select_for_deletion(self, action, data):
         """Identify members to be deleted and redirect to confirmation
         template"""
-        mtool = getUtility(IMembershipTool)
-        charset = self._getDefaultCharset()
-        members = []
-        for member_id in self._get_ids(data):
-            member = mtool.getMemberById(member_id)
-            fullname = member.getProperty('fullname').decode(charset)
-            members.append(u'{0} ({1})'.format(fullname, member_id))
-        self.guillotine = u', '.join(members)
         return self.delete_template()
 
     def handle_delete(self, action, data):
         """Delete selected members"""
         mtool = getUtility(IMembershipTool)
-        mtool.deleteMembers(self._get_ids(data))
+        mtool.deleteMembers(self._get_ids())
         self.status = _(u"Selected members deleted.")
-        self._setRedirect('portal_actions', "global/manage_members",
-                          '{0}.b_start'.format(self.prefix))
-
-    def handle_cancel(self, action, data):
-        """Don't delete anyone, return to list"""
-        self.status = _(u"Deletion broken off.")
         self._setRedirect('portal_actions', "global/manage_members",
                           '{0}.b_start'.format(self.prefix))
 

@@ -14,7 +14,6 @@
 """
 
 from zope.interface import Interface
-from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import TextLine
 
@@ -23,9 +22,6 @@ from Products.CMFDefault.utils import Message as _
 
 class IFolderItem(Interface):
     """Schema for folderish objects contents."""
-
-    select = Bool(
-        required=False)
 
     name = TextLine(
         title=u"Name",

@@ -24,7 +24,6 @@ from zope.sequencesort.ssort import sort
 from ZTUtils import LazyFilter
 
 from .interfaces import IDeltaItem
-from .interfaces import IFolderItem
 from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import decode
@@ -157,29 +156,23 @@ class ContentsView(BatchFormMixin, EditFormBase):
         return _(u'Folder Contents: ${obj_title}',
                  mapping={'obj_title': self.title()})
 
-    def content_fields(self):
-        """Create content field objects only for batched items"""
-        show_widgets = self._checkPermission(ViewManagementScreens)
-        f = IFolderItem['select']
+    @memoize
+    def listBatchItems(self):
+        """List batched items.
+        """
+        show_checkboxes = self._checkPermission(ViewManagementScreens)
         contents = []
         b_start = self._getBatchStart()
         key, _reverse = self._get_sorting()
-        fields = form.FormFields()
         for idx, item in enumerate(self._getBatchObj()):
-            field = form.FormField(f, 'select', item.id)
-            fields += form.FormFields(field)
             content = ContentProxy(item)
-            if show_widgets:
-                content.widget = '{0}.select'.format(content.name)
-            else:
-                content.widget = None
+            content.checkbox = show_checkboxes
             if key == 'position':
                 content.position = b_start + idx + 1
             else:
                 content.position = '...'
             contents.append(content)
-        self.listBatchItems = contents
-        return fields
+        return tuple(contents)
 
     @memoize
     @decode
@@ -205,9 +198,6 @@ class ContentsView(BatchFormMixin, EditFormBase):
         """Create widgets for the folder contents."""
         super(ContentsView, self).setUpWidgets(ignore_request)
         self.widgets = form.setUpWidgets(
-                self.content_fields(), self.prefix, self.context,
-                self.request, ignore_request=ignore_request)
-        self.widgets += form.setUpWidgets(
                 self.delta_field, self.prefix, self.context,
                 self.request, ignore_request=ignore_request)
 
@@ -248,11 +238,13 @@ class ContentsView(BatchFormMixin, EditFormBase):
         items = self.context.contentValues()
         return sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
 
-    def _get_ids(self, data):
+    @memoize
+    def _get_ids(self):
         """Identify objects that have been selected"""
-        ids = [k[:-7] for k, v in data.items()
-                 if v is True and k.endswith('.select')]
-        return ids
+        ids = self.request.form.get('form.select_ids', [])
+        if isinstance(ids, basestring):
+            ids = [ids]
+        return [ str(id) for id in ids ]
 
     #Action conditions
     @memoize
@@ -312,7 +304,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
         errors = self.validate(action, data)
         if errors:
             return errors
-        if self._get_ids(data) == []:
+        if self._get_ids() == []:
             errors.append(_(u"Please select one or more items first."))
         return errors
 
@@ -321,14 +313,14 @@ class ContentsView(BatchFormMixin, EditFormBase):
         """Redirect to rename view passing the ids of objects to be renamed"""
         # currently redirects to a PythonScript
         # should be replaced with a dedicated form
-        self.request.form['ids'] = self._get_ids(data)
+        self.request.form['ids'] = self._get_ids()
         keys = ",".join(self._getNavigationVars().keys() + ['ids'])
         # keys = 'b_start, ids, key, reverse'
         return self._setRedirect('portal_types', 'object/rename_items', keys)
 
     def handle_cut(self, action, data):
         """Cut the selected objects and put them in the clipboard"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         try:
             self.context.manage_cutObjects(ids, self.request)
             if len(ids) == 1:
@@ -343,7 +335,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
 
     def handle_copy(self, action, data):
         """Copy the selected objects to the clipboard"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         try:
             self.context.manage_copyObjects(ids, self.request)
             if len(ids) == 1:
@@ -373,7 +365,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
 
     def handle_delete(self, action, data):
         """Delete the selected objects"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         self.context.manage_delObjects(list(ids))
         if len(ids) == 1:
             self.status = _(u'Item deleted.')
@@ -383,7 +375,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
 
     def handle_up(self, action, data):
         """Move the selected objects up the selected number of places"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         delta = data.get('delta', 1)
         subset_ids = [obj.getId()
                        for obj in self.context.listFolderContents()]
@@ -402,7 +394,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
 
     def handle_down(self, action, data):
         """Move the selected objects down the selected number of places"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         delta = data.get('delta', 1)
         subset_ids = [obj.getId()
                        for obj in self.context.listFolderContents()]
@@ -421,7 +413,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
 
     def handle_top(self, action, data):
         """Move the selected objects to the top of the page"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         subset_ids = [obj.getId()
                        for obj in self.context.listFolderContents()]
         try:
@@ -439,7 +431,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
 
     def handle_bottom(self, action, data):
         """Move the selected objects to the bottom of the page"""
-        ids = self._get_ids(data)
+        ids = self._get_ids()
         subset_ids = [obj.getId()
                        for obj in self.context.listFolderContents()]
         try:

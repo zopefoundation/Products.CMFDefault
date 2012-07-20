@@ -81,8 +81,7 @@ class FolderContentsViewTests(unittest.TestCase):
     def test_list_batch_items(self):
         view = ContentsView(self.folder, TestRequest())
         view._getNavigationVars = lambda: {}
-        view.content_fields()
-        self.assertEqual(view.listBatchItems, [])
+        self.assertEqual(view.listBatchItems(), ())
 
     def test_is_orderable(self):
         view = ContentsView(self.folder, TestRequest())
@@ -116,16 +115,10 @@ class FolderContentsViewTests(unittest.TestCase):
                           view.validate_items, "", {'foo': 'bar'})
 
     def test_get_ids(self):
-        view = ContentsView(self.folder, TestRequest())
-        self.assertEqual(view._get_ids({'foo': 'bar'}),
-                         [])
-        self.assertEqual(view._get_ids({'DummyItem1.select': True,
-                                        'DummyItem2.select': False,
-                                        'DummyItem3.select': True}),
-                         ['DummyItem1', 'DummyItem3'])
-        self.assertEqual(view._get_ids({'delta': True,
-                                        'delta': 1}),
-                         [])
+        request = TestRequest(form={'form.select_ids': ['DummyItem1',
+                                                        'DummyItem3']})
+        view = ContentsView(self.folder, request)
+        self.assertEqual(view._get_ids(), ['DummyItem1', 'DummyItem3'])
 
 
 class FolderViewTests(unittest.TestCase):

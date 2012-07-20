@@ -111,39 +111,25 @@ class MembershipViewTests(unittest.TestCase):
         self._make_one("Bob")
         view = Manage(self.site, TestRequest())
         view._getNavigationVars = lambda: {}
-        view.member_fields()
-        members = view.listBatchItems
+        members = view.listBatchItems()
         self.assertTrue(isinstance(members[0], MemberProxy))
-        self.assertEqual(members[0].name, 'FULL NAME (Bob)')
+        self.assertEqual(members[0].name, 'Bob')
+        self.assertEqual(members[0].fullname, 'FULL NAME')
         self.assertEqual(members[0].home, "HOME_URL/Bob")
 
     def test_get_ids(self):
-        view = Manage(self.site, TestRequest())
-        self.assertEqual(view._get_ids({'foo': 'bar'}),
-                         [])
-        self.assertEqual(sorted(view._get_ids({'DummyUser1.select': True,
-                                               'DummyUser2.select': False,
-                                               'DummyUser3.select': True})),
-                         ['DummyUser1', 'DummyUser3'])
-        self.assertEqual(view._get_ids({'stupid.name.select.select': True}),
-                         ['stupid.name.select'])
-
-    def test_handle_select_for_deletion(self):
-        self._make_one("Alice")
-        view = Manage(self.site, TestRequest())
-        self.assertEqual(view.guillotine, None)
-        # Catch exception raised when template tries to render
-        self.assertRaises(AttributeError,
-                view.handle_select_for_deletion, None, {"Alice.select": True})
-        self.assertEqual(view.guillotine, "FULL NAME (Alice)")
+        request = TestRequest(form={'form.select_ids': ['DummyUser1',
+                                                        'DummyUser3']})
+        view = Manage(self.site, request)
+        self.assertEqual(view._get_ids(), ['DummyUser1', 'DummyUser3'])
 
     def test_handle_delete(self):
         self._make_one("Bob")
-        view = Manage(self.site, TestRequest())
+        request = TestRequest(form={'form.select_ids': ['Bob']})
+        view = Manage(self.site, request)
         self.assertFalse(self.mtool.listMembers() == [])
         # Catch exception raised when trying to redirect
-        self.assertRaises(TypeError,
-                          view.handle_delete, None, {"Bob.select": True})
+        self.assertRaises(TypeError, view.handle_delete, None, {})
         self.assertTrue(self.mtool.listMembers() == [])
 
 

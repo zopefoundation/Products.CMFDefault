@@ -87,7 +87,7 @@ Verify initially visible buttons:
 
 Copy the 'Members' subfolder:
 
-    >>> browser.getControl(name='form.Members.select').value = True
+    >>> browser.getControl(name='form.select_ids').value = ('Members',)
     >>> browser.getControl('[[cmf_default][Copy]]').click()
     >>> '[[cmf_default][Item copied.]]' in browser.contents
     True

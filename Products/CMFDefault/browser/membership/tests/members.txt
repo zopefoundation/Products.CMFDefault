@@ -40,19 +40,19 @@ Click delete with no member selected
     True
 
 Click delete with member selected
-    >>> browser.getControl(name="form.Bob.select").value = True
+    >>> browser.getControl(name="form.select_ids").value = ('Bob',)
     >>> browser.getControl(name="form.actions.select").click()
     >>> "[[cmf_default][The following members - including all their data, home folders and roles - are selected for deletion" in browser.contents
     True
 
 Cancel deletion
     >>> browser.getControl(name="form.actions.cancel").click()
-    >>> "[[cmf_default][Deletion broken off.]" in browser.contents
+    >>> "[[cmf_default][Manage Members]" in browser.contents
     True
 
 Delete selected member
     >>> browser.open("http://localhost/site/@@members.html")
-    >>> browser.getControl(name="form.Bob.select").value = True
+    >>> browser.getControl(name="form.select_ids").value = ('Bob',)
     >>> browser.getControl(name="form.actions.select").click()
     >>> browser.getControl(name="form.actions.delete").click()
     >>> "[[cmf_default][Selected members deleted.]" in browser.contents
