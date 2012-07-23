@@ -2,16 +2,18 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-  <include package=".skins" />
+  <include package=".admin"/>
 
-  <include package=".widgets" />
+  <include package=".content"/>
 
-  <include package=".content" />
+  <include package=".membership"/>
 
-  <include package=".membership" />
+  <include package=".search"/>
 
-  <include package=".admin" />
+  <include package=".skins"/>
 
-  <include package=".search" />
+  <include package=".widgets"/>
+
+  <include package=".workflow"/>
 
 </configure>
