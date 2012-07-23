@@ -1,10 +1,10 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/transition_form/macros/master">
+      metal:use-macro="context/transition_form/macros/master">
 <body>
 <div metal:fill-slot="main" i18n:domain="cmf_default">
 
-<h1 i18n:translate="">Reject <span tal:replace="here/getId"
+<h1 i18n:translate="">Reject <span tal:replace="context/getId"
                                    i18n:name="objectid">Item</span></h1>
 
 <p i18n:translate="">Use this form to reject the publication of a content item
