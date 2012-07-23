@@ -434,4 +434,20 @@ td.NewsTitle {
                    font-size: 80%; font-weight: bold; color: red; }
 .clear           { clear: both; padding-top: 6px; }
 .buttons         { min-width: 604px; margin: 0 0 0 116px; }
+.buttons div     { display: inline; }
 .button          { margin-bottom: 6px; }
+.form table      { width: 720px; table-layout: fixed; }
+.form th,
+.form td         { overflow: hidden; text-overflow: ellipsis; }
+.form th:last-child,
+.form td:last-child { text-align: right; }
+.contents_type_col { width: 4em; }
+.contents_name_col { width: 98%; }
+.contents_modified_col { width: 12em; }
+.contents_position_col { width: 6em; }
+.members_select_col { width: 2em; }
+.members_name_col { width: 49%; }
+.members_address_col { width: 49%; }
+.members_login_col { width: 8em; }
+.pagination      { width: 720px; height: 1em; margin: 0; padding: 8px 0;
+                   text-align: right; }

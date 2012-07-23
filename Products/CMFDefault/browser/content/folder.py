@@ -50,14 +50,18 @@ def contents_delta_vocabulary(context):
 
 
 class ContentProxy(object):
+
     """Utility wrapping content item for display purposes"""
 
     def __init__(self, context):
         self.name = context.getId()
         self.title = context.Title() or context.getId()
         self.type = context.Type() or None
-        self.icon = context.icon
-        self.url = context.absolute_url()
+        self.icon = context.getIconURL()
+        self.url = context.getActionInfo(('object/folderContents',
+                                          'object/edit',
+                                          'object/download',
+                                          'object/view'))['url']
         self.ModificationDate = context.ModificationDate()
 
 
@@ -216,13 +220,17 @@ class ContentsView(BatchFormMixin, EditFormBase):
         key, reverse = self._get_sorting()
         columns = ({'sort_key': 'Type',
                     'title': _(u'Type'),
+                    'class': 'contents_type_col',
                     'colspan': '2'},
                    {'sort_key': 'getId',
-                    'title': _(u'Name')},
+                    'title': _(u'Name'),
+                    'class': 'contents_name_col'},
                    {'sort_key': 'modified',
-                    'title': _(u'Last Modified')},
+                    'title': _(u'Last Modified'),
+                    'class': 'contents_modified_col'},
                    {'sort_key': 'position',
-                    'title': _(u'Position')})
+                    'title': _(u'Position'),
+                    'class': 'contents_position_col'})
         for column in columns:
             paras = {'form.sort_key': column['sort_key']}
             if key == column['sort_key'] \
