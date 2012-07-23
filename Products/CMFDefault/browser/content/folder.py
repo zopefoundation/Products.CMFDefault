@@ -329,7 +329,9 @@ class ContentsView(BatchFormMixin, EditFormBase):
                 self.status = _(u'Items cut.')
         except CopyError:
             self.status = _(u'CopyError: Cut failed.')
+            return self.handle_failure(action, data, ())
         except zExceptions_Unauthorized:
+            return self.handle_failure(action, data, ())
             self.status = _(u'Unauthorized: Cut failed.')
         return self._setRedirect('portal_types', 'object/folderContents')
 
@@ -344,6 +346,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
                 self.status = _(u'Items copied.')
         except CopyError:
             self.status = _(u'CopyError: Copy failed.')
+            return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_paste(self, action, data):
@@ -358,9 +361,13 @@ class ContentsView(BatchFormMixin, EditFormBase):
             self.status = _(u'CopyError: Paste failed.')
             self.request['RESPONSE'].expireCookie('__cp',
                     path='%s' % (self.request['BASEPATH1'] or "/"))
-
+            return self.handle_failure(action, data, ())
+        except ValueError:
+            self.status = _(u'ValueError: Paste failed.')
+            return self.handle_failure(action, data, ())
         except zExceptions_Unauthorized:
             self.status = _(u'Unauthorized: Paste failed.')
+            return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_delete(self, action, data):
@@ -390,6 +397,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
+            return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_down(self, action, data):
@@ -409,6 +417,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
+            return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_top(self, action, data):
@@ -427,6 +436,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
+            return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_bottom(self, action, data):
@@ -445,6 +455,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
                 self.status = _(u'Nothing to change.')
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
+            return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
     def handle_sort_order(self, action, data):
