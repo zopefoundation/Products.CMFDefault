@@ -9,7 +9,7 @@
      tal:content="structure error">Error Message</li>
 </ul>
 
-<h1 i18n:translate="">Hide <span tal:replace="here/getId"
+<h1 i18n:translate="">Hide <span tal:replace="context/getId"
                                   i18n:name="objectid">Item</span></h1>
 
 <p i18n:translate="">Use this form to hide a content item by setting its

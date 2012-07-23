@@ -9,7 +9,7 @@
      tal:content="structure error">Error Message</li>
 </ul>
 
-<h1 i18n:translate="">Publish <span tal:replace="here/getId"
+<h1 i18n:translate="">Publish <span tal:replace="context/getId"
                                     i18n:name="objectid">Item</span></h1>
 
 <p i18n:translate="">A <b>published</b> item is available to the general
