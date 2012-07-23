@@ -24,25 +24,25 @@ All sort options apart from position are reversible.
     >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=Type')
     >>> 'name="form.sort_key" type="hidden" value="Type"' in browser.contents
     True
-    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=Type&amp;form.reverse=1">' \
+    >>> 'href="http://localhost/site/@@edit.html?form.sort_key=Type&amp;form.reverse=1">' \
     ... in browser.contents
     True
     >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=getId')
     >>> 'name="form.sort_key" type="hidden" value="getId"' in browser.contents
     True
-    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=getId&amp;form.reverse=1">' \
+    >>> 'href="http://localhost/site/@@edit.html?form.sort_key=getId&amp;form.reverse=1">' \
     ... in browser.contents
     True
     >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=modified')
     >>> 'name="form.sort_key" type="hidden" value="modified"' in browser.contents
     True
-    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=modified&amp;form.reverse=1">' \
+    >>> 'href="http://localhost/site/@@edit.html?form.sort_key=modified&amp;form.reverse=1">' \
     ... in browser.contents
     True
     >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=position')
     >>> 'name="form.sort_key" type="hidden" value="position"' in browser.contents
     True
-    >>> '<a href="http://localhost/site/@@edit.html?form.sort_key=position&amp;form.reverse=1">' \
+    >>> 'href="http://localhost/site/@@edit.html?form.sort_key=position&amp;form.reverse=1">' \
     ... in browser.contents
     False
 
