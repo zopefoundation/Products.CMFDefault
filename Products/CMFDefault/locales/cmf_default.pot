@@ -26,33 +26,82 @@ msgstr ""
 
 #: Products/CMFCore/RegistrationTool.py:144
 #: Products/CMFDefault/RegistrationTool.py:94
-#: Products/CMFDefault/browser/membership/join.py:141
+#: Products/CMFDefault/browser/membership/join.py:142
 msgid "The login name you selected is already in use or is not valid. Please choose another."
 msgstr ""
 
-#: Products/CMFCore/WorkflowTool.py:235
-#: Products/CMFCore/WorkflowTool.py:261
+#: Products/CMFCore/WorkflowTool.py:233
+#: Products/CMFCore/WorkflowTool.py:259
 msgid "No workflows found."
 msgstr ""
 
-#: Products/CMFCore/WorkflowTool.py:242
-#. Default: ""
+#: Products/CMFCore/WorkflowTool.py:240
 msgid "No workflow provides the '${action_id}' action."
 msgstr ""
 
-#: Products/CMFCore/WorkflowTool.py:249
-#: Products/CMFCore/WorkflowTool.py:281
+#: Products/CMFCore/WorkflowTool.py:247
+#: Products/CMFCore/WorkflowTool.py:279
 msgid "Requested workflow definition not found."
 msgstr ""
 
-#: Products/CMFCore/WorkflowTool.py:271
-#. Default: ""
+#: Products/CMFCore/WorkflowTool.py:269
 msgid "No workflow provides '${name}' information."
 msgstr ""
 
-#: Products/CMFCore/WorkflowTool.py:286
-#. Default: ""
+#: Products/CMFCore/WorkflowTool.py:284
 msgid "Could not get info: ${name}"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:46
+msgid "Import actions tool's action providers and their actions."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:46
+#: Products/CMFCore/exportimport/configure.zcml:54
+msgid "Action Providers"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:54
+msgid "Export actions tool's action providers and their actions."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:61
+msgid "Import caching policy manager's policies."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:61
+#: Products/CMFCore/exportimport/configure.zcml:69
+msgid "Caching Policies"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:69
+msgid "Export caching policy manager's policies."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:76
+msgid "Import catalog tool's sub-objects, indexes and columns."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:76
+#: Products/CMFCore/exportimport/configure.zcml:84
+msgid "Catalog Tool"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:84
+msgid "Export catalog tool's sub-objects, indexes and columns."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:91
+msgid "Import content type registry's predicates and bindings."
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:91
+#: Products/CMFCore/exportimport/configure.zcml:99
+msgid "Content Type Registry"
+msgstr ""
+
+#: Products/CMFCore/exportimport/configure.zcml:99
+msgid "Export content type registry's predicates / bindings."
 msgstr ""
 
 #: Products/CMFCore/exportimport/configure.zcml:106
@@ -146,60 +195,20 @@ msgstr ""
 msgid "Export workflow tool's workflow definitions and supporting scripts."
 msgstr ""
 
-#: Products/CMFCore/exportimport/configure.zcml:46
-msgid "Import actions tool's action providers and their actions."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:46
-#: Products/CMFCore/exportimport/configure.zcml:54
-msgid "Action Providers"
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:54
-msgid "Export actions tool's action providers and their actions."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:61
-msgid "Import caching policy manager's policies."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:61
-#: Products/CMFCore/exportimport/configure.zcml:69
-msgid "Caching Policies"
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:69
-msgid "Export caching policy manager's policies."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:76
-msgid "Import catalog tool's sub-objects, indexes and columns."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:76
-#: Products/CMFCore/exportimport/configure.zcml:84
-msgid "Catalog Tool"
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:84
-msgid "Export catalog tool's sub-objects, indexes and columns."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:91
-msgid "Import content type registry's predicates and bindings."
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:91
-#: Products/CMFCore/exportimport/configure.zcml:99
-msgid "Content Type Registry"
-msgstr ""
-
-#: Products/CMFCore/exportimport/configure.zcml:99
-msgid "Export content type registry's predicates / bindings."
+#: Products/CMFCore/permissions.zcml:7
+msgid "Access future portal content"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
-msgid "List undoable changes"
+msgid "Access inactive portal content"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
+msgid "Add portal content"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
+msgid "Add portal folders"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
@@ -207,7 +216,27 @@ msgid "Add portal member"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
+msgid "List folder contents"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
+msgid "List portal members"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
+msgid "List undoable changes"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
 msgid "Mail forgotten password"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
+msgid "Manage portal"
+msgstr ""
+
+#: Products/CMFCore/permissions.zcml:7
+msgid "Manage properties"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
@@ -219,39 +248,7 @@ msgid "Request review"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
-msgid "Set own properties"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "Add portal content"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "Manage properties"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "List portal members"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "Access future portal content"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
 msgid "Review portal content"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "List folder contents"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "Add portal folders"
-msgstr ""
-
-#: Products/CMFCore/permissions.zcml:7
-msgid "Manage portal"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
@@ -259,26 +256,14 @@ msgid "Set own password"
 msgstr ""
 
 #: Products/CMFCore/permissions.zcml:7
-msgid "Access inactive portal content"
+msgid "Set own properties"
 msgstr ""
 
 #: Products/CMFDefault/Document.py:149
 msgid "Intervening changes from elsewhere detected. Please refetch the document and reapply your changes. (You may be able to recover your version using the browser 'back' button, but will have to apply them to a freshly fetched copy.)"
 msgstr ""
 
-#: Products/CMFDefault/RegistrationTool.py:104
-#: Products/CMFDefault/RegistrationTool.py:113
-#: Products/CMFDefault/RegistrationTool.py:119
-msgid "You must enter a valid email address."
-msgstr ""
-
-#: Products/CMFDefault/RegistrationTool.py:133
-#: Products/CMFDefault/RegistrationTool.py:171
-msgid "The username you entered could not be found."
-msgstr ""
-
 #: Products/CMFDefault/RegistrationTool.py:49
-#. Default: ""
 msgid "No email address is registered for member: ${member_id}"
 msgstr ""
 
@@ -291,7 +276,7 @@ msgid "Your password must contain at least 5 characters."
 msgstr ""
 
 #: Products/CMFDefault/RegistrationTool.py:74
-#: Products/CMFDefault/browser/membership/join.py:64
+#: Products/CMFDefault/browser/membership/join.py:67
 #: Products/CMFDefault/browser/membership/password.py:52
 msgid "Your password and confirmation did not match. Please try again."
 msgstr ""
@@ -302,6 +287,17 @@ msgstr ""
 
 #: Products/CMFDefault/RegistrationTool.py:99
 msgid "You must enter an email address."
+msgstr ""
+
+#: Products/CMFDefault/RegistrationTool.py:104
+#: Products/CMFDefault/RegistrationTool.py:113
+#: Products/CMFDefault/RegistrationTool.py:119
+msgid "You must enter a valid email address."
+msgstr ""
+
+#: Products/CMFDefault/RegistrationTool.py:133
+#: Products/CMFDefault/RegistrationTool.py:171
+msgid "The username you entered could not be found."
 msgstr ""
 
 #: Products/CMFDefault/SyndicationInfo.py:50
@@ -354,9 +350,9 @@ msgstr ""
 
 #: Products/CMFDefault/browser/admin/config.py:37
 #: Products/CMFDefault/browser/admin/syndication.py:44
-#: Products/CMFDefault/browser/admin/syndication.py:105
+#: Products/CMFDefault/browser/admin/syndication.py:104
 #: Products/CMFDefault/browser/content/metadata.py:222
-#: Products/CMFDefault/formlib/form.py:109
+#: Products/CMFDefault/formlib/form.py:110
 #: Products/CMFDefault/formlib/form.py:275
 #: Products/CMFDefault/skins/zpt_content/document_edit_form.py:34
 #: Products/CMFDefault/skins/zpt_content/file_edit_form.py:25
@@ -366,8 +362,8 @@ msgstr ""
 #: Products/CMFDefault/skins/zpt_content/metadata_edit_form.py:49
 #: Products/CMFDefault/skins/zpt_content/newsitem_edit_form.py:28
 #: Products/CMFDefault/skins/zpt_generic/password_form.py:36
-#: Products/CMFDefault/skins/zpt_generic/reconfig_form.py:22
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:80
+#: Products/CMFDefault/skins/zpt_generic/reconfig_form.py:22
 #: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:96
 #: Products/CMFTopic/skins/zpt_topic/topic_edit_form.py:26
 msgid "Change"
@@ -376,16 +372,6 @@ msgstr ""
 #: Products/CMFDefault/browser/admin/config.py:63
 #: Products/CMFDefault/skins/zpt_control/portal_config_control.py:13
 msgid "Portal settings changed."
-msgstr ""
-
-#: Products/CMFDefault/browser/admin/interfaces.py:104
-#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:121
-msgid "Permalinks"
-msgstr ""
-
-#: Products/CMFDefault/browser/admin/interfaces.py:105
-#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:127
-msgid "If permalinks are enabled then a unique identifier is assigned to every item of content independent of it's id or position in a site. This requires the CMFUid tool to be installed."
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/interfaces.py:28
@@ -482,16 +468,18 @@ msgstr ""
 msgid "Actions available to the user are shown as textual links. With this option enabled, they are also shown as icons if the action definition specifies one."
 msgstr ""
 
+#: Products/CMFDefault/browser/admin/interfaces.py:104
+#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:121
+msgid "Permalinks"
+msgstr ""
+
+#: Products/CMFDefault/browser/admin/interfaces.py:105
+#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:127
+msgid "If permalinks are enabled then a unique identifier is assigned to every item of content independent of it's id or position in a site. This requires the CMFUid tool to be installed."
+msgstr ""
+
 #: Products/CMFDefault/browser/admin/syndication.pt:9
 msgid "Portal syndication is currently disabled"
-msgstr ""
-
-#: Products/CMFDefault/browser/admin/syndication.py:111
-msgid "Revert to Site Default"
-msgstr ""
-
-#: Products/CMFDefault/browser/admin/syndication.py:157
-msgid "Syndication reset to site default."
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:33
@@ -499,38 +487,42 @@ msgid "Configure Portal Syndication"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:38
-#: Products/CMFDefault/browser/admin/syndication.py:99
+#: Products/CMFDefault/browser/admin/syndication.py:98
 #: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:123
 msgid "Enable Syndication"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:50
-#: Products/CMFDefault/browser/admin/syndication.py:117
+#: Products/CMFDefault/browser/admin/syndication.py:116
 #: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:114
 msgid "Disable Syndication"
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:72
-#: Products/CMFDefault/browser/admin/syndication.py:142
+#: Products/CMFDefault/browser/admin/syndication.py:141
 msgid "Syndication enabled."
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:77
-#: Products/CMFDefault/browser/admin/syndication.py:152
+#: Products/CMFDefault/browser/admin/syndication.py:151
 msgid "Syndication settings changed."
 msgstr ""
 
 #: Products/CMFDefault/browser/admin/syndication.py:82
-#: Products/CMFDefault/browser/admin/syndication.py:147
+#: Products/CMFDefault/browser/admin/syndication.py:146
 msgid "Syndication disabled."
 msgstr ""
 
-#: Products/CMFDefault/browser/admin/syndication.py:94
+#: Products/CMFDefault/browser/admin/syndication.py:93
 msgid "Configure Folder Syndication"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/document.py:147
-msgid "Intervening changes from elsewhere detected. Please refetch the document and reapply your changes."
+#: Products/CMFDefault/browser/admin/syndication.py:110
+msgid "Revert to Site Default"
+msgstr ""
+
+#: Products/CMFDefault/browser/admin/syndication.py:156
+msgid "Syndication reset to site default."
 msgstr ""
 
 #: Products/CMFDefault/browser/content/document.py:39
@@ -557,7 +549,7 @@ msgstr ""
 
 #: Products/CMFDefault/browser/content/document.py:61
 #: Products/CMFDefault/browser/content/favorite.py:42
-#: Products/CMFDefault/browser/content/file.py:39
+#: Products/CMFDefault/browser/content/file.py:42
 #: Products/CMFDefault/browser/content/link.py:42
 #: Products/CMFDefault/browser/content/metadata.py:53
 #: Products/CMFDefault/browser/content/metadata.py:78
@@ -581,7 +573,7 @@ msgstr ""
 
 #: Products/CMFDefault/browser/content/document.py:65
 #: Products/CMFDefault/browser/content/favorite.py:53
-#: Products/CMFDefault/browser/content/file.py:50
+#: Products/CMFDefault/browser/content/file.py:53
 #: Products/CMFDefault/browser/content/link.py:53
 #: Products/CMFDefault/browser/content/metadata.py:58
 #: Products/CMFDefault/browser/content/metadata.py:83
@@ -608,8 +600,8 @@ msgid "Format"
 msgstr ""
 
 #: Products/CMFDefault/browser/content/document.py:73
-#: Products/CMFDefault/browser/content/file.py:59
-#: Products/CMFDefault/browser/content/file.py:93
+#: Products/CMFDefault/browser/content/file.py:62
+#: Products/CMFDefault/browser/content/file.py:124
 #: Products/CMFDefault/skins/zpt_content/document_edit_template.pt:43
 msgid "Upload"
 msgstr ""
@@ -620,14 +612,12 @@ msgstr ""
 msgid "Body"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/favorite.py:117
-#: Products/CMFDefault/browser/content/link.py:121
-#: Products/CMFDefault/formlib/form.py:251
-msgid "ID"
+#: Products/CMFDefault/browser/content/document.py:147
+msgid "Intervening changes from elsewhere detected. Please refetch the document and reapply your changes."
 msgstr ""
 
 #: Products/CMFDefault/browser/content/favorite.py:47
-#: Products/CMFDefault/browser/content/file.py:44
+#: Products/CMFDefault/browser/content/file.py:47
 #: Products/CMFDefault/browser/content/link.py:47
 #: Products/CMFDefault/browser/content/metadata.py:123
 #: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:97
@@ -645,219 +635,213 @@ msgstr ""
 msgid "URL relative to the site root."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/file.py:55
+#: Products/CMFDefault/browser/content/favorite.py:117
+#: Products/CMFDefault/browser/content/link.py:121
+#: Products/CMFDefault/formlib/form.py:251
+msgid "ID"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/file.pt:5
+#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:21
+msgid "File Properties"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/file.pt:9
+#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:25
+msgid "Filename"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/file.pt:13
+#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:29
+msgid "Size"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/file.pt:17
+#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:33
+msgid "Content-type"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/file.pt:22
+#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:38
+msgid "Download File"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/file.py:58
 #: Products/CMFDefault/skins/zpt_content/file_edit_template.pt:23
 #: Products/CMFDefault/skins/zpt_content/image_edit_template.pt:23
 msgid "Content type"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:156
-msgid "Previous item"
+#: Products/CMFDefault/browser/content/folder.py:79
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:167
+msgid "Rename..."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:158
-#. Default: ""
-msgid "Previous ${count} items"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:170
-msgid "Next item"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:172
-#. Default: ""
-msgid "Next ${count} items"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:214
-#: Products/CMFDefault/skins/zpt_generic/search.py:47
-msgid "item"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:214
-#: Products/CMFDefault/skins/zpt_generic/search.py:47
-msgid "items"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:244
-#: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:41
-msgid "Rename"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:251
+#: Products/CMFDefault/browser/content/folder.py:86
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:169
 msgid "Cut"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:258
+#: Products/CMFDefault/browser/content/folder.py:93
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:170
 msgid "Copy"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:265
+#: Products/CMFDefault/browser/content/folder.py:100
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:172
 msgid "Paste"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:270
-#: Products/CMFDefault/browser/membership/members.py:105
+#: Products/CMFDefault/browser/content/folder.py:106
+#: Products/CMFDefault/browser/membership/members.py:100
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:174
-#: Products/CMFDefault/skins/zpt_generic/members_delete_form.py:33
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:196
+#: Products/CMFDefault/skins/zpt_generic/members_delete_form.py:33
 msgid "Delete"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:280
+#: Products/CMFDefault/browser/content/folder.py:116
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:67
 msgid "Up"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:287
+#: Products/CMFDefault/browser/content/folder.py:123
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:70
 msgid "Down"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:297
+#: Products/CMFDefault/browser/content/folder.py:133
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:80
 msgid "Top"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:304
+#: Products/CMFDefault/browser/content/folder.py:140
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:82
 msgid "Bottom"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:314
+#: Products/CMFDefault/browser/content/folder.py:150
 msgid "Set as Default Sort"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:397
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:110
+#: Products/CMFDefault/browser/content/folder.py:163
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:5
+msgid "Folder Contents: ${obj_title}"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/folder.py:225
 #: Products/CMFDefault/browser/search/results.pt:14
+#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:110
 #: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:110
 #: Products/CMFDefault/skins/zpt_generic/review.pt:25
 #: Products/CMFDefault/skins/zpt_generic/search_results_template.pt:16
 msgid "Type"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:400
+#: Products/CMFDefault/browser/content/folder.py:229
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:114
 msgid "Name"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:402
+#: Products/CMFDefault/browser/content/folder.py:232
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:118
 msgid "Last Modified"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:404
+#: Products/CMFDefault/browser/content/folder.py:235
 #: Products/CMFDefault/skins/zpt_generic/folder_contents.py:122
 msgid "Position"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:459
-#: Products/CMFDefault/browser/membership/members.py:157
+#: Products/CMFDefault/browser/content/folder.py:319
 #: Products/CMFDefault/skins/zpt_control/validateItemIds.py:8
 msgid "Please select one or more items first."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:479
+#: Products/CMFDefault/browser/content/folder.py:338
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:11
 msgid "Item cut."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:481
+#: Products/CMFDefault/browser/content/folder.py:340
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:13
 msgid "Items cut."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:483
+#: Products/CMFDefault/browser/content/folder.py:342
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:15
 msgid "CopyError: Cut failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:485
+#: Products/CMFDefault/browser/content/folder.py:346
 #: Products/CMFDefault/skins/zpt_control/folder_cut_control.py:17
 msgid "Unauthorized: Cut failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:494
+#: Products/CMFDefault/browser/content/folder.py:355
 #: Products/CMFDefault/skins/zpt_control/folder_copy_control.py:10
 msgid "Item copied."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:496
+#: Products/CMFDefault/browser/content/folder.py:357
 #: Products/CMFDefault/skins/zpt_control/folder_copy_control.py:12
 msgid "Items copied."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:498
+#: Products/CMFDefault/browser/content/folder.py:359
 #: Products/CMFDefault/skins/zpt_control/folder_copy_control.py:14
 msgid "CopyError: Copy failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:506
+#: Products/CMFDefault/browser/content/folder.py:368
 #: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:11
 msgid "Item pasted."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:508
+#: Products/CMFDefault/browser/content/folder.py:370
 #: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:13
 msgid "Items pasted."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:510
-#: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:15
+#: Products/CMFDefault/browser/content/folder.py:374
+#: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:17
 msgid "CopyError: Paste failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:515
-#: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:17
+#: Products/CMFDefault/browser/content/folder.py:376
+#: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:19
+msgid "ValueError: Paste failed."
+msgstr ""
+
+#: Products/CMFDefault/browser/content/folder.py:379
+#: Products/CMFDefault/skins/zpt_control/folder_paste_control.py:21
 msgid "Unauthorized: Paste failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:523
+#: Products/CMFDefault/browser/content/folder.py:388
 #: Products/CMFDefault/skins/zpt_control/folder_delete_control.py:9
 msgid "Item deleted."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:525
+#: Products/CMFDefault/browser/content/folder.py:390
 #: Products/CMFDefault/skins/zpt_control/folder_delete_control.py:11
 msgid "Items deleted."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:538
+#: Products/CMFDefault/browser/content/folder.py:403
 #: Products/CMFDefault/skins/zpt_control/folder_up_control.py:9
 msgid "Item moved up."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:540
+#: Products/CMFDefault/browser/content/folder.py:405
 #: Products/CMFDefault/skins/zpt_control/folder_up_control.py:11
 msgid "Items moved up."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:542
-#: Products/CMFDefault/browser/content/folder.py:561
-#: Products/CMFDefault/browser/content/folder.py:579
-#: Products/CMFDefault/browser/content/folder.py:597
-#: Products/CMFDefault/formlib/form.py:120
-#: Products/CMFDefault/skins/zpt_content/document_edit_control.py:14
-#: Products/CMFDefault/skins/zpt_content/folder_edit_control.py:11
-#: Products/CMFDefault/skins/zpt_content/link_edit_control.py:13
-#: Products/CMFDefault/skins/zpt_content/newsitem_edit_control.py:15
-#: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:13
-#: Products/CMFDefault/skins/zpt_control/folder_down_control.py:13
-#: Products/CMFDefault/skins/zpt_control/folder_rename_control.py:17
-#: Products/CMFDefault/skins/zpt_control/folder_top_control.py:13
-#: Products/CMFDefault/skins/zpt_control/folder_up_control.py:13
-#: Products/CMFTopic/skins/zpt_topic/topic_edit_control.py:11
-msgid "Nothing to change."
-msgstr ""
-
-#: Products/CMFDefault/browser/content/folder.py:544
-#: Products/CMFDefault/browser/content/folder.py:563
-#: Products/CMFDefault/browser/content/folder.py:581
-#: Products/CMFDefault/browser/content/folder.py:599
+#: Products/CMFDefault/browser/content/folder.py:409
+#: Products/CMFDefault/browser/content/folder.py:429
+#: Products/CMFDefault/browser/content/folder.py:448
+#: Products/CMFDefault/browser/content/folder.py:467
 #: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:15
 #: Products/CMFDefault/skins/zpt_control/folder_down_control.py:15
 #: Products/CMFDefault/skins/zpt_control/folder_top_control.py:15
@@ -865,63 +849,162 @@ msgstr ""
 msgid "ValueError: Move failed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:557
+#: Products/CMFDefault/browser/content/folder.py:423
 #: Products/CMFDefault/skins/zpt_control/folder_down_control.py:9
 msgid "Item moved down."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:559
+#: Products/CMFDefault/browser/content/folder.py:425
 #: Products/CMFDefault/skins/zpt_control/folder_down_control.py:11
 msgid "Items moved down."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:575
+#: Products/CMFDefault/browser/content/folder.py:442
 #: Products/CMFDefault/skins/zpt_control/folder_top_control.py:9
 msgid "Item moved to top."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:577
+#: Products/CMFDefault/browser/content/folder.py:444
 #: Products/CMFDefault/skins/zpt_control/folder_top_control.py:11
 msgid "Items moved to top."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:593
+#: Products/CMFDefault/browser/content/folder.py:461
 #: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:9
 msgid "Item moved to bottom."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:595
+#: Products/CMFDefault/browser/content/folder.py:463
 #: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:11
 msgid "Items moved to bottom."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder.py:607
-msgid "Sort order changed"
+#: Products/CMFDefault/browser/content/folder.py:474
+#: Products/CMFDefault/skins/zpt_control/folder_sort_control.py:7
+msgid "Default sort order changed."
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder_contents.pt:11
+#: Products/CMFDefault/browser/content/folder_contents.pt:12
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:15
 msgid "[Link]"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder_contents.pt:13
+#: Products/CMFDefault/browser/content/folder_contents.pt:14
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:17
 msgid "Up to"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder_contents.pt:17
+#: Products/CMFDefault/browser/content/folder_contents.pt:18
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:21
 msgid "Root"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/folder_contents.pt:5
-#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:5
-msgid "Folder Contents: ${obj_title}"
+#: Products/CMFDefault/browser/content/folder_contents.pt:44
+#: Products/CMFDefault/browser/search/results.pt:33
+#: Products/CMFDefault/browser/widgets/batch_widgets.pt:7
+#: Products/CMFDefault/browser/widgets/batch_widgets.pt:19
+#: Products/CMFDefault/browser/widgets/batch_widgets.pt:19
+#: Products/CMFDefault/browser/widgets/batch_widgets.pt:30
+#: Products/CMFDefault/browser/widgets/form_widgets.pt:13
+#: Products/CMFDefault/browser/workflow/history.pt:22
+#: Products/CMFDefault/browser/workflow/history.pt:29
+#: Products/CMFDefault/skins/absolut/main_template.pt:60
+#: Products/CMFDefault/skins/absolut/main_template.pt:91
+#: Products/CMFDefault/skins/absolut/main_template.pt:106
+#: Products/CMFDefault/skins/absolut/main_template.pt:118
+#: Products/CMFDefault/skins/absolut/main_template.pt:129
+#: Products/CMFDefault/skins/absolut/main_template.pt:140
+#: Products/CMFDefault/skins/absolut/main_template.pt:151
+#: Products/CMFDefault/skins/absolut/main_template.pt:171
+#: Products/CMFDefault/skins/ursine/main_template.pt:29
+#: Products/CMFDefault/skins/ursine/main_template.pt:42
+#: Products/CMFDefault/skins/ursine/main_template.pt:59
+#: Products/CMFDefault/skins/ursine/main_template.pt:69
+#: Products/CMFDefault/skins/ursine/main_template.pt:79
+#: Products/CMFDefault/skins/ursine/main_template.pt:89
+#: Products/CMFDefault/skins/ursine/main_template.pt:99
+#: Products/CMFDefault/skins/ursine/main_template.pt:108
+#: Products/CMFDefault/skins/zpt_content/content_status_history.pt:25
+#: Products/CMFDefault/skins/zpt_content/content_status_history.pt:32
+#: Products/CMFDefault/skins/zpt_content/transition_form.pt:26
+#: Products/CMFDefault/skins/zpt_content/transition_form.pt:56
+#: Products/CMFDefault/skins/zpt_generic/batch_widgets.pt:14
+#: Products/CMFDefault/skins/zpt_generic/batch_widgets.pt:34
+#: Products/CMFDefault/skins/zpt_generic/batch_widgets.pt:34
+#: Products/CMFDefault/skins/zpt_generic/batch_widgets.pt:45
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:46
+#: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:21
+#: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:26
+#: Products/CMFDefault/skins/zpt_generic/folder_filter_form.pt:51
+#: Products/CMFDefault/skins/zpt_generic/folder_rename_template.pt:17
+#: Products/CMFDefault/skins/zpt_generic/form_widgets.pt:22
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:32
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:32
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:70
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:70
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:106
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:106
+#: Products/CMFDefault/skins/zpt_generic/join_template.pt:5
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:77
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:119
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:150
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:174
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:201
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:213
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:234
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:260
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:281
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:315
+#: Products/CMFDefault/skins/zpt_generic/review.pt:55
+#: Products/CMFDefault/skins/zpt_generic/roster.pt:43
+#: Products/CMFDefault/skins/zpt_generic/search_results_template.pt:35
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:62
+msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/link.pt:20
+#: Products/CMFDefault/browser/content/interfaces.py:36
+#: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:72
+#. Default: "by"
+msgid "order_delta_label"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/link.pt:6
 #: Products/CMFDefault/skins/zpt_content/link_view_template.pt:22
 msgid "Link: ${link}"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/metadata.py:43
+#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:21
+msgid "Off"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/metadata.py:44
+#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:24
+msgid "On"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/metadata.py:69
+#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:15
+msgid "Enable Discussion?"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/metadata.py:74
+#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:31
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:136
+msgid "Identifier"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/metadata.py:88
+#: Products/CMFDefault/browser/search/interfaces.py:128
+#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:51
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:39
+#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:55
+msgid "Subject"
+msgstr ""
+
+#: Products/CMFDefault/browser/content/metadata.py:94
+#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:65
+msgid "Contributors"
 msgstr ""
 
 #: Products/CMFDefault/browser/content/metadata.py:100
@@ -978,48 +1061,14 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: Products/CMFDefault/browser/content/metadata.py:43
-#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:21
-msgid "Off"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/metadata.py:44
-#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:24
-msgid "On"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/metadata.py:69
-#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:15
-msgid "Enable Discussion?"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/metadata.py:74
-#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:31
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:136
-msgid "Identifier"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/metadata.py:88
-#: Products/CMFDefault/browser/search/interfaces.py:128
-#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:51
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:39
-#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:55
-msgid "Subject"
-msgstr ""
-
-#: Products/CMFDefault/browser/content/metadata.py:94
-#: Products/CMFDefault/skins/zpt_content/metadata_edit_template.pt:65
-msgid "Contributors"
-msgstr ""
-
 #: Products/CMFDefault/browser/content/newsitem.py:47
 #: Products/CMFDefault/skins/zpt_content/newsitem_edit_template.pt:38
 msgid "Lead-in"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:132
-#: Products/CMFDefault/browser/membership/authentication.py:151
-#: Products/CMFDefault/browser/membership/join.py:43
+#: Products/CMFDefault/browser/membership/authentication.py:136
+#: Products/CMFDefault/browser/membership/authentication.py:155
+#: Products/CMFDefault/browser/membership/join.py:46
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:57
 #: Products/CMFDefault/skins/zpt_generic/login_form.pt:22
 #: Products/CMFDefault/skins/zpt_generic/password_form_template.pt:26
@@ -1027,70 +1076,75 @@ msgstr ""
 msgid "Member ID"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:133
 #: Products/CMFDefault/browser/membership/authentication.py:137
+#: Products/CMFDefault/browser/membership/authentication.py:141
 msgid "Case sensitive"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:136
-#: Products/CMFDefault/browser/membership/join.py:49
+#: Products/CMFDefault/browser/membership/authentication.py:140
+#: Products/CMFDefault/browser/membership/join.py:52
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:71
 #: Products/CMFDefault/skins/zpt_generic/login_form.pt:29
 #: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:22
 msgid "Password"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:140
+#: Products/CMFDefault/browser/membership/authentication.py:144
 #: Products/CMFDefault/skins/zpt_generic/login_form.pt:38
 msgid "Remember my ID."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:141
+#: Products/CMFDefault/browser/membership/authentication.py:145
 msgid "Saves your member ID in a cookie."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:152
+#: Products/CMFDefault/browser/membership/authentication.py:156
 msgid "Member ID or email address"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:163
+#: Products/CMFDefault/browser/membership/authentication.py:166
 #: Products/CMFDefault/skins/zpt_generic/join_form.py:53
 #: Products/CMFDefault/skins/zpt_generic/login_form.pt:5
 msgid "Log in"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:171
-#: Products/CMFDefault/skins/zpt_generic/login_form.pt:44
+#: Products/CMFDefault/browser/membership/authentication.py:174
 #: Products/CMFDefault/profiles/default/actions.xml:10
+#: Products/CMFDefault/skins/zpt_generic/login_form.pt:44
 msgid "Login"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:207
+#: Products/CMFDefault/browser/membership/authentication.py:210
 #: Products/CMFDefault/skins/zpt_generic/logged_in.py:24
 msgid "Login failure"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:259
+#: Products/CMFDefault/browser/membership/authentication.py:266
 #: Products/CMFDefault/skins/zpt_generic/mail_password_form.pt:6
 msgid "Don't panic!"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:260
+#: Products/CMFDefault/browser/membership/authentication.py:267
 msgid "Just enter your member ID below, click 'Send', and your password will be mailed to you if you gave a valid email address when you signed on."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:270
+#: Products/CMFDefault/browser/membership/authentication.py:277
 #: Products/CMFDefault/skins/zpt_generic/mail_password_form.pt:22
 msgid "Send"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:296
+#: Products/CMFDefault/browser/membership/authentication.py:303
 msgid "Your password has been mailed to you."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/authentication.py:330
+#: Products/CMFDefault/browser/membership/authentication.py:333
 #: Products/CMFDefault/skins/zpt_generic/logged_out.pt:5
 msgid "You have been logged out."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/forbidden.pt:7
+#: Products/CMFDefault/skins/zpt_generic/standard_error_message.pt:11
+msgid "An error was encountered while publishing this resource."
 msgstr ""
 
 #: Products/CMFDefault/browser/membership/forbidden.pt:10
@@ -1109,83 +1163,53 @@ msgstr ""
 msgid "You don't have all the permissions necessary to see the requested page."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/forbidden.pt:7
-#: Products/CMFDefault/skins/zpt_generic/standard_error_message.pt:11
-msgid "An error was encountered while publishing this resource."
-msgstr ""
-
 #: Products/CMFDefault/browser/membership/join.pt:10
-#: Products/CMFDefault/skins/zpt_generic/join_template.pt:43
-msgid "It does not cost any money to become a member and your email and other personal information will remain private."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/join.pt:15
-msgid "You are already a member. You may use the <a href=\"${DYNAMIC_CONTENT}\">personalization form</a> to change your membership information."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/join.pt:22
-#: Products/CMFDefault/skins/zpt_generic/join_template.pt:19
-msgid "You will receive an email shortly containing your password and instructions on how to activate your membership."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/join.pt:8
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:40
 msgid "Becoming a member gives you the ability to personalize the site and participate in the community."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:120
-#: Products/CMFDefault/skins/zpt_generic/join_form.py:37
-msgid "Register a New Member"
+#: Products/CMFDefault/browser/membership/join.pt:12
+#: Products/CMFDefault/skins/zpt_generic/join_template.pt:43
+msgid "It does not cost any money to become a member and your email and other personal information will remain private."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:122
-#: Products/CMFDefault/skins/zpt_generic/join_form.py:38
-msgid "Become a Member"
+#: Products/CMFDefault/browser/membership/join.pt:17
+msgid "You are already a member. You may use the <a href=\"${DYNAMIC_CONTENT}\">personalization form</a> to change your membership information."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:159
-msgid "Success"
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/join.py:164
-#: Products/CMFDefault/browser/membership/join.pt:20
-#: Products/CMFDefault/skins/zpt_generic/join_template.pt:17
-msgid "You have been registered as a member."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/join.py:46
-#: Products/CMFDefault/browser/membership/members.py:48
-#: Products/CMFDefault/browser/membership/preferences.py:53
-#: Products/CMFDefault/browser/membership/members.pt:24
+#: Products/CMFDefault/browser/membership/join.py:49
+#: Products/CMFDefault/browser/membership/members.pt:20
+#: Products/CMFDefault/browser/membership/members.py:44
+#: Products/CMFDefault/browser/membership/preferences.py:56
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:23
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:64
 #: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:20
 msgid "Email Address"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:53
+#: Products/CMFDefault/browser/membership/join.py:56
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:77
 msgid "Password (confirm)"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:57
+#: Products/CMFDefault/browser/membership/join.py:60
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:83
 msgid "Mail Password?"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:58
+#: Products/CMFDefault/browser/membership/join.py:61
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:87
 msgid "Check this box to have the password mailed."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:77
+#: Products/CMFDefault/browser/membership/join.py:78
 #: Products/CMFDefault/skins/zpt_generic/join_form.py:57
 msgid "Register"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/join.py:83
-#: Products/CMFDefault/browser/membership/members.py:110
-#: Products/CMFDefault/formlib/form.py:114
+#: Products/CMFDefault/browser/membership/join.py:84
+#: Products/CMFDefault/browser/membership/members.py:105
+#: Products/CMFDefault/formlib/form.py:115
 #: Products/CMFDefault/formlib/form.py:169
 #: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:42
 #: Products/CMFDefault/skins/zpt_generic/join_form.py:58
@@ -1194,7 +1218,41 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/logged_in.pt:10
+#: Products/CMFDefault/browser/membership/join.py:121
+#: Products/CMFDefault/skins/zpt_generic/join_form.py:37
+msgid "Register a New Member"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/join.py:123
+#: Products/CMFDefault/skins/zpt_generic/join_form.py:38
+msgid "Become a Member"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/join.py:176
+msgid "Member registered and notified."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/join.py:178
+#: Products/CMFDefault/skins/zpt_control/members_add_control.py:23
+msgid "Member registered."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/join.py:183
+#: Products/CMFDefault/skins/zpt_generic/join_template.pt:19
+msgid "You will receive an email shortly containing your password and instructions on how to activate your membership."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/join.py:187
+#: Products/CMFDefault/skins/zpt_generic/join_template.pt:17
+msgid "You have been registered as a member."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/logged_in.pt:5
+#: Products/CMFDefault/skins/zpt_generic/logged_in.py:43
+msgid "Login success"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/logged_in.pt:7
 #: Products/CMFDefault/skins/zpt_generic/logged_in_template.pt:19
 msgid "Welcome. You are currently logged in."
 msgstr ""
@@ -1202,6 +1260,11 @@ msgstr ""
 #: Products/CMFDefault/browser/membership/logged_out.pt:5
 #: Products/CMFDefault/skins/zpt_generic/logged_out.pt:7
 msgid "You are logged in outside the portal. You may need to <a href=\"/manage_zmi_logout\">log out of the Zope management interface</a>."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/login.pt:7
+#: Products/CMFDefault/skins/zpt_generic/login_form.pt:51
+msgid "I forgot my password!"
 msgstr ""
 
 #: Products/CMFDefault/browser/membership/login.pt:12
@@ -1214,63 +1277,76 @@ msgstr ""
 msgid "Don't forget to logout or exit your browser when you're done."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/login.pt:7
-#: Products/CMFDefault/skins/zpt_generic/login_form.pt:51
-msgid "I forgot my password!"
-msgstr ""
-
 #: Products/CMFDefault/browser/membership/mail_password.pt:9
 #: Products/CMFDefault/skins/zpt_generic/mail_password_form.pt:14
 msgid "If this will not work for you (for example, if you forget your member ID or didn't enter your email address) send email to ${admin_email}."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members.pt:46
-#: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:44
-msgid "Currently there are no members registered."
+#: Products/CMFDefault/browser/membership/members.pt:19
+#: Products/CMFDefault/browser/membership/members_list.pt:11
+#: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:19
+#: Products/CMFDefault/skins/zpt_generic/roster.pt:21
+msgid "Member"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members.py:175
-#: Products/CMFDefault/skins/zpt_control/members_delete_control.py:14
-msgid "Selected members deleted."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/members.py:180
-msgid "Deletion broken off."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/members.py:216
-msgid "Yes"
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/members.py:216
-msgid "No"
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/members.py:54
-#: Products/CMFDefault/browser/membership/members.pt:25
+#: Products/CMFDefault/browser/membership/members.pt:21
+#: Products/CMFDefault/browser/membership/members.py:50
 #: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:21
 msgid "Last Login"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members.py:78
-#: Products/CMFDefault/browser/membership/members.pt:11
-#: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:5
-msgid "Manage Members"
+#: Products/CMFDefault/browser/membership/members.py:73
+msgid "Next ${count} members"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members.py:89
+#: Products/CMFDefault/browser/membership/members.py:74
+msgid "Next member"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:75
+msgid "Previous ${count} members"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:76
+msgid "Previous member"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:86
 #: Products/CMFDefault/skins/zpt_generic/members_manage_form.py:53
 msgid "New..."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members.py:94
+#: Products/CMFDefault/browser/membership/members.py:91
 #: Products/CMFDefault/skins/zpt_generic/members_manage_form.py:55
 msgid "Delete..."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members_delete.pt:12
-#: Products/CMFDefault/skins/zpt_generic/members_delete_template.pt:13
-msgid "The following members - including all their data, home folders and roles - are selected for deletion:"
+#: Products/CMFDefault/browser/membership/members.py:108
+#: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:5
+msgid "Manage Members"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:113
+#: Products/CMFDefault/skins/zpt_generic/members_manage_template.pt:44
+msgid "Currently there are no members registered."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:162
+#: Products/CMFDefault/skins/zpt_control/validateMemberIds.py:8
+msgid "Please select one or more members first."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:178
+#: Products/CMFDefault/skins/zpt_control/members_delete_control.py:14
+msgid "Selected members deleted."
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:204
+msgid "No"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/members.py:204
+msgid "Yes"
 msgstr ""
 
 #: Products/CMFDefault/browser/membership/members_delete.pt:5
@@ -1278,27 +1354,19 @@ msgstr ""
 msgid "Delete Members"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/members_list.pt:11
-msgid "Member"
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/members_list.pt:12
-msgid "Listed?"
+#: Products/CMFDefault/browser/membership/members_delete.pt:10
+#: Products/CMFDefault/skins/zpt_generic/members_delete_template.pt:13
+msgid "The following members - including all their data, home folders and roles - are selected for deletion:"
 msgstr ""
 
 #: Products/CMFDefault/browser/membership/members_list.pt:6
+#: Products/CMFDefault/skins/zpt_generic/roster.pt:12
 msgid "Portal Members"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/password.py:109
-#: Products/CMFDefault/skins/zpt_generic/password_form_template.pt:13
-#. Default: ""
-msgid "This is the first time that you've logged in to ${portal_title}. Before you start exploring you need to change your original password. This will ensure that the password we sent you via email cannot be used in a malicious manner."
-msgstr ""
-
-#: Products/CMFDefault/browser/membership/password.py:116
-#: Products/CMFDefault/skins/zpt_generic/password_form_template.pt:19
-msgid "Please use the form below to change your password."
+#: Products/CMFDefault/browser/membership/members_list.pt:12
+#: Products/CMFDefault/skins/zpt_generic/roster.pt:22
+msgid "Listed?"
 msgstr ""
 
 #: Products/CMFDefault/browser/membership/password.py:39
@@ -1325,39 +1393,83 @@ msgstr ""
 msgid "Change your Password"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:112
-#: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:16
-msgid "Member Preferences"
+#: Products/CMFDefault/browser/membership/password.py:109
+#: Products/CMFDefault/skins/zpt_generic/password_form_template.pt:13
+msgid "This is the first time that you've logged in to ${portal_title}. Before you start exploring you need to change your original password. This will ensure that the password we sent you via email cannot be used in a malicious manner."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:113
-msgid "Member preferences changed."
+#: Products/CMFDefault/browser/membership/password.py:116
+#: Products/CMFDefault/skins/zpt_generic/password_form_template.pt:19
+msgid "Please use the form below to change your password."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:47
+#: Products/CMFDefault/browser/membership/preferences.py:50
 msgid "Full Name"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:48
+#: Products/CMFDefault/browser/membership/preferences.py:51
 msgid "given names and surname"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:54
+#: Products/CMFDefault/browser/membership/preferences.py:57
 msgid "info@example.org"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:57
+#: Products/CMFDefault/browser/membership/preferences.py:60
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:39
 msgid "Listed status"
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:58
+#: Products/CMFDefault/browser/membership/preferences.py:61
 msgid "Select to be listed on the public membership roster."
 msgstr ""
 
-#: Products/CMFDefault/browser/membership/preferences.py:61
+#: Products/CMFDefault/browser/membership/preferences.py:64
 #: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:62
 msgid "Skin"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/preferences.py:115
+#: Products/CMFDefault/skins/zpt_generic/personalize_form.pt:16
+msgid "Member Preferences"
+msgstr ""
+
+#: Products/CMFDefault/browser/membership/preferences.py:116
+msgid "Member preferences changed."
+msgstr ""
+
+#: Products/CMFDefault/browser/search/interfaces.py:39
+#: Products/CMFDefault/browser/search/interfaces.py:48
+#: Products/CMFDefault/browser/search/interfaces.py:91
+#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:18
+#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:58
+#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:100
+msgid "-- any --"
+msgstr ""
+
+#: Products/CMFDefault/browser/search/interfaces.py:57
+#: Products/CMFDefault/skins/zpt_generic/search_form.py:24
+msgid "Ever"
+msgstr ""
+
+#: Products/CMFDefault/browser/search/interfaces.py:65
+#: Products/CMFDefault/skins/zpt_generic/search_form.py:28
+msgid "Last login"
+msgstr ""
+
+#: Products/CMFDefault/browser/search/interfaces.py:71
+#: Products/CMFDefault/skins/zpt_generic/search_form.py:29
+msgid "Yesterday"
+msgstr ""
+
+#: Products/CMFDefault/browser/search/interfaces.py:76
+#: Products/CMFDefault/skins/zpt_generic/search_form.py:30
+msgid "Last week"
+msgstr ""
+
+#: Products/CMFDefault/browser/search/interfaces.py:81
+#: Products/CMFDefault/skins/zpt_generic/search_form.py:31
+msgid "Last month"
 msgstr ""
 
 #: Products/CMFDefault/browser/search/interfaces.py:100
@@ -1413,40 +1525,6 @@ msgstr ""
 msgid "To find items by a particular user only, enter their username above. Note that you must enter their username exactly."
 msgstr ""
 
-#: Products/CMFDefault/browser/search/interfaces.py:39
-#: Products/CMFDefault/browser/search/interfaces.py:48
-#: Products/CMFDefault/browser/search/interfaces.py:91
-#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:18
-#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:58
-#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:100
-msgid "-- any --"
-msgstr ""
-
-#: Products/CMFDefault/browser/search/interfaces.py:57
-#: Products/CMFDefault/skins/zpt_generic/search_form.py:24
-msgid "Ever"
-msgstr ""
-
-#: Products/CMFDefault/browser/search/interfaces.py:65
-#: Products/CMFDefault/skins/zpt_generic/search_form.py:28
-msgid "Last login"
-msgstr ""
-
-#: Products/CMFDefault/browser/search/interfaces.py:71
-#: Products/CMFDefault/skins/zpt_generic/search_form.py:29
-msgid "Yesterday"
-msgstr ""
-
-#: Products/CMFDefault/browser/search/interfaces.py:76
-#: Products/CMFDefault/skins/zpt_generic/search_form.py:30
-msgid "Last week"
-msgstr ""
-
-#: Products/CMFDefault/browser/search/interfaces.py:81
-#: Products/CMFDefault/skins/zpt_generic/search_form.py:31
-msgid "Last month"
-msgstr ""
-
 #: Products/CMFDefault/browser/search/results.pt:15
 #: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:92
 #: Products/CMFDefault/skins/zpt_generic/review.pt:26
@@ -1467,14 +1545,40 @@ msgstr ""
 #: Products/CMFDefault/browser/search/search.py:49
 #: Products/CMFDefault/browser/search/search.py:59
 #: Products/CMFDefault/browser/search/search.py:65
-#: Products/CMFDefault/skins/zpt_generic/search_form.py:38
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:34
+#: Products/CMFDefault/skins/zpt_generic/search_form.py:38
 msgid "Search"
 msgstr ""
 
-#: Products/CMFDefault/browser/skins/ursa.py:190
+#: Products/CMFDefault/browser/skins/ursa.py:194
 #: Products/CMFDefault/skins/zpt_generic/breadcrumbs.py:13
 msgid "root"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/batch.py:64
+msgid "Next ${count} items"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/batch.py:65
+msgid "Next item"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/batch.py:66
+msgid "Previous ${count} items"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/batch.py:67
+msgid "Previous item"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/batch.py:193
+#: Products/CMFDefault/skins/zpt_generic/search.py:48
+msgid "item"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/batch.py:193
+#: Products/CMFDefault/skins/zpt_generic/search.py:48
+msgid "items"
 msgstr ""
 
 #: Products/CMFDefault/browser/widgets/batch_widgets.pt:10
@@ -1488,15 +1592,14 @@ msgstr ""
 msgid "There are no items matching your specified criteria."
 msgstr ""
 
-#: Products/CMFDefault/browser/widgets/batch_widgets.pt:41
-#: Products/CMFDefault/browser/widgets/batch_widgets.pt:47
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:32
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:32
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:70
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:70
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:106
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:106
-msgid "${DYNAMIC_CONTENT}"
+#: Products/CMFDefault/browser/widgets/content_macros.pt:21
+#: Products/CMFDefault/skins/zpt_generic/content_byline.pt:8
+msgid "Created by"
+msgstr ""
+
+#: Products/CMFDefault/browser/widgets/content_macros.pt:36
+#: Products/CMFDefault/skins/zpt_generic/content_byline.pt:23
+msgid "Last modified"
 msgstr ""
 
 #: Products/CMFDefault/browser/workflow/hide.pt:12
@@ -1507,6 +1610,16 @@ msgstr ""
 #: Products/CMFDefault/browser/workflow/hide.pt:15
 #: Products/CMFDefault/skins/zpt_content/content_hide_form.pt:10
 msgid "Use this form to hide a content item by setting its status to <b>Private</b>, thereby making it unavailable to other portal members and visitors."
+msgstr ""
+
+#: Products/CMFDefault/browser/workflow/history.pt:6
+#: Products/CMFDefault/skins/zpt_content/content_status_history.pt:9
+msgid "Content Item status history"
+msgstr ""
+
+#: Products/CMFDefault/browser/workflow/history.pt:8
+#: Products/CMFDefault/skins/zpt_content/content_status_history.pt:11
+msgid "An item's status (also called its review state) determines who can see it. A <b>private</b> item can only be viewed by its Owner and by the site management. Only <b>published</b> items are available to the general member base and anonymous visitors. To make an item published, it has to be reviewed by one of the site's Reviewers. You can request that an item be reviewed by setting its status to <b>pending</b>."
 msgstr ""
 
 #: Products/CMFDefault/browser/workflow/history.pt:16
@@ -1551,16 +1664,6 @@ msgstr ""
 #: Products/CMFDefault/browser/workflow/history.pt:40
 #: Products/CMFDefault/skins/zpt_content/content_status_history.pt:43
 msgid "This item has not had any status changes."
-msgstr ""
-
-#: Products/CMFDefault/browser/workflow/history.pt:6
-#: Products/CMFDefault/skins/zpt_content/content_status_history.pt:9
-msgid "Content Item status history"
-msgstr ""
-
-#: Products/CMFDefault/browser/workflow/history.pt:8
-#: Products/CMFDefault/skins/zpt_content/content_status_history.pt:11
-msgid "An item's status (also called its review state) determines who can see it. A <b>private</b> item can only be viewed by its Owner and by the site management. Only <b>published</b> items are available to the general member base and anonymous visitors. To make an item published, it has to be reviewed by one of the site's Reviewers. You can request that an item be reviewed by setting its status to <b>pending</b>."
 msgstr ""
 
 #: Products/CMFDefault/browser/workflow/publish.pt:12
@@ -1613,25 +1716,6 @@ msgstr ""
 msgid "To make an item published, it has to be reviewed by one of the site's reviewers. A <b>published</b> item is available to the general member base and anonymous visitors."
 msgstr ""
 
-#: Products/CMFDefault/browser/workflow/workflow.py:101
-#: Products/CMFDefault/skins/zpt_content/content_retract_form.pt:19
-msgid "Retract this item"
-msgstr ""
-
-#: Products/CMFDefault/browser/workflow/workflow.py:117
-#: Products/CMFDefault/skins/zpt_content/content_reject_form.pt:19
-msgid "Reject this item"
-msgstr ""
-
-#: Products/CMFDefault/browser/workflow/workflow.py:132
-#: Products/CMFDefault/skins/zpt_content/content_hide_form.pt:19
-msgid "Hide this item"
-msgstr ""
-
-#: Products/CMFDefault/browser/workflow/workflow.py:147
-msgid "Show this item"
-msgstr ""
-
 #: Products/CMFDefault/browser/workflow/workflow.py:28
 msgid "Item submitted for review."
 msgstr ""
@@ -1671,20 +1755,53 @@ msgstr ""
 msgid "Publish this item"
 msgstr ""
 
+#: Products/CMFDefault/browser/workflow/workflow.py:101
+#: Products/CMFDefault/skins/zpt_content/content_retract_form.pt:19
+msgid "Retract this item"
+msgstr ""
+
+#: Products/CMFDefault/browser/workflow/workflow.py:117
+#: Products/CMFDefault/skins/zpt_content/content_reject_form.pt:19
+msgid "Reject this item"
+msgstr ""
+
+#: Products/CMFDefault/browser/workflow/workflow.py:132
+#: Products/CMFDefault/skins/zpt_content/content_hide_form.pt:19
+msgid "Hide this item"
+msgstr ""
+
+#: Products/CMFDefault/browser/workflow/workflow.py:147
+msgid "Show this item"
+msgstr ""
+
 #: Products/CMFDefault/exceptions.py:66
 #: Products/CMFDefault/formlib/widgets.py:73
 msgid "Invalid email address."
 msgstr ""
 
 #: Products/CMFDefault/exportimport.zcml:6
-msgid "Various Settings"
-msgstr ""
-
-#: Products/CMFDefault/exportimport.zcml:6
 msgid "Import various settings from PortalGenerator."
 msgstr ""
 
-#: Products/CMFDefault/formlib/form.py:119
+#: Products/CMFDefault/exportimport.zcml:6
+msgid "Various Settings"
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:51
+#: Products/CMFDefault/skins/zpt_content/document_edit_control.py:14
+#: Products/CMFDefault/skins/zpt_content/folder_edit_control.py:11
+#: Products/CMFDefault/skins/zpt_content/link_edit_control.py:13
+#: Products/CMFDefault/skins/zpt_content/newsitem_edit_control.py:15
+#: Products/CMFDefault/skins/zpt_control/folder_bottom_control.py:13
+#: Products/CMFDefault/skins/zpt_control/folder_down_control.py:13
+#: Products/CMFDefault/skins/zpt_control/folder_rename_control.py:17
+#: Products/CMFDefault/skins/zpt_control/folder_top_control.py:13
+#: Products/CMFDefault/skins/zpt_control/folder_up_control.py:13
+#: Products/CMFTopic/skins/zpt_topic/topic_edit_control.py:11
+msgid "Nothing to change."
+msgstr ""
+
+#: Products/CMFDefault/formlib/form.py:120
 msgid "Settings changed."
 msgstr ""
 
@@ -1695,23 +1812,19 @@ msgid "Add"
 msgstr ""
 
 #: Products/CMFDefault/formlib/form.py:199
-#. Default: ""
 msgid "Add ${obj_type}"
 msgstr ""
 
 #: Products/CMFDefault/formlib/form.py:229
 #: Products/CMFDefault/formlib/form.py:264
-#. Default: ""
 msgid "${obj_type} added."
 msgstr ""
 
 #: Products/CMFDefault/formlib/form.py:289
-#. Default: ""
 msgid "Edit ${obj_type}"
 msgstr ""
 
 #: Products/CMFDefault/formlib/form.py:294
-#. Default: ""
 msgid "${obj_type} changed."
 msgstr ""
 
@@ -1724,84 +1837,36 @@ msgstr ""
 msgid "Found ${count} ${type}."
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:10
-msgid "Previous ${count} members"
-msgstr ""
-
-#: Products/CMFDefault/locales/cmf_default-manual.pot:13
-msgid "Previous member"
-msgstr ""
-
-#: Products/CMFDefault/locales/cmf_default-manual.pot:16
+#: Products/CMFDefault/locales/cmf_default-manual.pot:4
 msgid "Criteria"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:19
+#: Products/CMFDefault/locales/cmf_default-manual.pot:7
 msgid "Download"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:22
+#: Products/CMFDefault/locales/cmf_default-manual.pot:10
 msgid "Local Roles"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:25
+#: Products/CMFDefault/locales/cmf_default-manual.pot:13
 msgid "Metadata"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:28
+#: Products/CMFDefault/locales/cmf_default-manual.pot:16
 msgid "Subtopics"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:31
+#: Products/CMFDefault/locales/cmf_default-manual.pot:19
 msgid "View"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:34
+#: Products/CMFDefault/locales/cmf_default-manual.pot:22
 msgid "Retract"
 msgstr ""
 
-#: Products/CMFDefault/locales/cmf_default-manual.pot:37
+#: Products/CMFDefault/locales/cmf_default-manual.pot:25
 msgid "Submit"
-msgstr ""
-
-#: Products/CMFDefault/locales/cmf_default-manual.pot:4
-msgid "Next ${count} members"
-msgstr ""
-
-#: Products/CMFDefault/locales/cmf_default-manual.pot:7
-msgid "Next member"
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:13
-msgid "Uses browser views only."
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:13
-msgid "CMFDefaults Browser Views"
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:21
-msgid "Sample CMFDefault Content"
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:21
-msgid "Content for a sample CMFSite."
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:29
-msgid "Provide skin w/ stripped-down main template."
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:29
-msgid "CMF 'Bare' skin"
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:37
-msgid "'Absolut' - the pure CSS skin"
-msgstr ""
-
-#: Products/CMFDefault/profiles.zcml:37
-msgid "All layouting done using CSS.       The Browser Views extension profile should also be installed"
 msgstr ""
 
 #: Products/CMFDefault/profiles.zcml:6
@@ -1812,16 +1877,96 @@ msgstr ""
 msgid "Profile for a default CMFSite."
 msgstr ""
 
+#: Products/CMFDefault/profiles.zcml:13
+msgid "CMFDefaults Browser Views"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:13
+msgid "Uses browser views only."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:21
+msgid "Content for a sample CMFSite."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:21
+msgid "Sample CMFDefault Content"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:29
+msgid "CMF 'Bare' skin"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:29
+msgid "Provide skin w/ stripped-down main template."
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:37
+msgid "'Absolut' - the pure CSS skin"
+msgstr ""
+
+#: Products/CMFDefault/profiles.zcml:37
+msgid "All layouting done using CSS.       The Browser Views extension profile should also be installed"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:11
+msgid "Click here to Login"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:23
+msgid "Join"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:24
+msgid "Click here to Join"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:37
+msgid "Change password"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:38
+msgid "Change your password"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:51
+msgid "Preferences"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:52
+msgid "Change your user preferences"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:65
+msgid "Log out"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:66
+msgid "Click here to logout"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:78
+msgid "Add to favorites"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:79
+msgid "Add this item to your favorites"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:93
+msgid "My stuff"
+msgstr ""
+
+#: Products/CMFDefault/profiles/default/actions.xml:94
+msgid "Goto your home folder"
+msgstr ""
+
 #: Products/CMFDefault/profiles/default/actions.xml:108
 msgid "My favorites"
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:109
 msgid "Browse your favorites"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:11
-msgid "Click here to Login"
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:124
@@ -1872,16 +2017,14 @@ msgstr ""
 msgid "Delete members"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:23
-msgid "Join"
-msgstr ""
-
 #: Products/CMFDefault/profiles/default/actions.xml:230
 msgid "Delete portal members"
 msgstr ""
 
-#: Products/CMFDefault/profiles/default/actions.xml:24
-msgid "Click here to Join"
+#: Products/CMFDefault/profiles/default/actions.xml:243
+#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:44
+#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:100
+msgid "Undo"
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:256
@@ -1898,46 +2041,6 @@ msgstr ""
 
 #: Products/CMFDefault/profiles/default/actions.xml:270
 msgid "Enable or disable syndication"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:37
-msgid "Change password"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:38
-msgid "Change your password"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:51
-msgid "Preferences"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:52
-msgid "Change your user preferences"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:65
-msgid "Log out"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:66
-msgid "Click here to logout"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:78
-msgid "Add to favorites"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:79
-msgid "Add this item to your favorites"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:93
-msgid "My stuff"
-msgstr ""
-
-#: Products/CMFDefault/profiles/default/actions.xml:94
-msgid "Goto your home folder"
 msgstr ""
 
 #: Products/CMFDefault/profiles/default/types/CMF_BTree_Folder.xml:4
@@ -2012,11 +2115,6 @@ msgstr ""
 msgid "News Items contain short text articles and carry a title as well as an optional description."
 msgstr ""
 
-#: Products/CMFDefault/skins/absolut/main_template.pt:184
-#: Products/CMFDefault/skins/zpt_generic/main_template.pt:327
-msgid "Permanent Link:"
-msgstr ""
-
 #: Products/CMFDefault/skins/absolut/main_template.pt:55
 #: Products/CMFDefault/skins/zpt_generic/main_template.pt:73
 msgid "home"
@@ -2032,17 +2130,17 @@ msgstr ""
 msgid "search"
 msgstr ""
 
+#: Products/CMFDefault/skins/absolut/main_template.pt:184
+#: Products/CMFDefault/skins/zpt_generic/main_template.pt:327
+msgid "Permanent Link:"
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_content/content_show_form.pt:22
 msgid "Make this item visible"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_content/document_edit_control.py:10
 msgid "Document changed."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_content/document_edit_template.pt:29
-#: Products/CMFDefault/skins/zpt_content/newsitem_edit_template.pt:24
-msgid "ReStructured-text"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_content/document_edit_template.pt:5
@@ -2055,32 +2153,22 @@ msgstr ""
 msgid "Edit: ${obj_title}"
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_content/document_edit_template.pt:29
+#: Products/CMFDefault/skins/zpt_content/newsitem_edit_template.pt:24
+msgid "ReStructured-text"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_content/document_edit_template.pt:49
+#: Products/CMFDefault/skins/zpt_generic/discussion_reply_form.py:41
+msgid "Edit"
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_content/file_edit_control.py:8
 msgid "File changed."
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_content/file_edit_template.pt:27
 msgid "Upload file"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:21
-msgid "File Properties"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:25
-msgid "Filename"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:29
-msgid "Size"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:33
-msgid "Content-type"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_content/file_view_template.pt:38
-msgid "Download File"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_content/folder_edit_control.py:9
@@ -2136,6 +2224,10 @@ msgstr ""
 msgid "Password changed."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_control/finish_portal_construction.pt:5
+msgid "Welcome to the CMF!"
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_control/finish_portal_construction.pt:10
 msgid "The first thing you should do is visit the ${reconfig_link}."
 msgstr ""
@@ -2149,15 +2241,11 @@ msgid "management interface"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_control/finish_portal_construction.pt:17
-msgid "home page"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_control/finish_portal_construction.pt:17
 msgid "Then visit the ${manage_link} and the ${home_link}."
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_control/finish_portal_construction.pt:5
-msgid "Welcome to the CMF!"
+#: Products/CMFDefault/skins/zpt_control/finish_portal_construction.pt:17
+msgid "home page"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_control/folder_localrole_edit.py:19
@@ -2174,10 +2262,6 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_control/folder_rename_control.py:15
 msgid "CopyError: Rename failed."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_control/members_add_control.py:23
-msgid "Member registered."
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_control/members_add_control.py:25
@@ -2200,10 +2284,6 @@ msgstr ""
 msgid "Please enter an ID."
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_control/validateMemberIds.py:8
-msgid "Please select one or more members first."
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_control/validateType.py:8
 msgid "Please select a content type."
 msgstr ""
@@ -2213,25 +2293,12 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT} ${count} ${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/content_byline.pt:23
-msgid "Last modified"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/content_byline.pt:8
-msgid "Created by"
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/discitem_delete.py:13
 msgid "Reply deleted."
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/discussion_reply.py:13
 msgid "Reply added."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/discussion_reply_form.py:41
-#: Products/CMFDefault/skins/zpt_content/document_edit_template.pt:49
-msgid "Edit"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/discussion_reply_form.py:43
@@ -2246,20 +2313,16 @@ msgstr ""
 msgid "Reply body"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/folder_contents.py:167
-msgid "Rename..."
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/folder_contents_template.pt:85
 msgid "Set Sorting as Default"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:31
-msgid "ID:"
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:5
 msgid "Add Content"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_factories_template.pt:31
+msgid "ID:"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/folder_filter_form.pt:32
@@ -2292,26 +2355,6 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:11
 msgid "Assign local roles: Search Members"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:117
-msgid "Assign Roles"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:126
-msgid "Sorry, no members matched your search."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:134
-msgid "Currently assigned local roles"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:136
-msgid "These users currently have local roles assigned in this folder:"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:149
-msgid "Role(s)"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:19
@@ -2348,16 +2391,36 @@ msgstr ""
 msgid "Role to assign:"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/folder_rename_template.pt:25
-msgid "to"
+#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:117
+msgid "Assign Roles"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:126
+msgid "Sorry, no members matched your search."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:134
+msgid "Currently assigned local roles"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:136
+msgid "These users currently have local roles assigned in this folder:"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_localrole_form.pt:149
+msgid "Role(s)"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/folder_rename_form.py:41
+msgid "Rename"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/folder_rename_template.pt:5
 msgid "Rename Items"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:102
-msgid "Folders"
+#: Products/CMFDefault/skins/zpt_generic/folder_rename_template.pt:25
+msgid "to"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:28
@@ -2366,6 +2429,10 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:66
 msgid "Related Resources"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/index_html_utils.html:102
+msgid "Folders"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:11
@@ -2378,11 +2445,6 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/join_template.pt:46
 msgid "You must submit a valid email address. This address will be used to send you a randomly-generated password. Once you have logged in with this password, you may change it to anything you like."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/logged_in.py:44
-#: Products/CMFDefault/browser/membership/logged_in.pt:5
-msgid "Login success"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/logged_in_template.pt:13
@@ -2409,6 +2471,46 @@ msgstr ""
 msgid "Add..."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:5
+msgid "Dublin Core Metadata"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:16
+msgid "the standard Zope 'title' attribute; we should look at making it mandatory for all PortalContent derivatives."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:29
+msgid "where possible, this should be one or more full names, of either persons or organizations. The current implementation finds the first user in the list returned by 'get_local_roles' who has the 'Owner' role; userids are not considered appropriate for this field by the DCI."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:44
+msgid "this is supposed to be drawn from a controlled list of keywords (e.g., selected from a multi-select list used across the whole site)."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:57
+msgid "a short summary, an abstract, or a table-of-contents are all considered acceptable. We might look at making this required, as well, at least for some kinds of content."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:66
+msgid "Publisher"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:71
+msgid "a site-wide property, should be done through acquisition (do I smell a 'portal_metadata' tool about to appear?) Again, this is supposed to be a formal name."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:79
+msgid "Contributor"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:84
+msgid "used to convey others besides the Creator who have contributed to the document (the current implementation aliases 'Creator', which is not what DCI intends)."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:97
+msgid "this one has modifiers, of which the approved set is: 'Created', 'Valid', 'Available', 'Issued', and 'Modified'. I propose extending the interface to include CreationDate(), EffectiveDate(), ExpirationDate(), and ModificationDate(). The current Date() could just return the CreationDate(), while the DCI 'Valid' and 'Available' would be ranges derived from EffectiveDate() and ExpirationDate()."
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:115
 msgid "like the Zope 'meta_type', this is the main conceptual classification; 'meta_type' is often spelled identically to the class, which makes it less appropriate for the DCI usage."
 msgstr ""
@@ -2423,10 +2525,6 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:154
 msgid "'en-us', 'pt-br', 'de', etc. Should be set at creation, with an appropriate default (and a picklist of values)."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:16
-msgid "the standard Zope 'title' attribute; we should look at making it mandatory for all PortalContent derivatives."
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:162
@@ -2457,40 +2555,8 @@ msgstr ""
 msgid "copyright and other IP information related to the document. Most portals should care about this: witness the brouhaha on Slashdot over the compilation of the Hellmouth postings into a book."
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:29
-msgid "where possible, this should be one or more full names, of either persons or organizations. The current implementation finds the first user in the list returned by 'get_local_roles' who has the 'Owner' role; userids are not considered appropriate for this field by the DCI."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:44
-msgid "this is supposed to be drawn from a controlled list of keywords (e.g., selected from a multi-select list used across the whole site)."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:5
-msgid "Dublin Core Metadata"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:57
-msgid "a short summary, an abstract, or a table-of-contents are all considered acceptable. We might look at making this required, as well, at least for some kinds of content."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:66
-msgid "Publisher"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:71
-msgid "a site-wide property, should be done through acquisition (do I smell a 'portal_metadata' tool about to appear?) Again, this is supposed to be a formal name."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:79
-msgid "Contributor"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:84
-msgid "used to convey others besides the Creator who have contributed to the document (the current implementation aliases 'Creator', which is not what DCI intends)."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/metadata_help.pt:97
-msgid "this one has modifiers, of which the approved set is: 'Created', 'Valid', 'Available', 'Issued', and 'Modified'. I propose extending the interface to include CreationDate(), EffectiveDate(), ExpirationDate(), and ModificationDate(). The current Date() could just return the CreationDate(), while the DCI 'Valid' and 'Available' would be ranges derived from EffectiveDate() and ExpirationDate()."
+#: Products/CMFDefault/skins/zpt_generic/news_box_template.pt:8
+msgid "News"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/news_box_template.pt:19
@@ -2501,12 +2567,7 @@ msgstr ""
 msgid "More..."
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/news_box_template.pt:8
-msgid "News"
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/password_email.py:18
-#. Default: ""
 msgid "${portal_title}: Membership reminder"
 msgstr ""
 
@@ -2542,6 +2603,10 @@ msgstr ""
 msgid "You will <i>not</i> show up on the public membership roster."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_generic/recent_news_template.pt:8
+msgid "${count} more recent articles"
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_generic/recent_news_template.pt:41
 msgid "No news is good news!"
 msgstr ""
@@ -2550,12 +2615,16 @@ msgstr ""
 msgid "${count} older articles"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/recent_news_template.pt:8
-msgid "${count} more recent articles"
+#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:5
+msgid "Configure the Portal"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:10
 msgid "This form is used to set the portal configuration options."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:91
+msgid "Charset used to decode portal content strings. If empty, 'ascii' is used."
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:112
@@ -2566,17 +2635,16 @@ msgstr ""
 msgid "Show permalinks"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:5
-msgid "Configure the Portal"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/reconfig_template.pt:91
-msgid "Charset used to decode portal content strings. If empty, 'ascii' is used."
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/registered_email.py:31
-#. Default: ""
 msgid "${portal_title}: Your Membership Information"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:3
+msgid "You have been registered as a member of \"${portal_title}\", which allows you to personalize your view of the website and participate in the community."
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:8
+msgid "This describes the purpose of the website:"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:14
@@ -2591,16 +2659,8 @@ msgstr ""
 msgid "You can use this URL to log in:"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:3
-msgid "You have been registered as a member of \"${portal_title}\", which allows you to personalize your view of the website and participate in the community."
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:30
 msgid "Be aware that this URL might wrap over two lines. If your browser shows an error message when you try to access the URL please make sure that you put in the complete string."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/registered_email_template.pt:8
-msgid "This describes the purpose of the website:"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/review.pt:14
@@ -2619,8 +2679,8 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:120
-msgid "To find items by a particular user only, enter their username above. Note that you must enter their username <i>exactly</i>."
+#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:5
+msgid "Search ${obj_title}"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:19
@@ -2639,16 +2699,20 @@ msgstr ""
 msgid "For a simple text search, enter your search term here. Multiple words may be found by combining them with <b>AND</b> and <b>OR</b>. This will find text in items' contents, title and description."
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:5
-msgid "Search ${obj_title}"
-msgstr ""
-
 #: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:71
 msgid "You may also search the items' descriptions and titles specifically. Multiple words may be found by combining them with <b>AND</b> and <b>OR</b>."
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_generic/search_form_template.pt:120
+msgid "To find items by a particular user only, enter their username above. Note that you must enter their username <i>exactly</i>."
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_generic/search_results_template.pt:5
 msgid "Search Results"
+msgstr ""
+
+#: Products/CMFDefault/skins/zpt_generic/standard_error_message.pt:9
+msgid "Site Error"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/standard_error_message.pt:16
@@ -2691,12 +2755,8 @@ msgstr ""
 msgid "Show Error Log Entry"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/standard_error_message.pt:9
-msgid "Site Error"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:128
-msgid "Syndication is Disabled"
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:6
+msgid "Syndication Properties"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:14
@@ -2715,8 +2775,8 @@ msgstr ""
 msgid "Syndication Module Properties"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:6
-msgid "Syndication Properties"
+#: Products/CMFDefault/skins/zpt_generic/synPropertiesForm_template.pt:128
+msgid "Syndication is Disabled"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/talkback_tree.pt:26
@@ -2731,8 +2791,8 @@ msgstr ""
 msgid "delete reply"
 msgstr ""
 
-#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:107
-msgid "There are no transactions that can be undone."
+#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:5
+msgid "Undo Transactions"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/undo_form.pt:30
@@ -2741,16 +2801,6 @@ msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/undo_form.pt:35
 msgid "Select one or more transactions below and then click on the &quot;Undo&quot; button to undo the transactions. Note that even though a transaction is shown below, you will not be able to undo it if later transactions modified objects that were modified by the transaction."
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:44
-#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:100
-#: Products/CMFDefault/profiles/default/actions.xml:243
-msgid "Undo"
-msgstr ""
-
-#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:5
-msgid "Undo Transactions"
 msgstr ""
 
 #: Products/CMFDefault/skins/zpt_generic/undo_form.pt:53
@@ -2777,35 +2827,67 @@ msgstr ""
 msgid "Earlier Transactions"
 msgstr ""
 
+#: Products/CMFDefault/skins/zpt_generic/undo_form.pt:107
+msgid "There are no transactions that can be undone."
+msgstr ""
+
 #: Products/CMFDefault/skins/zpt_generic/viewThreadsAtBottom.pt:3
 msgid "Comments:"
 msgstr ""
 
-#: Products/CMFDefault/utils.py:346
-#. Default: ""
+#: Products/CMFDefault/utils.py:344
 msgid "JavaScript event '${attribute}' not allowed."
 msgstr ""
 
-#: Products/CMFDefault/utils.py:351
-#. Default: ""
+#: Products/CMFDefault/utils.py:349
 msgid "JavaScript URI '${value}' not allowed."
 msgstr ""
 
-#: Products/CMFDefault/utils.py:364
-#. Default: ""
+#: Products/CMFDefault/utils.py:362
 msgid "Dynamic tag '${tag}' not allowed."
+msgstr ""
+
+#: Products/CMFTopic/browser/topic.pt:18
+#: Products/CMFTopic/skins/zpt_topic/topic_view_template.pt:14
+msgid "Subtopics:"
+msgstr ""
+
+#: Products/CMFTopic/browser/topic.pt:25
+#: Products/CMFTopic/skins/zpt_topic/topic_view_template.pt:21
+msgid "Topic Matches:"
+msgstr ""
+
+#: Products/CMFTopic/browser/topic.pt:35
+#: Products/CMFTopic/skins/zpt_topic/topic_view_template.pt:31
+msgid "Query Parameters:"
+msgstr ""
+
+#: Products/CMFTopic/browser/topic_criteria.pt:9
+msgid "Acquire Criteria from Parent"
 msgstr ""
 
 #: Products/CMFTopic/configure.zcml:1
 msgid "Add portal topics"
 msgstr ""
 
-#: Products/CMFTopic/configure.zcml:32
+#: Products/CMFTopic/configure.zcml:1
+msgid "Change portal topics"
+msgstr ""
+
+#: Products/CMFTopic/configure.zcml:42
 msgid "Adds topic portal type."
 msgstr ""
 
-#: Products/CMFTopic/configure.zcml:32
+#: Products/CMFTopic/configure.zcml:42
 msgid "CMFTopic"
+msgstr ""
+
+#: Products/CMFTopic/configure.zcml:50
+msgid "CMFTopic Oldstyle Skins"
+msgstr ""
+
+#: Products/CMFTopic/configure.zcml:50
+msgid "Hooks up the oldstyle skins."
 msgstr ""
 
 #: Products/CMFTopic/profiles/default/types/Topic.xml:4
@@ -2820,41 +2902,23 @@ msgstr ""
 msgid "Topic changed."
 msgstr ""
 
-#: Products/CMFTopic/skins/zpt_topic/topic_edit_template.pt:29
-msgid "Acquire Criteria from Parent"
-msgstr ""
-
-#: Products/CMFTopic/skins/zpt_topic/topic_view_template.pt:14
-msgid "Subtopics:"
-msgstr ""
-
-#: Products/CMFTopic/skins/zpt_topic/topic_view_template.pt:21
-msgid "Topic Matches:"
-msgstr ""
-
-#: Products/CMFTopic/skins/zpt_topic/topic_view_template.pt:31
-msgid "Query Parameters:"
-msgstr ""
-
-#: Products/DCWorkflow/DCWorkflow.py:269
+#: Products/DCWorkflow/DCWorkflow.py:268
 msgid "Object is in an undefined state."
 msgstr ""
 
-#: Products/DCWorkflow/DCWorkflow.py:274
-#. Default: ""
+#: Products/DCWorkflow/DCWorkflow.py:273
 msgid "Transition '${action_id}' is not triggered by a user action."
 msgstr ""
 
-#: Products/DCWorkflow/DCWorkflow.py:457
-#. Default: ""
+#: Products/DCWorkflow/DCWorkflow.py:456
 msgid "Destination state undefined: ${state_id}"
 msgstr ""
 
-#: Products/DCWorkflow/configure.zcml:15
-msgid "CMF Default Workflow [Revision 2]"
+#: Products/DCWorkflow/configure.zcml:17
+msgid "Adds revision 2 of default workflow."
 msgstr ""
 
-#: Products/DCWorkflow/configure.zcml:15
-msgid "Adds revision 2 of default workflow."
+#: Products/DCWorkflow/configure.zcml:17
+msgid "CMF Default Workflow [Revision 2]"
 msgstr ""
 
