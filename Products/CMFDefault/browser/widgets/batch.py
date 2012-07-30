@@ -61,6 +61,10 @@ class BatchViewBase(ViewBase):
     """
 
     _BATCH_SIZE = 25
+    _NEXT_PLURAL_MESSAGE = _(u'Next ${count} items')
+    _NEXT_SINGULAR_MESSAGE = _(u'Next item')
+    _PREV_PLURAL_MESSAGE = _(u'Previous ${count} items')
+    _PREV_SINGULAR_MESSAGE = _(u'Previous item')
 
     @memoize
     def _getBatchStart(self):
@@ -131,9 +135,9 @@ class BatchViewBase(ViewBase):
         length = len(batch_obj)
         url = self._getNavigationURL(batch_obj.first)
         if length == 1:
-            title = _(u'Previous item')
+            title = self._PREV_SINGULAR_MESSAGE
         else:
-            title = _(u'Previous ${count} items', mapping={'count': length})
+            title = _(self._PREV_PLURAL_MESSAGE, mapping={'count': length})
         return {'title': title, 'url': url}
 
     @memoize
@@ -145,9 +149,9 @@ class BatchViewBase(ViewBase):
         length = len(batch_obj)
         url = self._getNavigationURL(batch_obj.first)
         if length == 1:
-            title = _(u'Next item')
+            title = self._NEXT_SINGULAR_MESSAGE
         else:
-            title = _(u'Next ${count} items', mapping={'count': length})
+            title = _(self._NEXT_PLURAL_MESSAGE, mapping={'count': length})
         return {'title': title, 'url': url}
 
     def page_range(self):

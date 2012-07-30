@@ -70,6 +70,11 @@ class MemberProxy(object):
 
 class Manage(BatchFormMixin, EditFormBase):
 
+    _NEXT_PLURAL_MESSAGE = _(u'Next ${count} members')
+    _NEXT_SINGULAR_MESSAGE = _(u'Next member')
+    _PREV_PLURAL_MESSAGE = _(u'Previous ${count} members')
+    _PREV_SINGULAR_MESSAGE = _(u'Previous member')
+
     template = ViewPageTemplateFile("members.pt")
     delete_template = ViewPageTemplateFile("members_delete.pt")
     form_fields = form.FormFields()

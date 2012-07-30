@@ -63,7 +63,7 @@ Test batching. Add lots of users
     ...     app.site.portal_membership.addMember(user,
     ...            "secret", ("Owner",), ())
     >>> browser.open("http://localhost/site/@@members.html")
-    >>> "[[cmf_default][Next 18 items]]" in browser.contents
+    >>> "[[cmf_default][Next 18 members]]" in browser.contents
     True
     >>> 'a href="http://localhost/site/@@members.html?form.b_start=25">2</a>' in browser.contents
     True
