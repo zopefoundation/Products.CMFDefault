@@ -48,6 +48,7 @@ from Products.CMFDefault.utils import translate
 class _EditFormMixin(ViewBase):
 
     template = ViewPageTemplateFile('editform.pt')
+    noChangesMessage = _(u'Nothing to change.')
 
     def _setRedirect(self, provider_id, action_path, keys=''):
         provider = getToolByName(self.context, provider_id)
@@ -117,7 +118,6 @@ class SettingsEditFormBase(_EditFormMixin, form.PageForm):
 
     description = u''
     successMessage = _(u"Settings changed.")
-    noChangesMessage = _(u'Nothing to change.')
 
     def getContent(self):
         return self.context

@@ -64,7 +64,7 @@ All sort options apart from position are reversible.
 Verify initially visible buttons:
 
     >>> browser.open('http://localhost/site/@@edit.html')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     True
     >>> '[[cmf_default][Cut]]' in browser.contents
     True
@@ -95,7 +95,7 @@ Copy the 'Members' subfolder:
 Now there is clipboard data and the paste button is also visible:
 
     >>> browser.open('http://localhost/site/@@edit.html')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     True
     >>> '[[cmf_default][Cut]]' in browser.contents
     True
@@ -125,7 +125,7 @@ Paste the object from the clipboard:
 Now there is more than one object and the order buttons are visible:
 
     >>> browser.open('http://localhost/site/@@edit.html')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     True
     >>> '[[cmf_default][Cut]]' in browser.contents
     True
@@ -151,7 +151,7 @@ Without the necessary permissions some buttons are not visible:
     >>> from Products.CMFDefault.permissions import AddPortalContent
     >>> app.site.manage_permission(AddPortalContent, roles=[])
     >>> browser.open('http://localhost/site/@@edit.html')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     False
     >>> '[[cmf_default][Cut]]' in browser.contents
     True
@@ -166,7 +166,7 @@ Without the necessary permissions some buttons are not visible:
     >>> from Products.CMFDefault.permissions import DeleteObjects
     >>> app.site.manage_permission(DeleteObjects, roles=[])
     >>> browser.open('http://localhost/site/@@edit.html')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     True
     >>> '[[cmf_default][Cut]]' in browser.contents
     True
@@ -181,7 +181,7 @@ Without the necessary permissions some buttons are not visible:
     >>> from Products.CMFDefault.permissions import ViewManagementScreens
     >>> app.site.manage_permission(ViewManagementScreens, roles=[])
     >>> browser.open('http://localhost/site/@@edit.html')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     False
     >>> '[[cmf_default][Cut]]' in browser.contents
     False
@@ -196,7 +196,7 @@ Without the necessary permissions some buttons are not visible:
 Sorted by getId different buttons are visible:
 
     >>> browser.open('http://localhost/site/@@edit.html?form.sort_key=getId')
-    >>> '[[cmf_default][Rename]]' in browser.contents
+    >>> '[[cmf_default][Rename...]]' in browser.contents
     True
     >>> '[[cmf_default][Cut]]' in browser.contents
     True

@@ -15,6 +15,8 @@
 
 import urllib
 
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.formlib import form
@@ -74,7 +76,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
     object_actions = form.Actions(
         form.Action(
             name='rename',
-            label=_(u'Rename'),
+            label=_(u'Rename...'),
             validator='validate_items',
             condition='show_rename',
             success='handle_rename',
@@ -97,7 +99,8 @@ class ContentsView(BatchFormMixin, EditFormBase):
             name='paste',
             label=_(u'Paste'),
             condition='show_paste',
-            success='handle_paste'),
+            success='handle_paste',
+            failure='handle_failure'),
         form.Action(
             name='delete',
             label=_(u'Delete'),
@@ -182,7 +185,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
     @decode
     def up_info(self):
         """Link to the contens view of the parent object"""
-        up_obj = self.context.aq_inner.aq_parent
+        up_obj = aq_parent(aq_inner(self.context))
         mtool = getUtility(IMembershipTool)
         allowed = mtool.checkPermission(ListFolderContents, up_obj)
         if allowed:
@@ -366,10 +369,9 @@ class ContentsView(BatchFormMixin, EditFormBase):
             else:
                 self.status = _(u'Items pasted.')
         except CopyError:
-            self.status = _(u'CopyError: Paste failed.')
             self.request['RESPONSE'].expireCookie('__cp',
                     path='%s' % (self.request['BASEPATH1'] or "/"))
-            return self.handle_failure(action, data, ())
+            self.status = _(u'CopyError: Paste failed.')
         except ValueError:
             self.status = _(u'ValueError: Paste failed.')
             return self.handle_failure(action, data, ())
@@ -402,7 +404,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             elif attempt > 1:
                 self.status = _(u'Items moved up.')
             else:
-                self.status = _(u'Nothing to change.')
+                self.status = self.noChangesMessage
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
             return self.handle_failure(action, data, ())
@@ -422,7 +424,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             elif attempt > 1:
                 self.status = _(u'Items moved down.')
             else:
-                self.status = _(u'Nothing to change.')
+                self.status = self.noChangesMessage
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
             return self.handle_failure(action, data, ())
@@ -441,7 +443,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             elif attempt > 1:
                 self.status = _(u'Items moved to top.')
             else:
-                self.status = _(u'Nothing to change.')
+                self.status = self.noChangesMessage
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
             return self.handle_failure(action, data, ())
@@ -460,7 +462,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             elif attempt > 1:
                 self.status = _(u'Items moved to bottom.')
             else:
-                self.status = _(u'Nothing to change.')
+                self.status = self.noChangesMessage
         except ValueError:
             self.status = _(u'ValueError: Move failed.')
             return self.handle_failure(action, data, ())
