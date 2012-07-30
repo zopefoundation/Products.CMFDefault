@@ -12,6 +12,10 @@ try:
     else:
         return context.setStatus(True, _(u'Items pasted.'))
 except CopyError:
-    return context.setStatus(False, _(u'CopyError: Paste failed.'))
+    context.REQUEST['RESPONSE'].expireCookie('__cp',
+            path='%s' % (context.REQUEST['BASEPATH1'] or "/"))
+    return context.setStatus(True, _(u'CopyError: Paste failed.'))
+except ValueError:
+    return context.setStatus(False, _(u'ValueError: Paste failed.'))
 except zExceptions_Unauthorized:
     return context.setStatus(False, _(u'Unauthorized: Paste failed.'))

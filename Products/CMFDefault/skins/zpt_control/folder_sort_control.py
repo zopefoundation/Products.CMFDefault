@@ -1,6 +1,7 @@
 ##parameters=key='position', reverse=0, **kw
 ##title=Sort objects in a folder
 ##
-context.setDefaultSorting(key, reverse)
+from Products.CMFDefault.utils import Message as _
 
-return context.setStatus(True)
+context.setDefaultSorting(key, reverse)
+return context.setStatus(True, _(u'Default sort order changed.'))
