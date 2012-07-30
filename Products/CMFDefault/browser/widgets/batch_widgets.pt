@@ -39,14 +39,12 @@
  ><p class="BatchNavigation" tal:condition="python: prev_info or next_info"
   ><tal:case tal:condition="prev_info">
   <a href="" tal:attributes="href prev_info/url"
-     tal:content="prev_info/title"
-     i18n:translate="">PREVIOUS N ITEMS</a></tal:case
+     tal:content="prev_info/title">PREVIOUS N ITEMS</a></tal:case
  ><tal:case tal:condition="python: prev_info and next_info">
   &nbsp;&nbsp;</tal:case
  ><tal:case tal:condition="next_info">
   <a href="" tal:attributes="href next_info/url"
-     tal:content="next_info/title"
-     i18n:translate="">NEXT N ITEMS</a></tal:case
+     tal:content="next_info/title">NEXT N ITEMS</a></tal:case
  ></p
 ></metal:macro>
 
