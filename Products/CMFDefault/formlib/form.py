@@ -67,7 +67,8 @@ class _EditFormMixin(ViewBase):
         for k in keys.split(','):
             k = k.strip()
             v = self.request.form.get(k, None)
-            if v:
+            # filter out keys without values or with redundant default values
+            if v and v != '0':
                 kw[k] = v
 
         query = kw and ('?%s' % make_query(kw)) or ''
