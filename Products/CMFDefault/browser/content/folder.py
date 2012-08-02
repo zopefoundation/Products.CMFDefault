@@ -72,41 +72,42 @@ class ContentsView(BatchFormMixin, EditFormBase):
     """Folder contents view"""
 
     template = ViewPageTemplateFile('folder_contents.pt')
+    rename_template = ViewPageTemplateFile('folder_rename.pt')
 
     object_actions = form.Actions(
         form.Action(
-            name='rename',
+            name='select_for_rename',
             label=_(u'Rename...'),
             validator='validate_items',
-            condition='show_rename',
-            success='handle_rename',
+            condition='show_select_for_rename',
+            success='handle_select_for_rename_success',
             failure='handle_failure'),
         form.Action(
             name='cut',
             label=_(u'Cut'),
             condition='show_basic',
             validator='validate_items',
-            success='handle_cut',
+            success='handle_cut_success',
             failure='handle_failure'),
         form.Action(
             name='copy',
             label=_(u'Copy'),
             condition='show_basic',
             validator='validate_items',
-            success='handle_copy',
+            success='handle_copy_success',
             failure='handle_failure'),
         form.Action(
             name='paste',
             label=_(u'Paste'),
             condition='show_paste',
-            success='handle_paste',
+            success='handle_paste_success',
             failure='handle_failure'),
         form.Action(
             name='delete',
             label=_(u'Delete'),
             condition='show_delete',
             validator='validate_items',
-            success='handle_delete',
+            success='handle_delete_success',
             failure='handle_failure')
             )
 
@@ -116,14 +117,14 @@ class ContentsView(BatchFormMixin, EditFormBase):
             label=_(u'Up'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_up',
+            success='handle_up_success',
             failure='handle_failure'),
         form.Action(
             name='down',
             label=_(u'Down'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_down',
+            success='handle_down_success',
             failure='handle_failure')
             )
 
@@ -133,14 +134,14 @@ class ContentsView(BatchFormMixin, EditFormBase):
             label=_(u'Top'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_top',
+            success='handle_top_success',
             failure='handle_failure'),
         form.Action(
             name='bottom',
             label=_(u'Bottom'),
             condition='is_orderable',
             validator='validate_items',
-            success='handle_bottom',
+            success='handle_bottom_success',
             failure='handle_failure')
             )
 
@@ -149,11 +150,25 @@ class ContentsView(BatchFormMixin, EditFormBase):
             name='sort_order',
             label=_(u'Set as Default Sort'),
             condition='can_sort_be_changed',
-            success='handle_sort_order',
+            success='handle_sort_order_success',
             failure='handle_failure')
             )
 
-    actions = object_actions + delta_actions + absolute_actions + sort_actions
+    rename_actions = form.Actions(
+        form.Action(
+            name='rename',
+            label=_(u'Rename'),
+            validator='validate_items',
+            success='handle_rename_success',
+            failure='handle_rename_failure'),
+        form.Action(
+            name='cancel',
+            label=_(u'Cancel'),
+            validator='handle_cancel_validate',
+            success='handle_cancel_success'))
+
+    actions = (object_actions + delta_actions + absolute_actions + sort_actions
+               + rename_actions)
     form_fields = form.FormFields()
     delta_field = form.FormFields(IDeltaItem)
     description = u''
@@ -179,6 +194,18 @@ class ContentsView(BatchFormMixin, EditFormBase):
             else:
                 content.position = '...'
             contents.append(content)
+        return tuple(contents)
+
+    @memoize
+    def listSelectedItems(self):
+        ids = self._get_ids()
+        contents = []
+        for item in self._getBatchObj():
+            if not item.getId() in ids:
+                continue
+            if not item.cb_isMoveable():
+                continue
+            contents.append(ContentProxy(item))
         return tuple(contents)
 
     @memoize
@@ -252,7 +279,14 @@ class ContentsView(BatchFormMixin, EditFormBase):
     @memoize
     def _get_ids(self):
         """Identify objects that have been selected"""
-        ids = self.request.form.get('form.select_ids', [])
+        ids = self.request.form.get('{0}.select_ids'.format(self.prefix), [])
+        if isinstance(ids, basestring):
+            ids = [ids]
+        return [ str(id) for id in ids ]
+
+    @memoize
+    def _get_new_ids(self):
+        ids = self.request.form.get('{0}.new_ids'.format(self.prefix), [])
         if isinstance(ids, basestring):
             ids = [ids]
         return [ str(id) for id in ids ]
@@ -280,7 +314,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
         return bool(self.context.cb_dataValid())
 
     @memoize
-    def show_rename(self, action=None):
+    def show_select_for_rename(self, action=None):
         if not self.show_basic():
             return False
         if not self._checkPermission(AddPortalContent):
@@ -320,16 +354,13 @@ class ContentsView(BatchFormMixin, EditFormBase):
         return errors
 
     #Action handlers
-    def handle_rename(self, action, data):
-        """Redirect to rename view passing the ids of objects to be renamed"""
-        # currently redirects to a PythonScript
-        # should be replaced with a dedicated form
-        self.request.form['ids'] = self._get_ids()
-        keys = ",".join(self._getNavigationVars().keys() + ['ids'])
-        # keys = 'b_start, ids, key, reverse'
-        return self._setRedirect('portal_types', 'object/rename_items', keys)
 
-    def handle_cut(self, action, data):
+    def handle_select_for_rename_success(self, action, data):
+        """Redirect to rename template.
+        """
+        return self.rename_template()
+
+    def handle_cut_success(self, action, data):
         """Cut the selected objects and put them in the clipboard"""
         ids = self._get_ids()
         try:
@@ -346,7 +377,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             self.status = _(u'Unauthorized: Cut failed.')
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_copy(self, action, data):
+    def handle_copy_success(self, action, data):
         """Copy the selected objects to the clipboard"""
         ids = self._get_ids()
         try:
@@ -360,7 +391,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_paste(self, action, data):
+    def handle_paste_success(self, action, data):
         """Paste the objects from the clipboard into the folder"""
         try:
             result = self.context.manage_pasteObjects(self.request['__cp'])
@@ -380,7 +411,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_delete(self, action, data):
+    def handle_delete_success(self, action, data):
         """Delete the selected objects"""
         ids = self._get_ids()
         self.context.manage_delObjects(list(ids))
@@ -390,7 +421,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             self.status = _(u'Items deleted.')
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_up(self, action, data):
+    def handle_up_success(self, action, data):
         """Move the selected objects up the selected number of places"""
         ids = self._get_ids()
         delta = data.get('delta', 1)
@@ -410,7 +441,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_down(self, action, data):
+    def handle_down_success(self, action, data):
         """Move the selected objects down the selected number of places"""
         ids = self._get_ids()
         delta = data.get('delta', 1)
@@ -430,7 +461,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_top(self, action, data):
+    def handle_top_success(self, action, data):
         """Move the selected objects to the top of the page"""
         ids = self._get_ids()
         subset_ids = [obj.getId()
@@ -449,7 +480,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_bottom(self, action, data):
+    def handle_bottom_success(self, action, data):
         """Move the selected objects to the bottom of the page"""
         ids = self._get_ids()
         subset_ids = [obj.getId()
@@ -468,11 +499,39 @@ class ContentsView(BatchFormMixin, EditFormBase):
             return self.handle_failure(action, data, ())
         return self._setRedirect('portal_types', 'object/folderContents')
 
-    def handle_sort_order(self, action, data):
+    def handle_sort_order_success(self, action, data):
         """Set the sort options for the folder."""
         self.context.setDefaultSorting(*self._get_sorting())
         self.status = _(u'Default sort order changed.')
         return self._setRedirect('portal_types', 'object/folderContents')
+
+    def handle_rename_success(self, action, data):
+        """Rename objects in a folder.
+        """
+        ids = self._get_ids()
+        new_ids = self._get_new_ids()
+        if not ids == new_ids:
+            try:
+                self.context.manage_renameObjects(ids, new_ids)
+                if len(ids) == 1:
+                    self.status = _(u'Item renamed.')
+                else:
+                    self.status = _(u'Items renamed.')
+            except CopyError:
+                self.status = _(u'CopyError: Rename failed.')
+                return self.handle_rename_failure(action, data, ())
+        else:
+            self.status = self.noChangesMessage
+        return self._setRedirect('portal_types', 'object/folderContents',
+                  '{0}.b_start, {0}.sort_key, {0}.reverse'.format(self.prefix))
+
+    def handle_cancel_success(self, action, data):
+        return self._setRedirect('portal_types', 'object/folderContents',
+                  '{0}.b_start, {0}.sort_key, {0}.reverse'.format(self.prefix))
+
+    def handle_rename_failure(self, action, data, errors):
+        super(ContentsView, self).handle_failure(action, data, errors)
+        return self.rename_template()
 
 
 class FolderView(BatchViewBase):

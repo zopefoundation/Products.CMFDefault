@@ -224,3 +224,11 @@ Change the default sort order:
     True
     >>> '[[cmf_default][Set as Default Sort]]' in browser.contents
     False
+
+Select 'Members' subfolder for renaming:
+
+    >>> browser.open('http://localhost/site/@@edit.html')
+    >>> browser.getControl(name='form.select_ids').value = ('Members',)
+    >>> browser.getControl('[[cmf_default][Rename...]]').click()
+    >>> '[[cmf_default][Rename Items]]' in browser.contents
+    True

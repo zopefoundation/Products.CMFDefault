@@ -11,22 +11,22 @@ Converting skins to views:
       [x] folder_contents_template.pt -> folder_contents.pt
       [x] validateItemIds.py -> ContentsView.validate_items
       [x] validateClipboardData.py -> obsolete (show_paste checks cb_dataValid)
-      [x] folder_cut_control.py -> ContentsView.handle_cut
-      [x] folder_copy_control.py -> ContentsView.handle_copy
-      [x] folder_paste_control.py -> ContentsView.handle_paste
-      [x] folder_delete_control.py -> ContentsView.handle_delete
-      [x] folder_sort_control.py -> ContentsView.handle_sort_order
-      [x] folder_up_control.py -> ContentsView.handle_up
-      [x] folder_down_control.py -> ContentsView.handle_down
-      [x] folder_top_control.py -> ContentsView.handle_top
-      [x] folder_bottom_control.py -> ContentsView.handle_bottom
+      [x] folder_cut_control.py -> ContentsView.handle_cut_success
+      [x] folder_copy_control.py -> ContentsView.handle_copy_success
+      [x] folder_paste_control.py -> ContentsView.handle_paste_success
+      [x] folder_delete_control.py -> ContentsView.handle_delete_success
+      [x] folder_sort_control.py -> ContentsView.handle_sort_order_success
+      [x] folder_up_control.py -> ContentsView.handle_up_success
+      [x] folder_down_control.py -> ContentsView.handle_down_success
+      [x] folder_top_control.py -> ContentsView.handle_top_success
+      [x] folder_bottom_control.py -> ContentsView.handle_bottom_success
       [-] folder_filter_form.pt (structure)
       [-] filterCookie.py
       [-] clearCookie.py
 
-      [?] folder_rename_form.py
-      [?] folder_rename_control.py
-      [?] folder_rename_template.pt
+      [x] folder_rename_form.py -> ContentsView
+      [x] folder_rename_control.py -> ContentsView.handle_rename_success
+      [x] folder_rename_template.pt -> folder_rename.pt
 
   [x] IMutableMinimalDublinCore @@properties.html:
 
