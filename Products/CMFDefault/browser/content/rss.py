@@ -45,7 +45,7 @@ class View(ViewBase):
         items = LazyFilter(items, skip='View')
         items = ({'title': o.Title(), 'description': o.Description(),
                   'creators': o.listCreators(), 'subjects': o.Subject(),
-                  'rights': o.Rights, 'publisher': o.Publisher(),
+                  'rights': o.Rights(), 'publisher': o.Publisher(),
                   'url': o.absolute_url(), 'date': o.modified().rfc822(),
                   'uid': None}
                   for idx, o in enumerate(items)
