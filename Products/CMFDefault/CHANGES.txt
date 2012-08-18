@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Declared dependency on zope.app.locales.
+
 
 2.2.2 (2010-10-31)
 ------------------

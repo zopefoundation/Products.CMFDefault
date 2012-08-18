@@ -50,6 +50,7 @@ setup(name='Products.%s' % NAME,
           'Zope2 >= 2.12.3',
           'Products.CMFCore',
           'Products.GenericSetup',
+          'zope.app.locales',
           ],
       tests_require=[
           'zope.testing >= 3.7.0',
