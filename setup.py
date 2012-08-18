@@ -52,6 +52,7 @@ setup(name='Products.%s' % NAME,
           'Products.MailHost',
           'Products.PythonScripts',
           'zope.formlib',
+          'zope.app.locales',
           ],
       tests_require=[
           'zope.testing >= 3.7.0',
