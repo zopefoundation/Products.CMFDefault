@@ -6,6 +6,12 @@ Products.CMFDefault Changelog
 
 - Declared dependency on zope.app.locales.
 
+- Added a 'MANIFEST.in' file.
+
+- Made 'Document' tolerant of missing 'rest-header-level' in 'zope.conf'.
+
+- Fixed tests broken when PAS began returning the user from '_doAddUser'.
+
 
 2.2.2 (2010-10-31)
 ------------------
