@@ -1,7 +1,7 @@
 Products.CMFDefault Changelog
 =============================
 
-2.2.3 (unreleased)
+2.2.3 (2012-08-28)
 ------------------
 
 - Fixed explicitly disabling discussion on a content item.
