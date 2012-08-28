@@ -49,6 +49,8 @@ class _EditFormMixin(ViewBase):
 
     template = ViewPageTemplateFile('editform.pt')
     noChangesMessage = _(u'Nothing to change.')
+    # disables new behavior of zope.formlib 4.1
+    ignoreContext = True
 
     def _setRedirect(self, provider_id, action_path, keys=''):
         provider = getToolByName(self.context, provider_id)

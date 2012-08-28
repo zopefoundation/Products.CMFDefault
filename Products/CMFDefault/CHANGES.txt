@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- browser views: Fixed zope.formlib 4.1 compatibility.
+
 - Add dependency on zope.app.locales.
 
 
