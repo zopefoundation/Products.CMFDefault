@@ -78,6 +78,17 @@ class DiscussionToolTests(SecurityTest):
         except AttributeError:
             self.fail('Launchpad issue 162532: AttributeError raised')
 
+    def test_overrideDiscussionFor_w_string_numerics(self):
+        # See https://bugs.launchpad.net/zope-cmf/+bug/1042836/
+        dtool = self.site.portal_discussion
+        foo = self.site._setObject( 'foo', DummyFolder() )
+
+        dtool.overrideDiscussionFor(foo, '0')
+        self.assertEqual(foo.aq_base.allow_discussion, False)
+
+        dtool.overrideDiscussionFor(foo, '1')
+        self.assertEqual(foo.aq_base.allow_discussion, True)
+
     def test_isDiscussionAllowedFor(self):
         # Test for Collector issue #398 (allow_discussion wrongly
         # acquired and used from parent)

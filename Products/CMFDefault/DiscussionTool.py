@@ -78,7 +78,8 @@ class DiscussionTool(UniqueObject, SimpleItem):
                     # https://bugs.launchpad.net/zope-cmf/+bug/162532
                     pass
         else:
-            content.allow_discussion = bool(allowDiscussion)
+            # https://bugs.launchpad.net/zope-cmf/+bug/1042836/
+            content.allow_discussion = bool(int(allowDiscussion))
 
     security.declarePublic( 'getDiscussionFor' )
     def getDiscussionFor(self, content):

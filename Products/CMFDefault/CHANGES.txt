@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Fixed explicitly disabling discussion on a content item.
+  See https://bugs.launchpad.net/zope-cmf/+bug/1042836/
+
 - Declared dependency on zope.app.locales.
 
 - Added a 'MANIFEST.in' file.
