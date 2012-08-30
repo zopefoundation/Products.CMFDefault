@@ -104,6 +104,38 @@ class PropertiesToolTests(SecurityTest):
         self.assertEqual(site_prop('default_charset'), 'iso-8859-1')
         self.assertEqual(site_prop('enable_permalink'), True)
 
+    def test_editProperties_single_value(self):
+        from Products.CMFCore.interfaces import IPropertiesTool
+
+        tool = getUtility(IPropertiesTool)
+        site_prop = self.site.getProperty
+
+        props = {'description': 'Test MailHost Description'}
+        tool.editProperties(props)
+
+        self.assertEqual(getUtility(IMailHost).smtp_host, 'localhost')
+        self.assertEqual(site_prop('email_from_name'), '')
+        self.assertEqual(site_prop('email_from_address'), '')
+        self.assertEqual(site_prop('description'), 'Test MailHost Description')
+        self.assertEqual(site_prop('title'), '')
+        self.assertEqual(site_prop('validate_email'), False)
+        self.assertEqual(site_prop('email_charset'), '')
+        self.assertEqual(site_prop('default_charset'), '')
+        self.assertEqual(site_prop('enable_permalink'), False)
+
+        props = {'smtp_server': 'mail.example.com'}
+        tool.editProperties(props)
+
+        self.assertEqual(getUtility(IMailHost).smtp_host, 'mail.example.com')
+        self.assertEqual(site_prop('email_from_name'), '')
+        self.assertEqual(site_prop('email_from_address'), '')
+        self.assertEqual(site_prop('description'), 'Test MailHost Description')
+        self.assertEqual(site_prop('title'), '')
+        self.assertEqual(site_prop('validate_email'), False)
+        self.assertEqual(site_prop('email_charset'), '')
+        self.assertEqual(site_prop('default_charset'), '')
+        self.assertEqual(site_prop('enable_permalink'), False)
+
 
 def test_suite():
     return unittest.TestSuite((

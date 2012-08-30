@@ -59,7 +59,8 @@ class PropertiesTool(UniqueObject, SimpleItem):
         '''Change portal settings'''
         site = getUtility(ISiteRoot)
         site.manage_changeProperties(**props)
-        getUtility(IMailHost).smtp_host = props['smtp_server']
+        if 'smtp_server' in props:
+            getUtility(IMailHost).smtp_host = props['smtp_server']
         if hasattr(self, 'propertysheets'):
             ps = self.propertysheets
             if hasattr(ps, 'props'):
