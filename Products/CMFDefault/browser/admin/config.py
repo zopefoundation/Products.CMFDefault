@@ -14,51 +14,66 @@
 """
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import adapts
 from zope.component import getUtility
 from zope.formlib import form
-from zope.schema import getFieldNames
+from zope.interface import implements
 
 from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.browser.utils import memoize
+from Products.CMFDefault.formlib.form import SettingsEditFormBase
+from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import ChoiceRadioWidget
 from Products.CMFDefault.utils import Message as _
 
 from .interfaces import IPortalConfig
 
 
-class PortalConfig(EditFormBase):
+class ConfigSchemaAdapter(SchemaAdapterBase):
+
+    """Adapter for IPropertiesTool.
+    """
+
+    adapts(IPropertiesTool)
+    implements(IPortalConfig)
+
+    def __getattr__(self, name):
+        if name in ('title', 'smtp_server'):
+            value = getattr(self.context, name)()
+        else:
+            value = self.context.getProperty(name)
+        if isinstance(value, str) and self.encoding:
+            return value.decode(self.encoding)
+        return value
+
+    def __setattr__(self, name, value):
+        if name in ('context', 'encoding'):
+            SchemaAdapterBase.__setattr__(self, name, value)
+            return
+        if isinstance(value, unicode) and self.encoding:
+            value = value.encode(self.encoding)
+        self.context.editProperties({name: value})
+
+
+class PortalConfig(SettingsEditFormBase):
 
     form_fields = form.FormFields(IPortalConfig)
     form_fields['validate_email'].custom_widget = ChoiceRadioWidget
 
-    actions = form.Actions(
-        form.Action(
-            name='change',
-            label=_(u'Change'),
-            success='handle_success',
-            failure='handle_failure'),
-    )
     template = ViewPageTemplateFile("config.pt")
+    label = _(u'Portal Configuration')
+    description = _(u'This form is used to set the portal configuration '
+                     'options.')
+    successMessage = _(u'Portal settings changed.')
 
-    def setUpWidgets(self, ignore_request=False):
-        data = {}
+    @memoize
+    def getContent(self):
         ptool = getUtility(IPropertiesTool)
-        charset = ptool.getProperty('default_charset', None)
-        for name in getFieldNames(IPortalConfig):
-            value = ptool.getProperty(name)
-            try:
-                value = value.decode(charset)
-            except (AttributeError, UnicodeEncodeError):
-                pass
-            data[name] = value
-        data['smtp_server'] = ptool.smtp_server()
-        self.widgets = form.setUpDataWidgets(
-                    self.form_fields, self.prefix,
-                    self.context, self.request, data=data,
-                    ignore_request=ignore_request)
+        return ConfigSchemaAdapter(ptool)
 
-    def handle_success(self, action, data):
-        ptool = getUtility(IPropertiesTool)
-        ptool.editProperties(data)
-        self.status = _(u"Portal settings changed.")
-        self._setRedirect('portal_actions', 'global/configPortal')
+    def handle_change_success(self, action, data):
+        self._handle_success(action, data)
+        return self._setRedirect('portal_actions', 'global/configPortal')
+
+    def handle_cancel_success(self, action, data):
+        return self._setRedirect('portal_actions', 'ROOT')

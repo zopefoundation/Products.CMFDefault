@@ -46,31 +46,36 @@ class IPortalConfig(Interface):
         title=_(u"Portal 'From' name"),
         description=_(u"When the portal generates mail, it uses this name as "
                       u"its (apparent) sender."),
-        required=False)
+        required=False,
+        missing_value=u'')
 
     email_from_address = TextLine(
         title=_(u"Portal 'From' address"),
         description=_(u"When the portal generates mail, it uses this address "
                       u"as its (apparent) return address."),
-        required=False)
+        required=False,
+        missing_value=u'')
 
     smtp_server = TextLine(
         title=_(u"SMTP server"),
         description=_(u"This is the address of your local SMTP (out-going "
                       u"mail) server."),
-        required=False)
+        required=False,
+        missing_value=u'')
 
     title = TextLine(
         title=_(u"Portal title"),
         description=_(u"This is the title which appears at the top of every "
                       u"portal page."),
-        required=False)
+        required=False,
+        missing_value=u'')
 
     description = TextLine(
         title=_(u"Portal description"),
         description=_(u"This description is made available via syndicated "
                       u"content and elsewhere. It should be fairly brief."),
-        required=False)
+        required=False,
+        missing_value=u'')
 
     validate_email = Choice(
         title=_(u"Password policy"),
@@ -83,7 +88,7 @@ class IPortalConfig(Interface):
                       u"empty, 'utf-8' is used."),
         required=False,
         constraint=check_encoding,
-        default="UTF-8")
+        default="utf-8")
 
     email_charset = ASCIILine(
         title=_(u"Portal email encoding"),
@@ -91,7 +96,7 @@ class IPortalConfig(Interface):
                       u"empty, 'utf-8' is used if necessary."),
         required=False,
         constraint=check_encoding,
-        default="UTF-8")
+        default="utf-8")
 
     enable_actionicons = Bool(
         title=_(u"Action icons"),

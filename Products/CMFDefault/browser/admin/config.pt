@@ -1,18 +1,13 @@
 <html metal:use-macro="context/@@standard_macros/page">
-
 <body>
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
+<metal:macro metal:use-macro="context/@@formlib_macros/errors" />
 
-<ul class="errors" tal:condition="view/errors">
- <li tal:repeat="error view/error_views"
-     tal:content="structure error">Error Message</li>
-</ul>
+<metal:macro metal:use-macro="context/@@formlib_macros/header" />
 
-<h1 i18n:translate="">Portal Configuration</h1>
-
-<form action="." method="post" 
-      tal:attributes="action request/ACTUAL_URL">
+<form action="." method="post"
+   tal:attributes="action request/ACTUAL_URL">
 
     <fieldset tal:repeat="widget view/widgets">
       <label tal:attributes="for widget/name" tal:content="widget/label"></label>
@@ -24,13 +19,12 @@
 
     <span class="errors" tal:condition="not: globals/uidtool_installed">CMFUId is not installed</span>
 
-  <div class="buttons">
-    <tal:loop tal:repeat="action view/actions"
-     tal:replace="structure action/render" />
-  </div>
+<div class="buttons">
+ <tal:loop tal:repeat="action view/actions"
+    tal:replace="structure action/render" />
+</div>
 
 </form>
-
 </metal:slot>
 
 </body>
