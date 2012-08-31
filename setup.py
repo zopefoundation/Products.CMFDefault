@@ -61,7 +61,7 @@ setup(name='Products.%s' % NAME,
                        'docs': ['Sphinx', 
                                 'repoze.sphinx.autointerface', 
                                 'pkginfo'],
-                       'extract': ['zope.app.locales'],},
+                       'locales': ['zope.app.locales'],},
       test_loader='zope.testing.testrunner.eggsupport:SkipLayers',
       test_suite='Products.%s' % NAME,
       entry_points="""

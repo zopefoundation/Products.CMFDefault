@@ -8,7 +8,7 @@ Products.CMFDefault Changelog
 
 - browser views: Fixed zope.formlib 4.1 compatibility.
 
-- Add 'extract' as extras_require in setup.py, with dependency on
+- Add 'locales' as extras_require in setup.py, with dependency on
   zope.app.locales.
 
 
