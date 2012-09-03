@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- RegistrationTool: Improved 'mailPassword' and 'registeredNotify' methods.
+  Mail templates can now be views. 'mail_password_response' is no longer
+  required, using the return value of 'mailPassword' is deprecated.
+
 - PropertiesTool: Fixed editing single properties.
 
 - browser views: Fixed zope.formlib 4.1 compatibility.

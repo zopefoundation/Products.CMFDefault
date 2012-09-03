@@ -21,9 +21,6 @@ RegistrationTool
     ...         kw['ip'] = container.REQUEST['HTTP_X_FORWARDED_FOR']
     ...         return 'Reminder: %(member)s, %(password)s, %(ip)s' % kw
 
-    >>> def mail_password_response(*args):
-    ...     return 'done'
-
     >>> def registered_email(**kw):
     ...     return 'Welcome: %(member)s, %(password)s, %(email)s' % kw
 
@@ -44,14 +41,12 @@ RegistrationTool
     >>> sm.registerUtility(MembershipTool(), IMembershipTool)
     >>> rtool = sm.getUtility(IRegistrationTool)
     >>> rtool.password_email = PasswordEmail()
-    >>> rtool.mail_password_response = mail_password_response
     >>> rtool.registered_email = registered_email
     >>> app.REQUEST.environ['HTTP_X_FORWARDED_FOR'] = 'NNN.NNN.NNN.NNN'
 
-  mailPassword sends a password reminder and returns a response page::
+  mailPassword sends a password reminder::
 
     >>> rtool.mailPassword('foo', app.REQUEST)
-    'done'
 
     >>> getUtility(IMailHost).lastMessage
     'Reminder: foo, secret, NNN.NNN.NNN.NNN'

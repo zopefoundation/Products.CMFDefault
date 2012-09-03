@@ -144,7 +144,7 @@ class RegistrationTool(BaseTool):
                 context = aq_base(item).__of__(context)
         else:
             context = self
-        method = context.password_email
+        method = context.unrestrictedTraverse('password_email')
         kw = {'member': member, 'password': member.getPassword()}
 
         if getattr(aq_base(method), 'isDocTemp', 0):
@@ -155,7 +155,11 @@ class RegistrationTool(BaseTool):
         host = getUtility(IMailHost)
         host.send(mail_text)
 
-        return context.mail_password_response(self, REQUEST)
+        try:
+            # BBB: for CMF 2.2's mail_password script
+            return context.mail_password_response(self, REQUEST)
+        except AttributeError:
+            pass
 
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id, password=None, REQUEST=None):
@@ -185,7 +189,7 @@ class RegistrationTool(BaseTool):
                 context = aq_base(item).__of__(context)
         else:
             context = self
-        method = context.registered_email
+        method = context.unrestrictedTraverse('registered_email')
         kw = {'member': member, 'password': password, 'email': email}
 
         if getattr(aq_base(method), 'isDocTemp', 0):
