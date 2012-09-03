@@ -4,6 +4,12 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- browser views: Added 'registered_email' and 'password_email' views.
+  Please note that these views override the corresponding skin methods. If you
+  want to use customized versions from the skins tool you have to make sure
+  these views are not registered. It is recommended to customize the browser
+  views instead.
+
 - RegistrationTool: Improved 'mailPassword' and 'registeredNotify' methods.
   Mail templates can now be views. 'mail_password_response' is no longer
   required, using the return value of 'mailPassword' is deprecated.

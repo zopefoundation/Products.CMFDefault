@@ -91,4 +91,22 @@
       permission="cmf.ListPortalMembers"
       />
 
+  <browser:page
+      for="Products.CMFCore.interfaces.IRegistrationTool"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="registered_email"
+      class=".notify.RegisteredEmail"
+      template="notify_registered.pt"
+      permission="zope2.Private"
+      />
+
+  <browser:page
+      for="Products.CMFCore.interfaces.IRegistrationTool"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="password_email"
+      class=".notify.PasswordEmail"
+      template="notify_password.pt"
+      permission="zope2.Private"
+      />
+
 </configure>
