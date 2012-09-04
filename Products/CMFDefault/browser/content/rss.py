@@ -25,6 +25,9 @@ from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.utils import ViewBase
 
 
+connvert_to_hours = {'hourly': 1, 'daily': 24, 'weekly': 7 * 24, 'monthly':
+                     30 * 24, 'yearly': 365 * 24}
+
 class View(ViewBase):
 
     """Return an RSS conform list of content items"""
@@ -32,7 +35,7 @@ class View(ViewBase):
     @property
     @memoize
     def synd_info(self):
-        return getAdapter(self.context, ISyndicationInfo).get_info()
+        return getAdapter(self.context, ISyndicationInfo)
 
     @memoize
     @decode
@@ -49,21 +52,20 @@ class View(ViewBase):
                   'url': o.absolute_url(), 'date': o.modified().rfc822(),
                   'uid': None}
                   for idx, o in enumerate(items)
-                    if idx < self.synd_info['max_items'])
+                    if idx < self.synd_info.max_items)
         return items
 
     @memoize
     @decode
     def channel(self):
         """Provide infomation about the channel"""
-        converter = {'hourly': 1, 'daily': 24, 'weekly': 7 * 24,
-                     'monthly': 30 * 24, 'yearly': 365 * 24}
-        ttl = 60 * (self.synd_info['frequency'] *
-                    converter[self.synd_info['period']])
 
-        info = {'base': self.synd_info['base'].rfc822(),
+        ttl = 60 * (self.synd_info.frequency *
+                    connvert_to_hours[self.synd_info.period])
+
+        info = {'base': self.synd_info.base.strftime("%a, %d %b %Y %H:%M:%S"),
                 'ttl': ttl,
-                'period': self.synd_info['period'],
+                'period': self.synd_info.period,
                 'title': self.context.Title(),
                 'description': self.context.Description(),
                 'portal_url': getUtility(IURLTool)()
