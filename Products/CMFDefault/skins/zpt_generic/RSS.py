@@ -8,7 +8,6 @@ from Products.CMFDefault.utils import decode
 stool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ISyndicationTool')
 utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
 
-
 if not stool.isSyndicationAllowed(context):
     context.REQUEST.RESPONSE.redirect(context.absolute_url() +
              '/rssDisabled?portal_status_message=Syndication+is+Disabled')
@@ -17,21 +16,25 @@ if not stool.isSyndicationAllowed(context):
 options = {}
 
 syndication_info = stool.getSyndicationInfo(context)
+base = stool.getUpdateBase(context)
+frequency = stool.getUpdateFrequency(context)
+period = stool.getUpdatePeriod(context)
+
 converter = {'hourly': 1, 'daily': 24, 'weekly': 7 * 24, 'monthly': 30 * 24,
              'yearly': 365 * 24}
-ttl = 60 * (syndication_info['frequency'] *
-            converter[syndication_info['period']])
+ttl = 60 * (frequency * converter[period])
 
-syndication_info.update({'description': context.Description(),
-                         'title': context.Title(),
-                         'url': context.absolute_url(),
-                         'ttl': ttl,
-                         'portal_url': utool()}
-                        )
-syndication_info['base'] = syndication_info['base'].rfc822()
 
-options['channel_info'] = syndication_info
+channel_info = {}
+channel_info = {'description': context.Description(),
+                'title': context.Title(),
+                'url': context.absolute_url(),
+                'ttl': ttl,
+                'portal_url': utool(),
+                'base': base,
+                }
 
+options['channel_info'] = channel_info
 key, reverse = context.getDefaultSorting()
 items = stool.getSyndicatableContent(context)
 items = sequence.sort( items, ((key, 'cmp', reverse and 'desc' or 'asc'),) )
