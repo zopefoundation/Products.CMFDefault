@@ -262,6 +262,7 @@ class SyndicationTool(UniqueObject, SimpleItem):
         as_zope = DateTime(base.isoformat())
         return as_zope.HTML4()
 
+    security.declarePublic('getMaxItems')
     def getMaxItems(self, obj=None):
         """
         Return the max_items to be displayed in the syndication
