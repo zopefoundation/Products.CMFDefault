@@ -46,14 +46,17 @@ class View(ViewBase):
         items = syndtool.getSyndicatableContent(self.context)
         items = sort(items, ((key, 'cmp', reverse and 'desc' or 'asc'),))
         items = LazyFilter(items, skip='View')
-        items = ({'title': o.Title(), 'description': o.Description(),
-                  'creators': o.listCreators(), 'subjects': o.Subject(),
-                  'rights': o.Rights(), 'publisher': o.Publisher(),
-                  'url': o.absolute_url(), 'date': o.modified().rfc822(),
-                  'uid': None}
-                  for idx, o in enumerate(items)
-                    if idx < self.synd_info.max_items)
-        return items
+        for idx, o in enumerate(items):
+            if idx < self.synd_info.max_items:
+                yield {'title': o.Title(),
+                       'description': o.Description(),
+                       'creators': o.listCreators(),
+                       'subjects': o.Subject(),
+                       'rights': o.Rights(),
+                       'publisher': o.Publisher(),
+                       'url': o.absolute_url(),
+                       'date': o.modified().rfc822(),
+                       'uid': None}
 
     @memoize
     @decode
