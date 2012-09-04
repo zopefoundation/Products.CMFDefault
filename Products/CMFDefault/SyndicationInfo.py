@@ -15,6 +15,7 @@
 
 from datetime import datetime
 
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapts
@@ -97,6 +98,7 @@ class SyndicationInfo(object):
     implements(ISyndicationInfo)
     adapts(IFolderish)
     key = "__cmf.SyndicationInfo"
+    security = ClassSecurityInfo()
 
     def __init__(self, context):
         self.context = context
@@ -130,7 +132,7 @@ class SyndicationInfo(object):
         annotation = annotations.get(self.key, None)
         annotation[attr] = value
 
-
+    security.declarePublic('period')
     @property
     def period(self):
         return self._get_property('period')
@@ -147,6 +149,7 @@ class SyndicationInfo(object):
     def frequency(self, value):
         self._set_property('frequency', value)
 
+    security.declarePublic('base')
     @property
     def base(self):
         return self._get_property('base')
@@ -155,6 +158,7 @@ class SyndicationInfo(object):
     def base(self, value):
         return self._set_property('base', value)
 
+    security.declarePublic('max_items')
     @property
     def max_items(self):
         return self._get_property('max_items')
