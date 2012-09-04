@@ -53,6 +53,8 @@ class Site(SettingsEditFormBase):
         )
     )
 
+    redirect = ("portal_actions", "global/syndication")
+
     @memoize
     def getContent(self):
         syndtool = getUtility(ISyndicationTool)
@@ -67,91 +69,50 @@ class Site(SettingsEditFormBase):
         return not self.getContent().enabled
 
     def handle_enable(self, action, data):
-        self.getContent().enabled = True
+        self.getContent().enable()
         self._handle_success(action, data)
         self.status = _(u"Syndication enabled.")
-        self._setRedirect("portal_actions", "global/syndication")
+        self._setRedirect(*self.redirect)
 
     def handle_change(self, action, data):
         self._handle_success(action, data)
         self.status = _(u"Syndication settings changed.")
-        self._setRedirect("portal_actions", "global/syndication")
+        self._setRedirect(*self.redirect)
 
     def handle_disable(self, action, data):
-        self.getContent().enabled = False
+        self.getContent().disable()
         self.status = _(u"Syndication disabled.")
-        self._setRedirect("portal_actions", "global/syndication")
+        self._setRedirect(*self.redirect)
 
 
-class Folder(SettingsEditFormBase):
+class Folder(Site):
 
     """Enable, disable and customise syndication settings for a folder.
     """
 
-    template = ViewPageTemplateFile("syndication.pt")
-    form_fields = form.FormFields(ISyndicationInfo).omit('enabled')
     label = _(u"Configure Folder Syndication")
 
-    actions = form.Actions(
+    actions = Site.actions
+    actions.append(
         form.Action(
-            name="enable",
-            label=_(u"Enable Syndication"),
-            condition="disabled",
-            success="handle_enable",
-            ),
-        form.Action(
-            name="change",
-            label=_(u"Change"),
-            condition="enabled",
-            success="handle_change",
-            ),
-        form.Action(
-            name="revert",
-            label=_(u"Revert to Site Default"),
-            condition="enabled",
-            success="handle_revert",
-            ),
-        form.Action(
-            name="disable",
-            label=_(u"Disable Syndication"),
-            condition="enabled",
-            success="handle_disable",
+        name="revert",
+        label=_(u"Revert to Site Default"),
+        condition="enabled",
+        success="handle_revert",
+            )
         )
-    )
+
+    redirect = ("portal_actions", "object/syndication")
 
     @memoize
     def getContent(self):
         return getAdapter(self.context, ISyndicationInfo)
 
     @memoize
-    def disabled(self, action=None):
-        return not self.enabled()
-
-    @memoize
-    def enabled(self, action=None):
-        return self.getContent().enabled
-
-    @memoize
     def allowed(self, action=None):
         return self.getContent().allowed
-
-    def handle_enable(self, action, data):
-        self.getContent().enable()
-        self._handle_success(action, data)
-        self.status = _(u"Syndication enabled.")
-        self._setRedirect("portal_actions", "object/syndication")
-
-    def handle_disable(self, action, data):
-        self.getContent().disable()
-        self.status = _(u"Syndication disabled.")
-        self._setRedirect("portal_actions", "object/syndication")
-
-    def handle_change(self, action, data):
-        self._handle_success(action, data)
-        self.status = _(u"Syndication settings changed.")
-        self._setRedirect("portal_actions", "object/syndication")
 
     def handle_revert(self, action, data):
         self.getContent().revert()
         self.status = _(u"Syndication reset to site default.")
-        self._setRedirect("portal_actions", "object/syndication")
+        self._setRedirect(*self.redirect)

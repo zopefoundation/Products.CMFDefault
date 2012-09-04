@@ -108,6 +108,12 @@ class SyndicationTool(UniqueObject, SimpleItem):
         info.base = updateBase or self.base
         info.max_items = max_items or self.max_items
 
+    def enable(self):
+        self.enabled = True
+
+    def disable(self):
+        self.enabled = False
+
     security.declareProtected(ManageProperties, 'enableSyndication')
     def enableSyndication(self, obj):
         """

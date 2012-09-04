@@ -44,6 +44,12 @@ class DummySyndicationTool(object):
     def isSiteSyndicationAllowed(self):
         return self.enabled
 
+    def enable(self):
+        self.enabled = True
+
+    def disable(self):
+        self.enabled = False
+
 
 class SiteSyndicationTests(unittest.TestCase):
 

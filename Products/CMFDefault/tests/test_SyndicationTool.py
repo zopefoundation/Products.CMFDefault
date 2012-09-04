@@ -165,7 +165,7 @@ class SyndicationToolTests(SecurityTest):
         MAX_ITEMS = 42
 
         tool = self._makeOne()
-        tool.enabled = True
+        tool.enable()
         context = self._makeContext()
         tool.enableSyndication(context)
 
@@ -201,7 +201,7 @@ class SyndicationToolTests(SecurityTest):
         tool.period = PERIOD
         tool.frequency = FREQUENCY
         tool.base = NOW
-        tool.enabled = True
+        tool.enable()
         tool.max_items = MAX_ITEMS
 
         self.assertEqual(len(tool.getSyndicatableContent(self.app.pf)), 0)
@@ -219,7 +219,7 @@ class SyndicationToolTests(SecurityTest):
         NOW = datetime.now()
 
         tool = self._makeOne()
-        tool.enabled = True
+        tool.enable()
 
         context = self._makeContext()
         info = self._makeInfo(context)
@@ -244,7 +244,7 @@ class SyndicationToolTests(SecurityTest):
         NOW = datetime.now()
 
         tool = self._makeOne()
-        tool.enabled = True
+        tool.enable()
 
         context = self._makeContext()
         info = self._makeInfo(context)
@@ -269,7 +269,7 @@ class SyndicationToolTests(SecurityTest):
         max_items = 10
 
         tool = self._makeOne()
-        tool.enabled = True
+        tool.enable()
 
         context = self._makeContext()
         info = self._makeInfo(context)
@@ -290,7 +290,7 @@ class SyndicationToolTests(SecurityTest):
         period = 2
 
         tool = self._makeOne()
-        tool.enabled = True
+        tool.enable()
 
         context = self._makeContext()
         info = self._makeInfo(context)
@@ -311,7 +311,7 @@ class SyndicationToolTests(SecurityTest):
         frequency = 'weekly'
 
         tool = self._makeOne()
-        tool.enabled = True
+        tool.enable()
 
         context = self._makeContext()
         info = self._makeInfo(context)
