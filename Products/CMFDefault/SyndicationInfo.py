@@ -130,37 +130,38 @@ class SyndicationInfo(object):
         annotation = annotations.get(self.key, None)
         annotation[attr] = value
 
-    def get_period(self):
+
+    @property
+    def period(self):
         return self._get_property('period')
 
-    def set_period(self, value):
+    @period.setter
+    def period(self, value):
         self._set_property('period', value)
 
-    period = property(get_period, set_period)
-
-    def get_frequency(self):
+    @property
+    def frequency(self):
         return self._get_property('frequency')
 
-    def set_frequency(self, value):
+    @frequency.setter
+    def frequency(self, value):
         self._set_property('frequency', value)
 
-    frequency = property(get_frequency, set_frequency)
-
-    def get_base(self):
+    @property
+    def base(self):
         return self._get_property('base')
 
-    def set_base(self, value):
+    @base.setter
+    def base(self, value):
         return self._set_property('base', value)
 
-    base = property(get_base, set_base)
-
-    def get_max_items(self):
+    @property
+    def max_items(self):
         return self._get_property('max_items')
 
-    def set_max_items(self, value):
+    @max_items.setter
+    def max_items(self, value):
         self._set_property('max_items', value)
-
-    max_items = property(get_max_items, set_max_items)
 
     @property
     def enabled(self):
