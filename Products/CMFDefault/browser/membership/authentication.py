@@ -303,6 +303,12 @@ class MailPasswordFormView(EditFormBase):
         self.status = _(u'Your password has been mailed to you.')
         return self._setRedirect('portal_actions', 'user/login')
 
+    @property
+    @memoize
+    def admin_email(self):
+        ptool = getUtility(IPropertiesTool)
+        return ptool.getProperty('email_from_address')
+
 
 class LogoutView(ViewBase):
 
