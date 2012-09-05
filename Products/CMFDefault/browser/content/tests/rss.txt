@@ -1,11 +1,26 @@
 RSS Views
---------------
+---------
 
-Set up site, content and user.
+Set up site and enable syndication for the portal
 
     >>> from zope.component.hooks import setSite
     >>> setSite(app.site)
+    >>> app.site.portal_syndication.enabled
+    False
     >>> app.site.portal_syndication.enable()
+    >>> app.site.portal_syndication.enabled
+    True
+
+Set up syndication for the folder
+
+    >>> from Products.CMFCore.interfaces import ISyndicationInfo
+    >>> from zope.component import getAdapter
+    >>> info = getAdapter(app.site, ISyndicationInfo)
+    >>> info.enabled
+    False
+    >>> info.enable()
+    >>> info.enabled
+    True
 
     >>> from Products.CMFDefault.Document import Document
     >>> obj_id = app.site._setObject('myDocument', Document('myDocument'))
@@ -25,4 +40,8 @@ Create the browser object we'll be using.
     >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
 Get RSS Feed
+
+    >>> browser.open("http://localhost/site/@@rss.xml")
+    >>> browser.contents is not None
+    True
 
