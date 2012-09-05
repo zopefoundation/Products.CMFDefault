@@ -45,3 +45,17 @@ Get RSS Feed
     >>> browser.contents is not None
     True
 
+Parse Feed
+    >>> from xml.etree import ElementTree
+    >>> feed = ElementTree.XML(browser.contents).getchildren()[0]
+    >>> feed.find("title").text == "Portal"
+    True
+    >>> feed.find("lastBuildDate").text == app.site.portal_syndication.getUpdateBase()
+    True
+    >>> item = feed.find("item")
+    >>> item.find("title").text == "TITLE"
+    True
+    >>> item.find("description").text == "DESCRIPTION"
+    True
+    >>> item.find("pubDate").text == obj.modified().rfc822()
+    True
