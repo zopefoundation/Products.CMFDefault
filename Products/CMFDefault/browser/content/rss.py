@@ -66,7 +66,7 @@ class View(ViewBase):
         ttl = 60 * (self.synd_info.frequency *
                     connvert_to_hours[self.synd_info.period])
 
-        info = {'base': self.synd_info.base.strftime("%a, %d %b %Y %H:%M:%S"),
+        info = {'base': self.synd_info.rfc822(),
                 'ttl': ttl,
                 'period': self.synd_info.period,
                 'title': self.context.Title(),
