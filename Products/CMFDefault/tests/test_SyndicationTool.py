@@ -135,6 +135,19 @@ class SyndicationToolTests(SecurityTest):
         self.assertFalse(tool.enabled)
         self.assertEqual(tool.max_items, 15)
 
+    def test_enable_site_syndication(self):
+        tool = self._makeOne()
+        self.assertFalse(tool.enabled)
+        tool.enable()
+        self.assertTrue(tool.enabled)
+
+    def test_disable_site_syndication(self):
+        tool = self._makeOne()
+        self.assertFalse(tool.enabled)
+        tool.enable()
+        tool.disable()
+        self.assertFalse(tool.enabled)
+
     def test_object_not_syndicatable(self):
         tool = self._makeOne()
         self.assertFalse(tool.isSyndicationAllowed(Dummy))
