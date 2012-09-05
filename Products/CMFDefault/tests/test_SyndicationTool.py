@@ -213,7 +213,8 @@ class SyndicationToolTests(SecurityTest):
         tool = self._makeOne()
         tool.base = NOW
 
-        self.assertEqual(NOW.isoformat(), tool.getUpdateBase())
+        self.assertEqual(NOW.strftime("%a, %d %b %Y %H:%M:%S +0000"),
+                         tool.getUpdateBase())
 
     def test_getUpdateBaseWithContext(self):
         NOW = datetime.now()
@@ -226,7 +227,8 @@ class SyndicationToolTests(SecurityTest):
         tool.enableSyndication(context)
         info.base = NOW
 
-        self.assertEqual(NOW.isoformat(), tool.getUpdateBase(context))
+        self.assertEqual(NOW.strftime("%a, %d %b %Y %H:%M:%S +0000"),
+                         tool.getUpdateBase(context))
 
     def test_getHTML4UpdateBase(self):
         NOW = datetime.now()

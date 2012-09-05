@@ -228,21 +228,15 @@ class SyndicationTool(UniqueObject, SimpleItem):
     security.declarePublic('getUpdateBase')
     def getUpdateBase(self, obj=None):
         """
-        Return the base date to be used with the update frequency
-        and the update period to calculate a publishing schedule.
-
-        Note:  I'm not sure what's best here, creation date, last
-        modified date (of the folder being syndicated) or some
-        arbitrary date.  For now, I'm going to build a updateBase
-        time from zopetime and reformat it to meet the W3CDTF.
-        Additionally, sitewide policy checks might have a place
-        here...
+        Return the base date formatted as RFC 822 to be used with the update
+        frequency and the update period to calculate a publishing schedule.
         """
         if obj is not None:
             base = self.getSyndicationInfo(obj).base
         else:
             base = self.base
-        return base.isoformat()
+        as_zope = DateTime(base.isoformat())
+        return as_zope.rfc822()
 
     security.declarePublic('getHTML4UpdateBase')
     def getHTML4UpdateBase(self, obj=None):
