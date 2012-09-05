@@ -65,15 +65,31 @@ class SyndicationInfoTests(TransactionalTest):
         adapter = self._makeOne()
         self.assertTrue(adapter.site_settings is self.syndtool)
 
-    def test_set(self):
+    def test_annotation(self):
         adapter = self._makeOne()
-        settings = {'max_items': 10, 'frequency': 7, 'period': 'daily',
-                    'base': datetime.today()}
         annotations = getAdapter(adapter.context, IAnnotations)
         self.assertFalse(adapter.key in annotations)
-        annotations[adapter.key] = settings
+        adapter.base = datetime.today()
+        self.assertTrue(adapter.key in annotations)
+
+    def test_set(self):
+        adapter = self._makeOne()
+        now = datetime.today()
+        settings = {'max_items': 10, 'frequency': 7, 'period': 'daily',
+                    'base': now}
+        adapter.base = now
+        adapter.period = 'daily'
+        adapter.frequency = 7
+        adapter.max_items = 10
         for k, v in settings.items():
             self.assertEqual(getattr(adapter, k), v)
+
+    def test_rfc822(self):
+        adapter = self._makeOne()
+        now = datetime.today()
+        adapter.base = now
+        self.assertEqual(adapter.rfc822(),
+                         now.strftime("%a, %d %b %Y %H:%M:%S +0000"))
 
     def revert(self):
         adapter = self._makeOne()
@@ -108,7 +124,7 @@ class SyndicationInfoTests(TransactionalTest):
         adapter.enable()
         self.assertTrue(adapter.enabled)
         adapter.disable()
-        self.assertFalse(adapter.disable())
+        self.assertFalse(adapter.enabled)
 
 
 class DummySyndicationTool(object):

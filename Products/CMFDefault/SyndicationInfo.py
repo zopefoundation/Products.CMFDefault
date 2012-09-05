@@ -16,6 +16,7 @@
 from datetime import datetime
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
+from DateTime import DateTime
 from OFS.SimpleItem import SimpleItem
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapts
@@ -157,6 +158,10 @@ class SyndicationInfo(object):
     @base.setter
     def base(self, value):
         return self._set_property('base', value)
+
+    def rfc822(self):
+        as_zope = DateTime(self.base.isoformat())
+        return as_zope.rfc822()
 
     security.declarePublic('max_items')
     @property
