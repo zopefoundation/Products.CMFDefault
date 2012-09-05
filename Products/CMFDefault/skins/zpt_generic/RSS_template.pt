@@ -12,6 +12,7 @@
       <title tal:content="channel_info/title"></title>
       <link tal:content="channel_info/url">URL</link>
     </image>
+    <lastBuildDate tal:content="channel_info/base"></lastBuildDate>
     <ttl tal:content="channel_info/ttl"></ttl>
     <atom:link tal:attributes="href request/URL"
                 rel="self" type="application/rss+xml" />
@@ -35,6 +36,6 @@
         tal:repeat="subject item_info/listSubjects"
         tal:content="subject">SUBJECT</dc:subject>
   </item>
-  
+
   </channel>
 </rss>
