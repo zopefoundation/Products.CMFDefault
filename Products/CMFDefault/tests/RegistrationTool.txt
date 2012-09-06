@@ -13,7 +13,8 @@ RegistrationTool
     ...     def getMemberById(self, id): return Member()
 
     >>> class MailHost:
-    ...     def send(self, messageText): self.lastMessage = messageText
+    ...     def send(self, messageText, immediate=False):
+    ...         self.lastMessage = messageText
 
     >>> class PasswordEmail(Implicit):
     ...     def __call__(self, **kw):

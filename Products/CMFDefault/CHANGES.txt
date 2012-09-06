@@ -12,7 +12,8 @@ Products.CMFDefault Changelog
 
 - RegistrationTool: Improved 'mailPassword' and 'registeredNotify' methods.
   Mail templates can now be views. 'mail_password_response' is no longer
-  required, using the return value of 'mailPassword' is deprecated.
+  required, using the return value of 'mailPassword' is deprecated. Sending
+  mails immediately is now enforced to allow better error handling.
 
 - PropertiesTool: Fixed editing single properties.
 

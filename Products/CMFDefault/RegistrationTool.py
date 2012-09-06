@@ -153,7 +153,11 @@ class RegistrationTool(BaseTool):
             mail_text = method(**kw)
 
         host = getUtility(IMailHost)
-        host.send(mail_text)
+        try:
+            host.send(mail_text, immediate=True)
+        except TypeError:
+            # fallback for mail hosts that don't implement the new signature
+            host.send(mail_text)
 
         try:
             # BBB: for CMF 2.2's mail_password script
@@ -198,7 +202,11 @@ class RegistrationTool(BaseTool):
             mail_text = method(**kw)
 
         host = getUtility(IMailHost)
-        host.send(mail_text)
+        try:
+            host.send(mail_text, immediate=True)
+        except TypeError:
+            # fallback for mail hosts that don't implement the new signature
+            host.send(mail_text)
 
     security.declareProtected(ManagePortal, 'editMember')
     @postonly
