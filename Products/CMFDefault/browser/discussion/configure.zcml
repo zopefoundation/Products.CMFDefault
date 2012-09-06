@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      for="Products.CMFCore.interfaces.IContentish"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="discuss.html"
+      class=".discussion.Discuss"
+      permission="cmf.ModifyPortalContent"
+      />
+
+
+  <!--<browser:page-->
+      <!--for="Products.CMFCore.interfaces.IPortalContent"-->
+      <!--layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"-->
+      <!--name="delete_discussion.html"-->
+      <!--class=".discussion.Delete"-->
+      <!--permission="cmf.ModifyPortalContent"-->
+      <!--/>-->
+
+</configure>

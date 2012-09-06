@@ -6,6 +6,8 @@
 
   <include package=".content"/>
 
+  <include package=".discussion"/>
+
   <include package=".membership"/>
 
   <include package=".search"/>

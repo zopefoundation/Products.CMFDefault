@@ -17,8 +17,3 @@ Converting skins to views:
 --------------------------------
 - [x] getBaseTag.pt (structure) -> content_macros.pt
 - [x] content_byline.pt (macros) -> content_macros.pt
-
-- [?] viewThreadsAtBottom.pt (structure)
-- [?] talkback_tree.pt (macros)
-- [?] setup_talkback_tree.py
-- [?] discitem_delete.py
