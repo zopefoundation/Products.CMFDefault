@@ -18,12 +18,10 @@ Add an object
     >>> uf = app.site.acl_users
     >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
 
-Create the browser object we'll be using.
-
-    >>> from Testing.testbrowser import Browser
-    >>> browser = Browser()
-    >>> browser.handleErrors = False
-    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+Make superuser
+    >>> from AccessControl.SecurityManagement import newSecurityManager
+    >>> user = app.site.acl_users.getUser('mgr')
+    >>> newSecurityManager(None, user)
 
 Enable discussion for the object
 
@@ -32,3 +30,33 @@ Enable discussion for the object
     >>> dtool = getUtility(IDiscussionTool)
     >>> dtool.isDiscussionAllowedFor(obj)
     False
+    >>> dtool.overrideDiscussionFor(obj, 1)
+    >>> dtool.isDiscussionAllowedFor(obj)
+    True
+
+Create the browser object we'll be using.
+
+    >>> from Testing.testbrowser import Browser
+    >>> browser = Browser()
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+
+Add a comment
+
+    >>> browser.open("http://localhost/site/myDocument/discuss.html")
+    >>> "[[cmf_default][Reply body]]" in browser.contents
+    True
+    >>> browser.getControl(name='form.title').value = ('A reply')
+    >>> browser.getControl(name='form.text').value = ('What a fantastic article')
+
+Check adding
+
+    >>> browser.getControl('[[cmf_default][Add]]').click()
+    >>> 'talkback' in browser.url
+    True
+    >>> 'A reply' in browser.contents
+    True
+
+Check previewing
+
+    >>> pass

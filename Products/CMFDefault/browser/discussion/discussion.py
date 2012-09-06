@@ -15,11 +15,11 @@ class IDiscussion(Interface):
 
 
     title = TextLine(
-        title=_("Title")
+        title=_("Subject (Title)")
     )
 
     text = Text(
-        title=_("Text")
+        title=_("Reply body")
     )
 
 
@@ -33,24 +33,48 @@ class Discuss(EditFormBase):
         form.Action(
             name="add",
             label=_("Add"),
+            condition=1,
+            validator="validate",
             success="handle_add"
             ),
         form.Action(
             name="edit",
             label=_("Edit"),
+            condition=1,
             success="handle_edit",
             ),
         form.Action(
             name="preview",
             label=_("Preview"),
+            condition=1,
             success="handle_preview",
             )
     )
 
+    redirect = ("portal_actions", "object/view")
+
     @property
     @memoize
-    def atool(self):
-        return getUtility(IActionsTool)
+    def dtool(self):
+        return getUtility(IDiscussionTool)
+
+    @property
+    def is_preview(self):
+        pass
+
+    def handle_add(self, action, data):
+        talkback = self.dtool.getDiscussionFor(self.context)
+        replyID = talkback.createReply(title=data['title'], text=data['text'])
+        reply = talkback.getReply(replyID)
+
+        self.status = _(u"Reply added.")
+        import pdb
+        #pdb.set_trace()
+        self.context.setRedirect(reply, "object/view")
+
+    def handle_preview(self, action, data):
+        pass
+
 
     #form = context.REQUEST.form
     #is_preview = False
