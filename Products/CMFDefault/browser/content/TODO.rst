@@ -128,7 +128,7 @@ Converting skins to views:
 --------------------------------------------
 - [x] RSS.py -> rss.View
 - [x] RSS_template.pt -> rss.pt
-- [?] rssDisabled.pt
+- [-] rssDisabled.pt
 
 [ ] other:
 ----------
