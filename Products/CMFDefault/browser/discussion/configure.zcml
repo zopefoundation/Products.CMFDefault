@@ -3,6 +3,15 @@
     xmlns:browser="http://namespaces.zope.org/browser">
 
   <browser:page
+      for="Products.CMFCore.interfaces.IDiscussionResponse"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="view.html"
+      class=".discussion.View"
+      template="discussion.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
       for="Products.CMFCore.interfaces.IContentish"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="discuss.html"
@@ -10,13 +19,12 @@
       permission="cmf.ModifyPortalContent"
       />
 
-
-  <!--<browser:page-->
-      <!--for="Products.CMFCore.interfaces.IPortalContent"-->
-      <!--layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"-->
-      <!--name="delete_discussion.html"-->
-      <!--class=".discussion.Delete"-->
-      <!--permission="cmf.ModifyPortalContent"-->
-      <!--/>-->
+  <browser:page
+      for="Products.CMFCore.interfaces.IDiscussionResponse"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="delete.html"
+      class=".discussion.Delete"
+      permission="cmf.ModifyPortalContent"
+      />
 
 </configure>

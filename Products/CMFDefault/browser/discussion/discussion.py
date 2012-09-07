@@ -5,10 +5,32 @@ from zope.schema import TextLine, Text
 
 from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFDefault.formlib.form import EditFormBase
+from Products.CMFDefault.browser.utils import ViewBase
 from Products.CMFDefault.utils import Message as _
 from Products.PythonScripts.standard import structured_text
 from Products.CMFDefault.utils import html_marshal
 from Products.CMFDefault.browser.utils import decode, memoize
+
+
+class View(ViewBase):
+    """
+    View a comment in the context of a discussion
+    """
+
+    @memoize
+    @decode
+    def title(self):
+        return self.context.Title()
+
+    @memoize
+    @decode
+    def description(self):
+        return self.context.Description()
+
+    @memoize
+    @decode
+    def text(self):
+        return self.context.CookedBody()
 
 
 class IDiscussion(Interface):
@@ -119,7 +141,7 @@ class Discuss(EditFormBase):
 
 
 
-class Delete(EditFormBase):
+class Delete(ViewBase):
     """
     Delete an item from a discussion
     """
@@ -133,7 +155,5 @@ class Delete(EditFormBase):
         parent = self.context.inReplyTo()
         talkback = self.dtool.getDiscussionFor(parent)
         talkback.deleteReply(self.context.getId())
-
-    def setRedirect(self):
-        self.context.setStatus(True, _(u'Reply deleted.'))
+        self.status = _(u'Reply deleted.')
         self.context.setRedirect(parent, 'object/view')
