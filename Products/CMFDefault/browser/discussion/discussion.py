@@ -63,18 +63,21 @@ class Discuss(EditFormBase):
         pass
 
     def handle_add(self, action, data):
+        """Create comment and redirect to it"""
         talkback = self.dtool.getDiscussionFor(self.context)
         replyID = talkback.createReply(title=data['title'], text=data['text'])
         reply = talkback.getReply(replyID)
 
         self.status = _(u"Reply added.")
-        import pdb
-        #pdb.set_trace()
         self.context.setRedirect(reply, "object/view")
 
     def handle_preview(self, action, data):
+        """Preview comment and allow editing or adding"""
         pass
 
+    def handle_edit(self, action, data):
+        """Edit comment before submitting it"""
+        pass
 
     #form = context.REQUEST.form
     #is_preview = False
