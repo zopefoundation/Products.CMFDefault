@@ -130,23 +130,9 @@ Converting skins to views:
 - [x] RSS_template.pt -> rss.pt
 - [?] rssDisabled.pt
 
-[ ] IDiscussionResponse @@view.html:
-------------------------------------
-- [ ] discussionitem_view.py
-- [ ] aboveInThread.py
-- [ ] discussionitem_view_template.pt
-
-[ ] IDiscussionResponse @@edit.html:
-------------------------------------
-- [ ] discussion_reply_form.py
-- [ ] validateHTML.py
-- [ ] discussion_reply.py
-- [ ] discussion_reply_template.pt
-
 [ ] other:
 ----------
 - [ ] addtoFavorites.py
-- [ ] TitleOrId.py
 
 - [ ] recent_news.py (target)
 - [ ] recent_news_template.pt
