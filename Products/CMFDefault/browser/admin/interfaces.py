@@ -85,7 +85,7 @@ class IPortalConfig(Interface):
     default_charset = ASCIILine(
         title=_(u"Portal default encoding"),
         description=_(u"Charset used to decode portal content strings. If "
-                      u"empty, 'utf-8' is used."),
+                      u"empty, 'ascii' is used."),
         required=False,
         constraint=check_encoding,
         default="utf-8")
@@ -99,14 +99,14 @@ class IPortalConfig(Interface):
         default="utf-8")
 
     enable_actionicons = Bool(
-        title=_(u"Action icons"),
+        title=_(u"Show action icons"),
         description=_(u"Actions available to the user are shown as textual "
                       u"links. With this option enabled, they are also shown "
                       u"as icons if the action definition specifies one."),
         required=False)
 
     enable_permalink = Bool(
-        title=_(u"Permalinks"),
+        title=_(u"Show permalinks"),
         description=_(u"If permalinks are enabled then a unique identifier is "
                       u"assigned to every item of content independent of it's "
                       u"id or position in a site. This requires the CMFUid "
