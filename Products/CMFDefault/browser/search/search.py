@@ -20,12 +20,12 @@ from zope.formlib import form
 
 from .interfaces import ISearchSchema
 from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.widgets.batch import BatchFormMixin
 from Products.CMFDefault.browser.widgets.batch import IBatchForm
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceMultiSelectWidget
+from Products.CMFDefault.permissions import ReviewPortalContent
 from Products.CMFDefault.utils import Message as _
 
 EPOCH = datetime.date(1970, 1, 1)
@@ -38,10 +38,6 @@ class Search(BatchFormMixin, EditFormBase):
     template = ViewPageTemplateFile("search.pt")
     results = ViewPageTemplateFile("search_results.pt")
     hidden_fields = form.FormFields(IBatchForm)
-    form_fields = form.FormFields(ISearchSchema)
-    form_fields['review_state'].custom_widget = ChoiceMultiSelectWidget
-    form_fields['Subject'].custom_widget = ChoiceMultiSelectWidget
-    form_fields['portal_type'].custom_widget = ChoiceMultiSelectWidget
 
     search = form.Actions(
         form.Action(
@@ -71,15 +67,19 @@ class Search(BatchFormMixin, EditFormBase):
     actions = search + image
 
     @property
-    @memoize
-    def catalog(self):
-        return getUtility(ICatalogTool)
+    def form_fields(self):
+        form_fields = form.FormFields(ISearchSchema)
+        form_fields['review_state'].custom_widget = ChoiceMultiSelectWidget
+        form_fields['Subject'].custom_widget = ChoiceMultiSelectWidget
+        form_fields['portal_type'].custom_widget = ChoiceMultiSelectWidget
+        if not self._checkPermission(ReviewPortalContent):
+            form_fields = form_fields.omit('review_state')
+        return form_fields
 
     @property
     @memoize
-    def is_anonymous(self):
-        mtool = getUtility(IMembershipTool)
-        return mtool.isAnonymousUser()
+    def catalog(self):
+        return getUtility(ICatalogTool)
 
     @memoize
     def _getNavigationVars(self):
@@ -92,21 +92,13 @@ class Search(BatchFormMixin, EditFormBase):
             data = self.request.form
         return data
 
-    @property
-    @memoize
-    def search_fields(self):
-        if self.is_anonymous:
-            return self.form_fields.omit('review_state')
-        else:
-            return self.form_fields
-
     def setUpWidgets(self, ignore_request=False):
         if "form.b_start" in self.request.form \
         or "b_start" in self.request.form:
             self.template = self.results
         super(Search, self).setUpWidgets(ignore_request)
         self.widgets = form.setUpWidgets(
-                self.search_fields, self.prefix, self.context,
+                self.form_fields, self.prefix, self.context,
                 self.request, ignore_request=ignore_request)
 
     def handle_search(self, action, data):

@@ -26,7 +26,6 @@ from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.tests.base.dummy import DummySite
-from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFDefault.browser.test_utils import DummyRequest
 
 
@@ -209,27 +208,19 @@ class TypeVocabularyTests(unittest.TestCase):
 
 class SearchFormTests(unittest.TestCase):
 
-    def setUp(self):
-        self.site = DummySite('site')
-        getSiteManager().registerUtility(DummyTool(), IMembershipTool)
-
-    def tearDown(self):
-        cleanUp()
-
     def _getTargetClass(self):
         from Products.CMFDefault.browser.search.search import Search
-        return Search(self.site, DummyRequest())
+        return Search(DummySite(), DummyRequest())
 
-    def test_is_anonymous(self):
+    def test_is_not_reviewer(self):
         view = self._getTargetClass()
-        self.assertTrue(view.is_anonymous)
-        self.assertEqual(view.search_fields.get('review_state'), None)
+        view._checkPermission = lambda permission: False
+        self.assertEqual(view.form_fields.get('review_state'), None)
 
-    def test_is_not_anonymous(self):
+    def test_is_reviewer(self):
         view = self._getTargetClass()
-        getSiteManager().getUtility(IMembershipTool).anon = 0
-        self.assertFalse(view.is_anonymous)
-        self.assertNotEqual(view.search_fields.get('review_state'), None)
+        view._checkPermission = lambda permission: True
+        self.assertNotEqual(view.form_fields.get('review_state'), None)
 
     def test_strip_unused_paramaters(self):
         view = self._getTargetClass()
