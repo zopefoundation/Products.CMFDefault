@@ -1,7 +1,0 @@
-Search Views
-------------
-  [x] search:
-
-      search.py, search_form.py  -> search.py.Search
-      search_form_template.pt -> search.pt
-      search_results_template.pt -> results.pt

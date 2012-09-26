@@ -36,7 +36,7 @@ class Search(BatchFormMixin, EditFormBase):
     """Portal Search Form"""
 
     template = ViewPageTemplateFile("search.pt")
-    results = ViewPageTemplateFile("results.pt")
+    results = ViewPageTemplateFile("search_results.pt")
     hidden_fields = form.FormFields(IBatchForm)
     form_fields = form.FormFields(ISearchSchema)
     form_fields['review_state'].custom_widget = ChoiceMultiSelectWidget
