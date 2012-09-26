@@ -465,7 +465,7 @@ def toUnicode(value, charset=None):
         return value
 
 security.declarePublic('decode')
-def decode(value, context):
+def decode(value, context=None):
     """ Decode value using default_charset.
     """
     ptool = getUtility(IPropertiesTool)

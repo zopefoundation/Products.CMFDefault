@@ -32,13 +32,15 @@ from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFDefault.utils import Message as _
+from Products.CMFDefault.utils import decode
+
 
 def status_vocab(context):
     """Provides a list of workflow states"""
     ctool = getUtility(ICatalogTool)
     values = [SimpleTerm(None, None, _(u"-- any --"))]
-    values += [SimpleTerm(v, v, v)
-               for v in ctool.uniqueValuesFor('review_state')]
+    values += [ SimpleTerm(v, str(v), _(decode(v)))
+                for v in ctool.uniqueValuesFor('review_state') ]
     return SimpleVocabulary(values)
 directlyProvides(status_vocab, IContextSourceBinder)
 
@@ -46,7 +48,7 @@ def subject_vocab(context):
     """Provides a list of subject keywords"""
     ctool = getUtility(ICatalogTool)
     values = [SimpleTerm(None, None, _(u"-- any --"))]
-    values += [SimpleTerm(v, v, v)
+    values += [SimpleTerm(v, v.encode('hex'), decode(v))
                for v in ctool.uniqueValuesFor('Subject')]
     return SimpleVocabulary(values)
 directlyProvides(subject_vocab, IContextSourceBinder)
@@ -86,10 +88,11 @@ directlyProvides(date_vocab, IContextSourceBinder)
 
 def type_vocab(context):
     """Provides a list of portal types"""
-    ttool =  getUtility(ITypesTool)
+    ttool = getUtility(ITypesTool)
     types = ttool.listTypeInfo()
     terms = [SimpleTerm(None, None, _(u"-- any --"))]
-    terms += [SimpleTerm(t.getId(), t.getId(), t.Title()) for t in types]
+    terms += [ SimpleTerm(t.getId(), t.getId(), decode(t.Title()))
+               for t in types ]
     return SimpleVocabulary(terms)
 directlyProvides(type_vocab, IContextSourceBinder)
 
