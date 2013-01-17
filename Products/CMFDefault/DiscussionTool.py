@@ -80,6 +80,10 @@ class DiscussionTool(UniqueObject, SimpleItem):
                     pass
         else:
             # https://bugs.launchpad.net/zope-cmf/+bug/1042836/
+            if allowDiscussion in ('True', 'true', 'on'):
+                allowDiscussion = True
+            elif allowDiscussion in ('False', 'false', 'off'):
+                allowDiscussion = False
             content.allow_discussion = bool(int(allowDiscussion))
 
     security.declarePublic( 'getDiscussionFor' )

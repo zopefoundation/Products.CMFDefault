@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- Fixed AttributeError for allowDiscussion when importing a
+  GenericSetup structure tarball.
+  See https://bugs.launchpad.net/zope-cmf/+bug/1042836/
+
 - browser views: Added 'registered_email' and 'password_email' views.
   Please note that these views override the corresponding skin methods. If you
   want to use customized versions from the skins tool you have to make sure
