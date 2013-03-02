@@ -92,7 +92,7 @@ class Folder(Site):
 
     label = _(u"Configure Folder Syndication")
 
-    actions = Site.actions
+    actions = form.Actions(*Site.actions.actions)
     actions.append(
         form.Action(
         name="revert",
