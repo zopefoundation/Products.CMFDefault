@@ -1,3 +1,43 @@
+_EditFormMixin
+--------------
+
+Create mockup and _EditFormMixin instance.
+
+    >>> import sys
+    >>> from Products.CMFDefault.formlib.form import _EditFormMixin
+
+    >>> class Mockup(object): pass
+    >>> provider = Mockup()
+    >>> provider.getActionInfo = lambda *args, **kw: {'url': 'ACTION_URL'}
+    >>> context = Mockup()
+    >>> context.portal_actions = provider
+    >>> response = Mockup()
+    >>> response.redirect = lambda x: sys.stdout.write(x)
+    >>> request = Mockup()
+    >>> request.response = response
+
+    >>> obj = _EditFormMixin(context, request)
+    >>> request.form = {'foo': 1, 'PREFIX.bar': u'BAR'}
+    >>> obj.prefix = 'PREFIX'
+    >>> obj.status = None
+    >>> obj._getBrowserCharset = lambda: 'utf-8'
+
+The _setRedirect method helps creating the correct redirect url.
+
+    >>> print obj._setRedirect('portal_actions', 'ACTION')
+    ACTION_URL
+
+    >>> print obj._setRedirect('portal_actions', 'ACTION', 'foo, bar')
+    ACTION_URL?foo:int=1&bar=BAR
+
+    >>> request.form = {'foo': 0, 'bar': '0'}
+    >>> print obj._setRedirect('portal_actions', 'ACTION', 'foo, bar')
+    ACTION_URL?bar=0
+
+    >>> obj.status = u'STATUS \xc4\xd6\xdc'
+    >>> print obj._setRedirect('portal_actions', 'ACTION', 'foo, bar')
+    ACTION_URL?portal_status_message=STATUS%20%C3%84%C3%96%C3%9C&bar=0
+
 Add Forms
 ---------
 

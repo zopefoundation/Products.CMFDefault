@@ -68,9 +68,11 @@ class _EditFormMixin(ViewBase):
             kw['portal_status_message'] = message
         for k in keys.split(','):
             k = k.strip()
-            v = self.request.form.get(k, None)
-            # filter out keys without values or with redundant default values
-            if v and v != '0':
+            v = self.request.form.get(k,
+                self.request.form.get('{0}.{1}'.format(self.prefix, k), None))
+            if v:
+                if isinstance(v, unicode):
+                    v = v.encode(self._getBrowserCharset())
                 kw[k] = v
 
         query = kw and '?{0}'.format(make_query(kw)) or ''
