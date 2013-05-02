@@ -176,10 +176,10 @@ class DummyContext(Implicit):
     pass
 
 
-class DummyRequest:
+class DummyRequest(object):
 
     def __init__(self):
-        self.RESPONSE = DummyResponse()
+        self.response = DummyResponse()
 
     def get(self, key, default=None):
         return {}

@@ -16,18 +16,16 @@
 import unittest
 
 from zope.component import getSiteManager
-from zope.interface import implements
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.interface import alsoProvides
+from zope.interface import implements
 from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IFolderish
-from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import IURLTool
-from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
 from Products.CMFDefault.browser.test_utils import DummyRequest
@@ -88,7 +86,7 @@ class SiteSyndicationTests(unittest.TestCase):
         view.handle_enable("enable", {})
         self.assertTrue(view.enabled())
         self.assertEqual(view.status, u"Syndication enabled.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20enabled.")
 
@@ -107,7 +105,7 @@ class SiteSyndicationTests(unittest.TestCase):
         for k, v in data.items():
             self.assertEqual(getattr(view.getContent(), k), v)
         self.assertEqual(view.status, u"Syndication settings changed.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20settings%20changed.")
 
@@ -118,7 +116,7 @@ class SiteSyndicationTests(unittest.TestCase):
         view.handle_disable("disable", {})
         self.assertTrue(view.disabled())
         self.assertEqual(view.status, u"Syndication disabled.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20disabled.")
 
@@ -170,7 +168,7 @@ class FolderSyndicationTests(unittest.TestCase):
         view.handle_enable("enable", {})
         self.assertTrue(view.enabled())
         self.assertEqual(view.status, u"Syndication enabled.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20enabled.")
 
@@ -182,7 +180,7 @@ class FolderSyndicationTests(unittest.TestCase):
         view.handle_disable("disable", {})
         self.assertFalse(view.enabled())
         self.assertEqual(view.status, u"Syndication disabled.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20disabled.")
 
@@ -195,7 +193,7 @@ class FolderSyndicationTests(unittest.TestCase):
         for k, v in values.items():
             self.assertEqual(getattr(view.getContent(), k), v)
         self.assertEqual(view.status, u"Syndication settings changed.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20settings%20changed.")
 
@@ -209,7 +207,7 @@ class FolderSyndicationTests(unittest.TestCase):
         for k, v in values.items():
             self.assertNotEqual(getattr(view.getContent(), k), v)
         self.assertEqual(view.status, u"Syndication reset to site default.")
-        self.assertEqual(view.request.RESPONSE.location,
+        self.assertEqual(view.request.response.location,
             "http://www.foobar.com/bar/site?portal_status_message="
             "Syndication%20reset%20to%20site%20default.")
 

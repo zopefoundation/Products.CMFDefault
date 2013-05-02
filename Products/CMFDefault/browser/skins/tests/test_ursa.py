@@ -67,14 +67,14 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
     def test_ctor_wo_def_charset_doesnt_set_content_type(self):
         context = self._makeContext()
         request = DummyRequest()
-        response = request.RESPONSE
+        response = request.response
         self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 0)
 
     def test_ctor_w_resp_charset_doesnt_set_content_type(self):
         context = self._makeContext()
         request = DummyRequest()
-        response = request.RESPONSE
+        response = request.response
         response._orig_headers['content-type'] = 'text/html; charset=UTF-8'
         self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 0)
@@ -83,7 +83,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         context = self._makeContext()
         context.portal_properties.default_charset = 'latin1'
         request = DummyRequest()
-        response = request.RESPONSE
+        response = request.response
         response._orig_headers['content-type'] = 'text/html; charset=UTF-8'
         self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 0)
@@ -92,7 +92,7 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         context = self._makeContext()
         context.portal_properties.default_charset = 'latin1'
         request = DummyRequest()
-        response = request.RESPONSE
+        response = request.response
         response._orig_headers['content-type'] = 'text/html'
         self._makeOne(context, request)
         self.assertEqual(len(response._set_headers), 1)
@@ -574,10 +574,10 @@ class DummyResponse:
         self._set_headers.append((key, value))
 
 
-class DummyRequest:
+class DummyRequest(object):
 
     def __init__(self):
-        self.RESPONSE = DummyResponse()
+        self.response = DummyResponse()
 
 
 def test_suite():

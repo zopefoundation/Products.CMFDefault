@@ -400,7 +400,7 @@ class ContentsView(BatchFormMixin, EditFormBase):
             else:
                 self.status = _(u'Items pasted.')
         except CopyError:
-            self.request['RESPONSE'].expireCookie('__cp',
+            self.request.response.expireCookie('__cp',
                     path='%s' % (self.request['BASEPATH1'] or "/"))
             self.status = _(u'CopyError: Paste failed.')
         except ValueError:

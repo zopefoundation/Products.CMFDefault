@@ -45,13 +45,13 @@ class UrsineGlobals(ViewBase):
     """
     def __init__(self, context, request):
         super(ViewBase, self).__init__(context, request)
-        ct = self.request.RESPONSE.getHeader('content-type') or ''
+        ct = self.request.response.getHeader('content-type') or ''
         if not 'charset' in ct:
             # Some newstyle views set a different charset - don't override it.
             # Oldstyle views need the default_charset.
             default_charset = self.ptool.getProperty('default_charset', None)
             if default_charset:
-                self.request.RESPONSE.setHeader('content-type',
+                self.request.response.setHeader('content-type',
                               'text/html; charset=%s' % default_charset)
 
     @property

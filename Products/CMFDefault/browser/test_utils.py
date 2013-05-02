@@ -23,10 +23,9 @@ class DummyResponse(object):
 
 class DummyRequest(TestRequest):
 
-
     def __init__(self, **kw):
         super(DummyRequest, self).__init__(kw)
-        self.RESPONSE = DummyResponse()
+        self._response = DummyResponse()
 
     def getPreferredCharsets(self):
         return ['utf-8']
