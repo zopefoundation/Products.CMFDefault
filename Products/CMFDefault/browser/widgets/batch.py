@@ -89,9 +89,11 @@ class BatchViewBase(ViewBase):
         for k, v in kw.items():
             if not v or k == 'portal_status_message':
                 del kw[k]
+            elif isinstance(v, unicode):
+                kw[k] = v.encode(self._getBrowserCharset())
 
-        query = kw and ('?%s' % make_query(kw)) or ''
-        return u'%s%s' % (target, query)
+        query = kw and u'?{0}'.format(make_query(kw)) or u''
+        return u'{0}{1}'.format(target, query)
 
     # interface
 
@@ -195,7 +197,7 @@ class BatchViewBase(ViewBase):
     @memoize
     @decode
     def summary_match(self):
-        return self._getNavigationVars().get('SearchableText')
+        return self._getNavigationVars().get('SearchableText', None)
 
 
 class BatchFormMixin(BatchViewBase):
