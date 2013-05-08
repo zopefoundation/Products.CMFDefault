@@ -1,11 +1,10 @@
 <html metal:use-macro="context/@@standard_macros/page">
-
 <body>
 
 <metal:slot metal:fill-slot="body" i18n:domain="cmf_default">
+<h1 i18n:translate="">Search Results</h1>
 
-<h1 tal:content="view/label | nothing ">Search Results</h1>
-
+<metal:macro metal:use-macro="context/@@batch_widget/summary" />
 <table class="SearchResults" tal:condition="view/listBatchItems">
  <thead>
   <tr>

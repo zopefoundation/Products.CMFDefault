@@ -34,7 +34,7 @@
    <property name="url_expr">string:${portal_url}/@@join.html</property>
   </object>
   <object name="search_form" meta_type="CMF Action">
-   <property name="url_expr">string:${portal_url}/@@search.html</property>
+   <property name="url_expr">string:${portal_url}/@@search_form.html</property>
   </object>
   <object name="search" meta_type="CMF Action">
    <property name="url_expr">string:${portal_url}/@@search.html</property>

@@ -21,6 +21,7 @@ from zope.component import getSiteManager
 from zope.i18nmessageid import Message
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
@@ -59,8 +60,8 @@ class StatusVocabularyTests(unittest.TestCase):
         self.assertEqual(len(vocab), 3)
         terms = [ t for t in vocab ]
 
-        self.assertEqual(terms[0].value, None)
-        self.assertEqual(terms[0].token, 'None')
+        self.assertEqual(terms[0].value, u'')
+        self.assertEqual(terms[0].token, '')
         self.assertTrue(isinstance(terms[0].token, str))
         self.assertEqual(terms[0].title, u'-- any --')
         self.assertTrue(isinstance(terms[0].title, Message))
@@ -96,8 +97,8 @@ class SubjectVocabularyTests(unittest.TestCase):
         self.assertEqual(len(vocab), 3)
         terms = [ t for t in vocab ]
 
-        self.assertEqual(terms[0].value, None)
-        self.assertEqual(terms[0].token, 'None')
+        self.assertEqual(terms[0].value, u'')
+        self.assertEqual(terms[0].token, '')
         self.assertTrue(isinstance(terms[0].token, str))
         self.assertEqual(terms[0].title, u'-- any --')
         self.assertTrue(isinstance(terms[0].title, Message))
@@ -132,29 +133,29 @@ class DateVocabularyTests(unittest.TestCase):
         self.assertEqual(len(vocab), 4)
         terms = [ t for t in vocab ]
 
-        self.assertEqual(terms[0].value, date(1970, 1, 1))
-        self.assertEqual(terms[0].token, '1970-01-01')
+        self.assertEqual(terms[0].value, None)
+        self.assertEqual(terms[0].token, 'ever')
         self.assertTrue(isinstance(terms[0].token, str))
         self.assertEqual(terms[0].title, u'Ever')
         self.assertTrue(isinstance(terms[0].title, Message))
 
         date_value = date.today() - timedelta(days=1)
         self.assertEqual(terms[1].value, date_value)
-        self.assertEqual(terms[1].token, str(date_value))
+        self.assertEqual(terms[1].token, 'yesterday')
         self.assertTrue(isinstance(terms[1].token, str))
         self.assertEqual(terms[1].title, u'Yesterday')
         self.assertTrue(isinstance(terms[1].title, Message))
 
         date_value = date.today() - timedelta(days=7)
         self.assertEqual(terms[2].value, date_value)
-        self.assertEqual(terms[2].token, str(date_value))
+        self.assertEqual(terms[2].token, 'last_week')
         self.assertTrue(isinstance(terms[2].token, str))
         self.assertEqual(terms[2].title, u'Last week')
         self.assertTrue(isinstance(terms[2].title, Message))
 
         date_value = date.today() - timedelta(days=31)
         self.assertEqual(terms[3].value, date_value)
-        self.assertEqual(terms[3].token, str(date_value))
+        self.assertEqual(terms[3].token, 'last_month')
         self.assertTrue(isinstance(terms[3].token, str))
         self.assertEqual(terms[3].title, u'Last month')
         self.assertTrue(isinstance(terms[3].title, Message))
@@ -193,8 +194,8 @@ class TypeVocabularyTests(unittest.TestCase):
         self.assertEqual(len(vocab), 3)
         terms = [ t for t in vocab ]
 
-        self.assertEqual(terms[0].value, None)
-        self.assertEqual(terms[0].token, 'None')
+        self.assertEqual(terms[0].value, u'')
+        self.assertEqual(terms[0].token, '')
         self.assertTrue(isinstance(terms[0].token, str))
         self.assertEqual(terms[0].title, u'-- any --')
         self.assertTrue(isinstance(terms[0].title, Message))
@@ -208,39 +209,60 @@ class TypeVocabularyTests(unittest.TestCase):
 
 class SearchFormTests(unittest.TestCase):
 
+    def setUp(self):
+        class DummyActionsTool(object):
+            def getActionInfo(self, action_chain, object=None,
+                              check_visibility=False, check_condition=False):
+                return {'url': 'foo'}
+
+        sm = getSiteManager()
+        sm.registerUtility(DummyActionsTool(), IActionsTool)
+
+    def tearDown(self):
+        cleanUp()
+
     def _getTargetClass(self):
         from Products.CMFDefault.browser.search.search import Search
-        return Search(DummySite(), DummyRequest())
+
+        return Search
+
+    def _makeOne(self):
+        return self._getTargetClass()(DummySite(), DummyRequest())
 
     def test_is_not_reviewer(self):
-        view = self._getTargetClass()
+        view = self._makeOne()
         view._checkPermission = lambda permission: False
         self.assertEqual(view.form_fields.get('review_state'), None)
 
     def test_is_reviewer(self):
-        view = self._getTargetClass()
+        view = self._makeOne()
         view._checkPermission = lambda permission: True
         self.assertNotEqual(view.form_fields.get('review_state'), None)
 
     def test_strip_unused_paramaters(self):
-        view = self._getTargetClass()
-        data = {'portal_type': ['Document'], 'review_state': u"None",
-                'Subject': u"None"}
-        view.handle_search('search', data)
-        self.assertEqual(view._query, {'portal_type': ['Document']})
+        view = self._makeOne()
+        view.request.form = {'portal_type': ['Document'],
+                             'review_state': u'',
+                             'Subject': u''}
+        view.handle_search('search', {})
+        self.assertEqual(view.request.response.location,
+                         'foo?portal_type:list=Document')
+
+
+class SearchViewTests(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from Products.CMFDefault.browser.search.search import SearchView
+
+        return SearchView
+
+    def _makeOne(self):
+        return self._getTargetClass()(DummySite(), DummyRequest())
 
     def test_add_search_vars_to_hidden(self):
-        view = self._getTargetClass()
-        self.assertFalse(hasattr(view, '_query'))
-        data = {'portal_type': ['Document']}
-        view.handle_search('search', data)
-        self.assertEqual(view._getNavigationVars(), data)
-
-    def test_search_returns_results(self):
-        view = self._getTargetClass()
-        self.assertNotEqual(view.template, view.results)
-        view.handle_search('search', {})
-        self.assertEqual(view.template.filename, view.results.filename)
+        view = self._makeOne()
+        view.request.form = {'portal_type': ['Document']}
+        self.assertEqual(view._getNavigationVars(), view.request.form)
 
 
 def test_suite():
@@ -250,4 +272,5 @@ def test_suite():
     suite.addTest(unittest.makeSuite(DateVocabularyTests))
     suite.addTest(unittest.makeSuite(TypeVocabularyTests))
     suite.addTest(unittest.makeSuite(SearchFormTests))
+    suite.addTest(unittest.makeSuite(SearchViewTests))
     return suite

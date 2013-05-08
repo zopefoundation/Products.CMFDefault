@@ -74,9 +74,8 @@
     </li>
      <form action="search" method="get"
            tal:attributes="action globals/search_url">
-     <input name="form.SearchableText" type="search" />
-     <input type="hidden" name="b_start" value="0" />
-     <input type="image" name="form.actions.search" value="go" src="go.gif"
+     <input name="SearchableText" type="search" />
+     <input type="image" name="go" value="go" src="go.gif"
             align="middle"
             tal:attributes="src string:${portal_url}/go.gif" />
     </form>

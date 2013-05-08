@@ -12,34 +12,31 @@
 ##############################################################################
 """Search views"""
 
-import datetime
-
+from DateTime.DateTime import DateTime
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.formlib import form
+from ZPublisher.HTTPRequest import record
 
 from .interfaces import ISearchSchema
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFDefault.browser.utils import memoize
-from Products.CMFDefault.browser.widgets.batch import BatchFormMixin
-from Products.CMFDefault.browser.widgets.batch import IBatchForm
+from Products.CMFDefault.browser.widgets.batch import BatchViewBase
 from Products.CMFDefault.formlib.form import EditFormBase
 from Products.CMFDefault.formlib.widgets import ChoiceMultiSelectWidget
 from Products.CMFDefault.permissions import ReviewPortalContent
 from Products.CMFDefault.utils import Message as _
 
-EPOCH = datetime.date(1970, 1, 1)
+EPOCH = DateTime('1970/01/01 00:00:00 UTC')
 
 
-class Search(BatchFormMixin, EditFormBase):
+class Search(EditFormBase):
 
     """Portal Search Form"""
 
-    template = ViewPageTemplateFile("search.pt")
-    results = ViewPageTemplateFile("search_results.pt")
-    hidden_fields = form.FormFields(IBatchForm)
+    template = ViewPageTemplateFile('search.pt')
 
-    search = form.Actions(
+    actions = form.Actions(
         form.Action(
             name='search',
             label=_(u"Search"),
@@ -48,23 +45,10 @@ class Search(BatchFormMixin, EditFormBase):
             ),
         )
 
-    # for handling searches from the search box
-    image = form.Actions(
-        form.Action(
-            name='search.x',
-            label=_(u"Search"),
-            success='handle_search',
-            failure='handle_failure',
-            ),
-        form.Action(
-            name='search.y',
-            label=_(u"Search"),
-            success='handle_search',
-            failure='handle_failure',
-            ),
-        )
-
-    actions = search + image
+    @property
+    def label(self):
+        return _(u'Search ${portal_title}',
+                 mapping={'portal_title': self.title()})
 
     @property
     def form_fields(self):
@@ -76,53 +60,67 @@ class Search(BatchFormMixin, EditFormBase):
             form_fields = form_fields.omit('review_state')
         return form_fields
 
-    @property
-    @memoize
-    def catalog(self):
-        return getUtility(ICatalogTool)
+    def handle_search(self, action, data):
+        if 'form.created' in self.request.form:
+            del self.request.form['form.created']
+        if 'created' in data and data['created']:
+            created = record()
+            created.query = DateTime(str(data['created']))
+            created.range = 'min'
+            self.request.form['form.created'] = created
+        return self._setRedirect('portal_actions', 'global/search',
+                                 'review_state,SearchableText,Title,Subject,'
+                                 'Description,created,portal_type,'
+                                 'listCreators')
+
+
+class SearchView(BatchViewBase):
+
+    """View for search results.
+    """
+
+    # helpers
 
     @memoize
     def _getNavigationVars(self):
-        data = {}
-        if hasattr(self, 'hidden_widgets'):
-            form.getWidgetsData(self.hidden_widgets, self.prefix, data)
-        if hasattr(self, '_query'):
-            data.update(self._query)
-        else:
-            data = self.request.form
-        return data
-
-    def setUpWidgets(self, ignore_request=False):
-        if "form.b_start" in self.request.form \
-        or "b_start" in self.request.form:
-            self.template = self.results
-        super(Search, self).setUpWidgets(ignore_request)
-        self.widgets = form.setUpWidgets(
-                self.form_fields, self.prefix, self.context,
-                self.request, ignore_request=ignore_request)
-
-    def handle_search(self, action, data):
-        for k, v in data.items():
+        kw = self.request.form.copy()
+        for k, v in kw.items():
             if k in ('review_state', 'Title', 'Subject', 'Description',
-                     'portal_type', 'listCreators', 'SearchableText'):
-                if not v or v == u"None":
-                    del data[k]
-            elif k == 'created' and v == EPOCH:
-                del data[k]
-        self._query = data
-        self.template = self.results
+                     'portal_type', 'listCreators'):
+                if isinstance(v, (list, tuple)):
+                    v = filter(None, v)
+                if not v:
+                    del kw[k]
+            elif k in ('created',):
+                if v['query'] == EPOCH and v['range'] == 'min':
+                    del kw[k]
+                else:
+                    # work around problems with DateTime in records
+                    kw[k] = v.copy()
+            elif k in ('go', 'go.x', 'go.y'):
+                del kw[k]
+            elif k == 'SearchableText':
+                v = ' '.join([ w.strip('_-.@') for w in v.split() ])
+                if v:
+                    kw[k] = v
+                else:
+                    del kw[k]
+        return kw
 
     @memoize
     def _get_items(self):
-        return self.catalog.searchResults(self._query)
+        ctool = getUtility(ICatalogTool)
+        return ctool.searchResults(self._getNavigationVars())
+
+    # interface
 
     @memoize
     def listBatchItems(self):
-        return({'description': item.Description,
-           'icon': item.getIconURL,
-           'title': item.Title,
-           'type': item.Type,
-           'date': item.Date,
-           'url': item.getURL(),
-           'format': None}
-          for item in self._getBatchObj())
+        return ({'description': item.Description,
+                 'icon': item.getIconURL,
+                 'title': item.Title,
+                 'type': item.Type,
+                 'date': item.Date,
+                 'url': item.getURL(),
+                 'format': None}
+                for item in self._getBatchObj())
