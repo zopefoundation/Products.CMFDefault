@@ -112,24 +112,24 @@ def check_actions_tool(tool):
     """
     atool = getToolByName(tool, 'portal_actions')
     try:
-        atool.user.change_password
-    except AttributeError:
+        atool['user']['change_password']
+    except KeyError:
         return True
     try:
-        atool['global'].members_register # 'global' is a reserved word in Python
-    except (KeyError, AttributeError):
+        atool['global']['members_register']
+    except KeyError:
         return True
     try:
-        atool['global'].search_form # 'global' is a reserved word in Python
-    except (KeyError, AttributeError):
+        atool['global']['search_form']
+    except KeyError:
         return True
     try:
-        atool['global'].search # 'global' is a reserved word in Python
-    except (KeyError, AttributeError):
+        atool['global']['search']
+    except KeyError:
         return True
     try:
-        atool['global'].syndication # 'global' is a reserved word in Python
-    except (KeyError, AttributeError):
+        atool['global']['syndication']
+    except KeyError:
         return True
     return False
 
