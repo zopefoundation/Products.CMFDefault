@@ -275,3 +275,13 @@ class UrsineGlobals(ViewBase):
     @memoize
     def add_actions(self):
         return self.actions.get('folder/add', ())
+
+    @property
+    @memoize
+    def search_form_url(self):
+        return self.atool.getActionInfo('global/search_form')['url']
+
+    @property
+    @memoize
+    def search_url(self):
+        return self.atool.getActionInfo('global/search')['url']

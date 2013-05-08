@@ -57,6 +57,8 @@ globals = {'utool': utool,
            'isAnon': isAnon,
            'wf_state': wtool.getInfoFor(context, 'review_state', ''),
            'show_actionicons': ptool.getProperty('enable_actionicons'),
-           'status_message': message}
+           'status_message': message,
+           'search_form_url': atool.getActionInfo('global/search_form')['url'],
+           'search_url': atool.getActionInfo('global/search')['url']}
 
 return decode(globals, context)

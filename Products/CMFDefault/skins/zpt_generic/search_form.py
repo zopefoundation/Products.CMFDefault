@@ -5,11 +5,10 @@ from Products.CMFDefault.permissions import ReviewPortalContent
 from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 
+atool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IActionsTool')
 ctool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ICatalogTool')
 mtool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 ttool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ITypesTool')
-utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
-portal_url = utool()
 
 
 options = {}
@@ -34,7 +33,7 @@ options['listCreatedInfos'] = tuple(created)
 options['listTypeInfos'] = ttool.listTypeInfo()
 
 buttons = []
-target = '%s/search' % portal_url
+target = atool.getActionInfo('global/search')['url']
 buttons.append( {'name': 'search', 'value': _(u'Search')} )
 options['form'] = { 'action': target,
                     'listButtonInfos': tuple(buttons) }

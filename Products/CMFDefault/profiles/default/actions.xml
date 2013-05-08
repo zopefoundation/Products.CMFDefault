@@ -239,6 +239,30 @@
    </property>
    <property name="visible">False</property>
   </object>
+  <object name="search_form" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Search Form</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${portal_url}/search_form</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="search" meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Search</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${portal_url}/search</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
   <object name="undo" meta_type="CMF Action" i18n:domain="cmf_default">
    <property name="title" i18n:translate="">Undo</property>
    <property name="description" i18n:translate=""></property>

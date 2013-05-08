@@ -69,11 +69,11 @@
     </li>
     <li>
     <a href="search_form"
-       tal:attributes="href string:${portal_url}/@@search.html"
+       tal:attributes="href globals/search_form_url"
        i18n:translate="">search</a>
     </li>
      <form action="search" method="get"
-              tal:attributes="action string:${portal_url}/@@search.html">
+           tal:attributes="action globals/search_url">
      <input name="form.SearchableText" type="search" />
      <input type="hidden" name="b_start" value="0" />
      <input type="image" name="form.actions.search" value="go" src="go.gif"

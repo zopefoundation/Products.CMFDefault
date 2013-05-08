@@ -120,6 +120,14 @@ def check_actions_tool(tool):
     except (KeyError, AttributeError):
         return True
     try:
+        atool['global'].search_form # 'global' is a reserved word in Python
+    except (KeyError, AttributeError):
+        return True
+    try:
+        atool['global'].search # 'global' is a reserved word in Python
+    except (KeyError, AttributeError):
+        return True
+    try:
         atool['global'].syndication # 'global' is a reserved word in Python
     except (KeyError, AttributeError):
         return True
@@ -136,6 +144,10 @@ def upgrade_actions_tool(tool):
     logger.info("'change_password' action added.")
     getMultiAdapter((atool, environ), IBody).body = _ACTIONS_REGISTER_XML
     logger.info("'members_register' action added.")
+    getMultiAdapter((atool, environ), IBody).body = _ACTIONS_SEARCH_FORM_XML
+    logger.info("'search_form' action added.")
+    getMultiAdapter((atool, environ), IBody).body = _ACTIONS_SEARCH_XML
+    logger.info("'search' action added.")
     getMultiAdapter((atool, environ), IBody).body = _ACTIONS_SYNDICATION_XML
     logger.info("'portal syndication settings' action added.")
 
@@ -178,6 +190,48 @@ _ACTIONS_REGISTER_XML = """\
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="Manage users"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+ </object>
+</object>
+"""
+
+_ACTIONS_SEARCH_FORM_XML = """\
+<object name="portal_actions" meta_type="CMF Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="global" meta_type="CMF Action Category">
+  <object insert-after="members_delete" name="search_form"
+     meta_type="CMF Action" i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Search Form</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${portal_url}/search_form</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+ </object>
+</object>
+"""
+
+_ACTIONS_SEARCH_XML = """\
+<object name="portal_actions" meta_type="CMF Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="global" meta_type="CMF Action Category">
+  <object insert-after="search_form" name="search" meta_type="CMF Action"
+     i18n:domain="cmf_default">
+   <property name="title" i18n:translate="">Search</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${portal_url}/search</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
    </property>
    <property name="visible">False</property>
   </object>

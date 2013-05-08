@@ -478,6 +478,18 @@ class UrsineGlobalsTests(unittest.TestCase, PlacelessSetup):
         getSiteManager().registerUtility(tool, IActionsTool)
         self.assertEqual(view.workflow_actions, ACTIONS['workflow'])
 
+    def test_search_form_url(self):
+        view = self._makeOne()
+        tool = DummyActionsTool()
+        getSiteManager().registerUtility(tool, IActionsTool)
+        self.assertEqual(view.search_form_url, u'site/search_form')
+
+    def test_search_url(self):
+        view = self._makeOne()
+        tool = DummyActionsTool()
+        getSiteManager().registerUtility(tool, IActionsTool)
+        self.assertEqual(view.search_url, u'site/search')
+
 
 class DummyContext:
 
@@ -531,7 +543,7 @@ class DummyMembershipTool:
     pass
 
 
-class DummyActionsTool:
+class DummyActionsTool(object):
 
     def __init__(self, actions=None):
         if actions is None:
@@ -540,6 +552,9 @@ class DummyActionsTool:
 
     def listFilteredActionsFor(self, context):
         return self.actions
+
+    def getActionInfo(self, action_chain):
+        return {'url': u'site/{1}'.format(*action_chain.split('/'))}
 
 
 class DummyWorkflowTool:

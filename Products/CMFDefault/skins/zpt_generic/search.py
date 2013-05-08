@@ -6,15 +6,14 @@ from Products.CMFDefault.utils import decode
 from Products.CMFDefault.utils import Message as _
 from Products.CMFDefault.utils import thousands_commas
 
+atool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IActionsTool')
 ctool = getUtilityByInterfaceName('Products.CMFCore.interfaces.ICatalogTool')
-utool = getUtilityByInterfaceName('Products.CMFCore.interfaces.IURLTool')
-portal_url = utool()
 epoch = DateTime('1970/01/01 00:00:01 GMT')
 
 
 options = {}
 
-target = '%s/search' % portal_url
+target = atool.getActionInfo('global/search')['url']
 kw = context.REQUEST.form.copy()
 for k, v in kw.items():
     if k in ('review_state', 'Title', 'Subject', 'Description', 'portal_type',
