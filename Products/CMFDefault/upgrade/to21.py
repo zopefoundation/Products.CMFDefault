@@ -261,7 +261,9 @@ def upgrade_actions_tool(tool):
 def check_skins_tool(tool):
     """2.0.x to 2.1.0 upgrade step checker
     """
-    stool = getToolByName(tool, 'portal_skins')
+    stool = getToolByName(tool, 'portal_skins', None)
+    if stool is None:
+        return False
     for obj in stool.objectValues():
         if IDirectoryView.providedBy(obj):
             dirpath = obj.getDirPath()
@@ -289,7 +291,9 @@ def upgrade_skins_tool(tool):
     """2.0.x to 2.1.0 upgrade step handler
     """
     logger = logging.getLogger('GenericSetup.upgrade')
-    stool = getToolByName(tool, 'portal_skins')
+    stool = getToolByName(tool, 'portal_skins', None)
+    if stool is None:
+        return
     for obj in stool.objectValues():
         if IDirectoryView.providedBy(obj):
             dirpath = obj.getDirPath()
