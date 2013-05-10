@@ -43,7 +43,6 @@ items = [ {'description': item.Description,
 
 length = batch_obj.sequence_length
 summary = { 'length': length and thousands_commas(length) or '',
-            'l2': length,
             'type': (length == 1) and _(u'item') or _(u'items'),
             'match': kw.get('SearchableText') }
 navigation = context.getBatchNavigation(batch_obj, target, **kw)

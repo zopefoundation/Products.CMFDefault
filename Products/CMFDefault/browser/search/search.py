@@ -20,6 +20,7 @@ from ZPublisher.HTTPRequest import record
 
 from .interfaces import ISearchSchema
 from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFDefault.browser.utils import decode
 from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.browser.widgets.batch import BatchViewBase
 from Products.CMFDefault.formlib.form import EditFormBase
@@ -85,8 +86,8 @@ class SearchView(BatchViewBase):
     def _getNavigationVars(self):
         kw = self.request.form.copy()
         for k, v in kw.items():
-            if k in ('review_state', 'Title', 'Subject', 'Description',
-                     'portal_type', 'listCreators'):
+            if k in ('review_state', 'SearchableText', 'Title', 'Subject',
+                     'Description', 'portal_type', 'listCreators'):
                 if isinstance(v, (list, tuple)):
                     v = filter(None, v)
                 if not v:
@@ -99,12 +100,6 @@ class SearchView(BatchViewBase):
                     kw[k] = v.copy()
             elif k in ('go', 'go.x', 'go.y'):
                 del kw[k]
-            elif k == 'SearchableText':
-                v = ' '.join([ w.strip('_-.@') for w in v.split() ])
-                if v:
-                    kw[k] = v
-                else:
-                    del kw[k]
         return kw
 
     @memoize
@@ -115,12 +110,14 @@ class SearchView(BatchViewBase):
     # interface
 
     @memoize
+    @decode
     def listBatchItems(self):
-        return ({'description': item.Description,
-                 'icon': item.getIconURL,
-                 'title': item.Title,
-                 'type': item.Type,
-                 'date': item.Date,
-                 'url': item.getURL(),
-                 'format': None}
-                for item in self._getBatchObj())
+        items = [ {'description': item.Description,
+                   'icon': item.getIconURL,
+                   'title': item.Title,
+                   'type': item.Type,
+                   'date': item.Date,
+                   'url': item.getURL(),
+                   'format': None}
+                  for item in self._getBatchObj() ]
+        return tuple(items)
