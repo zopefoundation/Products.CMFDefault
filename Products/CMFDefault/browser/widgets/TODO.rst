@@ -17,3 +17,4 @@ Converting skins to views:
 --------------------------------
 - [x] getBaseTag.pt (structure) -> content_macros.pt
 - [x] content_byline.pt (macros) -> content_macros.pt
+- [x] viewThreadsAtBottom.pt (structure) -> content_macros.pt

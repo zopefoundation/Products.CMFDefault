@@ -39,8 +39,11 @@
 
 <metal:slot metal:define-slot="main" />
 
-<div class="Discussion" tal:condition="context/viewThreadsAtBottom|nothing">
- <tal:span tal:replace="structure context/viewThreadsAtBottom" />
+<div class="Discussion" tal:condition="context/talkback|nothing">
+ <div tal:condition="python: context.talkback.hasReplies(context)">
+  <h4 i18n:translate="">Comments:</h4>
+  <metal:macro metal:use-macro="context/talkback_tree/macros/tree" />
+ </div>
 </div>
 </metal:slot>
 
