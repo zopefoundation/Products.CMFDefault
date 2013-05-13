@@ -26,6 +26,15 @@
       />
 
   <browser:page
+      for="Products.CMFCore.interfaces.IFolderish"
+      layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
+      name="sharing.html"
+      class=".folder.FolderSharingView"
+      template="folder_sharing.pt"
+      permission="cmf.ChangeLocalRoles"
+      />
+
+  <browser:page
       for="Products.CMFCore.interfaces.ISyndicatable"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
       name="rss.xml"

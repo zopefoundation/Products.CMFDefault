@@ -549,3 +549,54 @@ class FolderView(BatchViewBase):
     @memoize
     def has_local(self):
         return 'local_pt' in self.context.objectIds()
+
+
+class FolderSharingView(EditFormBase):
+
+    """Set local roles.
+    """
+
+    def __call__(self, ADD=None, DELETE=None):
+        if ADD:
+            self.mtool.setLocalRoles(
+                obj=self.context,
+                member_ids=self.request.get('member_ids', ()),
+                member_role=self.request.get('member_role', ''),
+                REQUEST=self.request)
+        elif DELETE:
+            self.mtool.deleteLocalRoles(
+                obj=self.context,
+                member_ids=self.request.get('member_ids', ()),
+                REQUEST=self.request)
+        else:
+            return self.index()
+        self.status = _(u'Local Roles changed.')
+        return self._setRedirect('portal_types', 'object/localroles')
+
+    @property
+    @memoize
+    def mtool(self):
+        return getUtility(IMembershipTool)
+
+    @property
+    def searching(self):
+        return self.request.get('role_submit', None)
+
+    def found(self):
+        search_param = self.request.get('search_param', '')
+        search_term = self.request.get('search_term', '')
+        return self.mtool.searchMembers(search_param=search_param,
+                                        search_term=search_term)
+
+    @property
+    def roles(self):
+        return self.mtool.getCandidateLocalRoles(self.context)
+
+    @property
+    def lroles(self):
+        return self.context.get_local_roles()
+
+    @property
+    @memoize
+    def auth_name(self):
+        return self.mtool.getAuthenticatedMember().getId()
