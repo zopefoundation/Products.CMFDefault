@@ -62,9 +62,12 @@ Check adding
     True
 
 Check deleting
+
     >>> import urlparse
     >>> parts = urlparse.urlparse(browser.url)
     >>> path = "/".join(parts.path.split("/")[:-1])
     >>> browser.open("http://localhost/{path}/@@delete.html".format(path=path))
     >>> 'talkback' in browser.url
     False
+    >>> '[[cmf_default][Reply deleted.]]' in browser.contents
+    True

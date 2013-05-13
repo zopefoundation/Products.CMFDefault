@@ -5,13 +5,12 @@ Discussions
 
 - [?] talkback_tree.pt (macros)
 - [?] setup_talkback_tree.py
-- [?] discitem_delete.py
 
-[ ] IDiscussionResponse @@view.html:
+[x] IDiscussionResponse @@view.html:
 ------------------------------------
-- [ ] discussionitem_view.py
-- [ ] aboveInThread.py
-- [ ] discussionitem_view_template.pt
+- [x] discussionitem_view.py -> discussion.View
+- [x] aboveInThread.py -> discussion.View.aboveInThread
+- [x] discussionitem_view_template.pt -> discussion.pt
 
 [ ] IDiscussionResponse @@edit.html:
 ------------------------------------
@@ -19,3 +18,7 @@ Discussions
 - [ ] validateHTML.py
 - [ ] discussion_reply.py
 - [ ] discussion_reply_template.pt
+
+[ ] IDiscussionResponse @@delete.html:
+--------------------------------------
+- [x] discitem_delete.py

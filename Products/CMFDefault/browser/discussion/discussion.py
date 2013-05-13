@@ -19,18 +19,18 @@ class View(ViewBase):
 
     @memoize
     @decode
-    def title(self):
-        return self.context.Title()
-
-    @memoize
-    @decode
-    def description(self):
-        return self.context.Description()
-
-    @memoize
-    @decode
     def text(self):
         return self.context.CookedBody()
+
+    @memoize
+    @decode
+    def aboveInThread(self):
+        """Discussion parent breadcrumbs
+        """
+        items = [ {'url': parent.absolute_url(),
+                   'title': parent.Title()}
+                  for parent in self.context.parentsInThread() ]
+        return tuple(items)
 
 
 class IDiscussion(Interface):
@@ -141,7 +141,7 @@ class Discuss(EditFormBase):
 
 
 
-class Delete(ViewBase):
+class Delete(EditFormBase):
     """
     Delete an item from a discussion
     """
@@ -156,4 +156,5 @@ class Delete(ViewBase):
         talkback = self.dtool.getDiscussionFor(parent)
         talkback.deleteReply(self.context.getId())
         self.status = _(u'Reply deleted.')
-        self.context.setRedirect(parent, 'object/view')
+        self.context = parent
+        self._setRedirect('portal_types', 'object/view')
