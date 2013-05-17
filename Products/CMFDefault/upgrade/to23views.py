@@ -77,7 +77,10 @@ def check_type_aliases(tool):
     """
     ttool = getToolByName(tool, 'portal_types')
     for ti_id, new_aliases in _ALIASES.iteritems():
-        ti = ttool[ti_id]
+        try:
+            ti = ttool[ti_id]
+        except KeyError:
+            continue
         for k, v in new_aliases.iteritems():
             if ti.queryMethodID(k) != v:
                 return True
@@ -89,8 +92,11 @@ def upgrade_type_aliases(tool):
     ttool = getToolByName(tool, 'portal_types')
     logger = logging.getLogger('GenericSetup.upgrade')
     for ti_id, new_aliases in _ALIASES.iteritems():
+        try:
+            ti = ttool[ti_id]
+        except KeyError:
+            continue
         changed = False
-        ti = ttool[ti_id]
         for k, v in new_aliases.iteritems():
             if ti.queryMethodID(k) != v:
                 aliases = ti.getMethodAliases()
