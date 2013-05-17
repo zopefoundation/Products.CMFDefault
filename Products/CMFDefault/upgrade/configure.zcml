@@ -246,6 +246,13 @@
         checker=".to23.check_root_properties"
         />
 
+    <genericsetup:upgradeStep
+        title="Upgrade type infos"
+        description="Set action url expressions."
+        handler=".to23.upgrade_type_infos"
+        checker=".to23.check_type_infos"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
@@ -255,6 +262,46 @@
       profile="Products.CMFDefault:default"
       handler=".mark_as_finished"
       sortkey="8"
+      />
+
+  <genericsetup:upgradeStep
+      title="Mark 2.2 upgrade as finished"
+      source="2.1"
+      destination="2.2"
+      profile="Products.CMFDefault:views_support"
+      handler=".mark_as_finished"
+      sortkey="1"
+      />
+
+  <genericsetup:upgradeSteps
+      source="2.2"
+      destination="2.3"
+      profile="Products.CMFDefault:views_support"
+      sortkey="2">
+
+    <genericsetup:upgradeStep
+        title="Upgrade actions tool"
+        description="Add new browser views."
+        handler=".to23views.upgrade_actions_tool"
+        checker=".to23views.check_actions_tool"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade type aliases"
+        description="Add new browser views."
+        handler=".to23views.upgrade_type_aliases"
+        checker=".to23views.check_type_aliases"
+        />
+
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+      title="Mark 2.3 upgrade as finished"
+      source="2.2"
+      destination="2.3"
+      profile="Products.CMFDefault:views_support"
+      handler=".mark_as_finished"
+      sortkey="3"
       />
 
 </configure>

@@ -446,3 +446,78 @@ def upgrade_root_properties(tool):
         enable_actionicons = bool(enable_actionicons[0])
         portal._updateProperty('enable_actionicons', enable_actionicons)
         logger.info("'enable_actionicons' property fixed.")
+
+_ACTION_URLS = {
+    'criteria.html': 'criteria', # CMFTopic
+    'discussionitem_view': '',
+    'document_edit_form': 'edit',
+    'document_view': '',
+    'edit.html': 'edit',
+    'favorite_view': '',
+    'file_edit_form': 'edit',
+    'file_view': 'view',
+    'folder_edit_form': 'properties',
+    'folder_localrole_form': 'sharing',
+    'image_edit_form': 'edit',
+    'image_view': 'view',
+    'link_edit_form': 'edit',
+    'link_view': '',
+    'metadata_edit_form': 'properties',
+    'newsitem_edit_form': 'edit',
+    'newsitem_view': '',
+    'properties.html': 'properties',
+    'topic_criteria_form': 'criteria', # CMFTopic
+    'topic_edit_form': 'properties', # CMFTopic
+    'view.html': 'view'}
+
+def check_type_infos(tool):
+    """2.2.x to 2.3.0 upgrade step checker
+    """
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        immediate_view = ti.getProperty('immediate_view')
+        if immediate_view in  _ACTION_URLS:
+                return True
+
+        for ai in ti.listActions():
+            parts = ai.getActionExpression().rsplit('/')
+            if len(parts) < 2:
+                continue
+            old_name = parts[1]
+            if old_name in _ACTION_URLS:
+                return True
+    return False
+
+def upgrade_type_infos(tool):
+    """2.2.x to 2.3.0 upgrade step handler
+    """
+    logger = logging.getLogger('GenericSetup.upgrade')
+    ttool = getToolByName(tool, 'portal_types')
+    for ti in ttool.listTypeInfo():
+        changed = False
+        immediate_view = ti.getProperty('immediate_view')
+        if immediate_view in  _ACTION_URLS:
+            ti._setPropValue('immediate_view', _ACTION_URLS[immediate_view])
+
+        for ai in ti.listActions():
+            parts = ai.getActionExpression().rsplit('/')
+            if len(parts) < 2:
+                continue
+            old_name = parts[1]
+            if old_name in _ACTION_URLS:
+                new_name = _ACTION_URLS[old_name] or '(Default)'
+                if new_name == '(Default)':
+                    ai.setActionExpression(parts[0])
+                else:
+                    ai.setActionExpression('{0}/{1}'.format(parts[0],
+                                                            new_name))
+                aliases = ti.getMethodAliases()
+                old_value = aliases.pop(old_name, None)
+                if old_name.endswith('.html'):
+                    old_name = '@@{0}'.format(old_name)
+                aliases[new_name] = old_value or old_name
+                ti.setMethodAliases(aliases)
+                changed = True
+
+        if changed:
+            logger.info("TypeInfo '%s' changed." % ti.getId())

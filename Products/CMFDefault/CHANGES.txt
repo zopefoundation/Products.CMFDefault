@@ -4,7 +4,8 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
-- profiles: Modified Method Aliases used in type Actions.
+- profiles and upgrade: Modified Method Aliases used in type Actions.
+  Added upgrade steps for default profile and views_support profile.
 
 - Actions: Added invisible 'global/search_form' and 'global/search' Actions.
   The URLs of the search form and the search results pages are no longer
