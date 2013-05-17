@@ -6,7 +6,7 @@ Set up site, method alias, user and Document.
     >>> from zope.component.hooks import setSite
     >>> setSite(app.site)
     >>> ti = app.site.portal_types.Document
-    >>> dummy = ti.setMethodAliases({'gethtml': '@@source.html'})
+    >>> dummy = ti.setMethodAliases({'edit': '@@edit.html', 'gethtml': '@@source.html'})
     >>> uf = app.site.acl_users
     >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
     >>> from Products.CMFDefault.Document import Document

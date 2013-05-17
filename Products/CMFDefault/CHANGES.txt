@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- profiles: Modified Method Aliases used in type Actions.
+
 - Actions: Added invisible 'global/search_form' and 'global/search' Actions.
   The URLs of the search form and the search results pages are no longer
   hard-wired in main_template, making it easier to switch to browser views.

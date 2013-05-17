@@ -10,13 +10,15 @@
  <property name="factory">cmf.folder</property>
  <property name="add_view_expr">string:${folder_url}/++add++Folder</property>
  <property name="link_target"></property>
- <property name="immediate_view">folder_edit_form</property>
+ <property name="immediate_view">properties</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">False</property>
  <property name="allowed_content_types"/>
  <property name="allow_discussion">False</property>
  <alias from="(Default)" to="index_html"/>
  <alias from="index.html" to="index_html"/>
+ <alias from="properties" to="folder_edit_form"/>
+ <alias from="sharing" to="folder_localrole_form"/>
  <alias from="view" to="index_html"/>
  <action title="View" action_id="view" category="object" condition_expr=""
     icon_expr="string:${portal_url}/preview_icon.png" link_target=""
@@ -25,13 +27,12 @@
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr=""
     icon_expr="string:${portal_url}/edit_icon.png" link_target=""
-    url_expr="string:${object_url}/folder_edit_form" visible="True">
+    url_expr="string:${object_url}/properties" visible="True">
   <permission value="Manage properties"/>
  </action>
  <action title="Local Roles" action_id="localroles" category="object"
     condition_expr="" icon_expr="string:${portal_url}/localroles_icon.png"
-    link_target="" url_expr="string:${object_url}/folder_localrole_form"
-    visible="True">
+    link_target="" url_expr="string:${object_url}/sharing" visible="True">
   <permission value="Change local roles"/>
  </action>
  <action title="Folder contents" action_id="folderContents" category="object"
