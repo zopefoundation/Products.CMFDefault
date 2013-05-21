@@ -4,6 +4,6 @@
  <alias from="folder_contents" to="@@edit.html"/>
  <alias from="index.html" to="@@view.html"/>
  <alias from="properties" to="@@properties.html"/>
- <alias from="sharing" to="@@sharing.html"/>
+ <alias from="share" to="@@share.html"/>
  <alias from="view" to="@@view.html"/>
 </object>

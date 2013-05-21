@@ -457,7 +457,7 @@ _ACTION_URLS = {
     'file_edit_form': 'edit',
     'file_view': 'view',
     'folder_edit_form': 'properties',
-    'folder_localrole_form': 'sharing',
+    'folder_localrole_form': 'share',
     'image_edit_form': 'edit',
     'image_view': 'view',
     'link_edit_form': 'edit',

@@ -64,11 +64,11 @@ def upgrade_actions_tool(tool):
             logger.info("Updated '{0}' action.".format(k))
 
 _ALIASES = {
-    'CMF BTree Folder': {'sharing': '@@sharing.html'},
+    'CMF BTree Folder': {'share': '@@share.html'},
     'Discussion Item': {'(Default)': '@@view.html', 'view': '@@view.html'},
     'Document': {'gethtml': '@@source.html'},
     'File': {'view': '@@view.html'},
-    'Folder': {'sharing': '@@sharing.html'},
+    'Folder': {'share': '@@share.html'},
     'Image': {'view': '@@view.html'},
     'News Item': {'gethtml': '@@source.html'}}
 

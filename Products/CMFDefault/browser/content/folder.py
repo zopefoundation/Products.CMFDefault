@@ -551,7 +551,8 @@ class FolderView(BatchViewBase):
         return 'local_pt' in self.context.objectIds()
 
 
-class FolderSharingView(EditFormBase):
+# XXX: quick-and-dirty port from oldstyle skin
+class FolderShareView(EditFormBase):
 
     """Set local roles.
     """

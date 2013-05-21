@@ -28,9 +28,9 @@
   <browser:page
       for="Products.CMFCore.interfaces.IFolderish"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
-      name="sharing.html"
-      class=".folder.FolderSharingView"
-      template="folder_sharing.pt"
+      name="share.html"
+      class=".folder.FolderShareView"
+      template="folder_share.pt"
       permission="cmf.ChangeLocalRoles"
       />
 

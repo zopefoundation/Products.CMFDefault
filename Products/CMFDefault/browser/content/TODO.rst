@@ -49,10 +49,10 @@ Converting skins to views:
 - [x] folder_rename_control.py -> ContentsView.handle_rename_success
 - [x] folder_rename_template.pt -> folder_rename.pt
 
-[x] IFolderish @@sharing.html:
-------------------------------
-- [x] folder_localrole_edit.py -> FolderSharingView
-- [x] folder_localrole_form.pt -> folder_sharing.pt
+[x] IFolderish @@share.html:
+----------------------------
+- [x] folder_localrole_edit.py -> FolderShareView
+- [x] folder_localrole_form.pt -> folder_share.pt
 
 [x] IMutableMinimalDublinCore @@properties.html:
 ------------------------------------------------
