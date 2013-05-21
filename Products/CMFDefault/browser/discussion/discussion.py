@@ -27,8 +27,8 @@ class View(ViewBase):
     def aboveInThread(self):
         """Discussion parent breadcrumbs
         """
-        items = [ {'url': parent.absolute_url(),
-                   'title': parent.Title()}
+        items = [ {'url': parent.getActionInfo('object/view')['url'],
+                   'title': parent.Title() or parent.getId()}
                   for parent in self.context.parentsInThread() ]
         return tuple(items)
 
