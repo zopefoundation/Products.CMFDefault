@@ -21,6 +21,7 @@ from zope.schema import Choice
 from zope.schema import Text
 from zope.schema import TextLine
 
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import ContentEditFormBase
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -79,6 +80,10 @@ class NewsItemEditView(ContentEditFormBase):
     form_fields['text_format'].custom_widget = ChoiceRadioWidget
     form_fields['description'].custom_widget = TextInputWidget
     form_fields['text'].custom_widget = TextInputWidget
+
+    @memoize
+    def getContent(self):
+        return NewsItemSchemaAdapter(self.context)
 
     def setUpWidgets(self, ignore_request=False):
         super(NewsItemEditView,

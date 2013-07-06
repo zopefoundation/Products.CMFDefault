@@ -27,6 +27,7 @@ from zope.schema import Text
 from zope.schema import TextLine
 
 from Products.CMFCore.interfaces import IURLTool
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import ContentAddFormBase
 from Products.CMFDefault.formlib.form import ContentEditFormBase
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -127,7 +128,7 @@ class FavoriteAddView(ContentAddFormBase):
 
     def create(self, data):
         obj = super(FavoriteAddView, self).create(dict(id=data['id']))
-        adapted = IFavoriteSchema(obj)
+        adapted = FavoriteSchemaAdapter(obj)
         adapted.title = data['title']
         adapted.language = u''
         adapted.description = data['description']
@@ -142,6 +143,10 @@ class FavoriteEditView(ContentEditFormBase):
 
     form_fields = form.FormFields(IFavoriteSchema).omit('language')
     form_fields['remote_url'].custom_widget = FavoriteURIWidget
+
+    @memoize
+    def getContent(self):
+        return FavoriteSchemaAdapter(self.context)
 
     def setUpWidgets(self, ignore_request=False):
         super(FavoriteEditView,

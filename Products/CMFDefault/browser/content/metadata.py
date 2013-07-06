@@ -31,6 +31,7 @@ from zope.schema import URI
 from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.interfaces import IMutableDublinCore
 from Products.CMFCore.interfaces import IMutableMinimalDublinCore
+from Products.CMFDefault.browser.utils import memoize
 from Products.CMFDefault.formlib.form import ContentEditFormBase
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -205,6 +206,10 @@ class MinimalMetadataEditView(ContentEditFormBase):
 
     label = _(u'Properties')
 
+    @memoize
+    def getContent(self):
+        return MinimalMetadataSchemaAdapter(self.context)
+
     def setUpWidgets(self, ignore_request=False):
         super(MinimalMetadataEditView,
               self).setUpWidgets(ignore_request=ignore_request)
@@ -243,6 +248,10 @@ class MetadataEditView(ContentEditFormBase):
     form_fields['expires'].custom_widget = DatetimeI18nWidget
 
     label = _(u'Properties')
+
+    @memoize
+    def getContent(self):
+        return MetadataSchemaAdapter(self.context)
 
     def setUpWidgets(self, ignore_request=False):
         super(MetadataEditView,

@@ -43,8 +43,6 @@
       permission="zope2.View"
       />
 
-  <adapter factory=".metadata.MinimalMetadataSchemaAdapter"/>
-
   <browser:page
       for="Products.CMFCore.interfaces.IMutableMinimalDublinCore"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
@@ -53,8 +51,6 @@
       permission="zope2.ManageProperties"
       />
 
-  <adapter factory=".metadata.MetadataSchemaAdapter"/>
-
   <browser:page
       for="Products.CMFCore.interfaces.IMutableDublinCore"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
@@ -62,8 +58,6 @@
       class=".metadata.MetadataEditView"
       permission="cmf.ModifyPortalContent"
       />
-
-  <adapter factory=".document.DocumentSchemaAdapter"/>
 
   <utility
       component=".document.TextFormatVocabularyFactory"
@@ -96,8 +90,6 @@
       permission="cmf.ModifyPortalContent"
       />
 
-  <adapter factory=".newsitem.NewsItemSchemaAdapter"/>
-
   <browser:page
       for="Products.CMFDefault.interfaces.IMutableNewsItem"
       layer="Products.CMFDefault.interfaces.ICMFDefaultSkin"
@@ -105,8 +97,6 @@
       class=".newsitem.NewsItemEditView"
       permission="cmf.ModifyPortalContent"
       />
-
-  <adapter factory=".link.LinkSchemaAdapter"/>
 
   <adapter
       name="cmf.link"
@@ -130,8 +120,6 @@
       permission="cmf.ModifyPortalContent"
       />
 
-  <adapter factory=".favorite.FavoriteSchemaAdapter"/>
-
   <adapter
       name="cmf.favorite"
       factory=".favorite.FavoriteAddView"
@@ -144,8 +132,6 @@
       class=".favorite.FavoriteEditView"
       permission="cmf.ModifyPortalContent"
       />
-
-  <adapter factory=".file.FileSchemaAdapter"/>
 
   <adapter
       name="cmf.file"

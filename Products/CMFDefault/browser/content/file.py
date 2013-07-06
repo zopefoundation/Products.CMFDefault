@@ -133,7 +133,7 @@ class FileAddView(ContentAddFormBase):
     def create(self, data):
         obj = super(FileAddView,
                     self).create(dict(id=data['file'].filename))
-        adapted = IFileSchema(obj)
+        adapted = FileSchemaAdapter(obj)
         adapted.title = data['title']
         adapted.language = u''
         adapted.description = data['description']
@@ -147,6 +147,10 @@ class FileEditView(ContentEditFormBase):
     """
 
     form_fields = form.FormFields(IFileSchema).omit('language')
+
+    @memoize
+    def getContent(self):
+        return FileSchemaAdapter(self.context)
 
     def setUpWidgets(self, ignore_request=False):
         super(FileEditView,

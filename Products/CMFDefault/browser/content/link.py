@@ -130,7 +130,7 @@ class LinkAddView(ContentAddFormBase):
 
     def create(self, data):
         obj = super(LinkAddView, self).create(dict(id=data['id']))
-        adapted = ILinkSchema(obj)
+        adapted = LinkSchemaAdapter(obj)
         adapted.title = data['title']
         adapted.language = u''
         adapted.description = data['description']
@@ -145,6 +145,10 @@ class LinkEditView(ContentEditFormBase):
 
     form_fields = form.FormFields(ILinkSchema).omit('language')
     form_fields['remote_url'].custom_widget = LinkURIWidget
+
+    @memoize
+    def getContent(self):
+        return LinkSchemaAdapter(self.context)
 
     def setUpWidgets(self, ignore_request=False):
         super(LinkEditView, self).setUpWidgets(ignore_request=ignore_request)
