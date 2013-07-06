@@ -13,6 +13,8 @@
 """ CMFDefault portal_registration tool.
 """
 
+import socket
+
 from AccessControl.requestmethod import postonly
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
@@ -155,8 +157,9 @@ class RegistrationTool(BaseTool):
         host = getUtility(IMailHost)
         try:
             host.send(mail_text, immediate=True)
-        except TypeError:
+        except (TypeError, socket.error):
             # fallback for mail hosts that don't implement the new signature
+            # fallback to queue if immediate fails
             host.send(mail_text)
 
         try:
@@ -204,8 +207,9 @@ class RegistrationTool(BaseTool):
         host = getUtility(IMailHost)
         try:
             host.send(mail_text, immediate=True)
-        except TypeError:
+        except (TypeError, socket.error):
             # fallback for mail hosts that don't implement the new signature
+            # fallback to queue if immediate fails
             host.send(mail_text)
 
     security.declareProtected(ManagePortal, 'editMember')
