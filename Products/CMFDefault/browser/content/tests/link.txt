@@ -39,7 +39,7 @@ Use the add form with valid input.
 
 Use the edit form without input.
 
-    >>> browser.open('http://localhost/site/myLink/@@edit.html')
+    >>> browser.open('http://localhost/site/myLink/@@edit')
     >>> '[[cmf_default][Edit [[cmf_default][Link]]]]' in browser.contents
     True
     >>> browser.getControl('[[cmf_default][Change]]').click()
@@ -48,7 +48,7 @@ Use the edit form without input.
 
 Use the edit form with valid input.
 
-    >>> browser.open('http://localhost/site/myLink/@@edit.html')
+    >>> browser.open('http://localhost/site/myLink/@@edit')
     >>> '[[cmf_default][Edit [[cmf_default][Link]]]]' in browser.contents
     True
     >>> browser.getControl(name='form.remote_url').value = 'WWW.EXAMPLE.COM'

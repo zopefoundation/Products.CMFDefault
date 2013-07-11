@@ -1,24 +1,24 @@
-Converting skins to views
-=========================
+Converting skins to views:
+==========================
 
 Discussions
 
 - [?] talkback_tree.pt (macros)
 - [?] setup_talkback_tree.py
 
-[x] IDiscussionResponse @@view.html:
-------------------------------------
+[x] IDiscussionResponse @@view:
+-------------------------------
 - [x] discussionitem_view.py -> discussion.View
 - [x] aboveInThread.py -> discussion.View.aboveInThread
 - [x] discussionitem_view_template.pt -> discussion.pt
 
-[ ] IDiscussionResponse @@edit.html:
-------------------------------------
+[ ] IDiscussionResponse @@edit:
+-------------------------------
 - [ ] discussion_reply_form.py
 - [ ] validateHTML.py
 - [ ] discussion_reply.py
 - [ ] discussion_reply_template.pt
 
-[ ] IDiscussionResponse @@delete.html:
---------------------------------------
+[ ] IDiscussionResponse @@delete:
+---------------------------------
 - [x] discitem_delete.py

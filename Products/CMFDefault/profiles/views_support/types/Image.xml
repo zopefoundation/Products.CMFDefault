@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <object name="Image">
- <alias from="edit" to="@@edit.html"/>
- <alias from="properties" to="@@properties.html"/>
- <alias from="view" to="@@view.html"/>
+ <alias from="edit" to="@@edit"/>
+ <alias from="properties" to=""/>
+ <alias from="view" to=""/>
 </object>

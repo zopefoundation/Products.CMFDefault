@@ -43,7 +43,7 @@ Create the browser object we'll be using.
 
 Add a comment
 
-    >>> browser.open("http://localhost/site/myDocument/discuss.html")
+    >>> browser.open("http://localhost/site/myDocument/@@discuss")
     >>> "[[cmf_default][Reply body]]" in browser.contents
     True
     >>> browser.getControl(name='form.title').value = ('A reply')
@@ -63,7 +63,7 @@ Check adding
 
 Check deleting
 
-    >>> browser.open("{0}/@@delete.html".format(browser.url))
+    >>> browser.open("{0}/@@delete".format(browser.url))
     >>> 'talkback' in browser.url
     False
     >>> '[[cmf_default][Reply deleted.]]' in browser.contents

@@ -64,13 +64,23 @@ def upgrade_actions_tool(tool):
             logger.info("Updated '{0}' action.".format(k))
 
 _ALIASES = {
-    'CMF BTree Folder': {'share': '@@share.html'},
-    'Discussion Item': {'(Default)': '@@view.html', 'view': '@@view.html'},
-    'Document': {'gethtml': '@@source.html'},
-    'File': {'view': '@@view.html'},
-    'Folder': {'share': '@@share.html'},
-    'Image': {'view': '@@view.html'},
-    'News Item': {'gethtml': '@@source.html'}}
+    'CMF BTree Folder': {'(Default)': '@@view', 'folder_contents': '@@edit',
+                         'index.html': '@@view', 'properties': '', 'share': '',
+                         'view': ''},
+    'Discussion Item': {'(Default)': '@@view', 'view': ''},
+    'Document': {'(Default)': '@@view', 'edit': '@@edit',
+                 'gethtml': '@@source', 'properties': '', 'view': ''},
+    'Favorite': {'(Default)': '@@view', 'edit': '@@edit', 'properties': '',
+                 'view': ''},
+    'File': { 'edit': '@@edit', 'properties': '', 'view': ''},
+    'Folder': {'(Default)': '@@view', 'folder_contents': '@@edit',
+               'index.html': '@@view', 'properties': '', 'share': '',
+               'view': ''},
+    'Image': { 'edit': '@@edit', 'properties': '', 'view': ''},
+    'Link': {'(Default)': '@@view', 'edit': '@@edit', 'properties': '',
+             'view': ''},
+    'News Item': {'(Default)': '@@view', 'edit': '@@edit',
+                  'gethtml': '@@source', 'properties': '', 'view': ''}}
 
 def check_type_aliases(tool):
     """2.2.x to 2.3.0 upgrade step checker

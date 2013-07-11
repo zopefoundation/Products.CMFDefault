@@ -40,7 +40,7 @@ Use the add form with valid input.
 
 Use the edit form without input.
 
-    >>> browser.open('http://localhost/site/myFile/@@edit.html')
+    >>> browser.open('http://localhost/site/myFile/@@edit')
     >>> '[[cmf_default][Edit [[cmf_default][File]]]]' in browser.contents
     True
     >>> browser.getControl('[[cmf_default][Change]]').click()
@@ -49,7 +49,7 @@ Use the edit form without input.
 
 Use the edit form with valid input.
 
-    >>> browser.open('http://localhost/site/myFile/@@edit.html')
+    >>> browser.open('http://localhost/site/myFile/@@edit')
     >>> '[[cmf_default][Edit [[cmf_default][File]]]]' in browser.contents
     True
     >>> ctrl = browser.getControl(name='form.file')

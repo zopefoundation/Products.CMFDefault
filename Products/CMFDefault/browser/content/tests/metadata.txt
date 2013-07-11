@@ -22,7 +22,7 @@ Create the browser object we'll be using.
 
 Use the edit form with valid input.
 
-    >>> browser.open('http://localhost/site/myContent/@@properties.html')
+    >>> browser.open('http://localhost/site/myContent/@@properties')
     >>> '[[cmf_default][Properties]]' in browser.contents
     True
     >>> browser.getControl(name='form.allow_discussion').value = ('off',)

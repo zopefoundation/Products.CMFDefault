@@ -37,7 +37,7 @@ Use the add form with valid input.
 
 Use the folder contents form without input.
 
-    >>> browser.open('http://localhost/site/myFolder/@@edit.html')
+    >>> browser.open('http://localhost/site/myFolder/@@edit')
     >>> '[[cmf_default][Folder Contents: ]]' in browser.contents
     True
 

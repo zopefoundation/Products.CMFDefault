@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- browser views: Synced view names with the names used in type Actions.
+
 - profiles and upgrade: Modified Method Aliases used in type Actions.
   Added upgrade steps for default profile and views_support profile.
 

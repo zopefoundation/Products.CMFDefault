@@ -470,6 +470,13 @@ _ACTION_URLS = {
     'topic_edit_form': 'properties', # CMFTopic
     'view.html': 'view'}
 
+_ALIASES = {
+    'Event': {'(Default)': '@@view', 'edit': '@@edit',
+              'view': ''}, # CMFCalendar
+    'Topic': {'(Default)': '@@view', 'criteria': '',
+              'folder_contents': '@@edit', 'index.html': '@@view',
+              'properties': '', 'view': ''}} # CMFTopic
+
 def check_type_infos(tool):
     """2.2.x to 2.3.0 upgrade step checker
     """
@@ -486,6 +493,15 @@ def check_type_infos(tool):
             old_name = parts[1]
             if old_name in _ACTION_URLS:
                 return True
+
+        ti_id = ti.getId()
+        if ti_id in _ALIASES:
+            for k, v in _ALIASES[ti_id].iteritems():
+                if ti.queryMethodID(k) != v:
+                    return True
+            icon_expr = ti.getProperty('icon_expr')
+            if icon_expr == 'string:${portal_url}/topic_icon.gif':
+                return True
     return False
 
 def upgrade_type_infos(tool):
@@ -498,6 +514,7 @@ def upgrade_type_infos(tool):
         immediate_view = ti.getProperty('immediate_view')
         if immediate_view in  _ACTION_URLS:
             ti._setPropValue('immediate_view', _ACTION_URLS[immediate_view])
+            changed = True
 
         for ai in ti.listActions():
             parts = ai.getActionExpression().rsplit('/')
@@ -517,6 +534,20 @@ def upgrade_type_infos(tool):
                     old_name = '@@{0}'.format(old_name)
                 aliases[new_name] = old_value or old_name
                 ti.setMethodAliases(aliases)
+                changed = True
+
+        ti_id = ti.getId()
+        if ti_id in _ALIASES:
+            for k, v in _ALIASES[ti_id].iteritems():
+                if ti.queryMethodID(k) != v:
+                    aliases = ti.getMethodAliases()
+                    aliases[k] = v
+                    ti.setMethodAliases(aliases)
+                    changed = True
+            icon_expr = ti.getProperty('icon_expr')
+            if icon_expr == 'string:${portal_url}/topic_icon.gif':
+                icon_expr = 'string:${portal_url}/++resource++topic_icon.gif'
+                ti._updateProperty('icon_expr', icon_expr)
                 changed = True
 
         if changed:

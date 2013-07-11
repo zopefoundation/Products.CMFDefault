@@ -32,7 +32,7 @@ Use the add form with valid input.
 
 Look at the result.
 
-    >>> browser.open('http://localhost/site/myImage.gif/@@view.html')
+    >>> browser.open('http://localhost/site/myImage.gif/@@view')
     >>> 'IMAGE DESCRIPTION' in browser.contents
     True
 

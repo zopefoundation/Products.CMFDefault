@@ -1,8 +1,8 @@
 Converting skins to views:
 ==========================
 
-[/] IFolderish @@view.html:
----------------------------
+[/] IFolderish @@view:
+----------------------
 - [/] index_html.py -> FolderView
 - [/, depends on local_pt and news_box] index_html_template.pt -> folder.pt
 
@@ -26,8 +26,8 @@ Converting skins to views:
 - [x] cmf.file -> FileAddView
 - [x] cmf.image -> FileAddView
 
-[x] IFolderish @@edit.html:
----------------------------
+[x] IFolderish @@edit:
+----------------------
 - [x] folder_contents.py -> ContentsView
 - [x] folder_contents_template.pt -> folder_contents.pt
 - [x] validateItemIds.py -> ContentsView.validate_items
@@ -49,78 +49,78 @@ Converting skins to views:
 - [x] folder_rename_control.py -> ContentsView.handle_rename_success
 - [x] folder_rename_template.pt -> folder_rename.pt
 
-[x] IFolderish @@share.html:
-----------------------------
+[x] IFolderish @@share:
+-----------------------
 - [x] folder_localrole_edit.py -> FolderShareView
 - [x] folder_localrole_form.pt -> folder_share.pt
 
-[x] IMutableMinimalDublinCore @@properties.html:
-------------------------------------------------
+[x] IMutableMinimalDublinCore @@properties:
+-------------------------------------------
 - [x] folder_edit_form.py -> MinimalMetadataEditView
 - [x] folder_edit_template.pt -> formlib based
 - [x] folder_edit_control.py -> formlib based
 
-[x] IMutableDublinCore @@properties.html:
------------------------------------------
+[x] IMutableDublinCore @@properties:
+------------------------------------
 - [x] metadata_edit_form.py -> MetadataEditView
 - [x] metadata_edit_template.pt -> formlib based
 - [x] metadata_edit_control.py -> formlib based
 
-[x] IDocument @@view.html:
---------------------------
+[x] IDocument @@view:
+---------------------
 - [x] document_view.py, newsitem_view.py -> DocumentView
 - [x] document_view_template.pt -> document.pt
 
-[x] IDocument @@source.html:
-----------------------------
+[x] IDocument @@gethtml:
+------------------------
 - [x] source_html.py -> SourceView
 - [x] source_html_template.pt -> source.pt
 
-[x] IMutableDocument @@edit.html:
----------------------------------
+[x] IMutableDocument @@edit:
+----------------------------
 - [x] document_edit_form.py -> DocumentEditView
 - [x] document_edit_template.pt -> formlib based
 - [x] validateHTML.py -> formlib based
 - [x] validateTextFile.py -> formlib based
 - [x] document_edit_control.py -> formlib based
 
-[x] IMutableNewsItem @@edit.html:
----------------------------------
+[x] IMutableNewsItem @@edit:
+----------------------------
 - [x] newsitem_edit_form.py -> NewsItemEditView
 - [x] newsitem_edit_template.pt -> formlib based
 - [x] validateHTML.py -> formlib based
 - [x] newsitem_edit_control.py -> formlib based
 
-[x] ILink @@view.html:
-----------------------
+[x] ILink @@view:
+-----------------
 - [x] link_view.py, favorite_view.py -> LinkView
 - [x] link_view_template.pt -> link.pt
 
-[x] IMutableLink @@edit.html:
------------------------------
+[x] IMutableLink @@edit:
+------------------------
 - [x] link_edit_form.py -> LinkEditView
 - [x] link_edit_template.pt -> formlib based
 - [x] link_edit_control.py -> formlib based
 
-[x] IMutableFavorite @@edit.html:
----------------------------------
+[x] IMutableFavorite @@edit:
+----------------------------
 - [x] link_edit_form.py -> FavoriteEditView
 - [x] link_edit_template.pt -> formlib based
 - [x] link_edit_control.py -> formlib based
 
-[x] IFile @@view.html:
-----------------------
+[x] IFile @@view:
+-----------------
 - [x] file_view.py -> FileView
 - [x] file_view_template.pt -> file.pt
 
-[x] IMutableFile @@edit.html:
------------------------------
+[x] IMutableFile @@edit:
+------------------------
 - [x] file_edit_form.py, image_edit_form.py -> FileEditView
 - [x] file_edit_template.pt, image_edit_template.pt -> formlib based
 - [x] file_edit_control.py, image_edit_control.py -> formlib based
 
-[x] IImage @@view.html:
------------------------
+[x] IImage @@view:
+------------------
 - [x] image_view.py -> ImageView
 - [x] image_view_template.pt -> image.pt
 
