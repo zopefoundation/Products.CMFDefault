@@ -145,10 +145,12 @@ class MembershipToolSecurityTests(SecurityTest):
         ownership = acl_users.user_foo
         localroles = (('user_foo', ('Owner',)),)
         self.assertEqual(f.Title(), "user_foo's Home")
+        self.assertEqual(f.getPortalTypeName(), 'Folder')
         self.assertEqual(f.getOwner(), ownership)
         self.assertEqual(f.get_local_roles(), localroles,
                          'CMF Collector issue #162 (LocalRoles broken): %s'
                          % str(f.get_local_roles()))
+        self.assertEqual(f.index_html.getPortalTypeName(), 'Document')
         self.assertEqual(f.index_html.getOwner(), ownership,
                          'CMF Collector issue #162 (Ownership broken): %s'
                          % str(f.index_html.getOwner()))
