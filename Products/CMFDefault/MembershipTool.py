@@ -14,24 +14,29 @@
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
+from zope.component import getUtility
+from zope.component.interfaces import IFactory
 from zope.globalrequest import getRequest
-from zope.interface import implements
+from zope.interface import implementedBy
+from zope.interface import implementer
 from ZPublisher.BaseRequest import RequestContainer
 
+from Products.CMFCore.interfaces import IMembershipTool as IBaseTool
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
+from Products.CMFCore.PortalFolder import PortalFolder
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFDefault.Document import addDocument
+from Products.CMFDefault.Document import Document
 from Products.CMFDefault.interfaces import IMembershipTool
 from Products.CMFDefault.permissions import ListPortalMembers
 from Products.CMFDefault.permissions import ManagePortal
 from Products.CMFDefault.permissions import ManageUsers
 from Products.CMFDefault.permissions import View
 from Products.CMFDefault.utils import _dtmldir
+from Products.CMFDefault.utils import Message as _
 
 DEFAULT_MEMBER_CONTENT = """\
 Default page for %s
@@ -44,15 +49,15 @@ Default page for %s
 """
 
 
+@implementer(IMembershipTool)
 class MembershipTool(BaseTool):
 
     """ Implement 'portal_membership' interface using "stock" policies.
     """
 
-    implements(IMembershipTool)
-
     meta_type = 'Default Membership Tool'
     membersfolder_id = 'Members'
+    _MEMBERAREA_FACTORY_NAME = 'cmf.memberarea.bbb2'
 
     security = ClassSecurityInfo()
 
@@ -113,69 +118,6 @@ class MembershipTool(BaseTool):
         request_container = RequestContainer(REQUEST=getRequest())
         return members_folder.__of__(request_container)
 
-    security.declarePublic('createMemberArea')
-    def createMemberArea(self, member_id=''):
-        """ Create a member area for 'member_id' or authenticated user.
-        """
-        if not self.getMemberareaCreationFlag():
-            return None
-        members = self.getMembersFolder()
-        if members is None:
-            return None
-        if self.isAnonymousUser():
-            return None
-        if member_id:
-            if not self.isMemberAccessAllowed(member_id):
-                return None
-            member = self.getMemberById(member_id)
-            if member is None:
-                return None
-        else:
-            member = self.getAuthenticatedMember()
-            member_id = member.getId()
-        if hasattr( aq_base(members), member_id ):
-            return None
-
-        # Note: We can't use invokeFactory() to add folder and content because
-        # the user might not have the necessary permissions.
-
-        # Create Member's home folder.
-        members.manage_addPortalFolder(id=member_id,
-                                       title="%s's Home" % member_id)
-        f = members._getOb(member_id)
-
-        # Grant Ownership and Owner role to Member
-        f.changeOwnership(member)
-        f.__ac_local_roles__ = None
-        f.manage_setLocalRoles(member_id, ['Owner'])
-
-        # Create Member's initial content.
-        if hasattr(self, 'createMemberContent'):
-            self.createMemberContent(member=member,
-                                   member_id=member_id,
-                                   member_folder=f)
-        else:
-            addDocument( f
-                       , 'index_html'
-                       , member_id+"'s Home"
-                       , member_id+"'s front page"
-                       , "structured-text"
-                       , (DEFAULT_MEMBER_CONTENT % member_id)
-                       )
-
-            # Grant Ownership and Owner role to Member
-            f.index_html.changeOwnership(member)
-            f.index_html.__ac_local_roles__ = None
-            f.index_html.manage_setLocalRoles(member_id, ['Owner'])
-
-            f.index_html._setPortalTypeName( 'Document' )
-            f.index_html.reindexObject()
-            f.index_html.notifyWorkflowCreated()
-        return f
-
-    security.declarePublic('createMemberarea')
-    createMemberarea = createMemberArea
-
     def getHomeFolder(self, id=None, verifyPermission=0):
         """ Return a member's home folder object, or None.
         """
@@ -206,3 +148,39 @@ class MembershipTool(BaseTool):
             return None
 
 InitializeClass(MembershipTool)
+
+
+@implementer(IFactory)
+class _BBBMemberAreaFactory(object):
+
+    """Creates a member area.
+    """
+
+    title = _(u'Member Area')
+    description = _(u'Classic CMFDefault home folder for portal members.')
+
+    def __call__(self, id, title=None, *args, **kw):
+        if title is None:
+            title = "{0}'s Home".format(id)
+        item = PortalFolder(id, title, *args, **kw)
+        item.manage_setLocalRoles(id, ['Owner'])
+
+        # Create Member's initial content
+        mtool = getUtility(IBaseTool)
+        if hasattr(mtool, 'createMemberContent'):
+            mtool.createMemberContent(member=mtool.getMemberById(id),
+                                      member_id=id,
+                                      member_folder=item)
+        else:
+            subitem = Document('index_html', "{0}'s Home".format(id),
+                               "{0}'s front page".format(id),
+                               'structured-text', DEFAULT_MEMBER_CONTENT % id)
+            subitem.manage_setLocalRoles(id, ['Owner'])
+            subitem._setPortalTypeName('Document')
+            item._setObject('index_html', subitem, suppress_events=True)
+        return item
+
+    def getInterfaces(self):
+        return implementedBy(PortalFolder)
+
+BBBMemberAreaFactory = _BBBMemberAreaFactory()

@@ -95,6 +95,13 @@
       name="cmf.folder.skinned"
       />
 
+  <!-- MemberArea -->
+
+  <utility
+      component=".MembershipTool.BBBMemberAreaFactory"
+      name="cmf.memberarea.bbb2"
+      />
+
   <include package="zope.annotation" />
 
   <class class="Products.CMFCore.PortalFolder.PortalFolder">

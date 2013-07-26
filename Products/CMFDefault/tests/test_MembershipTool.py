@@ -21,6 +21,7 @@ from five.localsitemanager import make_objectmanager_site
 from zope.component import getSiteManager
 from zope.component.hooks import clearSite
 from zope.component.hooks import setSite
+from zope.component.interfaces import IFactory
 from zope.globalrequest import clearRequest
 from zope.globalrequest import setRequest
 from zope.interface.verify import verifyClass
@@ -28,6 +29,7 @@ from zope.testing.cleanup import cleanUp
 
 from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFCore.PortalFolder import PortalFolder
+from Products.CMFCore.testing import EventZCMLLayer
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
@@ -104,6 +106,8 @@ class MembershipToolTests(TransactionalTest):
 
 class MembershipToolSecurityTests(SecurityTest):
 
+    layer = EventZCMLLayer
+
     def _makeOne(self, *args, **kw):
         from Products.CMFDefault.MembershipTool import MembershipTool
 
@@ -114,16 +118,19 @@ class MembershipToolSecurityTests(SecurityTest):
         self.site = DummySite('site').__of__(self.app)
         self.site._setObject('portal_membership', self._makeOne())
 
-    def tearDown(self):
-        cleanUp()
-        SecurityTest.tearDown(self)
-
     def test_createMemberArea(self):
+        from Products.CMFDefault.interfaces import IMembershipTool
+        from Products.CMFDefault.MembershipTool import BBBMemberAreaFactory
+
         mtool = self.site.portal_membership
         members = self.site._setObject('Members', PortalFolder('Members'))
         acl_users = self.site._setObject('acl_users', DummyUserFolder())
         wtool = DummyTool()
-        getSiteManager().registerUtility(wtool, IWorkflowTool)
+        sm = getSiteManager()
+        sm.registerUtility(mtool, IMembershipTool)
+        sm.registerUtility(wtool, IWorkflowTool)
+        sm.registerUtility(BBBMemberAreaFactory, IFactory,
+                           'cmf.memberarea.bbb2')
 
         # permission
         mtool.createMemberArea('user_foo')
