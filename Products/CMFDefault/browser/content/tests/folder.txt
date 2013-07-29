@@ -1,12 +1,17 @@
 Form Views
 ----------
 
-Set up user.
+Set up user and content.
 
     >>> uf = app.site.acl_users
     >>> _ignored = uf._doAddUser('mgr', 'mgrpw', ['Manager'], [])
     >>> from zope.component.hooks import setSite
     >>> setSite(app.site)
+
+    >>> app.site._delObject('Members')
+    >>> from Products.CMFDefault.Document import Document
+    >>> id = app.site._setObject('myContent', Document('myContent'))
+    >>> app.site.myContent._setPortalTypeName('Document')
 
 Create the browser object we'll be using.
 
@@ -85,9 +90,9 @@ Verify initially visible buttons:
     >>> '[[cmf_default][Set as Default Sort]]' in browser.contents
     False
 
-Copy the 'Members' subfolder:
+Copy the 'myContent' object:
 
-    >>> browser.getControl(name='form.select_ids').value = ('Members',)
+    >>> browser.getControl(name='form.select_ids').value = ('myContent',)
     >>> browser.getControl('[[cmf_default][Copy]]').click()
     >>> '[[cmf_default][Item copied.]]' in browser.contents
     True
@@ -225,10 +230,10 @@ Change the default sort order:
     >>> '[[cmf_default][Set as Default Sort]]' in browser.contents
     False
 
-Select 'Members' subfolder for renaming:
+Select 'myContent' object for renaming:
 
     >>> browser.open('http://localhost/site/@@edit')
-    >>> browser.getControl(name='form.select_ids').value = ('Members',)
+    >>> browser.getControl(name='form.select_ids').value = ('myContent',)
     >>> browser.getControl('[[cmf_default][Rename...]]').click()
     >>> '[[cmf_default][Rename Items]]' in browser.contents
     True
