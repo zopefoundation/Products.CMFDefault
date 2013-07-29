@@ -12,5 +12,7 @@
    <bound-workflow workflow_id="singlestate_workflow"/>
   </type>
   <type type_id="Folder"/>
+  <type type_id="Member Area"/>
+  <type type_id="Members"/>
  </bindings>
 </object>

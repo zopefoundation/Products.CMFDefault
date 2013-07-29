@@ -27,15 +27,25 @@ from zope.globalrequest import setRequest
 from zope.interface.verify import verifyClass
 from zope.testing.cleanup import cleanUp
 
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFCore.PortalFolder import PortalFolder
 from Products.CMFCore.testing import EventZCMLLayer
 from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummySite
 from Products.CMFCore.tests.base.dummy import DummyTool
+from Products.CMFCore.tests.base.dummy import DummyType
 from Products.CMFCore.tests.base.dummy import DummyUserFolder
 from Products.CMFCore.tests.base.testcase import SecurityTest
 from Products.CMFCore.tests.base.testcase import TransactionalTest
+
+
+class DummyTool(DummyTool):
+
+    def getTypeInfo(self, contentType):
+        ti = DummyType('Member Area')
+        ti.factory = 'cmf.memberarea'
+        return ti
 
 
 class MembershipToolTests(TransactionalTest):
@@ -119,6 +129,62 @@ class MembershipToolSecurityTests(SecurityTest):
         self.site._setObject('portal_membership', self._makeOne())
 
     def test_createMemberArea(self):
+        from Products.CMFDefault.interfaces import IMembershipTool
+        from Products.CMFDefault.MembershipTool import MemberAreaFactory
+
+        mtool = self.site.portal_membership
+        members = self.site._setObject('Members', PortalFolder('Members'))
+        acl_users = self.site._setObject('acl_users', DummyUserFolder())
+        ttool = DummyTool()
+        wtool = DummyTool()
+        sm = getSiteManager()
+        sm.registerUtility(mtool, IMembershipTool)
+        sm.registerUtility(ttool, ITypesTool)
+        sm.registerUtility(wtool, IWorkflowTool)
+        sm.registerUtility(MemberAreaFactory, IFactory, 'cmf.memberarea')
+
+        # permission
+        mtool.createMemberArea('user_foo')
+        self.assertFalse(hasattr(members.aq_self, 'user_foo'))
+        newSecurityManager(None, acl_users.user_bar)
+        mtool.createMemberArea('user_foo')
+        self.assertFalse(hasattr(members.aq_self, 'user_foo'))
+        newSecurityManager(None, acl_users.user_foo)
+        mtool.setMemberareaCreationFlag()
+        mtool.createMemberArea('user_foo')
+        self.assertFalse(hasattr(members.aq_self, 'user_foo'))
+        newSecurityManager(None, acl_users.all_powerful_Oz)
+        mtool.setMemberareaCreationFlag()
+        mtool.createMemberArea('user_foo')
+        self.assertTrue(hasattr(members.aq_self, 'user_foo'))
+
+        # default content
+        f = members.user_foo
+        ownership = acl_users.user_foo
+        localroles = (('user_foo', ('Owner',)),)
+        self.assertEqual(f.Title(), "user_foo's Home")
+        self.assertEqual(f.getPortalTypeName(), 'Member Area')
+        self.assertEqual(f.getOwner(), ownership)
+        self.assertEqual(f.get_local_roles(), localroles,
+                         'CMF Collector issue #162 (LocalRoles broken): %s'
+                         % str(f.get_local_roles()))
+        self.assertEqual(f.index_html.getPortalTypeName(), 'Document')
+        self.assertEqual(f.index_html.getOwner(), ownership,
+                         'CMF Collector issue #162 (Ownership broken): %s'
+                         % str(f.index_html.getOwner()))
+        self.assertEqual(f.index_html.get_local_roles(), localroles,
+                         'CMF Collector issue #162 (LocalRoles broken): %s'
+                         % str(f.index_html.get_local_roles()))
+        self.assertEqual(wtool.test_notified, f.index_html)
+
+        # acquisition
+        self.site.user_bar = 'test attribute'
+        newSecurityManager(None, acl_users.user_bar)
+        mtool.createMemberArea('user_bar')
+        self.assertTrue(hasattr(members.aq_self, 'user_bar'),
+                        'CMF Collector issue #102 (acquisition bug)')
+
+    def test_createMemberArea_BBB(self):
         from Products.CMFDefault.interfaces import IMembershipTool
         from Products.CMFDefault.MembershipTool import BBBMemberAreaFactory
 

@@ -151,6 +151,36 @@ InitializeClass(MembershipTool)
 
 
 @implementer(IFactory)
+class _MemberAreaFactory(object):
+
+    """Creates a member area.
+    """
+
+    title = _(u'Member Area')
+    description = _(u'A home folder for portal members.')
+
+    def __call__(self, id, title=None, *args, **kw):
+        if title is None:
+            title = "{0}'s Home".format(id)
+        item = PortalFolder(id, title, *args, **kw)
+        item.manage_setLocalRoles(id, ['Owner'])
+
+        # Create Member's initial content
+        subitem = Document('index_html', "{0}'s Home".format(id),
+                           "{0}'s front page".format(id),
+                           'structured-text', DEFAULT_MEMBER_CONTENT % id)
+        subitem.manage_setLocalRoles(id, ['Owner'])
+        subitem._setPortalTypeName('Document')
+        item._setObject('index_html', subitem, suppress_events=True)
+        return item
+
+    def getInterfaces(self):
+        return implementedBy(PortalFolder)
+
+MemberAreaFactory = _MemberAreaFactory()
+
+
+@implementer(IFactory)
 class _BBBMemberAreaFactory(object):
 
     """Creates a member area.

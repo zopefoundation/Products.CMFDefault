@@ -98,6 +98,11 @@
   <!-- MemberArea -->
 
   <utility
+      component=".MembershipTool.MemberAreaFactory"
+      name="cmf.memberarea"
+      />
+
+  <utility
       component=".MembershipTool.BBBMemberAreaFactory"
       name="cmf.memberarea.bbb2"
       />

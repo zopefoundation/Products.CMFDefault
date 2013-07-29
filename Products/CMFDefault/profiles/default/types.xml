@@ -9,5 +9,7 @@
  <object name="Folder" meta_type="Factory-based Type Information"/>
  <object name="Image" meta_type="Factory-based Type Information"/>
  <object name="Link" meta_type="Factory-based Type Information"/>
+ <object name="Member Area" meta_type="Factory-based Type Information"/>
+ <object name="Members" meta_type="Factory-based Type Information"/>
  <object name="News Item" meta_type="Factory-based Type Information"/>
 </object>

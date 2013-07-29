@@ -62,11 +62,12 @@ class CMFSiteTests(ZopeTestCase.FunctionalTestCase):
             uidtool = None
 
         portal_types = [ x for x in ttool.listContentTypes()
-                           if x not in ( 'Discussion Item'
-                                       , 'CMF BTree Folder'
-                                       , 'Folder'
-                                       , 'Topic'
-                                       ) ]
+                           if x not in ('Discussion Item',
+                                        'CMF BTree Folder',
+                                        'Folder',
+                                        'Member Area',
+                                        'Members',
+                                        'Topic') ]
 
         self.assertEqual( len( catalog ), 0 )
 

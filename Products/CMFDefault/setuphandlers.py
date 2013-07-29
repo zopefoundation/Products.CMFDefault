@@ -13,8 +13,10 @@
 """ CMFDefault setup handlers.
 """
 
-from Products.CMFDefault.exceptions import BadRequest
-from OFS.DTMLMethod import addDTMLMethod
+from zope.component import getUtility
+from zope.component.interfaces import IFactory
+
+from Products.CMFCore.interfaces import ITypesTool
 
 
 def importVarious(context):
@@ -32,13 +34,13 @@ def importVarious(context):
 
     site = context.getSite()
 
-    try:
-        site.manage_addPortalFolder('Members')
-        addDTMLMethod(site.Members,
-                      'index_html', 'Member list', '<dtml-return roster>')
-        logger.info('Members folder imported.')
-    except BadRequest:
-        logger.warning('Importing Members folder failed.')
+    ttool = getUtility(ITypesTool)
+    portal_type = ttool.getTypeInfo('Members')
+    factory = getUtility(IFactory, portal_type.factory)
+    obj = factory(id='Members')
+    obj._setPortalTypeName('Members')
+    site._setObject('Members', obj)
+    logger.info('Members folder imported.')
 
     site.acl_users.encrypt_passwords = False
     logger.info('Password encryption disabled.')

@@ -253,6 +253,20 @@
         checker=".to23.check_type_infos"
         />
 
+    <genericsetup:upgradeStep
+        title="Add new portal types"
+        description="Add 'Members' and 'Member Area' portal types."
+        handler=".to23.upgrade_portal_types"
+        checker=".to23.check_portal_types"
+        />
+
+    <genericsetup:upgradeStep
+        title="Upgrade member areas"
+        description="Convert portal type of members folder and member areas."
+        handler=".to23.upgrade_member_areas"
+        checker=".to23.check_member_areas"
+        />
+
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep

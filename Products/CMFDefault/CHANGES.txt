@@ -4,6 +4,15 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- profiles and upgrade: Added new `Members` and `Member Area` portal types.
+  This allows to customize member area creation and behavior by modifying the
+  special portal types. The 'createMemberContent' hook is deprecated. An
+  additional upgrade step helps to convert the portal type of existing members
+  folder and member areas. If you don't run the two upgrade steps and don't
+  add a `Member Area` portal type, you get backwards compatible behavior.
+
+- content: Added `cmf.memberarea` factory for creating member areas.
+
 - browser views: Synced view names with the names used in type Actions.
 
 - profiles and upgrade: Modified Method Aliases used in type Actions.

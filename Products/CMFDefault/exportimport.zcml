@@ -8,7 +8,7 @@
       title="Various Settings"
       description="Import various settings from PortalGenerator."
       handler="Products.CMFDefault.setuphandlers.importVarious">
-    <depends name="toolset"/>
+    <depends name="typeinfo"/>
   </genericsetup:importStep>
 
 </configure>

@@ -50,8 +50,8 @@ Converting skins to views:
 - [x] members_delete_control.py -> members.Manage
 - [x] members_delete_template.pt -> members_delete.pt
 
-[x] ISiteRoot @@roster.html:
-----------------------------
+[x] IFolderish @@roster:
+------------------------
 - [x] roster.pt -> members.Roster
                    members_list.pt
 
