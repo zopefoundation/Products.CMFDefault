@@ -727,6 +727,8 @@ def check_member_areas(tool):
     """
     mtool = getToolByName(tool, 'portal_membership')
     members = mtool.getMembersFolder()
+    if members is None:
+        return False
     if 'index_html' in members:
         if members['index_html'].meta_type == 'DTML Method':
             return True
@@ -743,6 +745,8 @@ def upgrade_member_areas(tool):
     logger = logging.getLogger('GenericSetup.upgrade')
     mtool = getToolByName(tool, 'portal_membership')
     members = mtool.getMembersFolder()
+    if members is None:
+        return
     if 'index_html' in members:
         if members['index_html'].meta_type == 'DTML Method':
             members._delObject('index_html')
