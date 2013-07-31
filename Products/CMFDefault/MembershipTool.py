@@ -19,15 +19,13 @@ from Acquisition import aq_parent
 from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from zope.component import getUtility
-from zope.component.interfaces import IFactory
 from zope.globalrequest import getRequest
-from zope.interface import implementedBy
 from zope.interface import implementer
 from ZPublisher.BaseRequest import RequestContainer
 
 from Products.CMFCore.interfaces import IMembershipTool as IBaseTool
+from Products.CMFCore.MembershipTool import MemberAreaFactoryBase
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
-from Products.CMFCore.PortalFolder import PortalFolder
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.Document import Document
 from Products.CMFDefault.interfaces import IMembershipTool
@@ -150,20 +148,14 @@ class MembershipTool(BaseTool):
 InitializeClass(MembershipTool)
 
 
-@implementer(IFactory)
-class _MemberAreaFactory(object):
+class _MemberAreaFactory(MemberAreaFactoryBase):
 
     """Creates a member area.
     """
 
-    title = _(u'Member Area')
-    description = _(u'A home folder for portal members.')
-
     def __call__(self, id, title=None, *args, **kw):
-        if title is None:
-            title = "{0}'s Home".format(id)
-        item = PortalFolder(id, title, *args, **kw)
-        item.manage_setLocalRoles(id, ['Owner'])
+        item = super(_MemberAreaFactory,
+                     self).__call__(id, title=title, *args, **kw)
 
         # Create Member's initial content
         subitem = Document('index_html', "{0}'s Home".format(id),
@@ -174,26 +166,19 @@ class _MemberAreaFactory(object):
         item._setObject('index_html', subitem, suppress_events=True)
         return item
 
-    def getInterfaces(self):
-        return implementedBy(PortalFolder)
-
 MemberAreaFactory = _MemberAreaFactory()
 
 
-@implementer(IFactory)
-class _BBBMemberAreaFactory(object):
+class _BBBMemberAreaFactory(MemberAreaFactoryBase):
 
     """Creates a member area.
     """
 
-    title = _(u'Member Area')
     description = _(u'Classic CMFDefault home folder for portal members.')
 
     def __call__(self, id, title=None, *args, **kw):
-        if title is None:
-            title = "{0}'s Home".format(id)
-        item = PortalFolder(id, title, *args, **kw)
-        item.manage_setLocalRoles(id, ['Owner'])
+        item = super(_BBBMemberAreaFactory,
+                     self).__call__(id, title=title, *args, **kw)
 
         # Create Member's initial content
         mtool = getUtility(IBaseTool)
@@ -209,8 +194,5 @@ class _BBBMemberAreaFactory(object):
             subitem._setPortalTypeName('Document')
             item._setObject('index_html', subitem, suppress_events=True)
         return item
-
-    def getInterfaces(self):
-        return implementedBy(PortalFolder)
 
 BBBMemberAreaFactory = _BBBMemberAreaFactory()
