@@ -95,16 +95,16 @@
       name="cmf.folder.skinned"
       />
 
-  <!-- MemberArea -->
+  <!-- HomeFolder -->
 
   <utility
-      component=".MembershipTool.MemberAreaFactory"
-      name="cmf.memberarea"
+      component=".MembershipTool.HomeFolderFactory"
+      name="cmf.folder.home"
       />
 
   <utility
-      component=".MembershipTool.BBBMemberAreaFactory"
-      name="cmf.memberarea.bbb2"
+      component=".MembershipTool.BBBHomeFolderFactory"
+      name="cmf.folder.home.bbb2"
       />
 
   <include package="zope.annotation" />

@@ -35,10 +35,10 @@ def importVarious(context):
     site = context.getSite()
 
     ttool = getUtility(ITypesTool)
-    portal_type = ttool.getTypeInfo('Members')
+    portal_type = ttool.getTypeInfo('Members Folder')
     factory = getUtility(IFactory, portal_type.factory)
     obj = factory(id='Members')
-    obj._setPortalTypeName('Members')
+    obj._setPortalTypeName('Members Folder')
     site._setObject('Members', obj)
     logger.info('Members folder imported.')
 

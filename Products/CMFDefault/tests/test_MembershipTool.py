@@ -43,8 +43,8 @@ from Products.CMFCore.tests.base.testcase import TransactionalTest
 class DummyTool(DummyTool):
 
     def getTypeInfo(self, contentType):
-        ti = DummyType('Member Area')
-        ti.factory = 'cmf.memberarea'
+        ti = DummyType('Home Folder')
+        ti.factory = 'cmf.folder.home'
         return ti
 
 
@@ -130,7 +130,7 @@ class MembershipToolSecurityTests(SecurityTest):
 
     def test_createMemberArea(self):
         from Products.CMFDefault.interfaces import IMembershipTool
-        from Products.CMFDefault.MembershipTool import MemberAreaFactory
+        from Products.CMFDefault.MembershipTool import HomeFolderFactory
 
         mtool = self.site.portal_membership
         members = self.site._setObject('Members', PortalFolder('Members'))
@@ -141,7 +141,7 @@ class MembershipToolSecurityTests(SecurityTest):
         sm.registerUtility(mtool, IMembershipTool)
         sm.registerUtility(ttool, ITypesTool)
         sm.registerUtility(wtool, IWorkflowTool)
-        sm.registerUtility(MemberAreaFactory, IFactory, 'cmf.memberarea')
+        sm.registerUtility(HomeFolderFactory, IFactory, 'cmf.folder.home')
 
         # permission
         mtool.createMemberArea('user_foo')
@@ -163,7 +163,7 @@ class MembershipToolSecurityTests(SecurityTest):
         ownership = acl_users.user_foo
         localroles = (('user_foo', ('Owner',)),)
         self.assertEqual(f.Title(), "user_foo's Home")
-        self.assertEqual(f.getPortalTypeName(), 'Member Area')
+        self.assertEqual(f.getPortalTypeName(), 'Home Folder')
         self.assertEqual(f.getOwner(), ownership)
         self.assertEqual(f.get_local_roles(), localroles,
                          'CMF Collector issue #162 (LocalRoles broken): %s'
@@ -186,7 +186,7 @@ class MembershipToolSecurityTests(SecurityTest):
 
     def test_createMemberArea_BBB(self):
         from Products.CMFDefault.interfaces import IMembershipTool
-        from Products.CMFDefault.MembershipTool import BBBMemberAreaFactory
+        from Products.CMFDefault.MembershipTool import BBBHomeFolderFactory
 
         mtool = self.site.portal_membership
         members = self.site._setObject('Members', PortalFolder('Members'))
@@ -195,8 +195,8 @@ class MembershipToolSecurityTests(SecurityTest):
         sm = getSiteManager()
         sm.registerUtility(mtool, IMembershipTool)
         sm.registerUtility(wtool, IWorkflowTool)
-        sm.registerUtility(BBBMemberAreaFactory, IFactory,
-                           'cmf.memberarea.bbb2')
+        sm.registerUtility(BBBHomeFolderFactory, IFactory,
+                           'cmf.folder.home.bbb2')
 
         # permission
         mtool.createMemberArea('user_foo')

@@ -24,7 +24,7 @@ from zope.interface import implementer
 from ZPublisher.BaseRequest import RequestContainer
 
 from Products.CMFCore.interfaces import IMembershipTool as IBaseTool
-from Products.CMFCore.MembershipTool import MemberAreaFactoryBase
+from Products.CMFCore.MembershipTool import HomeFolderFactoryBase
 from Products.CMFCore.MembershipTool import MembershipTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.Document import Document
@@ -55,7 +55,7 @@ class MembershipTool(BaseTool):
 
     meta_type = 'Default Membership Tool'
     membersfolder_id = 'Members'
-    _MEMBERAREA_FACTORY_NAME = 'cmf.memberarea.bbb2'
+    _HOME_FOLDER_FACTORY_NAME = 'cmf.folder.home.bbb2'
 
     security = ClassSecurityInfo()
 
@@ -148,13 +148,13 @@ class MembershipTool(BaseTool):
 InitializeClass(MembershipTool)
 
 
-class _MemberAreaFactory(MemberAreaFactoryBase):
+class _HomeFolderFactory(HomeFolderFactoryBase):
 
-    """Creates a member area.
+    """Creates a home folder.
     """
 
     def __call__(self, id, title=None, *args, **kw):
-        item = super(_MemberAreaFactory,
+        item = super(_HomeFolderFactory,
                      self).__call__(id, title=title, *args, **kw)
 
         # Create Member's initial content
@@ -166,18 +166,18 @@ class _MemberAreaFactory(MemberAreaFactoryBase):
         item._setObject('index_html', subitem, suppress_events=True)
         return item
 
-MemberAreaFactory = _MemberAreaFactory()
+HomeFolderFactory = _HomeFolderFactory()
 
 
-class _BBBMemberAreaFactory(MemberAreaFactoryBase):
+class _BBBHomeFolderFactory(HomeFolderFactoryBase):
 
-    """Creates a member area.
+    """Creates a home folder.
     """
 
     description = _(u'Classic CMFDefault home folder for portal members.')
 
     def __call__(self, id, title=None, *args, **kw):
-        item = super(_BBBMemberAreaFactory,
+        item = super(_BBBHomeFolderFactory,
                      self).__call__(id, title=title, *args, **kw)
 
         # Create Member's initial content
@@ -195,4 +195,4 @@ class _BBBMemberAreaFactory(MemberAreaFactoryBase):
             item._setObject('index_html', subitem, suppress_events=True)
         return item
 
-BBBMemberAreaFactory = _BBBMemberAreaFactory()
+BBBHomeFolderFactory = _BBBHomeFolderFactory()

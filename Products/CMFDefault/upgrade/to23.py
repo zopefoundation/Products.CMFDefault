@@ -559,11 +559,11 @@ def check_portal_types(tool):
     """
     ttool = getToolByName(tool, 'portal_types')
     try:
-        ttool['Member Area']
+        ttool['Home Folder']
     except KeyError:
         return True
     try:
-        ttool['Members']
+        ttool['Members Folder']
     except KeyError:
         return True
     return False
@@ -577,43 +577,43 @@ def upgrade_portal_types(tool):
     environ = SetupEnviron()
     environ._should_purge = False
     try:
-        ttool['Member Area']
+        ttool['Home Folder']
     except KeyError:
-        getMultiAdapter((ttool, environ), IBody).body = _TTOOL_MEMBER_AREA_XML
-        obj = ttool['Member Area']
-        getMultiAdapter((obj, environ), IBody).body = _MEMBER_AREA_XML
-        getMultiAdapter((wtool, environ), IBody).body = _WTOOL_MEMBER_AREA_XML
-        logger.info("'Member Area' type added.")
+        getMultiAdapter((ttool, environ), IBody).body = _TTOOL_HOME_XML
+        obj = ttool['Home Folder']
+        getMultiAdapter((obj, environ), IBody).body = _HOME_FOLDER_XML
+        getMultiAdapter((wtool, environ), IBody).body = _WTOOL_HOME_XML
+        logger.info("'Home Folder' type added.")
     try:
-        ttool['Members']
+        ttool['Members Folder']
     except KeyError:
         getMultiAdapter((ttool, environ), IBody).body = _TTOOL_MEMBERS_XML
-        obj = ttool['Members']
-        getMultiAdapter((obj, environ), IBody).body = _MEMBERS_XML
+        obj = ttool['Members Folder']
+        getMultiAdapter((obj, environ), IBody).body = _MEMBERS_FOLDER_XML
         getMultiAdapter((wtool, environ), IBody).body = _WTOOL_MEMBERS_XML
-        logger.info("'Members' type added.")
+        logger.info("'Members Folder' type added.")
 
-_TTOOL_MEMBER_AREA_XML = """\
+_TTOOL_HOME_XML = """\
 <?xml version="1.0"?>
 <object name="portal_types">
- <object insert-after="Link" name="Member Area"
+ <object insert-after="Folder" name="Home Folder"
     meta_type="Factory-based Type Information"/>
 </object>
 """
 
-_MEMBER_AREA_XML = """\
+_HOME_FOLDER_XML = """\
 <?xml version="1.0"?>
-<object name="Member Area" meta_type="Factory-based Type Information"
+<object name="Home Folder" meta_type="Factory-based Type Information"
    i18n:domain="cmf_default" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Member Area</property>
+ <property name="title" i18n:translate="">Home Folder</property>
  <property name="description"
     i18n:translate="">A home folder for portal members.</property>
  <property name="icon_expr">string:${portal_url}/folder_icon.gif</property>
  <property name="content_meta_type">Portal Folder</property>
  <property name="product"></property>
- <property name="factory">cmf.memberarea</property>
+ <property name="factory">cmf.folder.home</property>
  <property
-    name="add_view_expr">string:${folder_url}/++add++Member%20Area</property>
+    name="add_view_expr">string:${folder_url}/++add++Home%20Folder</property>
  <property name="link_target"></property>
  <property name="immediate_view">properties</property>
  <property name="global_allow">False</property>
@@ -651,29 +651,30 @@ _MEMBER_AREA_XML = """\
 _TTOOL_MEMBERS_XML = """\
 <?xml version="1.0"?>
 <object name="portal_types">
- <object insert-after="Member Area" name="Members"
+ <object insert-after="Link" name="Members Folder"
     meta_type="Factory-based Type Information"/>
 </object>
 """
 
-_MEMBERS_XML = """\
+_MEMBERS_FOLDER_XML = """\
 <?xml version="1.0"?>
-<object name="Members" meta_type="Factory-based Type Information"
+<object name="Members Folder" meta_type="Factory-based Type Information"
    i18n:domain="cmf_default" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Members</property>
+ <property name="title" i18n:translate="">Members Folder</property>
  <property name="description"
-    i18n:translate="">A container for member areas.</property>
+    i18n:translate="">A container for home folders.</property>
  <property name="icon_expr">string:${portal_url}/folder_icon.gif</property>
  <property name="content_meta_type">Portal Folder</property>
  <property name="product"></property>
  <property name="factory">cmf.folder</property>
- <property name="add_view_expr">string:${folder_url}/++add++Members</property>
+ <property
+    name="add_view_expr">string:${folder_url}/++add++Members%20Folder</property>
  <property name="link_target"></property>
  <property name="immediate_view">properties</property>
  <property name="global_allow">False</property>
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types">
-  <element value="Member Area"/>
+  <element value="Home Folder"/>
  </property>
  <property name="allow_discussion">False</property>
  <alias from="(Default)" to="@@roster"/>
@@ -704,11 +705,11 @@ _MEMBERS_XML = """\
 </object>
 """
 
-_WTOOL_MEMBER_AREA_XML = """\
+_WTOOL_HOME_XML = """\
 <?xml version="1.0"?>
 <object name="portal_workflow">
  <bindings>
-  <type type_id="Member Area"/>
+  <type type_id="Home Folder"/>
  </bindings>
 </object>
 """
@@ -717,7 +718,7 @@ _WTOOL_MEMBERS_XML = """\
 <?xml version="1.0"?>
 <object name="portal_workflow">
  <bindings>
-  <type type_id="Members"/>
+  <type type_id="Members Folder"/>
  </bindings>
 </object>
 """
@@ -732,10 +733,10 @@ def check_member_areas(tool):
     if 'index_html' in members:
         if members['index_html'].meta_type == 'DTML Method':
             return True
-    if members.getPortalTypeName() != 'Members':
+    if members.getPortalTypeName() != 'Members Folder':
         return True
     for f in members.objectValues('Portal Folder'):
-        if f.getPortalTypeName() != 'Member Area':
+        if f.getPortalTypeName() != 'Home Folder':
             return True
     return False
 
@@ -751,10 +752,10 @@ def upgrade_member_areas(tool):
         if members['index_html'].meta_type == 'DTML Method':
             members._delObject('index_html')
             logger.info("'index_html' method removed from members.")
-    if members.getPortalTypeName() != 'Members':
-        members._setPortalTypeName('Members')
+    if members.getPortalTypeName() != 'Members Folder':
+        members._setPortalTypeName('Members Folder')
         logger.info("Portal type of '{0}' fixed.".format(members.getId()))
     for f in members.objectValues('Portal Folder'):
-        if f.getPortalTypeName() != 'Member Area':
-            f._setPortalTypeName('Member Area')
+        if f.getPortalTypeName() != 'Home Folder':
+            f._setPortalTypeName('Home Folder')
             logger.info("Portal type of '{0}' fixed.".format(f.getId()))

@@ -65,8 +65,8 @@ class CMFSiteTests(ZopeTestCase.FunctionalTestCase):
                            if x not in ('Discussion Item',
                                         'CMF BTree Folder',
                                         'Folder',
-                                        'Member Area',
-                                        'Members',
+                                        'Home Folder',
+                                        'Members Folder',
                                         'Topic') ]
 
         self.assertEqual( len( catalog ), 0 )
