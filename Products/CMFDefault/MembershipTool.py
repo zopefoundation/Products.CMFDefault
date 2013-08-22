@@ -183,9 +183,10 @@ class _BBBHomeFolderFactory(HomeFolderFactoryBase):
         # Create Member's initial content
         mtool = getUtility(IBaseTool)
         if hasattr(mtool, 'createMemberContent'):
+            wrapped = item.__of__(mtool.getMembersFolder())
             mtool.createMemberContent(member=mtool.getMemberById(id),
                                       member_id=id,
-                                      member_folder=item)
+                                      member_folder=wrapped)
         else:
             subitem = Document('index_html', "{0}'s Home".format(id),
                                "{0}'s front page".format(id),
