@@ -21,6 +21,8 @@ class IMembershipTool(BaseInterface):
     """ Declare product-specific APIs for CMFDefault's tool.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def setMembersFolderById(id=''):
         """ Set the members folder object by its id.
 

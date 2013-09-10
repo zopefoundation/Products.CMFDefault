@@ -4,6 +4,8 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- interfaces: Fixed dotted names by setting __module__ explicitly.
+
 - profiles and upgrade: Added new `Members Folder` and `Home Folder` types.
   This allows to customize member area creation and behavior by modifying the
   special portal types. The 'createMemberContent' hook is deprecated. An

@@ -15,12 +15,17 @@
 
 from zope.interface import Interface
 
+
 class IHTMLScrubber(Interface):
     """ Utility inteface for scrubbing user-supplied HTML.
     """
+
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def scrub(html):
         """ Return 'scrubbed' HTML.
         """
+
 
 class IDocument(Interface):
 
@@ -28,6 +33,8 @@ class IDocument(Interface):
 
     o Allowed formats include: structured text, HTML, plain text.
     """
+
+    __module__ = 'Products.CMFDefault.interfaces'
 
     def CookedBody():
         """ Get the "cooked" (ready for presentation) form of the text.
@@ -43,6 +50,8 @@ class IMutableDocument(IDocument):
     """ Updatable form of IDocument.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def edit(text_format, text, file='', safety_belt=''):
         """ Update the document.
 
@@ -56,6 +65,8 @@ class INewsItem(IDocument):
     """A special document for news.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def edit(text, description=None, text_format=None):
         """Edit the News Item.
         """
@@ -66,11 +77,15 @@ class IMutableNewsItem(INewsItem):
     """Updatable form of INewsItem.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
 
 class ILink(Interface):
 
     """ URL as content.
     """
+
+    __module__ = 'Products.CMFDefault.interfaces'
 
     def getRemoteUrl():
         """ Return the URL to which the link points, as a string.
@@ -81,6 +96,8 @@ class IMutableLink(ILink):
 
     """ Updatable form of ILink.
     """
+
+    __module__ = 'Products.CMFDefault.interfaces'
 
     def edit(remote_url):
         """ Update the link.
@@ -96,6 +113,8 @@ class IFavorite(ILink):
     """ Link to an internal object.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def getObject():
         """ Get the actual object that the Favorite is linking to.
         """
@@ -106,11 +125,15 @@ class IMutableFavorite(IFavorite, IMutableLink):
     """ Updatable form of IFavorite.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
 
 class IFile(Interface):
 
     """ Binary content.
     """
+
+    __module__ = 'Products.CMFDefault.interfaces'
 
     def get_size():
         """ Get the byte size of the file data.
@@ -130,6 +153,8 @@ class IMutableFile(IFile):
     """ Updatable form of IFile.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def manage_upload(file='', REQUEST=None):
         """ Replaces the current data of the object with file.
         """
@@ -140,6 +165,8 @@ class IImage(IFile):
     """ Image content.
     """
 
+    __module__ = 'Products.CMFDefault.interfaces'
+
     def __str__():
         """ Get the default HTML 'img' tag for this image.
         """
@@ -149,3 +176,5 @@ class IMutableImage(IImage, IMutableFile):
 
     """ Updatable form of IImage.
     """
+
+    __module__ = 'Products.CMFDefault.interfaces'
