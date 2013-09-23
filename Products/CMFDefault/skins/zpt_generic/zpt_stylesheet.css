@@ -420,8 +420,7 @@ td.NewsTitle {
 .widget select   { width: 604px; padding: 0; }
 .widget input.passwordType,
 .widget input.textType,
-.widget select {
-                   min-height: 30px; height: auto !important; height: 24px; }
+.widget select   { min-height: 30px; height: auto !important; height: 24px; }
 .widget.split input.passwordType,
 .widget.split input.textType,
 .widget.split textarea { width: 238px; }
