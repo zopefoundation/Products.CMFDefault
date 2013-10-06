@@ -301,7 +301,7 @@ class ContentEditFormBase(SettingsEditFormBase):
     def handle_validate(self, action, data):
         if self.context.wl_isLocked():
             return (_(u'This resource is locked via webDAV.'),)
-        return None
+        return self.validate(action, data)
 
     def applyChanges(self, data):
         changes = super(ContentEditFormBase, self).applyChanges(data)

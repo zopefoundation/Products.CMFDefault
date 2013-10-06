@@ -23,9 +23,20 @@ Create the browser object we'll be using.
     >>> browser.handleErrors = False
     >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
+Use the edit form without input.
+
+    >>> browser.open('http://localhost/site/myDocument/@@edit')
+    >>> '[[cmf_default][Edit [[cmf_default][Document]]]]' in browser.contents
+    True
+    >>> browser.getControl('[[cmf_default][Change]]').click()
+    >>> '[[cmf_default][Nothing to change.]]' in browser.contents
+    True
+
 Use the edit form with invalid input.
 
     >>> browser.open('http://localhost/site/myDocument/@@edit')
+    >>> '[[cmf_default][Edit [[cmf_default][Document]]]]' in browser.contents
+    True
     >>> browser.getControl('[[cmf_default][Body]]').value = '<script>'
     >>> browser.getControl('[[cmf_default][Change]]').click()
     >>> '[[zope][There were errors]]' in browser.contents
@@ -37,13 +48,29 @@ Use the edit form with valid input.
 
     >>> browser.getControl('[[cmf_default][Body]]').value = 'spam'
     >>> browser.getControl('[[cmf_default][Change]]').click()
-    >>> '[[zope][There were errors]]' in browser.contents
-    False
+    >>> '[[cmf_default][[[cmf_default][Document]] changed.]]' in browser.contents
+    True
 
 Look at the result.
 
     >>> browser.open('http://localhost/site/myDocument/@@view')
     >>> 'spam' in browser.contents
+    True
+
+Upload a file.
+
+    >>> from StringIO import StringIO
+    >>> browser.open('http://localhost/site/myDocument/@@edit')
+    >>> ctrl = browser.getControl(name='form.upload')
+    >>> ctrl.add_file(StringIO('FILE DATA'), 'text/plain', 'test.txt')
+    >>> browser.getControl('[[cmf_default][Change]]').click()
+    >>> '[[cmf_default][[[cmf_default][Document]] changed.]]' in browser.contents
+    True
+
+The file data overwrites the body.
+
+    >>> browser.open('http://localhost/site/myDocument/@@view')
+    >>> 'FILE DATA' in browser.contents
     True
 
 Changes can't be saved if the safety belt is invalid.

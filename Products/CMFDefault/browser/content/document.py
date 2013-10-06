@@ -134,26 +134,25 @@ class DocumentEditView(ContentEditFormBase):
         self.widgets['upload'].displayWidth = 60
         self.widgets['text'].height = 20
 
-    def _handle_success(self, action, data):
-        body = data.get('upload')
-        if body:
-            data['text'] = body.decode(self._getDefaultCharset())
-        changed = super(DocumentEditView, self)._handle_success(action, data)
-        if changed:
-            self.context.updateSafetyBelt(data.get('safety_belt'))
-        return changed
-
     def handle_validate(self, action, data):
         errors = super(DocumentEditView, self).handle_validate(action, data)
         if errors:
             return errors
-        safety_belt = self.request.form['form.safety_belt']
+        safety_belt = data['safety_belt']
         if not self.context.isValidSafetyBelt(safety_belt):
             return (_(u'Intervening changes from elsewhere detected. Please '
                       u'refetch the document and reapply your changes.'),)
-        # make sure applyChanges doesn't try to update safety_belt
-        self.request.form['form.safety_belt'] = self.context._safety_belt
-        return None
+        return errors
+
+    def applyChanges(self, data):
+        safety_belt = data.pop('safety_belt', '') or ''
+        body = data.pop('upload', None)
+        if body:
+            data['text'] = body.decode(self._getDefaultCharset())
+        changes = super(DocumentEditView, self).applyChanges(data)
+        if changes:
+            self.context.updateSafetyBelt(safety_belt)
+        return changes
 
 
 class SourceView(ViewBase):
