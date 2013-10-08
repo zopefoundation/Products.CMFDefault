@@ -27,13 +27,13 @@ class View(ViewBase):
     def workflow(self):
         return getUtility(IWorkflowTool)
 
-    @decode
     @memoize
+    @decode
     def review_state(self):
         return self.workflow.getInfoFor(self.context, 'review_state')
 
-    @decode
     @memoize
+    @decode
     def review_history(self):
         history = self.workflow.getInfoFor(self.context, 'review_history')
         if not history:

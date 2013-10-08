@@ -42,10 +42,9 @@ available_text_formats = (
         (u'html', 'html', _(u'html')))
 
 if REST_AVAILABLE:
-    available_text_formats +=  ( ( u'restructured-text'
-                                 , 'restructured-text'
-                                 , _(u'restructured-text')
-                                 ), )
+    available_text_formats += (
+            (u'restructured-text', 'restructured-text',
+             _(u'restructured-text')),)
 
 TextFormatVocabularyFactory = StaticVocabulary(available_text_formats)
 
@@ -159,14 +158,14 @@ class SourceView(ViewBase):
 
     """View the document source"""
 
-    @decode
     @memoize
+    @decode
     def listMetadataFields(self):
         return [ {'name': field[0], 'body': field[1]}
                  for field in self.context.getMetadataHeaders()
                  if field[0].lower() != 'title' ]
 
-    @decode
     @memoize
+    @decode
     def editable_body(self):
         return self.context.EditableBody()
