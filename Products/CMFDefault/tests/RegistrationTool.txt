@@ -120,7 +120,7 @@ password_email and registered_email
     From: WEBMASTER =?iso-8859-1?q?=C4=D6=DC?= <WEBMASTER@EXAMPLE.ORG>
     Subject: [[cmf_default][WWW.EXAMPLE.ORG: Your Membership Information]]
     <BLANKLINE>
-    [[cmf_default][You have been ... (You have been ...)]]
+    [[cmf_default][You have been registered as a member of ...]]
     <BLANKLINE>
     [[cmf_default][This describes the purpose of the website:]]
     <BLANKLINE>
