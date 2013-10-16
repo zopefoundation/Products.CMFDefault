@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- page templates: Improved Chameleon support.
+  If five.pt is installed, its zcml configuration is included.
+
 - interfaces: Fixed dotted names by setting __module__ explicitly.
 
 - profiles and upgrade: Added new `Members Folder` and `Home Folder` types.

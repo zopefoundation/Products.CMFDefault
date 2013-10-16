@@ -1,11 +1,15 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <include package="zope.formlib"/>
 
   <include package="zope.annotation"/>
 
-  <!--<include package="five.pt"/>-->
+  <include
+      zcml:condition="installed five.pt"
+      package="five.pt"
+      />
 
   <include package=".skin"/>
 
