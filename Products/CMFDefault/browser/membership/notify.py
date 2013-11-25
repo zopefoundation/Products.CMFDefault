@@ -13,6 +13,8 @@
 """Notification emails.
 """
 
+from email.utils import formataddr
+
 from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IActionsTool
@@ -36,9 +38,9 @@ class _EmailBase(ViewBase):
     @property
     @decode
     def _from(self):
-        return '{0} <{1}>'.format(
+        return formataddr((
             self.ptool.getProperty('email_from_name'),
-            self.ptool.getProperty('email_from_address'))
+            self.ptool.getProperty('email_from_address')))
 
     @property
     @memoize
