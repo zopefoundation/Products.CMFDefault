@@ -23,10 +23,12 @@ from DateTime.DateTime import DateTime
 from OFS.Image import Pdata
 from zope.component import getUtility
 from zope.interface import implements
+from zope.publisher.browser import FileUpload as ztkFileUpload
 from zope.schema import BytesLine
 from zope.schema import Field
+from zope.schema.interfaces import IBytes
 from zope.schema.interfaces import IBytesLine
-from zope.schema.interfaces import IField
+from ZPublisher.HTTPRequest import FileUpload as z2FileUpload
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.utils import checkEmailAddress
@@ -141,9 +143,12 @@ class EmailLine(BytesLine):
         return True
 
 
-class IFileUpload(IField):
+class IFileUpload(IBytes):
 
-    """A field for file uploads.
+    """A special bytes field for file uploads.
+
+    This is a hack that allows to use the existing manage_upload code for
+    handling FileUpload objects. Might become obsolete in the long run.
     """
 
 
@@ -153,3 +158,5 @@ class FileUpload(Field):
     """
 
     implements(IFileUpload)
+
+    _type = ztkFileUpload, z2FileUpload, str

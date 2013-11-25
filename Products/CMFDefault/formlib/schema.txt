@@ -10,7 +10,13 @@ Utilities
       ...     _properties=({'id':'foo_prop', 'type': 'string'},)
       ...     foo_text = ''
       ...     foo_bytes = ''
-      ...     foo_upload = ''
+      ...     _foo_upload = ''
+      ...     def _getUpload(self):
+      ...         return self._foo_upload
+      ...     def _setUpload(self, value):
+      ...         value.seek(0)
+      ...         self._foo_upload = value.read()
+      ...     foo_upload = property(_getUpload, _setUpload)
       ...     foo_choice = ''
       ...     foo_datetime = None
       ...     foo_set = ()
@@ -80,8 +86,14 @@ Utilities
       >>> adapter.foo_bytes == foo_bytes
       True
 
+      >>> from StringIO import StringIO
+      >>> from ZPublisher.HTTPRequest import FileUpload
       >>> foo_upload = 'f\xc3\xb6\xc3\xb6'
-      >>> adapter.foo_upload = foo_upload
+      >>> class DummyFieldStorage(object):
+      ...     file = StringIO(foo_upload)
+      ...     filename = None
+      ...     headers = None
+      >>> adapter.foo_upload = FileUpload(DummyFieldStorage())
       >>> content.foo_upload
       'f\xc3\xb6\xc3\xb6'
       >>> adapter.foo_upload == foo_upload
