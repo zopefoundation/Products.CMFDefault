@@ -1,7 +1,7 @@
 Products.CMFDefault Changelog
 =============================
 
-2.2.4 (unreleased)
+2.2.4 (2014-02-19)
 ------------------
 
 - Fixed AttributeError for allowDiscussion when importing a
