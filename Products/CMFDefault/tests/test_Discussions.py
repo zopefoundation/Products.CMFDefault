@@ -194,7 +194,7 @@ class DiscussionTests(SecurityTest):
 
         reply1 = talkback.getReplies()[0]
         path1 = '/'.join(reply1.getPhysicalPath())
-        self.assertEqual(ctool.getMetadataForUID(path1), {'in_reply_to': None})
+        self.assertEqual(ctool.getMetadataForUID(path1), {'in_reply_to': ''})
 
         talkback1 = dtool.getDiscussionFor(reply1)
         talkback1.createReply(title='test2', text='blah2')

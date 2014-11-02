@@ -47,7 +47,7 @@ class DiscussionItem(Document):
     meta_type = 'Discussion Item'
     portal_type = 'Discussion Item'
     allow_discussion = 1
-    in_reply_to = None
+    in_reply_to = ''
 
     security = ClassSecurityInfo()
 
@@ -91,7 +91,7 @@ class DiscussionItem(Document):
         if getattr(reply_to, 'meta_type', None) == self.meta_type:
             self.in_reply_to = reply_to.getId()
         else:
-            self.in_reply_to = None
+            self.in_reply_to = ''
 
     security.declareProtected(View, 'parentsInThread')
     def parentsInThread(self, size=0):
@@ -342,7 +342,7 @@ class DiscussionItemContainer(Persistent, Implicit, Traversable):
             'None' represents the "outer" content object.
         """
         outer = self._getDiscussable(outer=1)
-        if in_reply_to is None:
+        if not in_reply_to:
             return outer
         parent = self._container[in_reply_to].__of__(aq_inner(self))
         return parent.__of__(outer)
@@ -364,7 +364,7 @@ class DiscussionItemContainer(Persistent, Implicit, Traversable):
         outer = self._getDiscussable(outer=1)
 
         if discussable == outer:
-            in_reply_to = None
+            in_reply_to = ''
         else:
             in_reply_to = discussable.getId()
 

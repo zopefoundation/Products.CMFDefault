@@ -4,6 +4,9 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- Changed `DiscussionItem.in_reply_to` null value from None to empty string,
+  to use the same type and allow indexing in newer versions of BTree.
+
 - page templates: Improved Chameleon support.
   If five.pt is installed, its zcml configuration is included.
 
