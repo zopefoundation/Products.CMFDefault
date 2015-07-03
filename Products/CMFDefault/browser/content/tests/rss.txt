@@ -47,7 +47,7 @@ Get RSS Feed
 
 Parse Feed
     >>> from xml.etree import ElementTree
-    >>> feed = ElementTree.XML(browser.contents).getchildren()[0]
+    >>> feed = list(ElementTree.XML(browser.contents))[0]
     >>> feed.find("title").text == "Portal"
     True
     >>> feed.find("lastBuildDate").text == app.site.portal_syndication.getUpdateBase()
