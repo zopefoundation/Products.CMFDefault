@@ -49,13 +49,13 @@ class SkinnedFolder(CatalogAware, WorkflowAware, PortalFolder):
         self.addCreator()
 
     security.declareProtected(ModifyPortalContent, 'addCreator')
-    addCreator = DefaultDublinCoreImpl.addCreator.im_func
+    addCreator = DefaultDublinCoreImpl.addCreator.__func__
 
     security.declareProtected(View, 'listCreators')
-    listCreators = DefaultDublinCoreImpl.listCreators.im_func
+    listCreators = DefaultDublinCoreImpl.listCreators.__func__
 
     security.declareProtected(View, 'Creator')
-    Creator = DefaultDublinCoreImpl.Creator.im_func
+    Creator = DefaultDublinCoreImpl.Creator.__func__
 
     #
     #   'IContentish' interface method
