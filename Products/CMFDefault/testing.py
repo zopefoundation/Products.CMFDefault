@@ -15,6 +15,7 @@
 
 from Testing import ZopeTestCase
 ZopeTestCase.installProduct('ZCTextIndex', 1)
+ZopeTestCase.installProduct('PluginIndexes', 1)
 ZopeTestCase.installProduct('CMFCore', 1)
 
 import transaction
