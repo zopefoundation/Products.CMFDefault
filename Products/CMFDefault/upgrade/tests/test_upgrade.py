@@ -23,7 +23,7 @@ from os.path import join as path_join
 
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.User import UnrestrictedUser
+from AccessControl.users import UnrestrictedUser
 from zope.component.hooks import setSite
 
 from Products.CMFDefault.testing import FunctionalLayer

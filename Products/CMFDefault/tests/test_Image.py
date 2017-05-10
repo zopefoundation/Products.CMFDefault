@@ -21,7 +21,7 @@ from os.path import join as path_join
 
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.User import UnrestrictedUser
+from AccessControl.users import UnrestrictedUser
 from App.Common import rfc1123_date
 from zope.component import getSiteManager
 from zope.component.hooks import setSite

@@ -17,7 +17,7 @@ import unittest
 from Testing import ZopeTestCase
 
 from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.User import UnrestrictedUser
+from AccessControl.users import UnrestrictedUser
 from Acquisition import aq_base
 from zope.component import queryUtility
 from zope.component.hooks import setSite
