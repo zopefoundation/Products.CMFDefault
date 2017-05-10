@@ -87,6 +87,7 @@ just has an ID field.
     Traceback (most recent call last):
     ...
     LookupError: name 'form.bar'
+    ...
     >>> browser.getControl(name='form.id').value = 'MY_ID'
     >>> browser.getControl('[[zope][Add]]').click()
     >>> '[[cmf_default][[[cmf_default][MyFoo]] added.]]' in browser.contents
@@ -117,6 +118,7 @@ it has the fields defined in IFoo.
     Traceback (most recent call last):
     ...
     LookupError: name 'form.id'
+    ...
     >>> browser.getControl(name='form.bar').value = 'BAR'
     >>> browser.getControl(name='form.baz').value = 'BAZ'
     >>> browser.getControl('[[zope][Add]]').click()
