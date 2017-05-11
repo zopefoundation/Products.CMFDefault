@@ -90,7 +90,7 @@ Changes can't be saved if the document is locked.
 
     >>> browser.open('http://localhost/site/myDocument/@@edit')
 
-    >>> from webdav.LockItem import LockItem
+    >>> from OFS.LockItem import LockItem
     >>> lock = LockItem(uf.getUser('mgr').__of__(uf))
     >>> app.site.myDocument.wl_setLock(lock.getLockToken(), lock)
 
