@@ -17,48 +17,28 @@ The view for zExceptions.Unauthorized redirects anonymous requests to the
 login_form. This works if raised by the object (here by the reconfig_form).
 
     >>> browser.open('http://localhost/site/reconfig_form')
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 302: Moved Temporarily
-    >>> browser.contents
-    ''
-    >>> browser.headers['Location']
+    >>> browser.url
     'http://localhost/site/login_form?came_from=http%3A//localhost/site/reconfig_form'
 
 And it works if raised by BaseRequest.traverse (here caused by manage_main).
 
     >>> browser.open('http://localhost/site/manage_main')
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 302: Moved Temporarily
-    >>> browser.contents
-    ''
-    >>> browser.headers['Location']
+    >>> browser.url
     'http://localhost/site/login_form?came_from=http%3A//localhost/site/manage_main'
 
 Same redirect with a query string. The query string is preserved.
 
     >>> browser.open('http://localhost/site/manage_main?a:int=1&x:string=y')
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 302: Moved Temporarily
-    >>> browser.contents
-    ''
-    >>> browser.headers['Location']
+    >>> browser.url
     'http://localhost/site/login_form?came_from=http%3A//localhost/site/manage_main%3Fa%3Aint%3D1%26x%3Astring%3Dy'
-    >>> quote('manage_main?a:int=1&x:string=y') in browser.headers['Location']
+    >>> quote('manage_main?a:int=1&x:string=y') in browser.url
     True
 
 And requests are redirected to the login_form if a login attempt fails.
 
     >>> browser.post('http://localhost/site/manage_main',
     ...              '__ac_name=mbr&__ac_password=wrong')
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 302: Moved Temporarily
-    >>> browser.contents
-    ''
-    >>> browser.headers['Location']
+    >>> browser.url
     'http://localhost/site/login_form?came_from=http%3A//localhost/site/manage_main'
 
 The view for zExceptions.Unauthorized shows a Forbidden error if logged in.

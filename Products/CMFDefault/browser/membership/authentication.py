@@ -78,6 +78,9 @@ class UnauthorizedView(BrowserView):
 
         try:
             target = atool.getActionInfo('user/login')['url']
+            if not target.startswith('/'):
+                # May happen in unit tests
+                target = '/%s' % target
         except ValueError:
             # re-raise the unhandled exception
             raise self.exception
