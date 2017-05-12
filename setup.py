@@ -46,7 +46,7 @@ setup(name='Products.%s' % NAME,
                      ],
       install_requires=[
           'setuptools',
-          'Zope2 >= 2.13.12',
+          'Zope2 >= 4.0.0a4',
           'Products.CMFCore >= 2.4.0b1',
           'Products.GenericSetup',
           'Products.MailHost',
