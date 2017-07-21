@@ -1,6 +1,13 @@
 Products.CMFDefault Changelog
 =============================
 
+2.2.5 (unreleased)
+------------------
+
+- Add data-base-url attribute in body tag.
+  Closes `issue 2051 <https://github.com/plone/Products.CMFPlone/issues/2051>`_
+  [rodfersou]
+
 2.2.4 (2014-02-19)
 ------------------
 
