@@ -5,22 +5,21 @@ from setuptools import find_packages
 NAME = 'CMFDefault'
 
 here = os.path.abspath(os.path.dirname(__file__))
-package = os.path.join(here, 'Products', NAME)
 
 def _package_doc(name):
-    f = open(os.path.join(package, name))
+    f = open(os.path.join(here, name))
     return f.read()
 
 _boundary = '\n' + ('-' * 60) + '\n\n'
-README = ( _package_doc('README.txt')
+README = ( _package_doc('README.rst')
          + _boundary
-         + _package_doc('CHANGES.txt')
+         + _package_doc('CHANGES.rst')
          + _boundary
          + "Download\n========"
          )
 
 setup(name='Products.%s' % NAME,
-      version=_package_doc('version.txt').strip(),
+      version='2.3.0.dev0',
       description='Default product for the Zope Content Management Framework',
       long_description=README,
       classifiers=[
@@ -48,7 +47,7 @@ setup(name='Products.%s' % NAME,
           'setuptools',
           'Zope2 >= 2.13.12',
           'Products.CMFCore < 2.4',
-          'Products.GenericSetup < 2',
+          'Products.GenericSetup < 1.9',
           'Products.MailHost',
           'Products.PythonScripts',
           'five.globalrequest < 99',
@@ -59,7 +58,7 @@ setup(name='Products.%s' % NAME,
           'zope.testing >= 3.7.0',
           'Products.DCWorkflow < 2.4',
           ],
-      extras_require={ 'test': ['Products.DCWorkflow'],
+      extras_require={ 'test': ['Products.DCWorkflow < 2.4'],
                        'docs': ['Sphinx', 
                                 'repoze.sphinx.autointerface', 
                                 'pkginfo'],
