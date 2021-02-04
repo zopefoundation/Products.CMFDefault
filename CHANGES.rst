@@ -4,6 +4,10 @@ Products.CMFDefault Changelog
 2.3.0 (unreleased)
 ------------------
 
+- Add data-base-url attribute in body tag
+  (`Products.CMFPlone#2051
+   <https://github.com/plone/Products.CMFPlone/issues/2051>`_)
+
 - Changed `DiscussionItem.in_reply_to` null value from None to empty string,
   to use the same type and allow indexing in newer versions of BTree.
 

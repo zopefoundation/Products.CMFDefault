@@ -42,7 +42,8 @@
  <metal:slot define-slot="styles" />
 </head>
 
-<body>
+<body tal:attributes="data-portal-url globals/portal_url;
+                      data-base-url context/absolute_url">
 
  <nav id="site" i18n:domain="cmf_default">
    <a href="/" tal:attributes="href string:${portal_url}/">
