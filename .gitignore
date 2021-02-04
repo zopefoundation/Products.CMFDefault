@@ -6,12 +6,16 @@
 .eggs
 .installed.cfg
 .mr.developer.cfg
+pyvenv.cfg
 bin
 build
 develop-eggs
 dist
 downloads
 eggs
+include
+lib/
+lib64
 local.cfg
 parts
 var
