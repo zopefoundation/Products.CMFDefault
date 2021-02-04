@@ -1,7 +1,7 @@
 Products.CMFDefault Changelog
 =============================
 
-2.3.0 (unreleased)
+2.3.0 (2020-02-04)
 ------------------
 
 - Add data-base-url attribute in body tag
