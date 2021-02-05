@@ -79,7 +79,7 @@ class PreferencesSchemaAdapter(object):
         self.context = context
 
     def __getattr__(self, name):
-        return self.context.getProperty(name)
+        return self.context.getProperty(name, default='')
 
     def __setattr__(self, name, value):
         if name in ('email', 'listed', 'portal_skin'):
