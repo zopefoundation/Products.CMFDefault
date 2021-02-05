@@ -13,6 +13,7 @@
  </object>
  <index name="Date" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
+  <property name="precision">1</property>
  </index>
  <index name="Description" meta_type="ZCTextIndex">
   <indexed_attr value="Description"/>
@@ -40,12 +41,15 @@
  </index>
  <index name="created" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
+  <property name="precision">1</property>
  </index>
  <index name="effective" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
+  <property name="precision">1</property>
  </index>
  <index name="expires" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
+  <property name="precision">1</property>
  </index>
  <index name="getId" meta_type="FieldIndex">
   <indexed_attr value="getId"/>
@@ -58,6 +62,7 @@
  </index>
  <index name="modified" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
+  <property name="precision">1</property>
  </index>
  <index name="path" meta_type="PathIndex"/>
  <index name="portal_type" meta_type="FieldIndex">
