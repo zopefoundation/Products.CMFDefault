@@ -15,7 +15,7 @@ Zope's built-in Image object.
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from OFS.Cache import Cacheable
 import OFS.Image  # disambiguation
 from zope.component.factory import Factory

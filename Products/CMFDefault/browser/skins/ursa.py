@@ -14,9 +14,9 @@
 """
 
 from Acquisition import aq_get
-from zope.component import ComponentLookupError
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope.interface.interfaces import ComponentLookupError
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IMembershipTool

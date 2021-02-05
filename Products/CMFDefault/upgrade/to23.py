@@ -20,8 +20,8 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from OFS.userfolder import UserFolder
 from zope.component import getMultiAdapter
-from zope.component.interfaces import ComponentLookupError
 from zope.dottedname.resolve import resolve
+from zope.interface.interfaces import ComponentLookupError
 
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.utils import getToolByName

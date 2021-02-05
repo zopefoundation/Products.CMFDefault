@@ -18,7 +18,7 @@ import urlparse
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_get
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from zope.component import adapter
 from zope.component import getUtility
 from zope.component import queryUtility

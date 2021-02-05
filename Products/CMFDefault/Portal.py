@@ -13,7 +13,7 @@
 """ Portal class
 """
 
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 
 from OFS.FindSupport import FindSupport
 from OFS.ObjectManager import ObjectManager

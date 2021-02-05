@@ -23,10 +23,10 @@ import transaction
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.config import getConfiguration
 from App.special_dtml import DTMLFile
-from DocumentTemplate.DT_Util import html_quote
+from DocumentTemplate.html_quote import html_quote
 from zope.component import queryUtility
 from zope.component.factory import Factory
 from zope.interface import implements

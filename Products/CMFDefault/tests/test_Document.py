@@ -22,7 +22,7 @@ from os.path import join as path_join
 from re import compile
 from StringIO import StringIO
 
-from DocumentTemplate.DT_Util import html_quote
+from DocumentTemplate.html_quote import html_quote
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Products.PythonScripts.PythonScript import PythonScript
 from zope.component import getSiteManager

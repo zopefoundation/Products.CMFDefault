@@ -24,8 +24,8 @@ from five.localsitemanager.registry import PersistentComponents
 from zope.component import getMultiAdapter
 from zope.component.globalregistry import base
 from zope.component.hooks import setSite
-from zope.component.interfaces import ComponentLookupError
 from zope.dottedname.resolve import resolve
+from zope.interface.interfaces import ComponentLookupError
 
 from Products.CMFCore.DirectoryView import _dirreg
 from Products.CMFCore.DirectoryView import _generateKey

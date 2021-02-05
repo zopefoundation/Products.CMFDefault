@@ -14,7 +14,7 @@
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from OFS.Folder import Folder
 from OFS.SimpleItem import SimpleItem

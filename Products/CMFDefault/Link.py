@@ -16,7 +16,7 @@
 import urlparse
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 import transaction
 from zope.component.factory import Factory

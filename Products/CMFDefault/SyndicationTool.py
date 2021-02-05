@@ -20,7 +20,7 @@ from warnings import warn
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
 from OFS.SimpleItem import SimpleItem

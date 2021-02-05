@@ -19,7 +19,7 @@ from AccessControl.requestmethod import postonly
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_chain
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.schema import ValidationError

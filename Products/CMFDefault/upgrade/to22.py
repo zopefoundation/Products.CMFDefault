@@ -20,7 +20,7 @@ from AccessControl.Permissions import view
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from zope.component.interfaces import ComponentLookupError
+from zope.interface.interfaces import ComponentLookupError
 
 from Products.CMFCore.interfaces import IWorkflowDefinition
 from Products.CMFCore.permissions import ModifyPortalContent

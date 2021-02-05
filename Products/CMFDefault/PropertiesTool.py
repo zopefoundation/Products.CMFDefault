@@ -15,7 +15,7 @@
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_inner, aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from OFS.SimpleItem import SimpleItem
 from Products.MailHost.interfaces import IMailHost

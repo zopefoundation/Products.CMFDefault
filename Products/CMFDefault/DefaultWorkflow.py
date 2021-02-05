@@ -17,7 +17,7 @@ from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from DateTime.DateTime import DateTime
 from zope.component import getUtility
 from zope.component import queryUtility

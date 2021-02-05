@@ -18,7 +18,7 @@ from Acquisition import Implicit
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from DateTime.DateTime import DateTime
 from OFS.Traversable import Traversable
 from Persistence import Persistent
