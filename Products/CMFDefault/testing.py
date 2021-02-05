@@ -14,6 +14,7 @@
 """
 
 from Testing import ZopeTestCase
+ZopeTestCase.installProduct('PluginIndexes', 1)
 ZopeTestCase.installProduct('ZCTextIndex', 1)
 ZopeTestCase.installProduct('CMFCore', 1)
 

@@ -93,6 +93,7 @@ Utilities
       ...     file = StringIO(foo_upload)
       ...     filename = None
       ...     headers = None
+      ...     name = ''
       >>> adapter.foo_upload = FileUpload(DummyFieldStorage())
       >>> content.foo_upload
       'f\xc3\xb6\xc3\xb6'

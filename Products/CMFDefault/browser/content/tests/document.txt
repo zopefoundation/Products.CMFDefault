@@ -41,7 +41,7 @@ Use the edit form with invalid input.
     >>> browser.getControl('[[cmf_default][Change]]').click()
     >>> '[[zope][There were errors]]' in browser.contents
     True
-    >>> '[[cmf_default][Dynamic tag \'script\' not ' in browser.contents
+    >>> '[[cmf_default][Dynamic tag &#x27;script&#x27; not ' in browser.contents
     True
 
 Use the edit form with valid input.
