@@ -21,7 +21,6 @@ from Acquisition import aq_parent
 from DateTime import DateTime
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import Forbidden
-from zExceptions import Redirect
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.formlib import form
@@ -91,7 +90,8 @@ class UnauthorizedView(BrowserView):
         attempt = getattr(req, '_cookie_auth', ATTEMPT_NONE)
         if attempt not in (ATTEMPT_NONE, ATTEMPT_LOGIN):
             # An authenticated user was denied access to something.
-            raise Forbidden(self.forbidden_template())
+            self.request.response.setStatus(403)
+            return self.forbidden_template()
 
         _expireAuthCookie(self)
         came_from = req.get('came_from', None)
@@ -104,7 +104,7 @@ class UnauthorizedView(BrowserView):
                     query = '?' + query
                 came_from = came_from + query
         url = '%s?came_from=%s' % (target, quote(came_from))
-        raise Redirect(url)
+        self.request.response.redirect(url)
 
 
 class NameSource(object):
