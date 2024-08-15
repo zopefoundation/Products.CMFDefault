@@ -1,6 +1,3 @@
-.. image:: https://travis-ci.com/zopefoundation/Products.CMFDefault.svg?branch=master
-        :target: https://travis-ci.com/zopefoundation/Products.CMFDefault
-
 .. image:: https://img.shields.io/pypi/v/Products.CMFDefault.svg
         :target: https://pypi.org/project/Products.CMFDefault/
         :alt: Current version on PyPI
